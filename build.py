@@ -1,4 +1,6 @@
-from pybuilder.core import use_plugin, init
+from pybuilder.core import use_plugin, init, task
+from sys import path
+path.append("src/main/python")
 
 use_plugin("python.core")
 use_plugin("python.unittest")
@@ -15,3 +17,9 @@ default_task = "publish"
 @init
 def set_properties(project):
     pass
+
+@task
+def run ():
+    from start import main
+    main()
+
