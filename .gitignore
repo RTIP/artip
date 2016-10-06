@@ -2,3 +2,5 @@
 target
 *.pyc
 __init__.py
+casapy-*.log
+ipython-*.log
