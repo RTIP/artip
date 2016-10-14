@@ -22,8 +22,15 @@ def convert_phase_to_positives(data):
     delta_to_shift = min(data)
     return map(lambda datum: datum + abs(delta_to_shift), data)
 
+def is_normalized(data):
+    isPositive = all(datum >= 0 for datum in data)
+    isNegative = all(datum < 0 for datum in data)
+    return isPositive or isNegative
 
 def shift_linear(data):
+    if is_normalized(data):
+        return data
+
     if is_data_near_180(data):
         data = shift_data_to_zero(data)
 
