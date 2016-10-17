@@ -1,7 +1,6 @@
 import unittest
 from linearshifting import shift_linear
 
-
 class LinearShiftingTest(unittest.TestCase):
 
     def test_positive_phase_data(self):
