@@ -1,8 +1,11 @@
-Download Anaconda Python Distribution. Refer https://www.continuum.io/downloads
+Download Anaconda Python Distribution Python 2.7 version. Casa-python module works only with python 2.7
+Refer https://www.continuum.io/downloads
 After the download is complete, run the following command to install python packages required to import CASA in python.
 
 >> conda install -c pkgw casa-data casa-python
 
+Install pybuilder
+>> pip install pybuilder
 
 After the successful installation of packages, run the following command from within the artip directory.
 >> pyb run
