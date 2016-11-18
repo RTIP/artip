@@ -7,10 +7,12 @@ After the download is complete, run the following command to install python pack
 Install pybuilder
 >> pip install pybuilder
 
-After the successful installation of packages, run the following command from within the artip directory.
->> pyb run
+After the successful installation of packages, run the following command from within the artip directory to build the application.
+>> pyb
 
 If you get 'ImportError: No module named casac', check your pip/pyb installation, it should point to the new anaconda python installation.
 If not, uninstall the existing ones, and reinstall pip/pyb normally, and it should automatically pick the new anaconda python installation.
 
-Now on running 'pyb run', it should be all fine.
+Now, to run the application, execute
+>> python start.py <ms_dataset_path> 
+    e.g. python start.py '~/Downloads/may14.ms'

@@ -14,9 +14,3 @@ default_task = "publish"
 def set_properties(project):
     print("Init task")
     pass
-
-@task
-def run ():
-    from start import main
-    main()
-

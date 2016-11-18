@@ -31,9 +31,9 @@ def shiftToZero(data):
     return map(lambda pd: pd+abs(degreeOfRotation), data)
 
 
-def main(args=None):
+def main(ms_dataset):
     ms = casac.casac.ms ()
-    ms.open('/Users/dollyg/Projects/IUCAA/output/may14.ms')
+    ms.open(ms_dataset)
     ms.selectinit(reset=True)
     # antennas = filter(lambda antenna: antenna!=2, range(1, 29, 1))
     antennas = range(1, 29, 1)
