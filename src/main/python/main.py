@@ -1,54 +1,47 @@
 import casac
-import numpy as np
-import scipy.stats as stats
-import pylab as pl
-import matplotlib.pyplot as plt
+import itertools
 from angular_dispersion import is_dispersed
-
-def plot_pdf(data, antenna):
-    fit = stats.norm.pdf(data, np.mean(data), np.std(data))
-    pl.plot(data,fit,'-o')
-    pl.hist(data,normed=True)
-    pl.ion()
-    pl.show()
-    pl.savefig('pdf%s.png' % antenna)
-    plt.clf()
-
-def plot_percentiles(data, antenna):
-    percentiles = range(0,100,5)
-    plt.plot(percentiles, np.percentile(data,percentiles), c='green')
-    plt.ion()
-    plt.show()
-    plt.savefig('percentile_%s.png' %antenna)
-
-
-def toDegree(angleInRadians):
-    angleInDegree = int(angleInRadians * (180 / 3.14))
-    return  angleInDegree
-
-def shiftToZero(data):
-    degreeOfRotation = min(data)
-    return map(lambda pd: pd+abs(degreeOfRotation), data)
+from ConfigParser import ConfigParser
+import ast
+import math
 
 
 def main(ms_dataset):
-    ms = casac.casac.ms ()
+    config = ConfigParser()
+    config.read('./conf/config.cfg')
+
+    field = config.getint('Flux Calibration', 'field')
+    channel = config.getint('Flux Calibration', 'channel')
+    r_threshold = config.getfloat('Flux Calibration', 'r_threshold')
+    polarizations = ast.literal_eval(config.get('Global', 'polarizations'))
+    ms = casac.casac.ms()
     ms.open(ms_dataset)
-    ms.selectinit(reset=True)
-    # antennas = filter(lambda antenna: antenna!=2, range(1, 29, 1))
-    antennas = range(1, 29, 1)
-    bad_antennas = []
-    for antenna in antennas:
-        ms.selectinit(reset=True)
-        ms.selectpolarization('RR')
-        ms.selectchannel(start=100)
-        ms.select({'scan_number': 1, 'antenna1': 0, 'antenna2': antenna})
-        phase_data = ms.getdata(['phase'])['phase'][0][0]
 
-        if is_dispersed(phase_data):
-            bad_antennas.append(antenna)
+    metadata = ms.metadata()
+    antenna_ids = metadata.antennaids()  # Throws error as number of antennas is 30 and this shows more.
+    antenna_ids = range(0, 29, 1)
+    baselines = list(itertools.combinations(antenna_ids, 2))
+    scans = metadata.scansforfield(field)
 
-    print "Bad_antennas: ->", bad_antennas
+    bad_baselines = {}
+    print "Calculating bad baselines for angular dispersion in phases lesser than", r_threshold,"......"
+    for polarization in polarizations:
+        for scan in scans:
+            for baseline in baselines:
+                ms.selectinit(reset=True)
+                ms.selectpolarization(polarization)
+                ms.selectchannel(channel)
+                ms.select({'scan_number': int(scan), 'antenna1': int(baseline[0]), 'antenna2': int(baseline[1])})
+                phase_data = ms.getdata(['phase'])['phase'][0][0]
+
+                if is_dispersed(phase_data, r_threshold):
+                    if not polarization in bad_baselines.keys():
+                        bad_baselines[polarization] = {}
+                    if not scan in bad_baselines[polarization].keys():
+                        bad_baselines[polarization][scan] = []
+                    bad_baselines[polarization][scan].append(baseline)
+    print bad_baselines
+
 
 if __name__ == "__main__":
     main()

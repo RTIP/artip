@@ -1,6 +1,7 @@
 import numpy
 import math
 
+
 def calculate_angular_dispersion(phases):
     sinx = map(lambda phase: math.sin(phase), phases)
     cosx = map(lambda phase: math.cos(phase), phases)
@@ -10,9 +11,11 @@ def calculate_angular_dispersion(phases):
     r = math.sqrt(math.pow(avg_sin, 2) + math.pow(avg_cos, 2))
     return r
 
-def is_dispersed(data):
+
+def is_dispersed(data, r_threshold):
     r = calculate_angular_dispersion(data)
-    return r<0.5
+    return r < r_threshold
+
 
 def to_radians(data):
     return map(lambda x: math.radians(x), data)

@@ -1,4 +1,4 @@
-from pybuilder.core import use_plugin, init, task
+from pybuilder.core import use_plugin, init
 from sys import path
 path.append("src/main/python")
 
