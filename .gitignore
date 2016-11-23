@@ -3,3 +3,4 @@ target
 *.pyc
 casapy-*.log
 ipython-*.log
+*.DS_Store
