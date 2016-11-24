@@ -11,3 +11,6 @@ class Config:
 
 	def flux_cal_configs(self):
 		return self.__properties['flux_calibration']
+
+	def get(self, _for):
+		return self.__properties[_for]

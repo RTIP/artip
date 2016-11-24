@@ -7,15 +7,19 @@ class MeasurementSet:
          self.__ms.open(dataset)
          self.__metadata = self.__ms.metadata()
 
-    def filter(self,primary_filters={}, extra_filters = {}):
+    def _filter(self,filters={}):
+        extra_filters = filters['extra_filters']
+        primary_filters = filters['primary_filters']
         self.__ms.selectinit(reset=True)
         for filter_name, value in primary_filters.iteritems():
             getattr(self.__ms, "select"+filter_name)(value)
         if extra_filters: self.__ms.select(extra_filters)
 
 
-    def get_data(self, params):
-        return self.__ms.getdata(params)
+    def get_data(self,filter_params, selection_params):
+        self._filter(filter_params)
+        data_items = self.__ms.getdata(selection_params)
+        return data_items
 
     def scan_ids_for(self, source_id):
         scan_ids = self.__metadata.scansforfield(source_id)
