@@ -7,6 +7,9 @@ class MeasurementSet:
          self.__ms.open(dataset)
          self.__metadata = self.__ms.metadata()
 
+    def __del__(self):
+        self.__ms.close()
+
     def _filter(self,filters={}):
         extra_filters = filters['extra_filters']
         primary_filters = filters['primary_filters']
