@@ -11,15 +11,19 @@ class ClosurePhaseUtil:
     def __del__(self):
         self.__ms.close()
 
-    def closurePhTriads(self, msname, triadlist, chan={}):
+    def closurePhTriads(self, msname, triadlist, field, scan, polarization, chan):
         ms = casac.casac.ms()
         ms.open(msname)
+        ms.selectpolarization(polarization)
+        ms.select({'field_id': field, 'scan_number': scan})
+
         if chan: ms.selectchannel(**chan)
         # Note the use of ifraxis. This means time and interfoerometer
         # number are separate dimensions in the returned data
         dd = ms.getdata(["antenna1", "antenna2", "phase"], ifraxis=True)
-        ph = dd["phase"];
-        a1 = dd["antenna1"];
+
+        ph = dd["phase"]
+        a1 = dd["antenna1"]
         a2 = dd["antenna2"]
         ms.close()
         res = []
@@ -28,7 +32,7 @@ class ClosurePhaseUtil:
              (s1, s2, s3)) = self.triadRows(a1, a2, tr)
             phr = self.rewrap(ph[:, :, p1, :] * s1 + ph[:, :, p2, :] * s2 + ph[:, :, p3, :] * s3)
             res.append(phr)
-        return numpy.array(res)
+        return numpy.average(res[0][0][0])
 
     def rewrap(self, p):
         return numpy.arctan2(numpy.sin(p), numpy.cos(p))

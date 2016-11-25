@@ -33,7 +33,9 @@ class MeasurementSet:
         return map(lambda scan_id: int(scan_id), scan_ids)
 
     def baselines(self):
-        antennaids = self.__metadata.antennaids()  # Throws error as number of antennas is 30 and this shows more.
-        antennaids = range(0, 29, 1)  # Fix : Hard coded, should be removed
-        baselines = list(itertools.combinations(antennaids, 2))
+        baselines = list(itertools.combinations(self.antennaids(), 2))
         return map(lambda baseline: (int(baseline[0]), int(baseline[1])), baselines)
+
+    def antennaids(self):
+        # return self.__metadata.antennaids()  # Throws error as number of antennas is 30 and this shows more.
+        return range(0, 29, 1)  # Fix : Hard coded, should be removed
