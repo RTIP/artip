@@ -1,5 +1,6 @@
 import casac
 import itertools
+from phase_set import PhaseSet
 
 
 class MeasurementSet:
@@ -19,10 +20,13 @@ class MeasurementSet:
             getattr(self.__ms, "select" + filter_name)(value)
         if extra_filters: self.__ms.select(extra_filters)
 
-    def get_data(self, filter_params, selection_params):
+    def _get_data(self,filter_params, selection_params):
         self._filter(filter_params)
         data_items = self.__ms.getdata(selection_params)
         return data_items
+
+    def get_phase_data(self,filter_params):
+        return PhaseSet(self._get_data(filter_params, ['phase'])['phase'][0][0])
 
     def scan_ids_for(self, source_id):
         scan_ids = self.__metadata.scansforfield(source_id)
