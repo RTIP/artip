@@ -1,3 +1,4 @@
+import unittest
 from unittest import TestCase
 from measurement_set import MeasurementSet
 from phase_set import PhaseSet
@@ -7,10 +8,11 @@ from mock import patch
 
 
 class TestMeasurementSet(TestCase):
-
     @mock.patch('casac.casac')
     def setUp(self, mock_casac):
-        self.casa_measurement_set = Mock()
+        self.casa_measurement_set = Mock(name='casa_ms')
+        self.mocked_meta_data = Mock(name='metadata')
+        self.casa_measurement_set.metadata.return_value = self.mocked_meta_data
         self.phase_set_data = {'phase': [[[-2.85, -1.2, 2.1, -2.3, -2.8]]]}
         mock_casac.ms.return_value = self.casa_measurement_set
         self.ms = MeasurementSet('ms_file_path')
@@ -55,3 +57,19 @@ class TestMeasurementSet(TestCase):
         self.assertIsInstance(self.ms.get_phase_data(filter_params), PhaseSet)
         self.casa_measurement_set.getdata.assert_called_with(['phase'])
         phase_set_init.assert_called_with(self.phase_set_data['phase'][0][0])
+
+    def test_should_return_scan_ids_for_given_source(self):
+        self.mocked_meta_data.scansforfield.return_value = ['1', '2']
+        self.ms.scan_ids_for(0)
+        self.mocked_meta_data.scansforfield.assert_called_with(0)
+        self.assertEqual(self.ms.scan_ids_for(0), [1,2])
+
+    @unittest.skip("Disabled because of antennaids count mismatch between ms file summary and antennaids() method")
+    def test_should_return_baselines(self):
+        self.mocked_meta_data.antennaids.return_value = [1, 2, 3]
+        self.assertEqual(self.ms.baselines(), [(1, 2), (1, 3), (2, 3)])
+
+    @unittest.skip("Disabled because of antennaids count mismatch between ms file summary and antennaids() method")
+    def test_should_return_antennaids(self):
+        self.mocked_meta_data.antennaids.return_value = [1, 2, 3]
+        self.assertEqual(self.ms.antennaids(), [1, 2, 3])
