@@ -27,8 +27,8 @@ class Flagger:
 
     def get_bad_baselines(self):
         return self._r_based_bad_baselines('flux_calibration')
-        # return self._closure_based_bad_baselines('~/Downloads/may14.ms') #~/Downloads/may14.ms
-
+        # return self._closure_based_bad_baselines('~/Downloads/may14.ms')
+    
     def _initial_level_screening(self, antenna_ids, closure_util, doubtful_antennas, good_antennas, phase_threshold,
                                  source):
         for antenna_id in antenna_ids[::3]:
@@ -37,7 +37,6 @@ class Flagger:
             antenna3 = (antenna_id + 2) % len(antenna_ids)
             closure_phase = closure_util.closurePhTriads(source, [(antenna1, antenna2, antenna3)], 0, 1, "RR",
                                                          chan={"nchan": 1, "start": 100, "width": 1, "inc": 1})
-            print antenna1, antenna2, antenna3, closure_phase
             if abs(closure_phase) < phase_threshold:
                 good_antennas.append(antenna1)
                 good_antennas.append(antenna2)
@@ -53,7 +52,7 @@ class Flagger:
     def _closure_based_bad_baselines(self, source):
         source_properties = self.__config.get('closure_phases')
         closure_util = ClosurePhaseUtil(source)
-        antenna_ids = self.__dataset.antennaids()
+        antenna_ids = self.__measurement_set.antennaids()
         phase_threshold = source_properties['closure_threshold']
         good_antennas = []
         bad_antennas = []
@@ -68,7 +67,6 @@ class Flagger:
                 closure_phase = closure_util.closurePhTriads(source, [(antenna1, antenna2, antenna3)], 0, 1, "RR",
                                                              chan={"nchan": 1, "start": 100, "width": 1, "inc": 1})
                 if phase_threshold > abs(closure_phase):
-                    print "in if", antenna1, antenna2, antenna3, closure_phase
                     good_antennas.append(antenna1)
                 else:
                     bad_antennas.append(antenna1)
