@@ -13,8 +13,8 @@ class MeasurementSet:
         self.__ms.close()
 
     def _filter(self, filters={}):
-        extra_filters = filters['extra_filters']
-        primary_filters = filters['primary_filters']
+        primary_filters = filters.get('primary_filters', {})
+        extra_filters = filters.get('extra_filters', {})
         self.__ms.selectinit(reset=True)
         for filter_name, value in primary_filters.iteritems():
             getattr(self.__ms, "select" + filter_name)(value)
@@ -25,8 +25,8 @@ class MeasurementSet:
         data_items = self.__ms.getdata(selection_params)
         return data_items
 
-    def get_phase_data(self,filter_params):
-        return PhaseSet(self._get_data(filter_params, ['phase'])['phase'][0][0])
+    def get_phase_data(self, filters):
+        return PhaseSet(self._get_data(filters, ['phase'])['phase'][0][0])
 
     def scan_ids_for(self, source_id):
         scan_ids = self.__metadata.scansforfield(source_id)
