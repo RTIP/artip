@@ -7,10 +7,7 @@ class Config:
 		config.close()
 
 	def global_configs(self):
-		return self.__properties['global']
-
-	def flux_cal_configs(self):
-		return self.__properties['flux_calibration']
+		return self.get('global')
 
 	def get(self, _for):
 		return self.__properties[_for]
