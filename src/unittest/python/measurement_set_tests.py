@@ -4,8 +4,6 @@ from measurement_set import MeasurementSet
 from phase_set import PhaseSet
 import mock
 from mock import Mock
-from mock import patch
-
 
 class TestMeasurementSet(TestCase):
     @mock.patch('casac.casac')

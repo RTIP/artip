@@ -1,3 +1,4 @@
+from config import *
 import itertools
 import numpy
 from baseline import Baseline
@@ -5,22 +6,18 @@ from closure_phases_utility import ClosurePhaseUtil
 
 
 class Flagger:
-    def __init__(self, measurement_set, config):
+    def __init__(self, measurement_set):
         self.__measurement_set = measurement_set
-        self.__config = config
         self.__closure_util = ClosurePhaseUtil(measurement_set)
-        self.__closure_source_properties = self.__config.get('closure_phases')
-        self.__phase_threshold = self.__closure_source_properties['closure_threshold']
-        self.__global_properties = self.__config.global_configs()
 
     def _r_based_bad_baselines(self, source):
         bad_baselines = []
 
-        source_properties = self.__config.get(source)
+        source_properties = ALL_CONFIGS[source]
         scan_ids = self.__measurement_set.scan_ids_for(source_properties['field'])
         antenna_pairs = self.__measurement_set.baselines()
 
-        baselines_data = itertools.product(self.__global_properties['polarizations'], scan_ids, antenna_pairs)
+        baselines_data = itertools.product(GLOBAL_CONFIG['polarizations'], scan_ids, antenna_pairs)
 
         for polarization, scan_id, (antenna1, antenna2) in baselines_data:
             filter_params = {'primary_filters': {'polarization': polarization, 'channel': source_properties['channel']},
@@ -41,7 +38,7 @@ class Flagger:
             closure_phase = self.__closure_util.closurePhTriads([(antenna1, antenna2, antenna3)], dd)
             closure_phase_std = numpy.std(closure_phase[0][0][0])
             closure_phase_mean = numpy.average(closure_phase[0][0][0])
-            if abs(closure_phase_mean) < self.__phase_threshold and closure_phase_std < 0.2:
+            if abs(closure_phase_mean) < CLOSURE_PHASE_CONFIG['closure_threshold'] and closure_phase_std < 0.2:
                 good_antennas.append(antenna1)
                 good_antennas.append(antenna2)
                 good_antennas.append(antenna3)
@@ -58,10 +55,10 @@ class Flagger:
     def closure_based_bad_baselines(self):
         antenna_ids = self.__measurement_set.antennaids()
 
-        scan_ids = self.__measurement_set.scan_ids_for(self.__closure_source_properties['field'])
+        scan_ids = self.__measurement_set.scan_ids_for(CLOSURE_PHASE_CONFIG['field'])
 
-        x = itertools.product(self.__global_properties['polarizations'], scan_ids)
-        channel = {"start": self.__closure_source_properties['channel']}
+        x = itertools.product(GLOBAL_CONFIG['polarizations'], scan_ids)
+        channel = {"start": CLOSURE_PHASE_CONFIG['channel']}
 
         for polarization, scan_id in x:
             good_antennas = []
@@ -118,7 +115,7 @@ class Flagger:
         closure_phase_array = self.__closure_util.closurePhTriads([antenna_tuple], dd)
         closure_phase_std = numpy.std(closure_phase_array[0][0][0])
         closure_phase_avg = numpy.average(closure_phase_array[0][0][0])
-        return self.__phase_threshold > abs(closure_phase_avg) and closure_phase_std < 0.2
+        return CLOSURE_PHASE_CONFIG['closure_threshold'] > abs(closure_phase_avg) and closure_phase_std < 0.2
 
     def _remove_from_list(self, doubtful_antennas, antenna):
         if antenna in doubtful_antennas: doubtful_antennas.remove(antenna)

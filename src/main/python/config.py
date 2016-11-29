@@ -1,15 +1,6 @@
-import yaml
+from config_loader import ConfigLoader
 
-
-class Config:
-    def __init__(self, config_file):
-        config = open(config_file)
-        self.__properties = yaml.load(config)
-        config.close()
-
-    def global_configs(self):
-        return self.get('global')
-
-    def get(self, _for):
-        return self.__properties[_for]
-
+ALL_CONFIGS = ConfigLoader().load('conf/config.yml')
+GLOBAL_CONFIG = ALL_CONFIGS['global']
+FLUX_CAL_CONFIG = ALL_CONFIGS['flux_calibration']
+CLOSURE_PHASE_CONFIG = ALL_CONFIGS['closure_phases']
