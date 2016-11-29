@@ -12,3 +12,4 @@ class Config:
 
     def get(self, _for):
         return self.__properties[_for]
+

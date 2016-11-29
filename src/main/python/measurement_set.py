@@ -20,13 +20,23 @@ class MeasurementSet:
             getattr(self.__ms, "select" + filter_name)(value)
         if extra_filters: self.__ms.select(extra_filters)
 
-    def _get_data(self,filter_params, selection_params):
+    def _get_data(self, filter_params, selection_params):
         self._filter(filter_params)
         data_items = self.__ms.getdata(selection_params)
         return data_items
 
     def get_phase_data(self, filters):
         return PhaseSet(self._get_data(filters, ['phase'])['phase'][0][0])
+
+    def get_data(self, channel, polarization, scan_number):
+
+        # self._filter(filter_params)
+        self.__ms.selectinit(reset=True)
+        self.__ms.selectpolarization(polarization)
+        self.__ms.selectchannel(**channel)
+        self.__ms.select({'scan_number': scan_number})
+        dd = self.__ms.getdata(["antenna1", "antenna2", "phase"], ifraxis=True)
+        return dd
 
     def scan_ids_for(self, source_id):
         scan_ids = self.__metadata.scansforfield(source_id)

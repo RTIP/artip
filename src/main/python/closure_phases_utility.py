@@ -3,36 +3,39 @@ import numpy
 
 
 class ClosurePhaseUtil:
-    def __init__(self, source):
-        self.__ms = casac.casac.ms()
-        self.__ms.open(source)
-        self.__metadata = self.__ms.metadata()
+    def __init__(self, measurement_set):
+        self.__measurement_set = measurement_set
+        # self.__ms = casac.casac.ms()
+        # self.__ms.open(source)
+        # self.__metadata = self.__ms.metadata()
 
-    def __del__(self):
-        self.__ms.close()
+    # def __del__(self):
+    #     self.__ms.close()
 
-    def closurePhTriads(self, msname, triadlist, field, scan, polarization, chan):
-        ms = casac.casac.ms()
-        ms.open(msname)
-        ms.selectpolarization(polarization)
-        ms.select({'field_id': field, 'scan_number': scan})
+    def closurePhTriads(self, triadlist, dd):
+        # ms = casac.casac.ms()
+        # ms.open(msname)
+        # ms.selectpolarization(polarization)
+        # ms.select({'field_id': field, 'scan_number': scan})
 
-        if chan: ms.selectchannel(**chan)
+        # if chan: ms.selectchannel(**chan)
         # Note the use of ifraxis. This means time and interfoerometer
         # number are separate dimensions in the returned data
-        dd = ms.getdata(["antenna1", "antenna2", "phase"], ifraxis=True)
-
+        # # dd = ms.getdata(["antenna1", "antenna2", "phase"], ifraxis=True)
+        # filter_params = {'primary_filters': {'polarization': polarization, 'channel': chan},
+        #                  'extra_filters': {'scan_number': scan_id}}
+        #
+        # dd = self.__measurement_set.get_data(filter_params)
         ph = dd["phase"]
         a1 = dd["antenna1"]
         a2 = dd["antenna2"]
-        ms.close()
         res = []
         for tr in triadlist:
             ((p1, p2, p3),
              (s1, s2, s3)) = self.triadRows(a1, a2, tr)
             phr = self.rewrap(ph[:, :, p1, :] * s1 + ph[:, :, p2, :] * s2 + ph[:, :, p3, :] * s3)
             res.append(phr)
-        return numpy.average(res[0][0][0])
+        return res
 
     def rewrap(self, p):
         return numpy.arctan2(numpy.sin(p), numpy.cos(p))
