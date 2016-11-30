@@ -4,7 +4,7 @@ from flagger import Flagger
 from mock import Mock, mock, call
 from phase_set import PhaseSet
 
-from baseline import Baseline
+from models.baseline import Baseline
 
 
 class FlaggerTest(TestCase):

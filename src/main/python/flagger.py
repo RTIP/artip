@@ -1,8 +1,10 @@
-from config import *
 import itertools
+
 import numpy
-from baseline import Baseline
+
 from closure_phases_utility import ClosurePhaseUtil
+from config import *
+from models.baseline import Baseline
 
 
 class Flagger:
