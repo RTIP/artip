@@ -7,4 +7,4 @@ def main(ms_dataset):
     print "Calculating bad baselines based on angular dispersion in phases..."
     flagger = Flagger(measurement_set)
     print flagger.get_bad_baselines()
-    flagger.closure_based_bad_baselines()
+    flagger.closure_based_antenna_status()
