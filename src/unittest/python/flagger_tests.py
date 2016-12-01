@@ -2,7 +2,7 @@ from unittest import TestCase
 from config import *
 from flagger import Flagger
 from mock import Mock, mock, call
-from phase_set import PhaseSet
+from models.phase_set import PhaseSet
 
 from models.baseline import Baseline
 

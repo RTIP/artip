@@ -1,6 +1,8 @@
-import casac
 import itertools
-from phase_set import PhaseSet
+
+import casac
+
+from models.phase_set import PhaseSet
 
 
 class MeasurementSet:

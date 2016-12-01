@@ -1,7 +1,7 @@
 import unittest
 from unittest import TestCase
 from measurement_set import MeasurementSet
-from phase_set import PhaseSet
+from models.phase_set import PhaseSet
 import mock
 from mock import Mock
 
@@ -47,7 +47,7 @@ class TestMeasurementSet(TestCase):
         self.casa_measurement_set.selectchannel.assert_called_with(100)
         self.casa_measurement_set.select.assert_called_with(filter_params)
 
-    @mock.patch("phase_set.PhaseSet.__init__")
+    @mock.patch("models.phase_set.PhaseSet.__init__")
     def test_get_phase_data_should_return_PhaseSet_instance(self, phase_set_init):
         phase_set_init.return_value = None
         filter_params = {'primary_filters': {'polarization': 'RR'}}
