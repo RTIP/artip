@@ -1,10 +1,10 @@
-import numpy
-import scipy.stats as stats
-import pylab
 import matplotlib.pyplot as pyplot
+import numpy
+import pylab
+import scipy.stats as stats
+
 
 class Plotter:
-
     @staticmethod
     def plot_pdf(data, antenna):
         fit = stats.norm.pdf(data, numpy.mean(data), numpy.std(data))
