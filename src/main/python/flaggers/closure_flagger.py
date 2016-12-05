@@ -1,36 +1,16 @@
 import itertools
-
 import numpy
 
-from closure_phase_util import ClosurePhaseUtil
+from flagger import Flagger
 from config import *
-from models.baseline import Baseline
+
+from closure_phase_util import ClosurePhaseUtil
 
 
-class Flagger:
+class ClosureFlagger(Flagger):
     def __init__(self, measurement_set):
-        self.__measurement_set = measurement_set
+        super(ClosureFlagger, self).__init__(measurement_set)
         self.__closure_util = ClosurePhaseUtil()
-
-    def _r_based_bad_baselines(self, source):
-        bad_baselines = []
-
-        source_properties = ALL_CONFIGS[source]
-        scan_ids = self.__measurement_set.scan_ids_for(source_properties['field'])
-        antenna_pairs = self.__measurement_set.baselines()
-
-        baselines_data = itertools.product(GLOBAL_CONFIG['polarizations'], scan_ids, antenna_pairs)
-
-        for polarization, scan_id, (antenna1, antenna2) in baselines_data:
-            filter_params = {'primary_filters': {'polarization': polarization, 'channel': source_properties['channel']},
-                             'extra_filters': {'scan_number': scan_id, 'antenna1': antenna1, 'antenna2': antenna2}}
-            phase_set = self.__measurement_set.get_phase_data(filter_params)
-            if phase_set.is_dispersed(source_properties['r_threshold']):
-                bad_baselines.append(Baseline(antenna1, antenna2, polarization, scan_id))
-        return bad_baselines
-
-    def get_bad_baselines(self):
-        return self._r_based_bad_baselines('flux_calibration')
 
     def _initial_level_screening(self, antenna_ids, doubtful_antennas, good_antennas, dd):
         for antenna_id in antenna_ids[::3]:
@@ -53,35 +33,6 @@ class Flagger:
                     doubtful_antennas.append(antenna2)
                 if antenna3 not in doubtful_antennas:
                     doubtful_antennas.append(antenna3)
-
-    def closure_based_antenna_status(self):
-        antenna_ids = self.__measurement_set.antennaids()
-
-        scan_ids = self.__measurement_set.scan_ids_for(CLOSURE_PHASE_CONFIG['field'])
-
-        polarization_scan_id_combination = itertools.product(GLOBAL_CONFIG['polarizations'], scan_ids)
-        channel = {"start": CLOSURE_PHASE_CONFIG['channel']}
-
-        for polarization, scan_id in polarization_scan_id_combination:
-            good_antennas = []
-            bad_antennas = []
-            doubtful_antennas = []
-
-            dd = self.__measurement_set.get_data(channel, polarization, scan_id)
-
-            self._initial_level_screening(antenna_ids, doubtful_antennas, good_antennas, dd)
-            if len(doubtful_antennas) > 0:
-                if len(good_antennas) > 1:
-                    self._antenna_status_as_compared_to_good(bad_antennas, doubtful_antennas,
-                                                             good_antennas, dd)
-                else:
-                    self._antenna_status_of_all_triplet_combination(bad_antennas, dd, doubtful_antennas,
-                                                                    good_antennas)
-
-            print "Good Antennas", polarization, scan_id, good_antennas
-            print "Bad Antennas", polarization, scan_id, bad_antennas
-            print "Doubtful Antennas", polarization, scan_id, doubtful_antennas
-        return bad_antennas
 
     def _antenna_status_of_all_triplet_combination(self, bad_antennas, dd, doubtful_antennas, good_antennas):
         print "Not enough good antennas to compare"
@@ -128,3 +79,35 @@ class Flagger:
 
     def _remove_from_list(self, doubtful_antennas, antenna):
         if antenna in doubtful_antennas: doubtful_antennas.remove(antenna)
+
+    def get_bad_baselines(self):
+        return self._closure_based_antenna_status()
+
+    def _closure_based_antenna_status(self):
+        antenna_ids = self.measurement_set.antennaids()
+
+        scan_ids = self.measurement_set.scan_ids_for(CLOSURE_PHASE_CONFIG['field'])
+
+        polarization_scan_id_combination = itertools.product(GLOBAL_CONFIG['polarizations'], scan_ids)
+        channel = {"start": CLOSURE_PHASE_CONFIG['channel']}
+
+        for polarization, scan_id in polarization_scan_id_combination:
+            good_antennas = []
+            bad_antennas = []
+            doubtful_antennas = []
+
+            dd = self.measurement_set.get_data(channel, polarization, scan_id)
+
+            self._initial_level_screening(antenna_ids, doubtful_antennas, good_antennas, dd)
+            if len(doubtful_antennas) > 0:
+                if len(good_antennas) > 1:
+                    self._antenna_status_as_compared_to_good(bad_antennas, doubtful_antennas,
+                                                             good_antennas, dd)
+                else:
+                    self._antenna_status_of_all_triplet_combination(bad_antennas, dd, doubtful_antennas,
+                                                                    good_antennas)
+
+            print "Good Antennas", polarization, scan_id, good_antennas
+            print "Bad Antennas", polarization, scan_id, bad_antennas
+            print "Doubtful Antennas", polarization, scan_id, doubtful_antennas
+        return bad_antennas

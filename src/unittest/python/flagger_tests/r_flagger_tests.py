@@ -1,13 +1,14 @@
 from unittest import TestCase
 from config import *
-from flagger import Flagger
 from mock import Mock, mock, call
 from models.phase_set import PhaseSet
 
 from models.baseline import Baseline
 
+from flaggers.r_flagger import RFlagger
 
-class FlaggerTest(TestCase):
+
+class RFlaggerTest(TestCase):
 
     @mock.patch('config.GLOBAL_CONFIG', GLOBAL_CONFIG.update({'polarizations': ['RR']}))
     def setUp(self):
@@ -18,7 +19,7 @@ class FlaggerTest(TestCase):
         self.non_dispersed_phase_set.is_dispersed.return_value = False
 
     def test_get_bad_baselines_should_return_bad_baselines(self):
-        flagger = Flagger(self.mocked_ms)
+        flagger = RFlagger(self.mocked_ms)
 
         self.mocked_ms.scan_ids_for.return_value = [1]
         self.mocked_ms.baselines.return_value = [(0, 1), (0, 2)]

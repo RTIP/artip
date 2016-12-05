@@ -3,6 +3,7 @@ import itertools
 import casac
 
 from models.phase_set import PhaseSet
+from models.antenna import Antenna
 
 
 class MeasurementSet:
@@ -51,3 +52,9 @@ class MeasurementSet:
     def antennaids(self):
         # return self.__metadata.antennaids()  # Throws error as number of antennas is 30 and this shows more.
         return range(0, 29, 1)  # Fix : Hard coded, should be removed and also enable unit tests for the same
+
+    def antennas(self):
+        antenna_list = []
+        for antenna_id in self.antennaids():
+            antenna_list.append(Antenna(antenna_id))
+        return antenna_list

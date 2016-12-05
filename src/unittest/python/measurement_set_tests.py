@@ -2,6 +2,7 @@ import unittest
 from unittest import TestCase
 from measurement_set import MeasurementSet
 from models.phase_set import PhaseSet
+from models.antenna import Antenna
 import mock
 from mock import Mock
 
@@ -60,7 +61,7 @@ class TestMeasurementSet(TestCase):
         self.mocked_meta_data.scansforfield.return_value = ['1', '2']
         self.ms.scan_ids_for(0)
         self.mocked_meta_data.scansforfield.assert_called_with(0)
-        self.assertEqual(self.ms.scan_ids_for(0), [1,2])
+        self.assertEqual(self.ms.scan_ids_for(0), [1, 2])
 
     @unittest.skip("Disabled because of antennaids count mismatch between ms file summary and antennaids() method")
     def test_should_return_baselines(self):
@@ -71,3 +72,10 @@ class TestMeasurementSet(TestCase):
     def test_should_return_antennaids(self):
         self.mocked_meta_data.antennaids.return_value = [1, 2, 3]
         self.assertEqual(self.ms.antennaids(), [1, 2, 3])
+
+    @unittest.skip("Disabled because of antennaids count mismatch between ms file summary and antennaids() method")
+    def test_should_return_antennas(self):
+        self.mocked_meta_data.antennaids.return_value = [1, 2, 3]
+        antennas = self.ms.antennas()
+        self.assertEqual(len(antennas), 3)
+        self.assertIsInstance(antennas[0],Antenna)
