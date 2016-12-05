@@ -2,8 +2,6 @@ import numpy
 
 
 class ClosurePhaseUtil:
-    def __init__(self, measurement_set):
-        self.__measurement_set = measurement_set
 
     def closurePhTriads(self, triad, data):
         phase_data = data["phase"]

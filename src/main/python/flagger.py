@@ -10,7 +10,7 @@ from models.baseline import Baseline
 class Flagger:
     def __init__(self, measurement_set):
         self.__measurement_set = measurement_set
-        self.__closure_util = ClosurePhaseUtil(measurement_set)
+        self.__closure_util = ClosurePhaseUtil()
 
     def _r_based_bad_baselines(self, source):
         bad_baselines = []
