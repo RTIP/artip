@@ -22,7 +22,7 @@ class ClosurePhaseUtil:
     def _rewrap(self, phase):
         return numpy.arctan2(numpy.sin(phase), numpy.cos(phase))
 
-    def get_phase_index_with_sign_for(self, antenna1, antenna2, i, j):
+    def _get_phase_index_with_sign_for(self, antenna1, antenna2, i, j):
         r1 = numpy.logical_and(antenna1 == i, antenna2 == j).nonzero()[0]
         if r1.shape[0]:
             return r1[0], +1.0
@@ -31,8 +31,8 @@ class ClosurePhaseUtil:
 
     def _triadRows(self, antenna1_combinations, antenna2_combinations, triad):
         antenna1, antenna2, antenna3 = triad
-        p1, s1 = self.get_phase_index_with_sign_for(antenna1_combinations, antenna2_combinations, antenna1, antenna2)
-        p2, s2 = self.get_phase_index_with_sign_for(antenna1_combinations, antenna2_combinations, antenna2, antenna3)
-        p3, s3 = self.get_phase_index_with_sign_for(antenna1_combinations, antenna2_combinations, antenna3, antenna1)
+        p1, s1 = self._get_phase_index_with_sign_for(antenna1_combinations, antenna2_combinations, antenna1, antenna2)
+        p2, s2 = self._get_phase_index_with_sign_for(antenna1_combinations, antenna2_combinations, antenna2, antenna3)
+        p3, s3 = self._get_phase_index_with_sign_for(antenna1_combinations, antenna2_combinations, antenna3, antenna1)
         return ((p1, p2, p3),
                 (s1, s2, s3))
