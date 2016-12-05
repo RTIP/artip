@@ -2,7 +2,7 @@ import itertools
 
 import numpy
 
-from closure_phases_utility import ClosurePhaseUtil
+from closure_phase_util import ClosurePhaseUtil
 from config import *
 from models.baseline import Baseline
 
@@ -37,9 +37,9 @@ class Flagger:
             antenna1 = antenna_id
             antenna2 = (antenna_id + 1) % len(antenna_ids)
             antenna3 = (antenna_id + 2) % len(antenna_ids)
-            closure_phase = self.__closure_util.closurePhTriads([(antenna1, antenna2, antenna3)], dd)
-            closure_phase_std = numpy.std(closure_phase[0][0][0])
-            closure_phase_mean = numpy.average(closure_phase[0][0][0])
+            closure_phase = self.__closure_util.closurePhTriads((antenna1, antenna2, antenna3), dd)
+            closure_phase_std = numpy.std(closure_phase[0][0])
+            closure_phase_mean = numpy.average(closure_phase[0][0])
             if abs(closure_phase_mean) < CLOSURE_PHASE_CONFIG['closure_threshold'] and closure_phase_std < 0.4:
                 good_antennas.append(antenna1)
                 good_antennas.append(antenna2)
@@ -121,9 +121,9 @@ class Flagger:
         return good_antennas
 
     def _check_antenna_status(self, antenna_tuple, dd):
-        closure_phase_array = self.__closure_util.closurePhTriads([antenna_tuple], dd)
-        closure_phase_std = numpy.std(closure_phase_array[0][0][0])
-        closure_phase_avg = numpy.average(closure_phase_array[0][0][0])
+        closure_phase_array = self.__closure_util.closurePhTriads(antenna_tuple, dd)
+        closure_phase_std = numpy.std(closure_phase_array[0][0])
+        closure_phase_avg = numpy.average(closure_phase_array[0][0])
         return CLOSURE_PHASE_CONFIG['closure_threshold'] > abs(closure_phase_avg) and closure_phase_std < 0.4
 
     def _remove_from_list(self, doubtful_antennas, antenna):
