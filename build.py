@@ -24,7 +24,7 @@ def set_dependencies(project):
 @init
 def set_properties(project):
     project.set_property('coverage_threshold_warn', 60)
-    project.set_property("coverage_exceptions", ['main', 'plotter', 'models'])
+    project.set_property("coverage_exceptions", ['models', 'plotter'])
 
 
 @task
