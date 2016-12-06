@@ -2,8 +2,9 @@ from itertools import product
 
 from flagger import Flagger
 from config import *
-
+import operator
 from models.baseline import Baseline
+from models.antenna_status import AntennaStatus
 
 
 class RFlagger(Flagger):
@@ -39,52 +40,59 @@ class RFlagger(Flagger):
         antennas = self.measurement_set.antennas
 
         for polarization, scan_id, antenna in product(polarizations, scan_ids, antennas):
-             self.identify_antennas(polarization, scan_id, channel, antenna)
+            _r_value_matrix = {}
+            (bad, dbt) = self.identify_antennas(polarization, scan_id, channel, antenna, _r_value_matrix, set())
+            print "bad=", bad
+            print "dbt=", dbt
 
-    def identify_antennas(self, polarization, scan_id, channel, base_antenna):
-        r_value_matrix = {}
-
+    def identify_antennas(self, polarization, scan_id, channel, base_antenna, _r_value_matrix, history):
         baselines = self.measurement_set.baselines_for(base_antenna)
+        doubtful_antennas = set()
+        bad_antennas = set()
         for (antenna1, antenna2) in baselines:
+            # TODO: dont calculate again if present in r-matrix
             filter_params = {'scan_number': scan_id, 'antenna1': antenna1.id, 'antenna2': antenna2.id}
             phase_set = self.measurement_set.get_phase_data({'start': channel}, polarization, filter_params)
             r_value = phase_set.calculate_angular_dispersion()
 
             another_antenna = antenna2 if base_antenna == antenna1 else antenna1
 
-            if base_antenna.id not in r_value_matrix.keys():
-                r_value_matrix[base_antenna.id] = {}
-            r_value_matrix[base_antenna.id].update({another_antenna.id: r_value})
+            if base_antenna not in _r_value_matrix.keys():
+                _r_value_matrix[base_antenna] = {}
+            _r_value_matrix[base_antenna].update({another_antenna: r_value})
 
-        print "Rmatrix-", r_value_matrix
+        print "Rmatrix-", _r_value_matrix
 
-        # antenna_state = base_antenna.get_state_for(polarization, scan_id)
-        # for antenna, r_value in r_value_matrix[base_antenna].iteritems():
-        #     print antenna, r_value
-        #     if r_value < 0.3:
-        #         # doubtful_antennas.add(antenna)
-        #         antenna.get_state_for(polarization, scan_id).update_R_phase_status(AntennaStatus.DOUBTFUL)
-            #
-            # if len(doubtful_antennas) < 3:
-            #     sorted_d = sorted(r_value_matrix[base_antenna].items(), key=operator.itemgetter(1))
-            #     new_doubts = set(dict(sorted_d[:3]).keys())
-            #     doubtful_antennas = set().union(doubtful_antennas, new_doubts)
-            #
-            # if len(doubtful_antennas) <= 5:  # 80% is good
-            #     good_antennas.add(base_antenna)
-            #
-            # if len(doubtful_antennas) > 24:  # 20% is good
-            #     doubtful_antennas = set()
-            #     bad_antennas.add(base_antenna)
-            #
-            # history.add(base_antenna)
-            # print good_antennas, bad_antennas, doubtful_antennas, history
-            # for doubtful_antenna in doubtful_antennas:
-            #     (good, bad, dbt) = self.identify_antennas(doubtful_antenna, channel, polarization, scan_id, history)
-            #     good_antennas = set.union(good_antennas, good)
-            #     bad_antennas = set.union(bad_antennas, bad)
-            #     doubtful_antennas = set.union(doubtful_antennas, dbt)
-            #     if history >= doubtful_antennas:
-            #         return (good_antennas, bad_antennas, doubtful_antennas)
-            #
-            # return (good_antennas, bad_antennas, doubtful_antennas)
+        for antenna, r_value in _r_value_matrix[base_antenna].iteritems():
+            if r_value < 0.3:
+                doubtful_antennas.add(antenna)
+                antenna.update_state(polarization, scan_id, AntennaStatus.DOUBTFUL)
+
+
+        if len(doubtful_antennas) < 3:
+            sorted_d = sorted(_r_value_matrix[base_antenna].items(), key=operator.itemgetter(1))
+            new_doubtful_antennas = set(dict(sorted_d[:3]).keys())
+            for doubtful_antenna in new_doubtful_antennas:
+                doubtful_antenna.update_state(polarization, scan_id, AntennaStatus.DOUBTFUL)
+
+            doubtful_antennas = set().union(doubtful_antennas, new_doubtful_antennas)
+
+
+        if len(doubtful_antennas) <= 5:  # 80% is good
+            base_antenna.update_state(polarization, scan_id, AntennaStatus.GOOD)
+
+        if len(doubtful_antennas) > 24:  # 20% is good
+            doubtful_antennas = set()
+            base_antenna.update_state(polarization, scan_id, AntennaStatus.BAD)
+            bad_antennas.add(base_antenna)
+
+        history.add(base_antenna)
+        print bad_antennas, doubtful_antennas, history
+        for doubtful_antenna in doubtful_antennas:
+            (bad, dbt) = self.identify_antennas(polarization, scan_id, channel, doubtful_antenna, _r_value_matrix, history)
+            bad_antennas = set.union(bad_antennas, bad)
+            doubtful_antennas = set.union(doubtful_antennas, dbt)
+            if history >= doubtful_antennas:
+                return (bad_antennas, doubtful_antennas)
+
+        return (bad_antennas, doubtful_antennas)
