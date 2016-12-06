@@ -54,6 +54,13 @@ class TestMeasurementSet(TestCase):
         self.mocked_meta_data.scansforfield.assert_called_with(0)
         self.assertEqual(self.ms.scan_ids_for(0), [1, 2])
 
+    def test_should_return_empty_scan_ids_for_invalid_source(self):
+        invalid_source = 100
+        self.mocked_meta_data.scansforfield.side_effect = RuntimeError()
+        self.ms.scan_ids_for(invalid_source)
+        self.mocked_meta_data.scansforfield.assert_called_with(invalid_source)
+        self.assertEqual(self.ms.scan_ids_for(invalid_source), [])
+
     @unittest.skip("Disabled because of antennaids count mismatch between ms file summary and antennaids() method")
     def test_should_return_baselines(self):
         self.mocked_meta_data.antennaids.return_value = [1, 2, 3]
@@ -66,4 +73,3 @@ class TestMeasurementSet(TestCase):
         antenna0 = Antenna(0)
         self.mocked_meta_data.antennaids.return_value = [0, 1, 2]
         self.assertItemsEqual(self.ms.baselines_for(self.ms.antennas[0]), [(antenna1, antenna2), (antenna0, antenna2)])
-

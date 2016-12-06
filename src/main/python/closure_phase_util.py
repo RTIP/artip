@@ -2,7 +2,6 @@ import numpy
 
 
 class ClosurePhaseUtil:
-
     def closurePhTriads(self, triad, data):
         phase_data = data["phase"]
         antenna1_list = data["antenna1"]
@@ -25,7 +24,10 @@ class ClosurePhaseUtil:
         if r1.shape[0]:
             return r1[0], +1.0
         else:
-            return numpy.logical_and(antenna1 == j, antenna2 == i).nonzero()[0][0], -1.0
+            try:
+                return numpy.logical_and(antenna1 == j, antenna2 == i).nonzero()[0][0], -1.0
+            except IndexError:
+                print 'antenna1,antenna2', antenna1, antenna2
 
     def _triadRows(self, antenna1_combinations, antenna2_combinations, triad):
         antenna1, antenna2, antenna3 = triad

@@ -31,4 +31,4 @@ class AntennaState:
         return self.__R_phase_status
 
     def __repr__(self):
-        return str(self.scan_id) + str(self.polarization) + str(self.__R_phase_status)
+        return str(self.antenna) + "" + str(self.scan_id) + str(self.polarization)

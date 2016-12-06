@@ -33,8 +33,11 @@ class MeasurementSet:
         return PhaseSet(self.get_data(channel, polarization, filters, ['phase'])['phase'][0][0])
 
     def scan_ids_for(self, source_id):
-        scan_ids = self.__metadata.scansforfield(source_id)
-        return map(lambda scan_id: int(scan_id), scan_ids)
+        try:
+            scan_ids = self.__metadata.scansforfield(source_id)
+            return map(lambda scan_id: int(scan_id), scan_ids)
+        except RuntimeError:
+            return []
 
     def baselines(self):
         baselines = list(itertools.combinations(self.antennaids(), 2))
