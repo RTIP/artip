@@ -3,6 +3,7 @@ import numpy
 
 from flagger import Flagger
 from config import *
+from scipy import stats
 from closure_phase_util import ClosurePhaseUtil
 
 class ClosureFlagger(Flagger):
@@ -74,9 +75,7 @@ class ClosureFlagger(Flagger):
 
     def _check_antenna_status(self, antenna_tuple, dd):
         closure_phase_array = self.__closure_util.closurePhTriads(antenna_tuple, dd)
-        closure_phase_std = numpy.std(closure_phase_array[0][0])
-        closure_phase_avg = numpy.average(closure_phase_array[0][0])
-        return CLOSURE_PHASE_CONFIG['closure_threshold'] > abs(closure_phase_avg) and closure_phase_std < 0.4
+        return stats.percentileofscore(abs(closure_phase_array[0][0]),CLOSURE_PHASE_CONFIG['closure_threshold']) > CLOSURE_PHASE_CONFIG['percentile_threshold']
 
     def _remove_from_list(self, doubtful_antennas, antenna):
         if antenna in doubtful_antennas: doubtful_antennas.remove(antenna)
@@ -86,28 +85,26 @@ class ClosureFlagger(Flagger):
 
     def _closure_based_antenna_status(self):
         antenna_ids = self.measurement_set.antennaids()
-
         scan_ids = self.measurement_set.scan_ids_for(CLOSURE_PHASE_CONFIG['field'])
 
         polarization_scan_id_combination = itertools.product(GLOBAL_CONFIG['polarizations'], scan_ids)
-        channel = {"start": CLOSURE_PHASE_CONFIG['channel']}
 
         for polarization, scan_id in polarization_scan_id_combination:
             good_antennas = []
             bad_antennas = []
             doubtful_antennas = []
 
-            dd = self.measurement_set.get_data({'start': CLOSURE_PHASE_CONFIG['channel']}, polarization,
+            data = self.measurement_set.get_data({'start': CLOSURE_PHASE_CONFIG['channel']}, polarization,
                                                {'scan_number': scan_id},
                                                ["antenna1", "antenna2", "phase"], True)
 
-            self._initial_level_screening(antenna_ids, doubtful_antennas, good_antennas, dd)
+            self._initial_level_screening(antenna_ids, doubtful_antennas, good_antennas, data)
             if len(doubtful_antennas) > 0:
                 if len(good_antennas) > 1:
                     self._antenna_status_as_compared_to_good(bad_antennas, doubtful_antennas,
-                                                             good_antennas, dd)
+                                                             good_antennas, data)
                 else:
-                    self._antenna_status_of_all_triplet_combination(bad_antennas, dd, doubtful_antennas,
+                    self._antenna_status_of_all_triplet_combination(bad_antennas, data, doubtful_antennas,
                                                                     good_antennas)
 
             print "Good Antennas", polarization, scan_id, good_antennas
