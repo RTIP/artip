@@ -14,13 +14,9 @@ class ClosureFlagger(Flagger):
 
     def _initial_level_screening(self, antenna_ids, doubtful_antennas, good_antennas, dd):
         for antenna_id in antenna_ids[::3]:
-            antenna1 = antenna_id
-            antenna2 = (antenna_id + 1) % len(antenna_ids)
-            antenna3 = (antenna_id + 2) % len(antenna_ids)
-            closure_phase = self.__closure_util.closurePhTriads((antenna1, antenna2, antenna3), dd)
-            closure_phase_std = numpy.std(closure_phase[0][0])
-            closure_phase_mean = numpy.average(closure_phase[0][0])
-            if abs(closure_phase_mean) < CLOSURE_PHASE_CONFIG['closure_threshold'] and closure_phase_std < 0.4:
+            antenna1, antenna2, antenna3 = self._get_antenna_triplet(antenna_id, antenna_ids)
+
+            if self._check_antenna_status((antenna1, antenna2, antenna3), dd):
                 good_antennas.append(antenna1)
                 good_antennas.append(antenna2)
                 good_antennas.append(antenna3)
@@ -33,6 +29,13 @@ class ClosureFlagger(Flagger):
                     doubtful_antennas.append(antenna2)
                 if antenna3 not in doubtful_antennas:
                     doubtful_antennas.append(antenna3)
+
+    def _get_antenna_triplet(self, antenna_id, antenna_ids):
+
+        antenna1 = antenna_id
+        antenna2 = (antenna_id + 1) % len(antenna_ids)
+        antenna3 = (antenna_id + 2) % len(antenna_ids)
+        return antenna1, antenna2, antenna3
 
     def _antenna_status_of_all_triplet_combination(self, bad_antennas, dd, doubtful_antennas, good_antennas):
         print "Not enough good antennas to compare"
@@ -96,7 +99,9 @@ class ClosureFlagger(Flagger):
             bad_antennas = []
             doubtful_antennas = []
 
-            dd = self.measurement_set.get_data(channel, polarization, scan_id)
+            dd = self.measurement_set.get_data({'start': CLOSURE_PHASE_CONFIG['channel']}, polarization,
+                                               {'scan_number': scan_id},
+                                               ["antenna1", "antenna2", "phase"], True)
 
             self._initial_level_screening(antenna_ids, doubtful_antennas, good_antennas, dd)
             if len(doubtful_antennas) > 0:

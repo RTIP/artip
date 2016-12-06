@@ -6,6 +6,7 @@ from models.antenna import Antenna
 import mock
 from mock import Mock
 
+
 class TestMeasurementSet(TestCase):
     @mock.patch('casac.casac')
     def setUp(self, mock_casac):
@@ -18,43 +19,32 @@ class TestMeasurementSet(TestCase):
         self.casa_measurement_set.open.assert_called_with("ms_file_path")
         self.casa_measurement_set.getdata.return_value = self.phase_set_data
 
-    def test_get_phase_data_should_select_only_primary_filters(self):
-        filter_params = {'primary_filters': {'polarization': 'RR'}}
-
-        self.ms.get_phase_data(filter_params)
+    def test_get_phase_data_should_select_channel_and_polarisation(self):
+        channel = {'start': 100}
+        self.ms.get_phase_data(channel, 'RR')
 
         self.casa_measurement_set.selectinit.assert_called_with(reset=True)
         self.casa_measurement_set.selectpolarization.assert_called_with('RR')
+        self.casa_measurement_set.selectchannel.assert_called_with(**channel)
         self.casa_measurement_set.select.assert_not_called()
 
-    def test_get_phase_data_should_select_extra_filters(self):
-        filter_params = {'antenna1': 0, 'antenna2': 1}
-        filters = {'extra_filters': filter_params}
+    def test_get_phase_data_should_select_filters(self):
+        filters = {'antenna1': 0, 'antenna2': 1}
 
-        self.ms.get_phase_data(filters)
-
-        self.casa_measurement_set.selectinit.assert_called_with(reset=True)
-        self.casa_measurement_set.selectpolarization.assert_not_called()
-        self.casa_measurement_set.select.assert_called_with(filter_params)
-
-    def test_get_phase_data_should_select_both_filters(self):
-        filter_params = {'antenna1': 0, 'antenna2': 1}
-        filters = {'primary_filters': {'polarization': 'RR', 'channel': 100}, 'extra_filters': filter_params}
-
-        self.ms.get_phase_data(filters)
+        channel = {'start': 100}
+        self.ms.get_phase_data(channel, 'RR', filters)
 
         self.casa_measurement_set.selectinit.assert_called_with(reset=True)
         self.casa_measurement_set.selectpolarization.assert_called_with('RR')
-        self.casa_measurement_set.selectchannel.assert_called_with(100)
-        self.casa_measurement_set.select.assert_called_with(filter_params)
+        self.casa_measurement_set.selectchannel.assert_called_with(**channel)
+        self.casa_measurement_set.select.assert_called_with(filters)
 
     @mock.patch("models.phase_set.PhaseSet.__init__")
     def test_get_phase_data_should_return_PhaseSet_instance(self, phase_set_init):
         phase_set_init.return_value = None
-        filter_params = {'primary_filters': {'polarization': 'RR'}}
 
-        self.assertIsInstance(self.ms.get_phase_data(filter_params), PhaseSet)
-        self.casa_measurement_set.getdata.assert_called_with(['phase'])
+        self.assertIsInstance(self.ms.get_phase_data({'start': 100}, 'RR'), PhaseSet)
+        self.casa_measurement_set.getdata.assert_called_with(['phase'], ifraxis=False)
         phase_set_init.assert_called_with(self.phase_set_data['phase'][0][0])
 
     def test_should_return_scan_ids_for_given_source(self):
@@ -78,4 +68,4 @@ class TestMeasurementSet(TestCase):
         self.mocked_meta_data.antennaids.return_value = [1, 2, 3]
         antennas = self.ms.antennas()
         self.assertEqual(len(antennas), 3)
-        self.assertIsInstance(antennas[0],Antenna)
+        self.assertIsInstance(antennas[0], Antenna)

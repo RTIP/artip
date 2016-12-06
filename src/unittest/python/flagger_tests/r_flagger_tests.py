@@ -9,7 +9,6 @@ from flaggers.r_flagger import RFlagger
 
 
 class RFlaggerTest(TestCase):
-
     @mock.patch('config.GLOBAL_CONFIG', GLOBAL_CONFIG.update({'polarizations': ['RR']}))
     def setUp(self):
         self.mocked_ms = Mock(name="ms")
@@ -27,13 +26,11 @@ class RFlaggerTest(TestCase):
 
         actual_bad_baselines = flagger.get_bad_baselines()
 
-        filter_params1 = {'primary_filters': {'polarization': 'RR', 'channel': FLUX_CAL_CONFIG['channel']},
-                         'extra_filters': {'scan_number': 1, 'antenna1': 0, 'antenna2': 1}}
+        filter_params1 = {'scan_number': 1, 'antenna1': 0, 'antenna2': 1}
+        filter_params2 = {'scan_number': 1, 'antenna1': 0, 'antenna2': 2}
 
-        filter_params2 = {'primary_filters': {'polarization': 'RR', 'channel': FLUX_CAL_CONFIG['channel']},
-                         'extra_filters': {'scan_number': 1, 'antenna1': 0, 'antenna2': 2}}
-
-        expected = [call.get_phase_data(filter_params1),call.get_phase_data(filter_params2)]
+        expected = [call.get_phase_data({'start': FLUX_CAL_CONFIG['channel']}, 'RR', filter_params1),
+                    call.get_phase_data({'start': FLUX_CAL_CONFIG['channel']}, 'RR', filter_params2)]
 
         self.mocked_ms.assert_has_calls(expected, any_order=True)
 
