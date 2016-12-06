@@ -41,11 +41,15 @@ class MeasurementSet:
         return map(lambda baseline: (int(baseline[0]), int(baseline[1])), baselines)
 
     def baselines_for(self, antenna):
-        remaining_antennas = self.antennas
+        remaining_antennas = list(self.antennas)
         remaining_antennas.remove(antenna)
-
         baselines = list(itertools.product(remaining_antennas, [antenna]))
-        return baselines
+
+        def sort_antennas(baseline):
+            sorted_baseline = tuple(sorted(list(baseline), key=lambda antenna: antenna.id))
+            return sorted_baseline
+
+        return map(sort_antennas, baselines)
 
     def create_antennas(self):
         antennas = map(lambda id: Antenna(id), self.antennaids())
@@ -59,7 +63,7 @@ class MeasurementSet:
         return antennas
 
     def antennaids(self):
-        #return self.__metadata.antennaids()  # Throws error as number of antennas is 30 and this shows more.
+        # return self.__metadata.antennaids()  # Throws error as number of antennas is 30 and this shows more.
         return range(0, 29, 1)  # Fix : Hard coded, should be removed and also enable unit tests for the same
 
     def _scan_ids(self):

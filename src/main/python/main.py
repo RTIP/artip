@@ -11,4 +11,4 @@ def main(ms_dataset):
     closure_flagger = ClosureFlagger(measurement_set)
     print r_flagger.get_bad_baselines()
     closure_flagger.get_bad_baselines()
-    r_flagger.optimized_r_based_bad_baselines('flux_calibration')
+    # r_flagger.optimized_r_based_bad_baselines('flux_calibration')
