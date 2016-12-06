@@ -2,9 +2,9 @@ from antenna_status import AntennaStatus
 
 
 class AntennaState:
-    def __init__(self, antenna, scan_number, polarization):
-        self.antenna = antenna
-        self.scan_number = scan_number
+    def __init__(self, antenna_id, polarization, scan_id):
+        self.antenna = antenna_id
+        self.scan_id = scan_id
         self.polarization = polarization
         self.__closure_phase_status = None
         self.__R_phase_status = None
@@ -29,3 +29,6 @@ class AntennaState:
 
     def get_R_phase_status(self):
         return self.__R_phase_status
+
+    def __repr__(self):
+        return str(self.antenna) + "" + str(self.scan_id) + str(self.polarization)

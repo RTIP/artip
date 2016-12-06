@@ -3,9 +3,7 @@ import numpy
 
 from flagger import Flagger
 from config import *
-
 from closure_phase_util import ClosurePhaseUtil
-
 
 class ClosureFlagger(Flagger):
     def __init__(self, measurement_set):

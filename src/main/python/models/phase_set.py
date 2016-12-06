@@ -14,10 +14,10 @@ class PhaseSet:
         cosines = map(lambda phase: math.cos(phase), self.__phases)
         return numpy.mean(cosines)
 
-    def _calculate_angular_dispersion(self):
+    def calculate_angular_dispersion(self):
         r = math.sqrt(math.pow(self._avg_sine(), 2) + math.pow(self._avg_cosine(), 2))
         return r
 
     def is_dispersed(self, r_threshold):
-        r = self._calculate_angular_dispersion()
+        r = self.calculate_angular_dispersion()
         return r < r_threshold
