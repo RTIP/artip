@@ -6,5 +6,7 @@ flux_calibration:
     field: 0
     channel: 100
     r_threshold: 0.3
+    percentage_threshold_for_min_doubtful_antennas: 10
+    percentage_threshold_for_good_antenna: 70
     closure_threshold: 0.3
     percentile_threshold: 70

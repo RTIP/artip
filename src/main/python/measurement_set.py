@@ -69,5 +69,8 @@ class MeasurementSet:
         # return self.__metadata.antennaids()  # Throws error as number of antennas is 30 and this shows more.
         return range(0, 29, 1)  # Fix : Hard coded, should be removed and also enable unit tests for the same
 
+    def antenna_count(self):
+        return len(self.antennas)
+
     def _scan_ids(self):
         return self.__metadata.scannumbers()
