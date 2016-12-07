@@ -6,9 +6,5 @@ flux_calibration:
     field: 0
     channel: 100
     r_threshold: 0.3
-
-closure_phases:
-    field: 0
-    channel: 100
     closure_threshold: 0.3
     percentile_threshold: 70

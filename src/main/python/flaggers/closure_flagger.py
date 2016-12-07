@@ -87,16 +87,16 @@ class ClosureFlagger(Flagger):
         antenna_tuple_ids = (antenna_tuple[0].id, antenna_tuple[1].id, antenna_tuple[2].id)
         closure_phase_array = self.__closure_util.closurePhTriads(antenna_tuple_ids, dd)
         percentileofscore = stats.percentileofscore(abs(closure_phase_array[0][0]),
-                                                    CLOSURE_PHASE_CONFIG['closure_threshold'])
+                                                    FLUX_CAL_CONFIG['closure_threshold'])
         return percentileofscore > \
-               CLOSURE_PHASE_CONFIG['percentile_threshold']
+               FLUX_CAL_CONFIG['percentile_threshold']
 
     def get_bad_baselines(self):
         return self._closure_based_antenna_status()
 
     def _closure_based_antenna_status(self):
         antennas = self.measurement_set.antennas
-        scan_ids = self.measurement_set.scan_ids_for(CLOSURE_PHASE_CONFIG['field'])
+        scan_ids = self.measurement_set.scan_ids_for(FLUX_CAL_CONFIG['field'])
 
         polarization_scan_id_combination = itertools.product(GLOBAL_CONFIG['polarizations'], scan_ids)
 
@@ -104,7 +104,7 @@ class ClosureFlagger(Flagger):
             good_antennas = set([])
             doubtful_antennas = set([])
             bad_antennas = set([])
-            data = self.measurement_set.get_data({'start': CLOSURE_PHASE_CONFIG['channel']}, polarization,
+            data = self.measurement_set.get_data({'start': FLUX_CAL_CONFIG['channel']}, polarization,
                                                  {'scan_number': scan_id},
                                                  ["antenna1", "antenna2", "phase"], True)
 
