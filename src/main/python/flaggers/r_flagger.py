@@ -18,16 +18,15 @@ class RFlagger(Flagger):
         source_properties = ALL_CONFIGS[source]
         scan_ids = self.measurement_set.scan_ids_for(source_properties['field'])
         channel = source_properties['channel']
-        antennas = self.measurement_set.antennas
+        base_antenna = self.measurement_set.antennas[0]
 
         for polarization, scan_id in product(polarizations, scan_ids):
             _r_value_matrix = {}
-            (bad, dbt) = self.identify_antennas(polarization, scan_id, channel, antennas[1], _r_value_matrix, set())
-            print "bad=", bad, "polarization=", polarization, "scan_id=", scan_id
+            bad_antennas = self.identify_antennas(polarization, scan_id, channel, base_antenna, _r_value_matrix, set())
+            print "Pol-",polarization, "Scan-",scan_id, "Bad-",bad_antennas
 
     def identify_antennas(self, polarization, scan_id, channel, base_antenna, _r_value_matrix, history):
-        if base_antenna in history:
-            return (set(),set())
+        if base_antenna in history: return set()
 
         baselines = self.measurement_set.baselines_for(base_antenna)
         doubtful_antennas = set()
@@ -57,11 +56,10 @@ class RFlagger(Flagger):
 
             doubtful_antennas = set().union(doubtful_antennas, new_doubtful_antennas)
 
-
-        if len(doubtful_antennas) <= 5:  # 80% is good
+        if len(doubtful_antennas) <= 10:  # 70% is good
             base_antenna.update_state(polarization, scan_id, AntennaStatus.GOOD)
 
-        if len(doubtful_antennas) > 24:  # 20% is good
+        else:
             sorted_r_value_matrix = sorted(_r_value_matrix[base_antenna].items(), key=operator.itemgetter(1))
             doubtful_antennas = set(dict(sorted_r_value_matrix[:3]).keys())
             base_antenna.update_state(polarization, scan_id, AntennaStatus.BAD)
@@ -70,8 +68,8 @@ class RFlagger(Flagger):
         history.add(base_antenna)
 
         for doubtful_antenna in doubtful_antennas:
-            (bad, dbt) = self.identify_antennas(polarization, scan_id, channel, doubtful_antenna, _r_value_matrix, history)
-            bad_antennas = set.union(bad_antennas, bad)
-            doubtful_antennas = set.union(doubtful_antennas, dbt)
+            new_bad_antennas = self.identify_antennas(polarization, scan_id, channel, doubtful_antenna, _r_value_matrix,
+                                                history)
+            bad_antennas = set.union(bad_antennas, new_bad_antennas)
 
-        return (bad_antennas, doubtful_antennas)
+        return bad_antennas
