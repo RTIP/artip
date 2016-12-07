@@ -23,7 +23,7 @@ class RFlagger(Flagger):
         for polarization, scan_id in product(polarizations, scan_ids):
             _r_value_matrix = {}
             bad_antennas = self.identify_antennas(polarization, scan_id, source_config, base_antenna, _r_value_matrix, set())
-            print "Pol-",polarization, "Scan-",scan_id, "Bad-",bad_antennas
+            # print "Pol-",polarization, "Scan-",scan_id, "Bad-",bad_antennas
 
     def identify_antennas(self, polarization, scan_id, source_config, base_antenna, _r_value_matrix, history):
         channel = source_config['channel']
