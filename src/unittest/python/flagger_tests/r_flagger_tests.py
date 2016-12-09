@@ -1,3 +1,4 @@
+import unittest
 from unittest import TestCase
 from config import *
 from mock import Mock, mock, call
@@ -17,6 +18,8 @@ class RFlaggerTest(TestCase):
         self.dispersed_phase_set.is_dispersed.return_value = True
         self.non_dispersed_phase_set.is_dispersed.return_value = False
 
+
+    @unittest.skip("Disabled")
     def test_get_bad_baselines_should_return_bad_baselines(self):
         flagger = RFlagger(self.mocked_ms)
 
