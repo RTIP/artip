@@ -2,6 +2,7 @@ Download Anaconda Python Distribution Python 2.7 version. Casa-python module wor
 Refer https://www.continuum.io/downloads
 After the download is complete, run the following command to install python packages required to import CASA in python.
 
+>> conda install -c pkgw qt4dbus
 >> conda install -c pkgw casa-data casa-python
 
 Install pybuilder
