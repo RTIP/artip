@@ -22,15 +22,17 @@ class RFlagger(Flagger):
 
         for polarization, scan_id in product(polarizations, scan_ids):
             _r_value_matrix = {}
-            bad_antennas = self.identify_antennas(polarization, scan_id, source_config, base_antenna, _r_value_matrix, set())
+            bad_antennas = self.identify_antennas(polarization, scan_id, source_config, base_antenna, _r_value_matrix,
+                                                  set())
             # print "Pol-",polarization, "Scan-",scan_id, "Bad-",bad_antennas
 
     def identify_antennas(self, polarization, scan_id, source_config, base_antenna, _r_value_matrix, history):
         channel = source_config['channel']
         r_threshold = source_config['r_threshold']
-        min_doubtful_antennas = int((source_config['percentage_threshold_for_min_doubtful_antennas']*self.measurement_set.antenna_count())/100)
-        good_antennas_threshold = int((source_config['percentage_threshold_for_good_antenna']*self.measurement_set.antenna_count())/100)
-
+        min_doubtful_antennas = int((source_config[
+                                         'percentage_threshold_for_min_doubtful_antennas'] * self.measurement_set.antenna_count()) / 100)
+        good_antennas_threshold = int(
+            (source_config['percentage_threshold_for_good_antenna'] * self.measurement_set.antenna_count()) / 100)
 
         if base_antenna in history: return set()
 
@@ -52,7 +54,6 @@ class RFlagger(Flagger):
         for antenna, r_value in _r_value_matrix[base_antenna].iteritems():
             if r_value < r_threshold:
                 doubtful_antennas.add(antenna)
-                antenna.update_state(polarization, scan_id, AntennaStatus.DOUBTFUL)
 
         if len(doubtful_antennas) < min_doubtful_antennas:
             sorted_r_value_matrix = sorted(_r_value_matrix[base_antenna].items(), key=operator.itemgetter(1))
@@ -63,6 +64,8 @@ class RFlagger(Flagger):
             doubtful_antennas = set().union(doubtful_antennas, new_doubtful_antennas)
 
         if len(doubtful_antennas) <= good_antennas_threshold:  # 70% is good
+            for doubtful_antenna in doubtful_antennas:
+                doubtful_antenna.update_state(polarization, scan_id, AntennaStatus.DOUBTFUL)
             base_antenna.update_state(polarization, scan_id, AntennaStatus.GOOD)
 
         else:
@@ -74,8 +77,9 @@ class RFlagger(Flagger):
         history.add(base_antenna)
 
         for doubtful_antenna in doubtful_antennas:
-            new_bad_antennas = self.identify_antennas(polarization, scan_id, source_config, doubtful_antenna, _r_value_matrix,
-                                                history)
+            new_bad_antennas = self.identify_antennas(polarization, scan_id, source_config, doubtful_antenna,
+                                                      _r_value_matrix,
+                                                      history)
             bad_antennas = set.union(bad_antennas, new_bad_antennas)
 
         return bad_antennas
