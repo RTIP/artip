@@ -12,7 +12,7 @@ use_plugin("python.distutils")
 use_plugin("python.coverage")
 
 name = "artip"
-default_task = "publish"
+default_task = ["clean", "install_dependencies", "publish"]
 
 
 @init
