@@ -1,11 +1,12 @@
 import itertools
 
 import casac
-import numpy
 from config import *
+from helpers import *
 from models.phase_set import PhaseSet
 from models.antenna import Antenna
 from models.antenna_state import AntennaState
+from models.antenna_status import AntennaStatus
 
 
 class MeasurementSet:
@@ -14,9 +15,15 @@ class MeasurementSet:
         self.__ms.open(dataset)
         self.__metadata = self.__ms.metadata()
         self.antennas = self.create_antennas()
+        self.flag_data = self._initialize_flag_data()
 
     def __del__(self):
         self.__ms.close()
+
+    def _initialize_flag_data(self):
+        flag_data = {polarization: {scan_id: {'antennas': []} for scan_id in self._scan_ids()} for polarization in
+                     GLOBAL_CONFIG['polarizations']}
+        return flag_data
 
     def _filter(self, channel, polarization, filters={}):
         self.__ms.selectinit(reset=True)
@@ -69,8 +76,21 @@ class MeasurementSet:
         # return self.__metadata.antennaids()  # Throws error as number of antennas is 30 and this shows more.
         return range(0, 29, 1)  # Fix : Hard coded, should be removed and also enable unit tests for the same
 
+    def unflagged_antennaids(self,polarization, scan_id):
+        return minus(self.antennaids(),self.flag_data[polarization][scan_id]['antennas'])
+
     def antenna_count(self):
         return len(self.antennas)
 
     def _scan_ids(self):
         return self.__metadata.scannumbers()
+
+    def flag_antenna(self, polarization, scan_id, antenna_ids):
+        self.flag_data[polarization][scan_id]['antennas'] += antenna_ids
+
+    def flag_r_and_closure_based_bad_antennas(self):
+        for antenna in self.antennas:
+            for state in antenna.get_states():
+                if state.scan_id in self._scan_ids() and (
+                                state.get_R_phase_status() == AntennaStatus.BAD and state.get_closure_phase_status() == AntennaStatus.BAD):
+                    self.flag_antenna(state.polarization, state.scan_id, [antenna.id])
