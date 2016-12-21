@@ -41,3 +41,7 @@ class AmplitudeMatrix:
     def filter_by_antenna(self, antenna_id):
         return dict((baseline,amp_data) for baseline, amp_data in self.amplitude_data_matrix.iteritems() if baseline.contains(antenna_id))
 
+    def readings_count(self):
+        return len(self.amplitude_data_matrix[list(self.amplitude_data_matrix)[0]])
+
+

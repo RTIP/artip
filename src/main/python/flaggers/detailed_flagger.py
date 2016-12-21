@@ -23,10 +23,10 @@ class DetailedFlagger:
 
             ideal_median = calculate_median(amp_matrix.amplitude_data_matrix.values())
             ideal_mad = median_absolute_deviation(amp_matrix.amplitude_data_matrix.values())
-            print '**********************'
-
-            # print polarization, ' ', scan_id
+            print '\n*************************'
+            print "Polarization =", polarization, " Scan Id=", scan_id
             print "Ideal values =>", ideal_median, " =>", ideal_mad
+            print '---------------------------'
 
             unflagged_antennaids = self.measurement_set.unflagged_antennaids(polarization, scan_id)
             for antenna_id in unflagged_antennaids:
@@ -42,15 +42,13 @@ class DetailedFlagger:
                     print "Bad Antenna=", antenna_id
                 elif deviation_ratio > 3:
                     print "Border line Antenna=", antenna_id
-            print '**********************'
 
-            time_snapshots_count = len(amp_matrix.amplitude_data_matrix[list(amp_matrix.amplitude_data_matrix)[0]])
-            for index in range(0, time_snapshots_count, 1):
+            print '---------------------------'
+            for index in range(0, amp_matrix.readings_count(), 1):
                 time_amps = map(lambda baseline_amp: baseline_amp[index], amp_matrix.amplitude_data_matrix.values())
                 timeline_median = calculate_median(time_amps)
                 timeline_mad = median_absolute_deviation(time_amps)
                 time_deviation[index] = abs(ideal_median - timeline_median)
-                # print timeline_median, ',', abs(ideal_median - timeline_median)
             time_median_deviation = calculate_median(time_deviation.values())
             for time_index in time_deviation:
                 deviation_ratio = (time_deviation[time_index] / time_median_deviation)
@@ -58,8 +56,8 @@ class DetailedFlagger:
                     print "Bad Time=", time_index
                 elif deviation_ratio > 3:
                     print "Border line Time=", time_index
-            print '**********************'
 
+            print '---------------------------'
             for base_lines, amplitudes in amp_matrix.amplitude_data_matrix.items():
                 baseline_median = calculate_median(amplitudes)
                 baseline_mad = median_absolute_deviation(amplitudes)
@@ -72,4 +70,4 @@ class DetailedFlagger:
                     print "Bad Baseline=", baseline
                 elif deviation_ratio > 3:
                     print "Border line Baseline=", baseline
-            print '**********************'
+            print '****************************'
