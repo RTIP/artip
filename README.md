@@ -17,3 +17,8 @@ If not, uninstall the existing ones, and reinstall pip/pyb normally, and it shou
 Now, to run the application, execute
 >> python start.py <ms_dataset_path> 
     e.g. python start.py '~/Downloads/may14.ms'
+
+
+----------------------------------------------------------------------------------------------
+For running flagging and calibration
+>> /Applications/CASA.app/Contents/MacOS/casapy -c scripts/calibration.py <ms_dataset_path>

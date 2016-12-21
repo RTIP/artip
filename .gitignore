@@ -7,3 +7,4 @@ ipython-*.log
 htmlcov/*
 .coverage
 *.last
+*.table
