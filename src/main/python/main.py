@@ -15,8 +15,8 @@ def main(ms_dataset):
     print "Calculating bad baselines based closure phases..."
     closure_flagger = ClosureFlagger(measurement_set)
     closure_flagger.get_bad_baselines()
+    scan_ids = measurement_set.scan_ids_for(FLUX_CAL_CONFIG['field'])
     # Report(measurement_set.antennas).generate_report(scan_ids)
-    # scan_ids = measurement_set.scan_ids_for(FLUX_CAL_CONFIG['field'])
 
     measurement_set.flag_r_and_closure_based_bad_antennas()
 

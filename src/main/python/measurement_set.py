@@ -77,7 +77,7 @@ class MeasurementSet:
         return range(0, 29, 1)  # Fix : Hard coded, should be removed and also enable unit tests for the same
 
     def unflagged_antennaids(self,polarization, scan_id):
-        return minus(self.antennaids(),self.flag_data[polarization][scan_id]['antennas'])
+        return minus(self.antennaids(),self.flag_data[polarization][scan_id]['antennas']+[23])
 
     def antenna_count(self):
         return len(self.antennas)
@@ -94,3 +94,5 @@ class MeasurementSet:
                 if state.scan_id in self._scan_ids() and (
                                 state.get_R_phase_status() == AntennaStatus.BAD and state.get_closure_phase_status() == AntennaStatus.BAD):
                     self.flag_antenna(state.polarization, state.scan_id, [antenna.id])
+        print "*********** flagged antenna with R and Closure",self.flag_data
+        # self.flag_antenna('RR', 1, [1,7,11])

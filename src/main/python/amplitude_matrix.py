@@ -10,7 +10,7 @@ class AmplitudeMatrix:
         self.amplitude_data_matrix = self._generate_matrix()
 
     def _generate_matrix(self):
-        antennaids = self._measurement_set.antennaids()
+        antennaids = self._measurement_set.unflagged_antennaids(self._polarization, self._scan_id)
         amplitude_data_matrix = {}
 
         # TODO remove duplicate baselines
