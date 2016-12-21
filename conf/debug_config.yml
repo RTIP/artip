@@ -1,0 +1,7 @@
+# These configs are used only in development/debugging
+manual_flag: true
+
+flagged:
+  antennas: [1,18,23]
+  baselines: []
+  time: [0]

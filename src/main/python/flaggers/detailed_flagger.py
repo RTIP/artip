@@ -1,9 +1,10 @@
 import itertools
 from helpers import *
+from helpers import Debugger as debugger
 from config import *
 from amplitude_matrix import AmplitudeMatrix
 from astropy.stats import median_absolute_deviation
-
+from debugging_config import DEBUG_CONFIGS
 
 class DetailedFlagger:
     def __init__(self, measurement_set):
@@ -17,6 +18,9 @@ class DetailedFlagger:
 
         for polarization, scan_id in itertools.product(polarizations, scan_ids):
             amp_matrix = AmplitudeMatrix(self.measurement_set, polarization, scan_id, source_config['channel'])
+
+            if DEBUG_CONFIGS['manual_flag']: debugger().filter_matrix(amp_matrix.amplitude_data_matrix)
+
             ideal_median = calculate_median(amp_matrix.amplitude_data_matrix.values())
             ideal_mad = median_absolute_deviation(amp_matrix.amplitude_data_matrix.values())
             print '**********************'
@@ -27,9 +31,10 @@ class DetailedFlagger:
             unflagged_antennaids = self.measurement_set.unflagged_antennaids(polarization, scan_id)
             for antenna_id in unflagged_antennaids:
                 antenna_matrix = amp_matrix.filter_by_antenna(antenna_id)
-                antenna_median = calculate_median(antenna_matrix.values())
-                antenna_mad = median_absolute_deviation(antenna_matrix.values())
-                antenna_deviation[antenna_id] = abs(ideal_median - antenna_median)
+                if len(antenna_matrix.keys()) > 0:
+                    antenna_median = calculate_median(antenna_matrix.values())
+                    antenna_mad = median_absolute_deviation(antenna_matrix.values())
+                    antenna_deviation[antenna_id] = abs(ideal_median - antenna_median)
             antenna_median_deviation = calculate_median(antenna_deviation.values())
             for antenna_id in antenna_deviation:
                 deviation_ratio = (antenna_deviation[antenna_id] / antenna_median_deviation)
