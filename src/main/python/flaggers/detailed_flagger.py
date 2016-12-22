@@ -6,6 +6,7 @@ from amplitude_matrix import AmplitudeMatrix
 from astropy.stats import median_absolute_deviation
 from debugging_config import DEBUG_CONFIGS
 
+
 class DetailedFlagger:
     def __init__(self, measurement_set):
         self.measurement_set = measurement_set
@@ -21,8 +22,8 @@ class DetailedFlagger:
 
             if DEBUG_CONFIGS['manual_flag']: debugger().filter_matrix(amp_matrix.amplitude_data_matrix)
 
-            ideal_median = calculate_median(amp_matrix.amplitude_data_matrix.values())
-            ideal_mad = median_absolute_deviation(amp_matrix.amplitude_data_matrix.values())
+            ideal_median = amp_matrix.median()
+            ideal_mad = amp_matrix.mad()
             print '\n*************************'
             print "Polarization =", polarization, " Scan Id=", scan_id
             print "Ideal values =>", ideal_median, " =>", ideal_mad
@@ -31,9 +32,9 @@ class DetailedFlagger:
             unflagged_antennaids = self.measurement_set.unflagged_antennaids(polarization, scan_id)
             for antenna_id in unflagged_antennaids:
                 antenna_matrix = amp_matrix.filter_by_antenna(antenna_id)
-                if len(antenna_matrix.keys()) > 0:
-                    antenna_median = calculate_median(antenna_matrix.values())
-                    antenna_mad = median_absolute_deviation(antenna_matrix.values())
+                if not antenna_matrix.is_empty():
+                    antenna_median = antenna_matrix.median()
+                    antenna_mad = antenna_matrix.mad()
                     antenna_deviation[antenna_id] = abs(ideal_median - antenna_median)
             antenna_median_deviation = calculate_median(antenna_deviation.values())
             for antenna_id in antenna_deviation:
@@ -44,10 +45,10 @@ class DetailedFlagger:
                     print "Border line Antenna=", antenna_id
 
             print '---------------------------'
-            for index in range(0, amp_matrix.readings_count(), 1):
-                time_amps = map(lambda baseline_amp: baseline_amp[index], amp_matrix.amplitude_data_matrix.values())
-                timeline_median = calculate_median(time_amps)
-                timeline_mad = median_absolute_deviation(time_amps)
+            for index in range(0, amp_matrix.readings_count()):
+                time_matrix = amp_matrix.filter_by_time(index)
+                timeline_median = time_matrix.median()
+                timeline_mad = time_matrix.mad()
                 time_deviation[index] = abs(ideal_median - timeline_median)
             time_median_deviation = calculate_median(time_deviation.values())
             for time_index in time_deviation:
@@ -58,10 +59,11 @@ class DetailedFlagger:
                     print "Border line Time=", time_index
 
             print '---------------------------'
-            for base_lines, amplitudes in amp_matrix.amplitude_data_matrix.items():
-                baseline_median = calculate_median(amplitudes)
-                baseline_mad = median_absolute_deviation(amplitudes)
-                baseline_deviation[base_lines] = abs(ideal_median - baseline_median)
+            for base_line in amp_matrix.amplitude_data_matrix:
+                baseline_matrix = amp_matrix.filter_by_baseline(base_line)
+                baseline_median = baseline_matrix.median()
+                baseline_mad = baseline_matrix.mad()
+                baseline_deviation[base_line] = abs(ideal_median - baseline_median)
             baseline_median_deviation = calculate_median(baseline_deviation.values())
 
             for baseline in baseline_deviation:
