@@ -14,7 +14,7 @@ class AmplitudeMatrix:
 
     def _generate_matrix(self):
         antennaids = self._measurement_set.unflagged_antennaids(self._polarization, self._scan_id)
-        flagged_baselines = self._measurement_set.flag_data[self._polarization][self._scan_id]['baselines']
+        flagged_data = self._measurement_set.flag_data[self._polarization][self._scan_id]
         amplitude_data_matrix = {}
 
         # TODO remove duplicate baselines
@@ -27,7 +27,8 @@ class AmplitudeMatrix:
                     primary_antenna = antenna2
                     secondary_antenna = antenna1
 
-                if primary_antenna == secondary_antenna or ([primary_antenna, secondary_antenna] in flagged_baselines):
+                if primary_antenna == secondary_antenna or \
+                        ([primary_antenna, secondary_antenna] in flagged_data['baselines']):
                     continue
 
                 filters = {
@@ -42,7 +43,7 @@ class AmplitudeMatrix:
                 baseline = Baseline(primary_antenna, secondary_antenna)
 
                 if DEBUG_CONFIGS['manual_flag']:
-                    amplitude_data_matrix[baseline] = delete_indexes(amplitude_data, DEBUG_FLAG_ELEMENTS['times']) if \
+                    amplitude_data_matrix[baseline] = delete_indexes(amplitude_data, flagged_data['times']) if \
                         DEBUG_CONFIGS['manual_flag'] else amplitude_data
         return amplitude_data_matrix
 

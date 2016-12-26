@@ -26,3 +26,6 @@ class Debugger:
 
     def flag_baselines(self, polarization, scan_id):
         self._measurement_set.flag_baselines(polarization, scan_id, DEBUG_FLAG_ELEMENTS['baselines'])
+
+    def flag_times(self, polarization, scan_id):
+        self._measurement_set.flag_times(polarization, scan_id, DEBUG_FLAG_ELEMENTS['times'])

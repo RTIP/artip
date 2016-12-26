@@ -21,7 +21,7 @@ class MeasurementSet:
         self.__ms.close()
 
     def _initialize_flag_data(self):
-        flag_data = {polarization: {scan_id: {'antennas': [], 'baselines': []} for scan_id in self._scan_ids()} for
+        flag_data = {polarization: {scan_id: {'antennas': [], 'baselines': [], 'times': []} for scan_id in self._scan_ids()} for
                      polarization in
                      GLOBAL_CONFIG['polarizations']}
         return flag_data
@@ -91,6 +91,9 @@ class MeasurementSet:
 
     def flag_baselines(self, polarization, scan_id, baselines):
         self.flag_data[polarization][scan_id]['baselines'] += baselines
+
+    def flag_times(self,polarization, scan_id,indexes):
+        self.flag_data[polarization][scan_id]['times'] += indexes
 
     def flag_r_and_closure_based_bad_antennas(self):
         for antenna in self.antennas:
