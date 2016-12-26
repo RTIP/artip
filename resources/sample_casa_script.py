@@ -29,11 +29,11 @@ gaincal(vis='may14.ms', caltable='bpphase.gcal', field='0', refant='2', calmode=
 bandpass(vis='may14.ms',caltable='bandpass.bcal',field='0', refant='2', solint='inf', solnorm=T, gaintable=['bpphase.gcal'])
 #
 plotcal(caltable='bandpass.bcal', xaxis='chan', yaxis='amp', iteration='antenna', subplot=331)
-plotcal(caltable='bandpass.bcal', xaxis='chan', yaxis='phase', iteration='antenna', subplot=331)
+plotcal(caltable='flux.cal', xaxis='antenna', yaxis='amp', subplot=331)
 #
-gaincal(vis='aug7_LTA1.ms',caltable='intphase.gcal', field='0,2', spw='0:100', refant='2', calmode='p', solint='60s', minsnr=2.0)
+gaincal(vis='may14.ms',caltable='intphase.gcal', field='0,1', spw='0:100', refant='2', calmode='p', solint='60s', minsnr=2.0)
 #
-gaincal(vis='aug7_LTA1.ms', caltable='scanphase.gcal', field='0,2', spw='0:100', refant='2', calmode='p', solint='inf', minsnr=2.0)
+gaincal(vis='may14.ms', caltable='scanphase.gcal', field='0,1', spw='0:100', refant='2', calmode='p', solint='inf', minsnr=2.0)
 #
 #
 gaincal(vis='may14.ms', caltable='amp.gcal', field='0,1', spw='0:100', refant='2', calmode='ap', solint='inf', minsnr=2.0, gaintable=['bandpass.bcal','intphase.gcal'])
