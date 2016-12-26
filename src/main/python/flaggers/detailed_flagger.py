@@ -4,6 +4,7 @@ from helpers import Debugger as debugger
 from config import *
 from amplitude_matrix import AmplitudeMatrix
 from astropy.stats import median_absolute_deviation
+from window import Window
 from debugging_config import DEBUG_CONFIGS
 
 
@@ -12,7 +13,6 @@ class DetailedFlagger:
         self.measurement_set = measurement_set
 
     def get_bad_antennas(self, source):
-        dataset_deviations = {}
         polarizations = GLOBAL_CONFIG['polarizations']
         source_config = ALL_CONFIGS[source]
         scan_ids = self.measurement_set.scan_ids_for(source_config['field'])
@@ -26,36 +26,34 @@ class DetailedFlagger:
             ideal_mad = amp_matrix.mad()
             print '\n*************************'
             print "Polarization =", polarization, " Scan Id=", scan_id
-            print "Ideal values =>", ideal_median, " =>", ideal_mad
+            print "Ideal values = { median:", ideal_median, ", mad:", ideal_mad, " }"
             print '---------------------------'
 
             unflagged_antennaids = self.measurement_set.unflagged_antennaids(polarization, scan_id)
 
-            self._filter_bad_data_for('Antenna', amp_matrix.filter_by_antenna, unflagged_antennaids, dataset_deviations,
-                                      ideal_median)
+            self._filter_bad_data_for('Antenna', amp_matrix.filter_by_antenna, unflagged_antennaids,
+                                      ideal_median, ideal_mad)
             print '---------------------------'
-            self._filter_bad_data_for('Time', amp_matrix.filter_by_time, range(0, amp_matrix.readings_count()),
-                                      dataset_deviations,
-                                      ideal_median)
+            # self._filter_bad_data_for('Time', amp_matrix.filter_by_time, range(0, amp_matrix.readings_count()),
+            #                           dataset_deviations,
+            #                           ideal_median, ideal_mad)
 
-            print '---------------------------'
+            # print '---------------------------'
             self._filter_bad_data_for('Baseline', amp_matrix.filter_by_baseline, amp_matrix.amplitude_data_matrix,
-                                      dataset_deviations, ideal_median)
+                                      ideal_median, ideal_mad)
+
+            # Sliding Window
+            for (baseline, amplitudes) in amp_matrix.amplitude_data_matrix.items():
+                sliding_window = Window({baseline: amplitudes}, 10, 5)
+                while True:
+                    window_matrix = sliding_window.slide()
+                    if window_matrix.is_empty(): break
+                    if window_matrix.is_bad(ideal_median, ideal_mad):
+                        print 'Bad Window'
             print '****************************'
 
-    def _filter_bad_data_for(self, element_name, filter, on_dataset, dataset_deviations, ideal_median):
+    def _filter_bad_data_for(self, element_name, filter, on_dataset, ideal_median, ideal_mad):
         for element in on_dataset:
             filtered_matrix = filter(element)
-            median = filtered_matrix.median()
-            mad = filtered_matrix.mad()
-            dataset_deviations[element] = abs(ideal_median - median)
-        dataset_deviations_median = calculate_median(dataset_deviations.values())
-        self._identify_bad_data(element_name, dataset_deviations, dataset_deviations_median)
-
-    def _identify_bad_data(self, element_name, dataset_deviations, dataset_deviations_median):
-        for element in dataset_deviations:
-            deviation_ratio = (dataset_deviations[element] / dataset_deviations_median)
-            if deviation_ratio > 5:
+            if filtered_matrix.is_bad(ideal_median, ideal_mad):
                 print 'Bad ', element_name, '=', element
-            elif deviation_ratio > 3:
-                print 'Border line', element_name, '=', element

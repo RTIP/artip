@@ -1,6 +1,7 @@
 from models.baseline import Baseline
 from helpers import *
 from astropy.stats import median_absolute_deviation
+import numpy
 
 
 class AmplitudeMatrix:
@@ -43,6 +44,7 @@ class AmplitudeMatrix:
     def filter_by_antenna(self, antenna_id):
         antenna_matrix = dict((baseline, amp_data) for baseline, amp_data in self.amplitude_data_matrix.iteritems() if
                               baseline.contains(antenna_id))
+
         return AmplitudeMatrix(self._measurement_set, self._polarization, self._scan_id, self._channel, antenna_matrix)
 
     def filter_by_time(self, time_index):
@@ -64,4 +66,16 @@ class AmplitudeMatrix:
         return median_absolute_deviation(self.amplitude_data_matrix.values())
 
     def is_empty(self):
-        return len(self.amplitude_data_matrix.keys()) == 0
+        return len(numpy.array(self.amplitude_data_matrix.values()).flatten()) == 0
+
+    def is_bad(self, ideal_median, ideal_mad):
+        matrix_median = self.median()
+        matrix_mad = self.mad()
+        return self._deviated_median(ideal_median, ideal_mad, matrix_median) or self._scattered_amplitude(ideal_mad,
+                                                                                                          matrix_mad)
+
+    def _deviated_median(self, ideal_median, ideal_mad, actual_median):
+        return abs(actual_median - ideal_median) > (3 * ideal_mad)
+
+    def _scattered_amplitude(self, ideal_mad, actual_mad):
+        return actual_mad > (3 * ideal_mad)
