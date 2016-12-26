@@ -21,7 +21,8 @@ class MeasurementSet:
         self.__ms.close()
 
     def _initialize_flag_data(self):
-        flag_data = {polarization: {scan_id: {'antennas': []} for scan_id in self._scan_ids()} for polarization in
+        flag_data = {polarization: {scan_id: {'antennas': [], 'baselines': []} for scan_id in self._scan_ids()} for
+                     polarization in
                      GLOBAL_CONFIG['polarizations']}
         return flag_data
 
@@ -76,8 +77,8 @@ class MeasurementSet:
         # return self.__metadata.antennaids()  # Throws error as number of antennas is 30 and this shows more.
         return range(0, 29, 1)  # Fix : Hard coded, should be removed and also enable unit tests for the same
 
-    def unflagged_antennaids(self,polarization, scan_id):
-        return minus(self.antennaids(),self.flag_data[polarization][scan_id]['antennas'])
+    def unflagged_antennaids(self, polarization, scan_id):
+        return minus(self.antennaids(), self.flag_data[polarization][scan_id]['antennas'])
 
     def antenna_count(self):
         return len(self.antennas)
@@ -85,14 +86,17 @@ class MeasurementSet:
     def _scan_ids(self):
         return self.__metadata.scannumbers()
 
-    def flag_antenna(self, polarization, scan_id, antenna_ids):
+    def flag_antennas(self, polarization, scan_id, antenna_ids):
         self.flag_data[polarization][scan_id]['antennas'] += antenna_ids
+
+    def flag_baselines(self, polarization, scan_id, baselines):
+        self.flag_data[polarization][scan_id]['baselines'] += baselines
 
     def flag_r_and_closure_based_bad_antennas(self):
         for antenna in self.antennas:
             for state in antenna.get_states():
                 if state.scan_id in self._scan_ids() and (
                                 state.get_R_phase_status() == AntennaStatus.BAD and state.get_closure_phase_status() == AntennaStatus.BAD):
-                    self.flag_antenna(state.polarization, state.scan_id, [antenna.id])
-        # print "*********** flagged antenna with R and Closure",self.flag_data
-        # self.flag_antenna('RR', 1, [1,7,11])
+                    self.flag_antennas(state.polarization, state.scan_id, [antenna.id])
+                    # print "*********** flagged antenna with R and Closure",self.flag_data
+                    # self.flag_antenna('RR', 1, [1,7,11])
