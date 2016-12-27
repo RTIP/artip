@@ -26,3 +26,7 @@ class Window:
         if end > readings_count:
             end = readings_count - 1
         return start, end
+
+    def reached_end_of_collection(self):
+        start, end = self.current_position()
+        return start == end
