@@ -10,3 +10,8 @@ flux_calibration:
     percentage_threshold_for_good_antenna: 70
     closure_threshold: 0.3
     percentile_threshold: 70
+    detail_falgging:
+      sliding_window:
+        bucket_size: 10
+        overlap: 5
+      mad_scale_factor: 2

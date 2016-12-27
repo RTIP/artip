@@ -1,9 +1,11 @@
 from amplitude_matrix import AmplitudeMatrix
 import numpy
+from config import *
 
 
 class Window:
-    def __init__(self, collection, bucket_size, overlap_count):
+    def __init__(self, collection, bucket_size=DETAIL_FLAG_CONFIG['sliding_window']['bucket_size'],
+                 overlap_count=DETAIL_FLAG_CONFIG['sliding_window']['overlap']):
         self.__collection = collection
         self.__bucket_size = bucket_size
         self.__overlap_count = overlap_count

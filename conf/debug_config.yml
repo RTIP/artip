@@ -2,5 +2,5 @@
 manual_flag: true
 
 flagged:
-  antennas: [1,18]
+  antennas: [1]
   baselines: [[23,28],[16,23]]

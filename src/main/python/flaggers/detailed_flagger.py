@@ -34,30 +34,29 @@ class DetailedFlagger:
 
             unflagged_antennaids = self.measurement_set.unflagged_antennaids(polarization, scan_id)
 
-            self._filter_bad_data_for('Antenna', amp_matrix.filter_by_antenna, unflagged_antennaids,
-                                      ideal_median, ideal_mad)
+            # Sliding Window for Bad Antennas
+            for antenna in unflagged_antennaids:
+                filtered_matrix = amp_matrix.filter_by_antenna(antenna)
+                if filtered_matrix.is_bad(ideal_median, ideal_mad):
+                    sliding_window = Window(filtered_matrix.amplitude_data_matrix)
+                    while True:
+                        window_matrix = sliding_window.slide()
+                        if window_matrix.is_empty(): break
+                        if window_matrix.is_bad(ideal_median, ideal_mad):
+                            start, end = sliding_window.current_position()
+                            print 'Antenna=', antenna, ' was bad between', scan_times[
+                                start], '[index=', start, '] and', scan_times[end], '[index=', end, ']'
+
             print '---------------------------'
-            # self._filter_bad_data_for('Time', amp_matrix.filter_by_time, range(0, amp_matrix.readings_count()),
-            #                           dataset_deviations,
-            #                           ideal_median, ideal_mad)
 
-            # print '---------------------------'
-            self._filter_bad_data_for('Baseline', amp_matrix.filter_by_baseline, amp_matrix.amplitude_data_matrix,
-                                      ideal_median, ideal_mad)
-
-            # Sliding Window
+            # Sliding Window for Baselines
             for (baseline, amplitudes) in amp_matrix.amplitude_data_matrix.items():
-                sliding_window = Window({baseline: amplitudes}, 10, 5)
+                sliding_window = Window({baseline: amplitudes})
                 while True:
                     window_matrix = sliding_window.slide()
                     if window_matrix.is_empty(): break
                     if window_matrix.is_bad(ideal_median, ideal_mad):
                         start, end = sliding_window.current_position()
-                        print 'Baseline=', baseline, ' was bad between', scan_times[start], ' and', scan_times[end]
+                        print 'Baseline=', baseline, ' was bad between', scan_times[
+                            start], '[index=', start, '] and', scan_times[end], '[index=', end, ']'
             print '****************************'
-
-    def _filter_bad_data_for(self, element_name, filter, on_dataset, ideal_median, ideal_mad):
-        for element in on_dataset:
-            filtered_matrix = filter(element)
-            if filtered_matrix.is_bad(ideal_median, ideal_mad):
-                print 'Bad ', element_name, '=', element

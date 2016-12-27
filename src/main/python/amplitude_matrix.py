@@ -1,5 +1,6 @@
 from models.baseline import Baseline
 from helpers import *
+from config import *
 from astropy.stats import median_absolute_deviation
 import numpy
 
@@ -78,7 +79,7 @@ class AmplitudeMatrix:
                                                                                                           matrix_mad)
 
     def _deviated_median(self, ideal_median, ideal_mad, actual_median):
-        return abs(actual_median - ideal_median) > (2 * ideal_mad)
+        return abs(actual_median - ideal_median) > (DETAIL_FLAG_CONFIG['mad_scale_factor'] * ideal_mad)
 
     def _scattered_amplitude(self, ideal_mad, actual_mad):
-        return actual_mad > (2 * ideal_mad)
+        return actual_mad > (DETAIL_FLAG_CONFIG['mad_scale_factor'] * ideal_mad)
