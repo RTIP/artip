@@ -41,10 +41,7 @@ class AmplitudeMatrix:
                                                                 filters, ['corrected_amplitude'])[
                     'corrected_amplitude'][0][0]
                 baseline = Baseline(primary_antenna, secondary_antenna)
-
-                if DEBUG_CONFIGS['manual_flag']:
-                    amplitude_data_matrix[baseline] = delete_indexes(amplitude_data, flagged_data['times']) if \
-                        DEBUG_CONFIGS['manual_flag'] else amplitude_data
+                amplitude_data_matrix[baseline] = amplitude_data
         return amplitude_data_matrix
 
     def filter_by_antenna(self, antenna_id):

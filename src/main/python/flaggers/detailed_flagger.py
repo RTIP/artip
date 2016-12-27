@@ -21,7 +21,6 @@ class DetailedFlagger:
                 debugger = Debugger(self.measurement_set)
                 debugger.flag_antennas(polarization, scan_id)
                 debugger.flag_baselines(polarization, scan_id)
-                debugger.flag_times(polarization, scan_id)
 
             amp_matrix = AmplitudeMatrix(self.measurement_set, polarization, scan_id, source_config['channel'])
             scan_times = self.measurement_set.timesforscan(scan_id)
