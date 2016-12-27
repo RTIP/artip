@@ -21,9 +21,10 @@ class MeasurementSet:
         self.__ms.close()
 
     def _initialize_flag_data(self):
-        flag_data = {polarization: {scan_id: {'antennas': [], 'baselines': [], 'times': []} for scan_id in self._scan_ids()} for
-                     polarization in
-                     GLOBAL_CONFIG['polarizations']}
+        flag_data = {
+            polarization: {scan_id: {'antennas': [], 'baselines': [], 'times': []} for scan_id in self._scan_ids()} for
+            polarization in
+            GLOBAL_CONFIG['polarizations']}
         return flag_data
 
     def _filter(self, channel, polarization, filters={}):
@@ -86,13 +87,19 @@ class MeasurementSet:
     def _scan_ids(self):
         return self.__metadata.scannumbers()
 
+    def timesforscan(self, scan_id):
+        quanta = casac.casac.quanta()
+        times_with_second = map(lambda time: str(time) + 's', self.__metadata.timesforscan(scan_id))
+        return numpy.array(
+            map(lambda time: quanta.time(quanta.quantity(time), form='dmy'), times_with_second)).flatten()
+
     def flag_antennas(self, polarization, scan_id, antenna_ids):
         self.flag_data[polarization][scan_id]['antennas'] += antenna_ids
 
     def flag_baselines(self, polarization, scan_id, baselines):
         self.flag_data[polarization][scan_id]['baselines'] += baselines
 
-    def flag_times(self,polarization, scan_id,indexes):
+    def flag_times(self, polarization, scan_id, indexes):
         self.flag_data[polarization][scan_id]['times'] += indexes
 
     def flag_r_and_closure_based_bad_antennas(self):

@@ -24,6 +24,7 @@ class DetailedFlagger:
                 debugger.flag_times(polarization, scan_id)
 
             amp_matrix = AmplitudeMatrix(self.measurement_set, polarization, scan_id, source_config['channel'])
+            scan_times = self.measurement_set.timesforscan(scan_id)
 
             ideal_median = amp_matrix.median()
             ideal_mad = amp_matrix.mad()
@@ -52,7 +53,8 @@ class DetailedFlagger:
                     window_matrix = sliding_window.slide()
                     if window_matrix.is_empty(): break
                     if window_matrix.is_bad(ideal_median, ideal_mad):
-                        print 'baseline=', baseline, 'Bad Window'
+                        start, end = sliding_window.current_position()
+                        print 'Baseline=', baseline, ' was bad between', scan_times[start], ' and', scan_times[end]
             print '****************************'
 
     def _filter_bad_data_for(self, element_name, filter, on_dataset, ideal_median, ideal_mad):
