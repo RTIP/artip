@@ -3,6 +3,7 @@ from helpers import *
 from config import *
 from astropy.stats import median_absolute_deviation
 import numpy
+from terminal_color import Color
 
 
 class AmplitudeMatrix:
@@ -75,8 +76,12 @@ class AmplitudeMatrix:
     def is_bad(self, ideal_median, ideal_mad):
         matrix_median = self.median()
         matrix_mad = self.mad()
-        return self._deviated_median(ideal_median, ideal_mad, matrix_median) or self._scattered_amplitude(ideal_mad,
-                                                                                                          matrix_mad)
+        deviated_median = self._deviated_median(ideal_median, ideal_mad, matrix_median)
+        scattered_amplitude = self._scattered_amplitude(ideal_mad, matrix_mad)
+        if deviated_median or scattered_amplitude:
+            print Color.UNDERLINE, "\nmatrix median=", matrix_median, ", matrix mad=", matrix_mad, Color.ENDC
+            print Color.WARNING, "median deviated=", deviated_median, ", amplitude scattered=", scattered_amplitude, Color.ENDC
+        return deviated_median or scattered_amplitude
 
     def _deviated_median(self, ideal_median, ideal_mad, actual_median):
         return abs(actual_median - ideal_median) > (DETAIL_FLAG_CONFIG['mad_scale_factor'] * ideal_mad)

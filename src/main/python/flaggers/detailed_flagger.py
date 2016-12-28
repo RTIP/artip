@@ -5,6 +5,7 @@ from config import *
 from amplitude_matrix import AmplitudeMatrix
 from window import Window
 from debugging_config import DEBUG_CONFIGS
+from terminal_color import Color
 
 
 class DetailedFlagger:
@@ -27,10 +28,9 @@ class DetailedFlagger:
 
             ideal_median = amp_matrix.median()
             ideal_mad = amp_matrix.mad()
-            print '\n*************************'
-            print "Polarization =", polarization, " Scan Id=", scan_id
-            print "Ideal values = { median:", ideal_median, ", mad:", ideal_mad, " }"
-            print '---------------------------'
+            print '\n*************************************************'
+            print Color.BACKGROUD_WHITE, "Polarization =", polarization, " Scan Id=", scan_id, Color.ENDC
+            print Color.BACKGROUD_WHITE, "Ideal values = { median:", ideal_median, ", mad:", ideal_mad, " }", Color.ENDC
 
             unflagged_antennaids = self.measurement_set.unflagged_antennaids(polarization, scan_id)
 
@@ -38,15 +38,17 @@ class DetailedFlagger:
             for antenna in unflagged_antennaids:
                 filtered_matrix = amp_matrix.filter_by_antenna(antenna)
                 if filtered_matrix.is_bad(ideal_median, ideal_mad):
+                    print Color.FAIL, 'Antenna', antenna, ' is Bad running sliding Window on it', Color.ENDC
                     self._identify_bad_time_window('Antenna', antenna, filtered_matrix.amplitude_data_matrix, ideal_mad,
                                                    ideal_median, scan_times)
             print '---------------------------'
 
+            print Color.HEADER, '\nRunning Sliding Window on All Baselines', Color.ENDC
             # Sliding Window for Baselines
             for (baseline, amplitudes) in amp_matrix.amplitude_data_matrix.items():
                 self._identify_bad_time_window('Baseline', baseline, {baseline: amplitudes}, ideal_mad, ideal_median,
                                                scan_times)
-            print '****************************'
+            print '*************************************************'
 
     def _identify_bad_time_window(self, element_type, element_id, data_set, ideal_mad, ideal_median, scan_times):
         sliding_window = Window(data_set)
@@ -55,5 +57,5 @@ class DetailedFlagger:
             if window_matrix.is_empty() or sliding_window.reached_end_of_collection(): break
             if window_matrix.is_bad(ideal_median, ideal_mad):
                 start, end = sliding_window.current_position()
-                print element_type, '=', element_id, ' was bad between', scan_times[
-                    start], '[index=', start, '] and', scan_times[end], '[index=', end, ']'
+                print Color.OKGREEN, element_type, '=', element_id, ' was bad between', scan_times[
+                    start], '[index=', start, '] and', scan_times[end], '[index=', end, ']', Color.ENDC
