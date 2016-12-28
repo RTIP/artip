@@ -52,7 +52,7 @@ class DetailedFlagger:
         sliding_window = Window(data_set)
         while True:
             window_matrix = sliding_window.slide()
-            if sliding_window.reached_end_of_collection(): break
+            if window_matrix.is_empty() or sliding_window.reached_end_of_collection(): break
             if window_matrix.is_bad(ideal_median, ideal_mad):
                 start, end = sliding_window.current_position()
                 print element_type, '=', element_id, ' was bad between', scan_times[
