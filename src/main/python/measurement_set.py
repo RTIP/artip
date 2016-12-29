@@ -1,5 +1,5 @@
 import itertools
-
+import logging
 import casac
 import numpy
 from configs.config import GLOBAL_CONFIG
@@ -105,6 +105,6 @@ class MeasurementSet:
             for state in antenna.get_states():
                 if state.scan_id in self._scan_ids() and (
                                 state.get_R_phase_status() == AntennaStatus.BAD and state.get_closure_phase_status() == AntennaStatus.BAD):
+                    logging.info("Flagging Antenna {0} of polarization={1} and scan id={2}".format(
+                        antenna.id, state.polarization, state.scan_id))
                     self.flag_antennas(state.polarization, state.scan_id, [antenna.id])
-                    # print "*********** flagged antenna with R and Closure",self.flag_data
-                    # self.flag_antenna('RR', 1, [1,7,11])
