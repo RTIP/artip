@@ -1,7 +1,7 @@
 import itertools
 
 from flagger import Flagger
-from config import *
+from configs.config import GLOBAL_CONFIG, FLUX_CAL_CONFIG
 from scipy import stats
 from closure_phase_util import ClosurePhaseUtil
 

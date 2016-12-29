@@ -1,6 +1,6 @@
 from unittest import TestCase
 from models.phase_set import PhaseSet
-from config import FLUX_CAL_CONFIG
+from configs.config import FLUX_CAL_CONFIG
 import math
 
 

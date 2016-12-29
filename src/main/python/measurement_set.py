@@ -1,8 +1,9 @@
 import itertools
 
 import casac
-from config import *
-from helpers import *
+import numpy
+from configs.config import GLOBAL_CONFIG
+from helpers import minus
 from models.phase_set import PhaseSet
 from models.antenna import Antenna
 from models.antenna_state import AntennaState

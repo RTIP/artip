@@ -1,7 +1,7 @@
 from itertools import product
 from flagger import Flagger
 from r_matrix import RMatrix
-from config import *
+from configs.config import ALL_CONFIGS,GLOBAL_CONFIG
 from models.antenna_status import AntennaStatus
 
 

@@ -1,11 +1,10 @@
-from config import *
+from configs.config import FLUX_CAL_CONFIG
+from configs.debugging_config import DEBUG_CONFIGS
 from flaggers.closure_flagger import ClosureFlagger
 from flaggers.r_flagger import RFlagger
-from models.baseline import Baseline
 from measurement_set import MeasurementSet
 from flaggers.detailed_flagger import DetailedFlagger
 from report import Report
-from debugging_config import *
 
 
 def main(ms_dataset):

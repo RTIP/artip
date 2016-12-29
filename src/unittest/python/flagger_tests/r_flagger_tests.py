@@ -1,6 +1,6 @@
 import unittest
 from unittest import TestCase
-from config import *
+from configs.config import GLOBAL_CONFIG,FLUX_CAL_CONFIG
 from mock import Mock, mock, call
 from models.phase_set import PhaseSet
 

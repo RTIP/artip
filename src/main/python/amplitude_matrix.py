@@ -1,6 +1,6 @@
 from models.baseline import Baseline
 from helpers import *
-from config import *
+from configs.config import DETAIL_FLAG_CONFIG
 from astropy.stats import median_absolute_deviation
 import numpy
 from terminal_color import Color

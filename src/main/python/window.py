@@ -1,6 +1,6 @@
 from amplitude_matrix import AmplitudeMatrix
 import numpy
-from config import *
+from configs.config import DETAIL_FLAG_CONFIG
 
 
 class Window:

@@ -1,10 +1,10 @@
 import itertools
 from helpers import *
 from helpers import Debugger
-from config import *
+from configs.config import ALL_CONFIGS,GLOBAL_CONFIG
 from amplitude_matrix import AmplitudeMatrix
 from window import Window
-from debugging_config import DEBUG_CONFIGS
+from configs.debugging_config import DEBUG_CONFIGS
 from terminal_color import Color
 
 

@@ -1,5 +1,6 @@
 import numpy
-from debugging_config import *
+
+from configs.debugging_config import DEBUG_FLAG_ELEMENTS
 
 
 def calculate_median(list):
