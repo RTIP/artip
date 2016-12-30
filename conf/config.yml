@@ -15,3 +15,6 @@ flux_calibration:
         bucket_size: 10
         overlap: 5
       mad_scale_factor: 2
+
+casapy:
+    path: '/Applications/CASA.app/Contents/MacOS/casapy'

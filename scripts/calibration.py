@@ -1,6 +1,6 @@
 import sys
 
-ms_dataset = sys.argv[3]
+ms_dataset = sys.argv[-1]
 field='0'
 caltable = 'fluxcal.table'
 refant='2'

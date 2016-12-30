@@ -7,6 +7,7 @@ from measurement_set import MeasurementSet
 from flaggers.detailed_flagger import DetailedFlagger
 from report import Report
 from terminal_color import Color
+from casa_script_runner import CasaScriptRunner
 
 
 def main():
@@ -25,3 +26,4 @@ def main():
     logging.info(Color.HEADER + "Started Detail Flagging..." + Color.ENDC)
     detailed_flagger = DetailedFlagger(measurement_set)
     detailed_flagger.get_bad_antennas('flux_calibration')
+    # CasaScriptRunner.run('/Users/Ravi/projects/artip/scripts/calibration.py')
