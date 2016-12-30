@@ -1,0 +1,1 @@
+mode=manual antenna=1,18 reason=BAD_ANTENNA

@@ -1,6 +1,7 @@
 import logging
-from configs.config import FLUX_CAL_CONFIG,DATASET
+from configs.config import FLUX_CAL_CONFIG, DATASET
 from configs.debugging_config import DEBUG_CONFIGS
+from casa.flag_reasons import BAD_ANTENNA
 from flaggers.closure_flagger import ClosureFlagger
 from flaggers.r_flagger import RFlagger
 from measurement_set import MeasurementSet
@@ -26,4 +27,4 @@ def main():
     logging.info(Color.HEADER + "Started Detail Flagging..." + Color.ENDC)
     detailed_flagger = DetailedFlagger(measurement_set)
     detailed_flagger.get_bad_antennas('flux_calibration')
-    # CasaScriptRunner.run('casa_scripts/calibration.py')
+    # CasaScriptRunner.flagdata(BAD_ANTENNA)
