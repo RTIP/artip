@@ -26,4 +26,4 @@ def main():
     logging.info(Color.HEADER + "Started Detail Flagging..." + Color.ENDC)
     detailed_flagger = DetailedFlagger(measurement_set)
     detailed_flagger.get_bad_antennas('flux_calibration')
-    # CasaScriptRunner.run('/Users/Ravi/projects/artip/scripts/calibration.py')
+    # CasaScriptRunner.run('scripts/calibration.py')
