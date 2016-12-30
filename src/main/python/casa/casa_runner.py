@@ -23,3 +23,8 @@ class CasaRunner:
         script_path = 'casa_scripts/flag.py'
         script_parameters = "{0} {1}".format(DATASET, reason)
         CasaRunner._run(script_path, script_parameters, CASAPY_CONFIG['path'])
+
+    @staticmethod
+    def apply_flux_calibration():
+        script_path = 'casa_scripts/calibration.py'
+        CasaRunner._run(script_path, DATASET, CASAPY_CONFIG['path'])
