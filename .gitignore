@@ -8,3 +8,4 @@ htmlcov/*
 .coverage
 *.last
 *.table
+casa_scripts/flags.txt

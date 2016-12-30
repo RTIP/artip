@@ -8,6 +8,10 @@ from models.phase_set import PhaseSet
 from models.antenna import Antenna
 from models.antenna_state import AntennaState
 from models.antenna_status import AntennaStatus
+from casa.flag_recorder import FlagRecorder
+from casa.flag_reasons import BAD_ANTENNA
+from terminal_color import Color
+from casa.casa_runner import CasaRunner
 
 
 class MeasurementSet:
@@ -95,6 +99,9 @@ class MeasurementSet:
             map(lambda time: quanta.time(quanta.quantity(time), form='dmy'), times_with_second)).flatten()
 
     def flag_antennas(self, polarization, scan_id, antenna_ids):
+        FlagRecorder.mark_entry(
+            {'mode': 'manual', 'antenna': antenna_ids[0], 'reason': BAD_ANTENNA, 'correlation': polarization,
+             'scan': scan_id})
         self.flag_data[polarization][scan_id]['antennas'] += antenna_ids
 
     def flag_baselines(self, polarization, scan_id, baselines):
@@ -108,3 +115,5 @@ class MeasurementSet:
                     logging.info("Flagging Antenna {0} of polarization={1} and scan id={2}".format(
                         antenna.id, state.polarization, state.scan_id))
                     self.flag_antennas(state.polarization, state.scan_id, [antenna.id])
+        CasaRunner.flagdata(BAD_ANTENNA)
+        logging.info(Color.HEADER + 'Flagged above antennas in CASA' + Color.ENDC)
