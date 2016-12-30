@@ -1,5 +1,5 @@
 import logging
-from configs.config import FLUX_CAL_CONFIG
+from configs.config import FLUX_CAL_CONFIG,DATASET
 from configs.debugging_config import DEBUG_CONFIGS
 from flaggers.closure_flagger import ClosureFlagger
 from flaggers.r_flagger import RFlagger
@@ -9,8 +9,8 @@ from report import Report
 from terminal_color import Color
 
 
-def main(ms_dataset):
-    measurement_set = MeasurementSet(ms_dataset)
+def main():
+    measurement_set = MeasurementSet(DATASET)
     if not DEBUG_CONFIGS['manual_flag']:
         logging.info(Color.HEADER + "Identifying bad Antennas based on angular dispersion in phases...\n" + Color.ENDC)
         r_flagger = RFlagger(measurement_set)
