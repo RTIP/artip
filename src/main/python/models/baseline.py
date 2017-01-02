@@ -6,6 +6,9 @@ class Baseline:
     def __repr__(self):
         return str(self.antenna1) + "-" + str(self.antenna2)
 
+    def __str__(self):
+        return str(self.antenna1) + "&" + str(self.antenna2)
+
     def __eq__(self, other):
         return other.__dict__ == self.__dict__
 

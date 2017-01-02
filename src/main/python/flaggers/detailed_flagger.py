@@ -1,11 +1,14 @@
 import itertools
 from helpers import *
 from helpers import Debugger
-from configs.config import ALL_CONFIGS,GLOBAL_CONFIG
+from configs.config import ALL_CONFIGS, GLOBAL_CONFIG
 from amplitude_matrix import AmplitudeMatrix
 from window import Window
 from configs.debugging_config import DEBUG_CONFIGS
 from terminal_color import Color
+from casa.flag_recorder import FlagRecorder
+from casa.flag_reasons import BAD_ANTENNA_TIME,BAD_BASELINE_TIME
+from casa.casa_runner import CasaRunner
 
 
 class DetailedFlagger:
@@ -39,23 +42,30 @@ class DetailedFlagger:
                 filtered_matrix = amp_matrix.filter_by_antenna(antenna)
                 if filtered_matrix.is_bad(ideal_median, ideal_mad):
                     print Color.FAIL, 'Antenna', antenna, ' is Bad running sliding Window on it', Color.ENDC
-                    self._identify_bad_time_window('Antenna', antenna, filtered_matrix.amplitude_data_matrix, ideal_mad,
-                                                   ideal_median, scan_times)
+                    self._flag_bad_time_window(BAD_ANTENNA_TIME, antenna, filtered_matrix.amplitude_data_matrix, ideal_mad,
+                                               ideal_median, scan_times, polarization)
+            # CasaRunner.flagdata(BAD_ANTENNA_TIME)
             print '---------------------------'
 
             print Color.HEADER, '\nRunning Sliding Window on All Baselines', Color.ENDC
             # Sliding Window for Baselines
             for (baseline, amplitudes) in amp_matrix.amplitude_data_matrix.items():
-                self._identify_bad_time_window('Baseline', baseline, {baseline: amplitudes}, ideal_mad, ideal_median,
-                                               scan_times)
+                self._flag_bad_time_window(BAD_BASELINE_TIME, baseline, {baseline: amplitudes}, ideal_mad, ideal_median,
+                                           scan_times,polarization)
+            # CasaRunner.flagdata(BAD_BASELINE_TIME)
             print '*************************************************'
 
-    def _identify_bad_time_window(self, element_type, element_id, data_set, ideal_mad, ideal_median, scan_times):
+    def _flag_bad_time_window(self, reason, element_id, data_set, ideal_mad, ideal_median, scan_times, polarization):
         sliding_window = Window(data_set)
         while True:
             window_matrix = sliding_window.slide()
             if window_matrix.is_empty() or sliding_window.reached_end_of_collection(): break
             if window_matrix.is_bad(ideal_median, ideal_mad):
                 start, end = sliding_window.current_position()
-                print Color.OKGREEN, element_type, '=', element_id, ' was bad between', scan_times[
-                    start], '[index=', start, '] and', scan_times[end], '[index=', end, ']', Color.ENDC
+                bad_timerange = scan_times[start], scan_times[end]
+                if reason == BAD_ANTENNA_TIME:
+                    self.measurement_set.flag_bad_antenna_time(polarization, element_id, bad_timerange)
+                    print Color.OKGREEN,'Antenna=', element_id, ' was bad between', scan_times[start], '[index=', start, '] and', scan_times[end], '[index=', end, ']', Color.ENDC
+                else:
+                    self.measurement_set.flag_bad_baseline_time(polarization, element_id, bad_timerange)
+                    print Color.OKGREEN, 'Baseline=', element_id, ' was bad between', scan_times[start], '[index=', start, '] and', scan_times[end], '[index=', end, ']', Color.ENDC
