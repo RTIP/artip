@@ -52,7 +52,10 @@ class DetailedFlagger:
             for (baseline, amplitudes) in amp_matrix.amplitude_data_matrix.items():
                 self._flag_bad_time_window(BAD_BASELINE_TIME, baseline, {baseline: amplitudes}, ideal_mad, ideal_median,
                                            scan_times,polarization)
-            # CasaRunner.flagdata(BAD_BASELINE_TIME)
+            print "Flagging"
+            # self.measurement_set.unlock()
+            CasaRunner.flagdata(BAD_BASELINE_TIME)
+            print "Flagged"
             print '*************************************************'
 
     def _flag_bad_time_window(self, reason, element_id, data_set, ideal_mad, ideal_median, scan_times, polarization):

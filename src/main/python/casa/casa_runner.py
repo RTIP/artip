@@ -4,11 +4,13 @@ import subprocess
 import time
 from datetime import datetime
 import logging
+import casac
 
 
 class CasaRunner:
     @staticmethod
     def _run(script, script_parameters=DATASET, casapy_path=CASAPY_CONFIG['path']):
+        CasaRunner._unlock_dataset(DATASET)
         script_full_path = os.path.realpath(script)
         command = "{0} --nologger --nogui -c {1} {2}".format(casapy_path, script_full_path, script_parameters)
         process = subprocess.Popen(command, stdin=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)
@@ -28,3 +30,9 @@ class CasaRunner:
     def apply_flux_calibration():
         script_path = 'casa_scripts/calibration.py'
         CasaRunner._run(script_path, DATASET, CASAPY_CONFIG['path'])
+
+    @staticmethod
+    def _unlock_dataset(dataset):
+        table = casac.casac.table()
+        table.open(dataset)
+        table.unlock()
