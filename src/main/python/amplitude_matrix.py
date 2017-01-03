@@ -1,3 +1,4 @@
+import logging
 from models.baseline import Baseline
 from helpers import *
 from configs.config import DETAIL_FLAG_CONFIG
@@ -79,8 +80,8 @@ class AmplitudeMatrix:
         deviated_median = self._deviated_median(ideal_median, ideal_mad, matrix_median)
         scattered_amplitude = self._scattered_amplitude(ideal_mad, matrix_mad)
         if deviated_median or scattered_amplitude:
-            print Color.UNDERLINE, "\nmatrix median=", matrix_median, ", matrix mad=", matrix_mad, Color.ENDC
-            print Color.WARNING, "median deviated=", deviated_median, ", amplitude scattered=", scattered_amplitude, Color.ENDC
+            logging.debug(Color.UNDERLINE+ "\nmatrix median="+ str(matrix_median)+ "+ matrix mad="+ str(matrix_mad)+ Color.ENDC)
+            logging.debug(Color.WARNING+ "median deviated="+ str(deviated_median)+ "+ amplitude scattered="+ str(scattered_amplitude)+ Color.ENDC)
         return deviated_median or scattered_amplitude
 
     def _deviated_median(self, ideal_median, ideal_mad, actual_median):

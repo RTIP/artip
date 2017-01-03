@@ -1,3 +1,4 @@
+import logging
 import itertools
 from helpers import *
 from helpers import Debugger
@@ -6,8 +7,7 @@ from amplitude_matrix import AmplitudeMatrix
 from window import Window
 from configs.debugging_config import DEBUG_CONFIGS
 from terminal_color import Color
-from casa.flag_recorder import FlagRecorder
-from casa.flag_reasons import BAD_ANTENNA_TIME,BAD_BASELINE_TIME
+from casa.flag_reasons import BAD_ANTENNA_TIME, BAD_BASELINE_TIME
 from casa.casa_runner import CasaRunner
 
 
@@ -21,6 +21,7 @@ class DetailedFlagger:
         scan_ids = self.measurement_set.scan_ids_for(source_config['field'])
 
         for polarization, scan_id in itertools.product(polarizations, scan_ids):
+            bad_antenna_time_present = False
             if DEBUG_CONFIGS['manual_flag']:
                 debugger = Debugger(self.measurement_set)
                 debugger.flag_antennas(polarization, scan_id)
@@ -31,9 +32,11 @@ class DetailedFlagger:
 
             ideal_median = amp_matrix.median()
             ideal_mad = amp_matrix.mad()
-            print '\n*************************************************'
-            print Color.BACKGROUD_WHITE, "Polarization =", polarization, " Scan Id=", scan_id, Color.ENDC
-            print Color.BACKGROUD_WHITE, "Ideal values = { median:", ideal_median, ", mad:", ideal_mad, " }", Color.ENDC
+            logging.info(
+                Color.BACKGROUD_WHITE + "Polarization =" + polarization + " Scan Id=" + str(scan_id) + Color.ENDC)
+            logging.debug(
+                    Color.BACKGROUD_WHITE + "Ideal values = { median:" + str(ideal_median) + ", mad:" + str(
+                        ideal_mad) + " }" + Color.ENDC)
 
             unflagged_antennaids = self.measurement_set.unflagged_antennaids(polarization, scan_id)
 
@@ -41,22 +44,26 @@ class DetailedFlagger:
             for antenna in unflagged_antennaids:
                 filtered_matrix = amp_matrix.filter_by_antenna(antenna)
                 if filtered_matrix.is_bad(ideal_median, ideal_mad):
-                    print Color.FAIL, 'Antenna', antenna, ' is Bad running sliding Window on it', Color.ENDC
-                    self._flag_bad_time_window(BAD_ANTENNA_TIME, antenna, filtered_matrix.amplitude_data_matrix, ideal_mad,
+                    bad_antenna_time_present = True
+                    logging.info(
+                        Color.FAIL + 'Antenna ' + str(antenna) + ' is Bad running sliding Window on it' + Color.ENDC)
+                    self._flag_bad_time_window(BAD_ANTENNA_TIME, antenna, filtered_matrix.amplitude_data_matrix,
+                                               ideal_mad,
                                                ideal_median, scan_times, polarization)
-            # CasaRunner.flagdata(BAD_ANTENNA_TIME)
-            print '---------------------------'
+                    logging.info(Color.HEADER + 'Completed sliding window on antenna=' + str(antenna) + Color.ENDC)
+            if bad_antenna_time_present:
+                CasaRunner.flagdata(BAD_ANTENNA_TIME)
+            else:
+                logging.info(Color.OKGREEN + 'No Bad Antennas were Found' + Color.ENDC)
 
-            print Color.HEADER, '\nRunning Sliding Window on All Baselines', Color.ENDC
+            logging.info(Color.HEADER + 'Running Sliding Window on All Baselines' + Color.ENDC)
             # Sliding Window for Baselines
             for (baseline, amplitudes) in amp_matrix.amplitude_data_matrix.items():
                 self._flag_bad_time_window(BAD_BASELINE_TIME, baseline, {baseline: amplitudes}, ideal_mad, ideal_median,
-                                           scan_times,polarization)
-            print "Flagging"
-            # self.measurement_set.unlock()
+                                           scan_times, polarization)
             CasaRunner.flagdata(BAD_BASELINE_TIME)
-            print "Flagged"
-            print '*************************************************'
+        logging.info(
+                "Completed detailed flagging on antennas and baselines, check" + Color.OKBLUE + ' casa_scripts/flags.txt' + Color.ENDC)
 
     def _flag_bad_time_window(self, reason, element_id, data_set, ideal_mad, ideal_median, scan_times, polarization):
         sliding_window = Window(data_set)
@@ -68,7 +75,9 @@ class DetailedFlagger:
                 bad_timerange = scan_times[start], scan_times[end]
                 if reason == BAD_ANTENNA_TIME:
                     self.measurement_set.flag_bad_antenna_time(polarization, element_id, bad_timerange)
-                    print Color.OKGREEN,'Antenna=', element_id, ' was bad between', scan_times[start], '[index=', start, '] and', scan_times[end], '[index=', end, ']', Color.ENDC
+                    logging.debug('Antenna=' + str(element_id) + ' was bad between' + scan_times[
+                        start] + '[index=' + str(start) + '] and' + scan_times[end] + '[index=' + str(end) + ']')
                 else:
                     self.measurement_set.flag_bad_baseline_time(polarization, element_id, bad_timerange)
-                    print Color.OKGREEN, 'Baseline=', element_id, ' was bad between', scan_times[start], '[index=', start, '] and', scan_times[end], '[index=', end, ']', Color.ENDC
+                    logging.debug('Baseline=' + str(element_id) + ' was bad between' + scan_times[
+                        start] + '[index=' + str(start) + '] and' + scan_times[end] + '[index=' + str(end) + ']')
