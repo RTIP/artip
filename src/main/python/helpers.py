@@ -4,7 +4,7 @@ from configs.debugging_config import DEBUG_FLAG_ELEMENTS
 
 
 def calculate_median(list):
-    return numpy.median(numpy.array(list))
+    return numpy.nanmedian(numpy.array(list))
 
 
 def minus(list1, list2):

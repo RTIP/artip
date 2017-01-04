@@ -69,7 +69,8 @@ class AmplitudeMatrix:
         return calculate_median(self.amplitude_data_matrix.values())
 
     def mad(self):
-        return median_absolute_deviation(self.amplitude_data_matrix.values())
+        matrix = self.amplitude_data_matrix.values()
+        return numpy.nanmedian(abs(matrix - numpy.nanmedian(matrix)))
 
     def is_empty(self):
         return len(numpy.array(self.amplitude_data_matrix.values()).flatten()) == 0
