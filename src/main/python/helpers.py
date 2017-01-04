@@ -17,6 +17,8 @@ def delete_indexes(array, indexes):
         result = numpy.delete(array, time_index, 0) if index == 0 else numpy.delete(result, time_index - 1, 0)
     return result
 
+def is_nan(array):
+    return all(numpy.isnan(amp) for amp in numpy.array(array).flatten())
 
 class Debugger:
     def __init__(self, measurement_set):

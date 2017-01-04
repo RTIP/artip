@@ -99,11 +99,12 @@ class MeasurementSet:
             map(lambda time: quanta.time(quanta.quantity(time), form='ymd'), times_with_second)).flatten()
 
     def flag_antennas(self, polarization, scan_id, antenna_ids):
-        FlagRecorder.mark_entry(
-            {'mode': 'manual', 'antenna': ','.join(map(lambda antenna_id: str(antenna_id), antenna_ids)),
-             'reason': BAD_ANTENNA, 'correlation': polarization,
-             'scan': scan_id})
-        self.flag_data[polarization][scan_id]['antennas'] += antenna_ids
+        if antenna_ids:
+            FlagRecorder.mark_entry(
+                {'mode': 'manual', 'antenna': ','.join(map(lambda antenna_id: str(antenna_id), antenna_ids)),
+                 'reason': BAD_ANTENNA, 'correlation': polarization,
+                 'scan': scan_id})
+            self.flag_data[polarization][scan_id]['antennas'] += antenna_ids
 
     def flag_baselines(self, polarization, scan_id, baselines):
         self.flag_data[polarization][scan_id]['baselines'] += baselines

@@ -38,10 +38,10 @@ class DetailedFlagger:
                     Color.BACKGROUD_WHITE + "Ideal values = { median:" + str(ideal_median) + ", mad:" + str(
                         ideal_mad) + " }" + Color.ENDC)
 
-            unflagged_antennaids = self.measurement_set.unflagged_antennaids(polarization, scan_id)
+            # unflagged_antennaids = self.measurement_set.unflagged_antennaids(polarization, scan_id)
 
             # Sliding Window for Bad Antennas
-            for antenna in unflagged_antennaids:
+            for antenna in self.measurement_set.antennaids():
                 filtered_matrix = amp_matrix.filter_by_antenna(antenna)
                 if filtered_matrix.is_bad(ideal_median, ideal_mad):
                     bad_antenna_time_present = True

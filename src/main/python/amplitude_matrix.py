@@ -40,12 +40,22 @@ class AmplitudeMatrix:
                     'scan_number': self._scan_id
                 }
 
-                amplitude_data = self._measurement_set.get_data({'start': self._channel}, self._polarization,
-                                                                filters, ['corrected_amplitude'])[
-                    'corrected_amplitude'][0][0]
+                data = self._measurement_set.get_data({'start': self._channel}, self._polarization,
+                                                                filters, ['corrected_amplitude', 'flag_row'])
+
+                amplitude_data = self._mask_flagged_data_with_nan(data)
+
                 baseline = Baseline(primary_antenna, secondary_antenna)
                 amplitude_data_matrix[baseline] = amplitude_data
         return amplitude_data_matrix
+
+    def _mask_flagged_data_with_nan(self, data):
+        amplitude_data = data['corrected_amplitude'][0][0]
+        flagged_rows = data['flag_row']
+        for idx, amp in enumerate(amplitude_data):
+            if flagged_rows[idx]:
+                amplitude_data[idx] = numpy.nan
+        return amplitude_data
 
     def filter_by_antenna(self, antenna_id):
         antenna_matrix = dict((baseline, amp_data) for baseline, amp_data in self.amplitude_data_matrix.iteritems() if
@@ -66,11 +76,13 @@ class AmplitudeMatrix:
         return len(self.amplitude_data_matrix[list(self.amplitude_data_matrix)[0]])
 
     def median(self):
+        if is_nan(self.amplitude_data_matrix.values()): return numpy.nan
         return calculate_median(self.amplitude_data_matrix.values())
 
     def mad(self):
+        if is_nan(self.amplitude_data_matrix.values()): return numpy.nan
         matrix = self.amplitude_data_matrix.values()
-        return numpy.nanmedian(abs(matrix - numpy.nanmedian(matrix)))
+        return numpy.nanmedian(abs(numpy.array(matrix) - numpy.nanmedian(matrix)))
 
     def is_empty(self):
         return len(numpy.array(self.amplitude_data_matrix.values()).flatten()) == 0
@@ -78,11 +90,13 @@ class AmplitudeMatrix:
     def is_bad(self, ideal_median, ideal_mad):
         matrix_median = self.median()
         matrix_mad = self.mad()
+        if numpy.isnan(matrix_median) or numpy.isnan(matrix_mad): return True
+
         deviated_median = self._deviated_median(ideal_median, ideal_mad, matrix_median)
         scattered_amplitude = self._scattered_amplitude(ideal_mad, matrix_mad)
         if deviated_median or scattered_amplitude:
-            logging.debug(Color.UNDERLINE+ "\nmatrix median="+ str(matrix_median)+ "+ matrix mad="+ str(matrix_mad)+ Color.ENDC)
-            logging.debug(Color.WARNING+ "median deviated="+ str(deviated_median)+ "+ amplitude scattered="+ str(scattered_amplitude)+ Color.ENDC)
+            logging.debug(Color.UNDERLINE+ "\nmatrix median="+ str(matrix_median)+ ", matrix mad="+ str(matrix_mad)+ Color.ENDC)
+            logging.debug(Color.WARNING+ "median deviated="+ str(deviated_median)+ ", amplitude scattered="+ str(scattered_amplitude)+ Color.ENDC)
         return deviated_median or scattered_amplitude
 
     def _deviated_median(self, ideal_median, ideal_mad, actual_median):
