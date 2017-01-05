@@ -120,14 +120,14 @@ class MeasurementSet:
         CasaRunner.flagdata(BAD_ANTENNA)
         logging.info(Color.HEADER + 'Flagged above antennas in CASA' + Color.ENDC)
 
-    def flag_bad_antenna_time(self, polarization, antenna_id, timerange):
+    def flag_bad_antenna_time(self, polarization, scan_id, antenna_id, timerange):
         FlagRecorder.mark_entry(
             {'mode': 'manual', 'antenna': antenna_id, 'reason': BAD_ANTENNA_TIME, 'correlation': polarization,
-             'timerange': '~'.join(timerange)})
+             'scan': scan_id, 'timerange': '~'.join(timerange)})
         # self.flag_data[polarization][scan_id]['antennas'] += antenna_ids
 
-    def flag_bad_baseline_time(self, polarization, baseline, timerange):
+    def flag_bad_baseline_time(self, polarization, scan_id, baseline, timerange):
         FlagRecorder.mark_entry(
             {'mode': 'manual', 'antenna': str(baseline), 'reason': BAD_BASELINE_TIME, 'correlation': polarization,
-             'timerange': '~'.join(timerange)})
+             'scan': scan_id, 'timerange': '~'.join(timerange)})
         # self.flag_data[polarization][scan_id]['antennas'] += antenna_ids
