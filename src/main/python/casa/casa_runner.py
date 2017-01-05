@@ -14,11 +14,8 @@ class CasaRunner:
         script_full_path = os.path.realpath(script)
         command = "{0} --nologger --nogui -c {1} {2}".format(casapy_path, script_full_path, script_parameters)
         process = subprocess.Popen(command, stdin=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)
-        logging.debug("Casapy Process Started at {0}".format(str(datetime.now())))
-        logging.debug("process Id= {0}".format(process.pid))
         while process.poll() is None:
             time.sleep(0.5)
-        logging.debug("Casapy Process Completed at {0}".format(str(datetime.now())))
 
     @staticmethod
     def flagdata(reason):

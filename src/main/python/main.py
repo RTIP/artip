@@ -1,4 +1,5 @@
 import logging
+import datetime
 from configs.config import FLUX_CAL_CONFIG, DATASET
 from configs.debugging_config import DEBUG_CONFIGS
 from casa.flag_reasons import BAD_ANTENNA
@@ -12,6 +13,7 @@ from casa.casa_runner import CasaRunner
 
 
 def main():
+    start_time = datetime.datetime.now()
     measurement_set = MeasurementSet(DATASET)
     if not DEBUG_CONFIGS['manual_flag']:
         logging.info(Color.HEADER + "Identifying bad Antennas based on angular dispersion in phases...\n" + Color.ENDC)
@@ -30,3 +32,5 @@ def main():
     logging.info(Color.HEADER + "Started Detail Flagging..." + Color.ENDC)
     detailed_flagger = DetailedFlagger(measurement_set)
     detailed_flagger.get_bad_antennas('flux_calibration')
+    end_time = datetime.datetime.now()
+    logging.info(Color.UNDERLINE + 'Total time =' + str(abs((end_time - start_time).seconds)) + " seconds" + Color.ENDC)
