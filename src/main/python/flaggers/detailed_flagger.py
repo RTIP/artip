@@ -39,11 +39,7 @@ class DetailedFlagger:
             amp_matrix = AmplitudeMatrix(self.measurement_set, polarization, scan_id, source_config['channel'])
             ideal_median = amp_matrix.median()
             ideal_mad = amp_matrix.mad()
-            logging.info(
-                Color.BACKGROUD_WHITE + "Polarization =" + polarization + " Scan Id=" + str(scan_id) + Color.ENDC)
-            logging.debug(
-                Color.BACKGROUD_WHITE + "Ideal values = { median:" + str(ideal_median) + ", mad:" + str(
-                    ideal_mad) + " }" + Color.ENDC)
+            self._print_polarization_details(ideal_mad, ideal_median, polarization, scan_id)
 
             unflagged_antennaids = self.measurement_set.unflagged_antennaids(polarization, scan_id)
 
@@ -60,6 +56,8 @@ class DetailedFlagger:
         if bad_antenna_time_present:
             logging.info(Color.HEADER + 'Flagging Bad Antenna Time in CASA' + Color.ENDC)
             CasaRunner.flagdata(BAD_ANTENNA_TIME)
+            logging.info(Color.HEADER + 'Applying Flux Calibration' + Color.ENDC)
+            CasaRunner.apply_flux_calibration()
         else:
             logging.info(Color.OKGREEN + 'No Bad Antennas were Found' + Color.ENDC)
 
@@ -70,11 +68,7 @@ class DetailedFlagger:
             ideal_median = amp_matrix.median()
             ideal_mad = amp_matrix.mad()
             scan_times = self.measurement_set.timesforscan(scan_id)
-            logging.debug(
-                Color.BACKGROUD_WHITE + "Polarization =" + polarization + " Scan Id=" + str(scan_id) + Color.ENDC)
-            logging.debug(
-                Color.BACKGROUD_WHITE + "Ideal values = { median:" + str(ideal_median) + ", mad:" + str(
-                    ideal_mad) + " }" + Color.ENDC)
+            self._print_polarization_details(ideal_mad, ideal_median, polarization, scan_id)
 
             # Sliding Window for Baselines
             for (baseline, amplitudes) in amp_matrix.amplitude_data_matrix.items():
@@ -82,6 +76,8 @@ class DetailedFlagger:
                                            scan_times, polarization, scan_id)
         logging.info(Color.HEADER + 'Flagging Bad Baselines Time in CASA' + Color.ENDC)
         CasaRunner.flagdata(BAD_BASELINE_TIME)
+        logging.info(Color.HEADER + 'Applying Flux Calibration' + Color.ENDC)
+        CasaRunner.apply_flux_calibration()
 
     def _flag_bad_time_window(self, reason, element_id, data_set, ideal_mad, ideal_median, scan_times, polarization,
                               scan_id):
@@ -100,3 +96,10 @@ class DetailedFlagger:
                     self.measurement_set.flag_bad_baseline_time(polarization, scan_id, element_id, bad_timerange)
                     logging.debug('Baseline=' + str(element_id) + ' was bad between' + scan_times[
                         start] + '[index=' + str(start) + '] and' + scan_times[end] + '[index=' + str(end) + ']\n')
+
+    def _print_polarization_details(self, ideal_mad, ideal_median, polarization, scan_id):
+        logging.info(
+            Color.BACKGROUD_WHITE + "Polarization =" + polarization + " Scan Id=" + str(scan_id) + Color.ENDC)
+        logging.debug(
+            Color.BACKGROUD_WHITE + "Ideal values = { median:" + str(ideal_median) + ", mad:" + str(
+                ideal_mad) + " }" + Color.ENDC)
