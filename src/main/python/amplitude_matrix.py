@@ -41,7 +41,7 @@ class AmplitudeMatrix:
                 }
 
                 data = self._measurement_set.get_data({'start': self._channel}, self._polarization,
-                                                                filters, ['corrected_amplitude', 'flag_row'])
+                                                      filters, ['corrected_amplitude', 'flag'])
 
                 amplitude_data = self._mask_flagged_data_with_nan(data)
 
@@ -51,7 +51,7 @@ class AmplitudeMatrix:
 
     def _mask_flagged_data_with_nan(self, data):
         amplitude_data = data['corrected_amplitude'][0][0]
-        flagged_rows = data['flag_row']
+        flagged_rows = data['flag'][0][0]
         for idx, amp in enumerate(amplitude_data):
             if flagged_rows[idx]:
                 amplitude_data[idx] = numpy.nan
@@ -90,13 +90,15 @@ class AmplitudeMatrix:
     def is_bad(self, ideal_median, ideal_mad):
         matrix_median = self.median()
         matrix_mad = self.mad()
-        if numpy.isnan(matrix_median) or numpy.isnan(matrix_mad): return True
+        if numpy.isnan(matrix_median) or numpy.isnan(matrix_mad): return False
 
         deviated_median = self._deviated_median(ideal_median, ideal_mad, matrix_median)
         scattered_amplitude = self._scattered_amplitude(ideal_mad, matrix_mad)
         if deviated_median or scattered_amplitude:
-            logging.debug(Color.UNDERLINE+ "matrix median="+ str(matrix_median)+ ", matrix mad="+ str(matrix_mad)+ Color.ENDC)
-            logging.debug(Color.WARNING+ "median deviated="+ str(deviated_median)+ ", amplitude scattered="+ str(scattered_amplitude)+ Color.ENDC)
+            logging.debug(Color.UNDERLINE + "matrix median=" + str(matrix_median) + ", matrix mad=" + str(
+                matrix_mad) + Color.ENDC)
+            logging.debug(Color.WARNING + "median deviated=" + str(deviated_median) + ", amplitude scattered=" + str(
+                scattered_amplitude) + Color.ENDC)
         return deviated_median or scattered_amplitude
 
     def _deviated_median(self, ideal_median, ideal_mad, actual_median):

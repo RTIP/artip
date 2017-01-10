@@ -2,6 +2,7 @@ import itertools
 import logging
 import casac
 import numpy
+from datetime import datetime, timedelta
 from configs.config import GLOBAL_CONFIG
 from helpers import minus
 from models.phase_set import PhaseSet
@@ -120,14 +121,23 @@ class MeasurementSet:
         CasaRunner.flagdata(BAD_ANTENNA)
         logging.info(Color.HEADER + 'Flagged above antennas in CASA' + Color.ENDC)
 
+    def _get_timerange_for_flagging(self, timerange):
+        datetime_format = '%Y/%m/%d/%H:%M:%S'
+        time_delta = timedelta(seconds=1)
+        start = datetime.strptime(timerange[0], datetime_format)
+        end = datetime.strptime(timerange[1], datetime_format)
+        start_with_delta = datetime.strftime(start - time_delta, datetime_format)
+        end_with_delta = datetime.strftime(end + time_delta, datetime_format)
+        return start_with_delta, end_with_delta
+
     def flag_bad_antenna_time(self, polarization, scan_id, antenna_id, timerange):
+        timerange_for_flagging = self._get_timerange_for_flagging(timerange)
         FlagRecorder.mark_entry(
             {'mode': 'manual', 'antenna': antenna_id, 'reason': BAD_ANTENNA_TIME, 'correlation': polarization,
-             'scan': scan_id, 'timerange': '~'.join(timerange)})
-        # self.flag_data[polarization][scan_id]['antennas'] += antenna_ids
+             'scan': scan_id, 'timerange': '~'.join(timerange_for_flagging)})
 
     def flag_bad_baseline_time(self, polarization, scan_id, baseline, timerange):
+        timerange_for_flagging = self._get_timerange_for_flagging(timerange)
         FlagRecorder.mark_entry(
             {'mode': 'manual', 'antenna': str(baseline), 'reason': BAD_BASELINE_TIME, 'correlation': polarization,
-             'scan': scan_id, 'timerange': '~'.join(timerange)})
-        # self.flag_data[polarization][scan_id]['antennas'] += antenna_ids
+             'scan': scan_id, 'timerange': '~'.join(timerange_for_flagging)})
