@@ -18,3 +18,4 @@ flux_calibration:
 
 casapy:
     path: '/Applications/CASA.app/Contents/MacOS/casapy'
+    model_path: '/Applications/CASA.app/Contents/data/nrao/VLA/CalModels'

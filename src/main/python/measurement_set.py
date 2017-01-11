@@ -3,7 +3,7 @@ import logging
 import casac
 import numpy
 from datetime import datetime, timedelta
-from configs.config import GLOBAL_CONFIG
+from configs.config import GLOBAL_CONFIG, FLUX_CAL_CONFIG
 from helpers import minus
 from models.phase_set import PhaseSet
 from models.antenna import Antenna
@@ -46,6 +46,13 @@ class MeasurementSet:
 
     def get_phase_data(self, channel, polarization, filters={}):
         return PhaseSet(self.get_data(channel, polarization, filters, ['phase'])['phase'][0][0])
+
+    def run_setjy(self):
+        field_name = self._get_field_name_for(FLUX_CAL_CONFIG['field'])
+        CasaRunner.setjy(field_name)
+
+    def _get_field_name_for(self, field_id):
+        return self.__metadata.fieldnames()[field_id]
 
     def scan_ids_for(self, source_id):
         try:
