@@ -4,6 +4,7 @@ global:
 
 flux_calibration:
     field: 0
+    spw: 0
     channel: 100
     r_threshold: 0.3
     percentage_threshold_for_min_doubtful_antennas: 30
@@ -15,6 +16,11 @@ flux_calibration:
         bucket_size: 10
         overlap: 5
       mad_scale_factor: 2
+    r_flag:
+      freqdevscale: 3.0
+      timedevscale: 3.0
+      growtime: 70.0
+      growfreq: 90.0
 
 casapy:
     path: '/Applications/CASA.app/Contents/MacOS/casapy'

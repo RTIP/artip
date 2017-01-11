@@ -1,4 +1,4 @@
-from configs.config import DATASET, CASAPY_CONFIG, FLUX_CAL_CONFIG
+from configs.config import ALL_CONFIGS,FLUX_CAL_CONFIG, DATASET, CASAPY_CONFIG
 import os
 import subprocess
 import time
@@ -21,12 +21,25 @@ class CasaRunner:
     def flagdata(reason):
         script_path = 'casa_scripts/flag.py'
         script_parameters = "{0} {1}".format(DATASET, reason)
-        CasaRunner._run(script_path, script_parameters, CASAPY_CONFIG['path'])
+        CasaRunner._run(script_path, script_parameters)
 
     @staticmethod
     def apply_flux_calibration():
         script_path = 'casa_scripts/calibration.py'
         CasaRunner._run(script_path, DATASET, CASAPY_CONFIG['path'])
+
+    @staticmethod
+    def r_flag(source):
+        source_config = ALL_CONFIGS[source]
+        r_flag_config = source_config['r_flag']
+        script_path = 'casa_scripts/r_flag.py'
+        script_parameters = "{0} {1} {2} {3} {4} {5} {6}".format(DATASET, source_config['field'],
+                                                                 source_config['spw'],
+                                                                 r_flag_config['freqdevscale'],
+                                                                 r_flag_config['timedevscale'],
+                                                                 r_flag_config['growfreq'],
+                                                                 r_flag_config['growtime'])
+        CasaRunner._run(script_path, script_parameters)
 
     @staticmethod
     def _unlock_dataset(dataset):
