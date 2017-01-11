@@ -122,8 +122,6 @@ class MeasurementSet:
             for state in antenna.get_states():
                 if state.scan_id in self._scan_ids() and (
                                 state.get_R_phase_status() == AntennaStatus.BAD and state.get_closure_phase_status() == AntennaStatus.BAD):
-                    logging.info("Flagging Antenna {0} of polarization={1} and scan id={2}".format(
-                        antenna.id, state.polarization, state.scan_id))
                     self.flag_antennas(state.polarization, state.scan_id, [antenna.id])
         CasaRunner.flagdata(BAD_ANTENNA)
         logging.info(Color.HEADER + 'Flagged above antennas in CASA' + Color.ENDC)
