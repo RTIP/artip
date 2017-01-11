@@ -9,9 +9,9 @@ from terminal_color import Color
 def main():
     start_time = datetime.datetime.now()
     measurement_set = MeasurementSet(DATASET)
-    measurement_set.run_setjy()
 
     flux_calibrator = FluxCalibrator(measurement_set)
+    flux_calibrator.run_setjy()
     sources = [flux_calibrator]
 
     for source in sources:

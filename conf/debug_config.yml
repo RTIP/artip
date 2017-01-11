@@ -1,5 +1,5 @@
 # These configs are used only in development/debugging
-manual_flag: true
+manual_flag: false
 log_level: 20
 #debug: 10, info: 20, warning: 30, error: 40, critical: 50
 

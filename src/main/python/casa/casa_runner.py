@@ -1,4 +1,4 @@
-from configs.config import ALL_CONFIGS,FLUX_CAL_CONFIG, DATASET, CASAPY_CONFIG
+from configs.config import ALL_CONFIGS, DATASET, CASAPY_CONFIG
 import os
 import subprocess
 import time
@@ -48,12 +48,11 @@ class CasaRunner:
         table.unlock()
 
     @staticmethod
-    def setjy(field_name):
+    def setjy(source_id, source_name):
         logging.info(Color.HEADER + 'Running setjy on Flux calibrator' + Color.ENDC)
         script_path = 'casa_scripts/setjy.py'
-        field = FLUX_CAL_CONFIG['field']
         freq_band = "L"
-        model_path =   "{0}/{1}_{2}.im".format(CASAPY_CONFIG['model_path'], field_name, freq_band)
-        script_parameters = "{0} {1} {2}".format(DATASET, field, model_path)
+        model_path = "{0}/{1}_{2}.im".format(CASAPY_CONFIG['model_path'], source_name, freq_band)
+        script_parameters = "{0} {1} {2}".format(DATASET, source_id, model_path)
         CasaRunner._run(script_path, script_parameters, CASAPY_CONFIG['path'])
 

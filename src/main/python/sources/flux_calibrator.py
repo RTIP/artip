@@ -13,20 +13,27 @@ from terminal_color import Color
 
 class FluxCalibrator(Source):
     def __init__(self, measurement_set):
-        super(FluxCalibrator, self).__init__(measurement_set, 'flux_calibration')
+        self.source_type = 'flux_calibration'
+        self.config = ALL_CONFIGS[self.source_type]
+        self.source_id = self.config['field']
+        self.source_name = measurement_set.get_field_name_for(self.source_id)
+        super(FluxCalibrator, self).__init__(measurement_set, self.source_name)
+
+    def run_setjy(self):
+        CasaRunner.setjy(self.source_id, self.source_name)
 
     def flag_and_calibrate(self):
         if not DEBUG_CONFIGS['manual_flag']:
             logging.info(
-                Color.HEADER + "Identifying bad Antennas based on angular dispersion in phases...\n" + Color.ENDC)
-            r_analyser = AngularDispersion(self.measurement_set, self.source_name)
+                    Color.HEADER + "Identifying bad Antennas based on angular dispersion in phases...\n" + Color.ENDC)
+            r_analyser = AngularDispersion(self.measurement_set, self.source_type)
             r_analyser.identify_antennas_status()
 
             logging.info(Color.HEADER + "Identifying bad Antennas based closure phases...\n" + Color.ENDC)
-            closure_analyser = ClosureAnalyser(self.measurement_set, self.source_name)
+            closure_analyser = ClosureAnalyser(self.measurement_set, self.source_type)
             closure_analyser.identify_antennas_status()
 
-            scan_ids = self.measurement_set.scan_ids_for(ALL_CONFIGS[self.source_name]['field'])
+            scan_ids = self.measurement_set.scan_ids_for(self.source_id)
             Report(self.measurement_set.antennas).generate_report(scan_ids)
 
             logging.info(Color.HEADER + "Flagging R and Closure based bad antennas..." + Color.ENDC)
