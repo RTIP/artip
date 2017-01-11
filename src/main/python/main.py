@@ -1,31 +1,34 @@
-import logging
 import datetime
-from configs.config import FLUX_CAL_CONFIG, DATASET
-from configs.debugging_config import DEBUG_CONFIGS
-from flaggers.closure_flagger import ClosureFlagger
-from flaggers.r_flagger import RFlagger
-from measurement_set import MeasurementSet
-from flaggers.detailed_flagger import DetailedFlagger
-from report import Report
-from terminal_color import Color
+import logging
+
 from casa.casa_runner import CasaRunner
+from configs.config import ALL_CONFIGS, DATASET
+from configs.debugging_config import DEBUG_CONFIGS
+from flaggers.detailed_flagger import DetailedFlagger
+from measurement_set import MeasurementSet
+from report import Report
+from src.main.python.analysers.closure_phases import ClosureAnalyser
+from src.main.python.analysers.angular_dispersion import AngularDispersion
+from terminal_color import Color
 
 
 def main():
     start_time = datetime.datetime.now()
     measurement_set = MeasurementSet(DATASET)
     measurement_set.run_setjy()
+    source = 'flux_calibration'
     if not DEBUG_CONFIGS['manual_flag']:
         logging.info(Color.HEADER + "Identifying bad Antennas based on angular dispersion in phases...\n" + Color.ENDC)
-        r_flagger = RFlagger(measurement_set)
-        r_flagger.get_bad_baselines('flux_calibration')
+        r_analyser = AngularDispersion(measurement_set, source)
+        r_analyser.identify_antennas_status()
 
         logging.info(Color.HEADER + "Identifying bad Antennas based closure phases...\n" + Color.ENDC)
-        closure_flagger = ClosureFlagger(measurement_set)
-        closure_flagger.get_bad_baselines()
+        closure_analyser = ClosureAnalyser(measurement_set, source)
+        closure_analyser.identify_antennas_status()
 
-        scan_ids = measurement_set.scan_ids_for(FLUX_CAL_CONFIG['field'])
+        scan_ids = measurement_set.scan_ids_for(ALL_CONFIGS[source]['field'])
         Report(measurement_set.antennas).generate_report(scan_ids)
+
         logging.info(Color.HEADER + "Flagging R and Closure based bad antennas..." + Color.ENDC)
         measurement_set.flag_r_and_closure_based_bad_antennas()
 

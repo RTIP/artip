@@ -3,7 +3,7 @@ import logging
 import casac
 import numpy
 from datetime import datetime, timedelta
-from configs.config import GLOBAL_CONFIG, FLUX_CAL_CONFIG
+from configs.config import GLOBAL_CONFIG, FLUX_CAL_CONFIG, ALL_CONFIGS
 from helpers import minus
 from models.phase_set import PhaseSet
 from models.antenna import Antenna

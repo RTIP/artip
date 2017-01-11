@@ -1,16 +1,16 @@
 import itertools
 
-from flagger import Flagger
-from configs.config import GLOBAL_CONFIG, FLUX_CAL_CONFIG
+from src.main.python.analysers.analyser import Analyser
+from configs.config import GLOBAL_CONFIG
 from scipy import stats
 from closure_phase_util import ClosurePhaseUtil
 
 from models.antenna_status import AntennaStatus
 
 
-class ClosureFlagger(Flagger):
-    def __init__(self, measurement_set):
-        super(ClosureFlagger, self).__init__(measurement_set)
+class ClosureAnalyser(Analyser):
+    def __init__(self, measurement_set, source):
+        super(ClosureAnalyser, self).__init__(measurement_set, source)
         self.__closure_util = ClosurePhaseUtil()
 
     def _initial_level_screening(self, antennas, doubtful_antenna_ids, good_antenna_ids, dd, polarization, scan_id):
@@ -87,16 +87,13 @@ class ClosureFlagger(Flagger):
         antenna_tuple_ids = (antenna_tuple[0].id, antenna_tuple[1].id, antenna_tuple[2].id)
         closure_phase_array = self.__closure_util.closurePhTriads(antenna_tuple_ids, dd)
         percentileofscore = stats.percentileofscore(abs(closure_phase_array[0][0]),
-                                                    FLUX_CAL_CONFIG['closure_threshold'])
+                                                    self.source_config['closure_threshold'])
         return percentileofscore > \
-               FLUX_CAL_CONFIG['percentile_threshold']
+               self.source_config['percentile_threshold']
 
-    def get_bad_baselines(self):
-        return self._closure_based_antenna_status()
-
-    def _closure_based_antenna_status(self):
+    def identify_antennas_status(self):
         antennas = self.measurement_set.antennas
-        scan_ids = self.measurement_set.scan_ids_for(FLUX_CAL_CONFIG['field'])
+        scan_ids = self.measurement_set.scan_ids_for(self.source_config['field'])
 
         polarization_scan_id_combination = itertools.product(GLOBAL_CONFIG['polarizations'], scan_ids)
 
@@ -104,7 +101,7 @@ class ClosureFlagger(Flagger):
             good_antennas = set([])
             doubtful_antennas = set([])
             bad_antennas = set([])
-            data = self.measurement_set.get_data({'start': FLUX_CAL_CONFIG['channel']}, polarization,
+            data = self.measurement_set.get_data({'start': self.source_config['channel']}, polarization,
                                                  {'scan_number': scan_id},
                                                  ["antenna1", "antenna2", "phase"], True)
 

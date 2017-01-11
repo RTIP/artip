@@ -1,28 +1,25 @@
 from itertools import product
-from flagger import Flagger
-from r_matrix import RMatrix
-from configs.config import ALL_CONFIGS,GLOBAL_CONFIG
+from src.main.python.analysers.analyser import Analyser
+from src.main.python.flaggers.r_matrix import RMatrix
+from configs.config import ALL_CONFIGS, GLOBAL_CONFIG
 from models.antenna_status import AntennaStatus
 
 
-class RFlagger(Flagger):
-    def __init__(self, measurement_set):
-        super(RFlagger, self).__init__(measurement_set)
+class AngularDispersion(Analyser):
+    def __init__(self, measurement_set, source):
+        super(AngularDispersion, self).__init__(measurement_set, source)
 
-    def get_bad_baselines(self, source):
-        return self._r_based_bad_baselines(source)
-
-    def _r_based_bad_baselines(self, source):
+    def identify_antennas_status(self):
         polarizations = GLOBAL_CONFIG['polarizations']
-        source_config = ALL_CONFIGS[source]
-        scan_ids = self.measurement_set.scan_ids_for(source_config['field'])
+        scan_ids = self.measurement_set.scan_ids_for(self.source_config['field'])
         base_antenna = self.measurement_set.antennas[0]
 
         for polarization, scan_id in product(polarizations, scan_ids):
             r_matrix = RMatrix(polarization, scan_id)
-            self.identify_antennas(polarization, scan_id, source_config, base_antenna, r_matrix, set())
+            history = set()
+            self._mark_antennas_status(polarization, scan_id, self.source_config, base_antenna, r_matrix, history)
 
-    def identify_antennas(self, polarization, scan_id, source_config, base_antenna, r_matrix, history):
+    def _mark_antennas_status(self, polarization, scan_id, source_config, base_antenna, r_matrix, history):
         channel = source_config['channel']
         r_threshold = source_config['r_threshold']
         number_of_antennas = self.measurement_set.antenna_count()
@@ -59,5 +56,5 @@ class RFlagger(Flagger):
         history.add(base_antenna)
 
         for doubtful_antenna in doubtful_antennas:
-            self.identify_antennas(polarization, scan_id, source_config,
-                                                      doubtful_antenna, r_matrix, history)
+            self._mark_antennas_status(polarization, scan_id, source_config,
+                                       doubtful_antenna, r_matrix, history)

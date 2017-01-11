@@ -1,12 +1,11 @@
 import unittest
-from unittest import TestCase
 from configs.config import GLOBAL_CONFIG,FLUX_CAL_CONFIG
 from mock import Mock, mock, call
-from models.phase_set import PhaseSet
-
 from models.baseline import Baseline
+from models.phase_set import PhaseSet
+from unittest import TestCase
 
-from flaggers.r_flagger import RFlagger
+from src.main.python.analysers.angular_dispersion import AngularDispersion
 
 
 class RFlaggerTest(TestCase):
@@ -21,13 +20,13 @@ class RFlaggerTest(TestCase):
 
     @unittest.skip("Disabled")
     def test_get_bad_baselines_should_return_bad_baselines(self):
-        flagger = RFlagger(self.mocked_ms)
+        flagger = AngularDispersion(self.mocked_ms)
 
         self.mocked_ms.scan_ids_for.return_value = [1]
         self.mocked_ms.baselines.return_value = [(0, 1), (0, 2)]
         self.mocked_ms.get_phase_data.side_effect = [self.dispersed_phase_set, self.non_dispersed_phase_set]
 
-        actual_bad_baselines = flagger.get_bad_baselines()
+        actual_bad_baselines = flagger.identify_antennas_status()
 
         filter_params1 = {'scan_number': 1, 'antenna1': 0, 'antenna2': 1}
         filter_params2 = {'scan_number': 1, 'antenna1': 0, 'antenna2': 2}
