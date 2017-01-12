@@ -5,4 +5,3 @@ log_level: 20
 
 flagged:
   antennas: [1,18]
-  baselines: []

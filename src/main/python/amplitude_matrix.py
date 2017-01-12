@@ -17,7 +17,6 @@ class AmplitudeMatrix:
 
     def _generate_matrix(self):
         antennaids = self._measurement_set.unflagged_antennaids(self._polarization, self._scan_id)
-        flagged_data = self._measurement_set.flag_data[self._polarization][self._scan_id]
         amplitude_data_matrix = {}
 
         # TODO remove duplicate baselines
@@ -30,9 +29,7 @@ class AmplitudeMatrix:
                     primary_antenna = antenna2
                     secondary_antenna = antenna1
 
-                if primary_antenna == secondary_antenna or \
-                        ([primary_antenna, secondary_antenna] in flagged_data['baselines']):
-                    continue
+                if primary_antenna == secondary_antenna: continue
 
                 filters = {
                     'antenna1': primary_antenna,
@@ -96,9 +93,9 @@ class AmplitudeMatrix:
         scattered_amplitude = self._scattered_amplitude(ideal_mad, matrix_mad)
         if deviated_median or scattered_amplitude:
             logging.debug(Color.UNDERLINE + "matrix median=" + str(matrix_median) + ", matrix mad=" + str(
-                matrix_mad) + Color.ENDC)
+                    matrix_mad) + Color.ENDC)
             logging.debug(Color.WARNING + "median deviated=" + str(deviated_median) + ", amplitude scattered=" + str(
-                scattered_amplitude) + Color.ENDC)
+                    scattered_amplitude) + Color.ENDC)
         return deviated_median or scattered_amplitude
 
     def _deviated_median(self, ideal_median, ideal_mad, actual_median):

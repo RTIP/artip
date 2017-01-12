@@ -26,6 +26,3 @@ class Debugger:
 
     def flag_antennas(self, polarization, scan_id):
         self._measurement_set.flag_antennas(polarization, scan_id, DEBUG_FLAG_ELEMENTS['antennas'])
-
-    def flag_baselines(self, polarization, scan_id):
-        self._measurement_set.flag_baselines(polarization, scan_id, DEBUG_FLAG_ELEMENTS['baselines'])

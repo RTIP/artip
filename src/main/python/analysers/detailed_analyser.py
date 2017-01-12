@@ -44,7 +44,6 @@ class DetailedAnalyser:
         bad_window_present = False
         logging.info(Color.HEADER + "Started detailed flagging on all baselines" + Color.ENDC)
         for polarization, scan_id in polarization_and_scan_product:
-            if DEBUG_CONFIGS['manual_flag']: debugger.flag_baselines(polarization, scan_id)
             amp_matrix = AmplitudeMatrix(self.measurement_set, polarization, scan_id, source_config['channel'])
             ideal_median = amp_matrix.median()
             ideal_mad = amp_matrix.mad()
