@@ -3,7 +3,6 @@ import logging
 from casa.casa_runner import CasaRunner
 from configs.config import ALL_CONFIGS
 from configs.debugging_config import DEBUG_CONFIGS
-from flaggers.detailed_flagger import DetailedFlagger
 from report import Report
 from sources.source import Source
 from src.main.python.analysers.closure_phases import ClosureAnalyser
@@ -22,16 +21,10 @@ class FluxCalibrator(Source):
     def run_setjy(self):
         CasaRunner.setjy(self.source_id, self.source_name)
 
-    def flag_and_calibrate(self):
+    def _flag_antennas(self):
         if not DEBUG_CONFIGS['manual_flag']:
-            logging.info(
-                    Color.HEADER + "Identifying bad Antennas based on angular dispersion in phases...\n" + Color.ENDC)
-            r_analyser = AngularDispersion(self.measurement_set, self.source_type)
-            r_analyser.identify_antennas_status()
-
-            logging.info(Color.HEADER + "Identifying bad Antennas based on closure phases...\n" + Color.ENDC)
-            closure_analyser = ClosureAnalyser(self.measurement_set, self.source_type)
-            closure_analyser.identify_antennas_status()
+            self._analyse_on_angular_dispersion()
+            self._analyse_on_closure_phases()
 
             scan_ids = self.measurement_set.scan_ids_for(self.source_id)
             Report(self.measurement_set.antennas).generate_report(scan_ids)
@@ -39,10 +32,28 @@ class FluxCalibrator(Source):
             logging.info(Color.HEADER + "Flagging R and Closure based bad antennas..." + Color.ENDC)
             self.measurement_set.flag_r_and_closure_based_bad_antennas()
 
-            logging.info(Color.HEADER + "Applying Flux Calibration..." + Color.ENDC)
-            CasaRunner.apply_flux_calibration()
-            logging.info(Color.HEADER + "Flux Calibration Applied..." + Color.ENDC)
+    def reduce_data(self):
+        self._flag_antennas()
+        self.calibrate()
+        self._flag_and_calibrate_in_detail()
 
+    def _flag_and_calibrate_in_detail(self):
         logging.info(Color.HEADER + "Started Detail Flagging..." + Color.ENDC)
-        detailed_flagger = DetailedFlagger(self.measurement_set)
-        detailed_flagger.get_bad_antennas('flux_calibration')
+        self.flag_antennas_in_detail()
+        self.flag_baselines_in_detail()
+
+    def calibrate(self):
+        logging.info(Color.HEADER + "Applying Flux Calibration..." + Color.ENDC)
+        CasaRunner.apply_flux_calibration()
+        logging.info(Color.HEADER + "Flux Calibration Applied..." + Color.ENDC)
+
+    def _analyse_on_closure_phases(self):
+        logging.info(Color.HEADER + "Identifying bad Antennas based closure phases...\n" + Color.ENDC)
+        closure_analyser = ClosureAnalyser(self.measurement_set, self.source_type)
+        closure_analyser.identify_antennas_status()
+
+    def _analyse_on_angular_dispersion(self):
+        logging.info(
+                Color.HEADER + "Identifying bad Antennas based on angular dispersion in phases...\n" + Color.ENDC)
+        r_analyser = AngularDispersion(self.measurement_set, self.source_type)
+        r_analyser.identify_antennas_status()

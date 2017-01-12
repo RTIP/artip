@@ -1,5 +1,4 @@
 import sys
-import os
 
 growtime = float(sys.argv[-1])
 growfreq = float(sys.argv[-2])

@@ -15,7 +15,7 @@ def main():
     sources = [flux_calibrator]
 
     for source in sources:
-        source.flag_and_calibrate()
+        source.reduce_data()
 
     end_time = datetime.datetime.now()
     logging.info(Color.UNDERLINE + 'Total time =' + str(abs((end_time - start_time).seconds)) + " seconds" + Color.ENDC)
