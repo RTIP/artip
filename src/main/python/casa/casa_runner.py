@@ -17,7 +17,12 @@ class CasaRunner:
     @staticmethod
     def apply_flux_calibration():
         script_path = 'casa_scripts/calibration.py'
-        CasaRunner._run(script_path, DATASET, CASAPY_CONFIG['path'])
+        CasaRunner._run(script_path, DATASET)
+
+    @staticmethod
+    def apply_bandpass_calibration():
+        script_path = 'casa_scripts/bandpass_calibration.py'
+        CasaRunner._run(script_path, DATASET)
 
     @staticmethod
     def r_flag(source):
