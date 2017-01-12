@@ -1,9 +1,8 @@
 import sys
-from datetime import datetime
 
 ms_dataset = sys.argv[-1]
 field = '0'
-caltable = 'fluxcal_' + datetime.now().strftime("%Y%m%d-%H%M%S-%f") + '.table'
+caltable = 'fluxcal.table'
 refant = '2'
 spw = '0:100'
 
