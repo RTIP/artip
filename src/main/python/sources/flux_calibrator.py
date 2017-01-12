@@ -29,7 +29,7 @@ class FluxCalibrator(Source):
             r_analyser = AngularDispersion(self.measurement_set, self.source_type)
             r_analyser.identify_antennas_status()
 
-            logging.info(Color.HEADER + "Identifying bad Antennas based closure phases...\n" + Color.ENDC)
+            logging.info(Color.HEADER + "Identifying bad Antennas based on closure phases...\n" + Color.ENDC)
             closure_analyser = ClosureAnalyser(self.measurement_set, self.source_type)
             closure_analyser.identify_antennas_status()
 
