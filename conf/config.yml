@@ -15,7 +15,24 @@ flux_calibration:
       sliding_window:
         bucket_size: 10
         overlap: 5
-      mad_scale_factor: 2
+      mad_scale_factor: 4
+    r_flag:
+      freqdevscale: 3.0
+      timedevscale: 3.0
+      growtime: 70.0
+      growfreq: 90.0
+
+phase_calibration:
+    field: 1
+    spw: 0
+    channel: 100
+    closure_threshold: 3
+    percentile_threshold: 70
+    detail_falgging:
+      sliding_window:
+        bucket_size: 10
+        overlap: 5
+      mad_scale_factor: 4
     r_flag:
       freqdevscale: 3.0
       timedevscale: 3.0

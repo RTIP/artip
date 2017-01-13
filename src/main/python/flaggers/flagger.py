@@ -3,4 +3,4 @@ class Flagger(object):
         self.measurement_set = measurement_set
 
     def get_bad_baselines(self):
-        raise NotImplementedError("Should have implemented this")
+        raise NotImplementedError("Not implemented")

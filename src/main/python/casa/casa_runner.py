@@ -25,6 +25,13 @@ class CasaRunner:
         CasaRunner._run(script_path, DATASET)
 
     @staticmethod
+    def apply_phase_calibration():
+        logging.info(Color.HEADER + "Applying Phase Calibration..." + Color.ENDC)
+        script_path = 'casa_scripts/phase_calibration.py'
+        CasaRunner._run(script_path, DATASET)
+        logging.info(Color.HEADER + "Phase Calibration Applied..." + Color.ENDC)
+
+    @staticmethod
     def r_flag(source):
         source_config = ALL_CONFIGS[source]
         r_flag_config = source_config['r_flag']

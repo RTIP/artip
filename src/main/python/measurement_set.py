@@ -8,7 +8,6 @@ from helpers import minus
 from models.phase_set import PhaseSet
 from models.antenna import Antenna
 from models.antenna_state import AntennaState
-from models.antenna_status import AntennaStatus
 from casa.flag_recorder import FlagRecorder
 from casa.flag_reasons import BAD_ANTENNA, BAD_ANTENNA_TIME, BAD_BASELINE_TIME
 from terminal_color import Color
@@ -113,12 +112,12 @@ class MeasurementSet:
     def flag_baselines(self, polarization, scan_id, baselines):
         self.flag_data[polarization][scan_id]['baselines'] += baselines
 
-    def flag_r_and_closure_based_bad_antennas(self):
+    def flag_bad_antennas(self, is_bad):
         for antenna in self.antennas:
             for state in antenna.get_states():
-                if state.scan_id in self._scan_ids() and (
-                                state.get_R_phase_status() == AntennaStatus.BAD and state.get_closure_phase_status() == AntennaStatus.BAD):
+                if state.scan_id in self._scan_ids() and is_bad(state):
                     self.flag_antennas(state.polarization, state.scan_id, [antenna.id])
+
         CasaRunner.flagdata(BAD_ANTENNA)
         logging.info(Color.HEADER + 'Flagged above antennas in CASA' + Color.ENDC)
 

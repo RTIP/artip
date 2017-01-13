@@ -6,4 +6,4 @@ class Analyser(object):
         self.source_config = ALL_CONFIGS[source]
 
     def identify_antennas_status(self):
-        raise NotImplementedError("Should have implemented this")
+        raise NotImplementedError("Not implemented")
