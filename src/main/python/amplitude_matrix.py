@@ -84,13 +84,13 @@ class AmplitudeMatrix:
     def is_empty(self):
         return len(numpy.array(self.amplitude_data_matrix.values()).flatten()) == 0
 
-    def is_bad(self, ideal_median, ideal_mad):
+    def is_bad(self, global_median, global_mad):
         matrix_median = self.median()
         matrix_mad = self.mad()
         if numpy.isnan(matrix_median) or numpy.isnan(matrix_mad): return False
 
-        deviated_median = self._deviated_median(ideal_median, ideal_mad, matrix_median)
-        scattered_amplitude = self._scattered_amplitude(ideal_mad, matrix_mad)
+        deviated_median = self._deviated_median(global_median, global_mad, matrix_median)
+        scattered_amplitude = self._scattered_amplitude(global_mad, matrix_mad)
         if deviated_median or scattered_amplitude:
             logging.debug(Color.UNDERLINE + "matrix median=" + str(matrix_median) + ", matrix mad=" + str(
                     matrix_mad) + Color.ENDC)
@@ -98,8 +98,8 @@ class AmplitudeMatrix:
                     scattered_amplitude) + Color.ENDC)
         return deviated_median or scattered_amplitude
 
-    def _deviated_median(self, ideal_median, ideal_mad, actual_median):
-        return abs(actual_median - ideal_median) > (DETAIL_FLAG_CONFIG['mad_scale_factor'] * ideal_mad)
+    def _deviated_median(self, global_median, global_mad, actual_median):
+        return abs(actual_median - global_median) > (DETAIL_FLAG_CONFIG['mad_scale_factor'] * global_mad)
 
-    def _scattered_amplitude(self, ideal_mad, actual_mad):
-        return actual_mad > (DETAIL_FLAG_CONFIG['mad_scale_factor'] * ideal_mad)
+    def _scattered_amplitude(self, global_mad, actual_mad):
+        return actual_mad > (DETAIL_FLAG_CONFIG['mad_scale_factor'] * global_mad)
