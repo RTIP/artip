@@ -25,10 +25,11 @@ class CasaRunner:
         CasaRunner._run(script_path, DATASET)
 
     @staticmethod
-    def apply_phase_calibration():
+    def apply_phase_calibration(flux_cal_field, phase_cal_field, channels_to_avg):
         logging.info(Color.HEADER + "Applying Phase Calibration..." + Color.ENDC)
         script_path = 'casa_scripts/phase_calibration.py'
-        CasaRunner._run(script_path, DATASET)
+        script_parameters = "{0} {1} {2} {3}".format(DATASET, flux_cal_field, phase_cal_field, channels_to_avg)
+        CasaRunner._run(script_path, script_parameters)
         logging.info(Color.HEADER + "Phase Calibration Applied..." + Color.ENDC)
 
     @staticmethod

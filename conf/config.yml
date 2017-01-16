@@ -1,5 +1,7 @@
 global:
     polarizations: ['RR', 'LL']
+    flux_cal_field: 0
+    phase_cal_field: 1
 
 
 flux_calibration:
@@ -26,6 +28,7 @@ phase_calibration:
     field: 1
     spw: 0
     channel: 100
+    channels_to_avg: '80~120'
     closure_threshold: 3
     percentile_threshold: 70
     detail_falgging:

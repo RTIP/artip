@@ -1,11 +1,10 @@
 import logging
 
 from casa.casa_runner import CasaRunner
-from configs.config import ALL_CONFIGS
+from configs.config import ALL_CONFIGS, GLOBAL_CONFIG
 from configs.debugging_config import DEBUG_CONFIGS
 from report import Report
 from sources.source import Source
-from terminal_color import Color
 from models.antenna_status import AntennaStatus
 
 
@@ -16,6 +15,7 @@ class PhaseCalibrator(Source):
         self.source_id = self.config['field']
         self.source_name = measurement_set.get_field_name_for(self.source_id)
         super(PhaseCalibrator, self).__init__(measurement_set, self.source_name)
+
 
     def flag_antennas(self):
         if not DEBUG_CONFIGS['manual_flag']:
@@ -29,4 +29,5 @@ class PhaseCalibrator(Source):
             self.measurement_set.flag_bad_antennas(is_bad)
 
     def calibrate(self):
-        CasaRunner.apply_phase_calibration()
+        flux_cal_field = GLOBAL_CONFIG['flux_cal_field']
+        CasaRunner.apply_phase_calibration(flux_cal_field, self.source_id, self.config['channels_to_avg'])
