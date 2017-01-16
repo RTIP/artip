@@ -37,7 +37,7 @@ class Source(object):
         debugger = Debugger(self.measurement_set)
         detailed_analyser = DetailedAnalyser(self.measurement_set)
         polarizations = GLOBAL_CONFIG['polarizations']
-        scan_ids = self.measurement_set.scan_ids_for(self.config['field'])
+        scan_ids = self.measurement_set.scan_ids_for(self.source_id)
         polarization_scan_product = list(itertools.product(polarizations, scan_ids))
 
         while True:
@@ -54,7 +54,7 @@ class Source(object):
         debugger = Debugger(self.measurement_set)
         detailed_analyser = DetailedAnalyser(self.measurement_set)
         polarizations = GLOBAL_CONFIG['polarizations']
-        scan_ids = self.measurement_set.scan_ids_for(self.config['field'])
+        scan_ids = self.measurement_set.scan_ids_for(self.source_id)
         polarization_scan_product = list(itertools.product(polarizations, scan_ids))
 
         while True:

@@ -1,11 +1,11 @@
 global:
     polarizations: ['RR', 'LL']
-    flux_cal_field: 0
-    phase_cal_field: 1
+    flux_cal_field: &flux_field 0
+    phase_cal_field: &phase_field 1
 
 
 flux_calibration:
-    field: 0
+    field: *flux_field
     spw: 0
     channel: 100
     r_threshold: 0.3
@@ -25,7 +25,7 @@ flux_calibration:
       growfreq: 90.0
 
 phase_calibration:
-    field: 1
+    field: *phase_field
     spw: 0
     channel: 100
     channels_to_avg: '80~120'

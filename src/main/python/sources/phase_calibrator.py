@@ -12,7 +12,7 @@ class PhaseCalibrator(Source):
     def __init__(self, measurement_set):
         self.source_type = 'phase_calibration'
         self.config = ALL_CONFIGS[self.source_type]
-        self.source_id = self.config['field']
+        self.source_id = GLOBAL_CONFIG['phase_cal_field']
         self.source_name = measurement_set.get_field_name_for(self.source_id)
         super(PhaseCalibrator, self).__init__(measurement_set, self.source_name)
 
