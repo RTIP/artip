@@ -1,17 +1,16 @@
-import itertools
-import logging
 import casac
+import itertools
 import numpy
 from datetime import datetime, timedelta
+
+from casa.casa_runner import CasaRunner
+from casa.flag_reasons import BAD_ANTENNA, BAD_ANTENNA_TIME, BAD_BASELINE_TIME
+from casa.flag_recorder import FlagRecorder
 from configs.config import GLOBAL_CONFIG
 from helpers import minus
-from models.phase_set import PhaseSet
 from models.antenna import Antenna
 from models.antenna_state import AntennaState
-from casa.flag_recorder import FlagRecorder
-from casa.flag_reasons import BAD_ANTENNA, BAD_ANTENNA_TIME, BAD_BASELINE_TIME
-from terminal_color import Color
-from casa.casa_runner import CasaRunner
+from models.phase_set import PhaseSet
 
 
 class MeasurementSet:
@@ -20,14 +19,14 @@ class MeasurementSet:
         self.__ms.open(dataset)
         self.__metadata = self.__ms.metadata()
         self.antennas = self.create_antennas()
-        self.flag_data = self._initialize_flag_data()
+        self.flagged_antennas = self._initialize_flag_data()
 
     def __del__(self):
         self.__ms.close()
 
     def _initialize_flag_data(self):
         flag_data = {
-            polarization: {scan_id: {'antennas': [], 'baselines': []} for scan_id in self._scan_ids()} for
+            polarization: {scan_id: [] for scan_id in self._scan_ids()} for
             polarization in
             GLOBAL_CONFIG['polarizations']}
         return flag_data
@@ -87,7 +86,7 @@ class MeasurementSet:
         return range(0, 29, 1)  # Fix : Hard coded, should be removed and also enable unit tests for the same
 
     def unflagged_antennaids(self, polarization, scan_id):
-        return minus(self.antennaids(), self.flag_data[polarization][scan_id]['antennas'])
+        return minus(self.antennaids(), self.flagged_antennas[polarization][scan_id])
 
     def antenna_count(self):
         return len(self.antennas)
@@ -99,18 +98,18 @@ class MeasurementSet:
         quanta = casac.casac.quanta()
         times_with_second = map(lambda time: str(time) + 's', self.__metadata.timesforscan(scan_id))
         return numpy.array(
-            map(lambda time: quanta.time(quanta.quantity(time), form='ymd'), times_with_second)).flatten()
+                map(lambda time: quanta.time(quanta.quantity(time), form='ymd'), times_with_second)).flatten()
 
-    def flag_antennas(self, polarization, scan_id, antenna_ids):
+    def make_entry_in_flag_file(self, polarization, scan_id, antenna_ids):
         if antenna_ids:
             FlagRecorder.mark_entry(
-                {'mode': 'manual', 'antenna': ','.join(map(lambda antenna_id: str(antenna_id), antenna_ids)),
-                 'reason': BAD_ANTENNA, 'correlation': polarization,
-                 'scan': scan_id})
-            self.flag_data[polarization][scan_id]['antennas'] += antenna_ids
+                    {'mode': 'manual', 'antenna': ','.join(map(lambda antenna_id: str(antenna_id), antenna_ids)),
+                     'reason': BAD_ANTENNA, 'correlation': polarization,
+                     'scan': scan_id})
 
-    def flag_baselines(self, polarization, scan_id, baselines):
-        self.flag_data[polarization][scan_id]['baselines'] += baselines
+    def flag_antennas(self, polarization, scan_id, antenna_ids):
+        self.make_entry_in_flag_file(polarization, scan_id, antenna_ids)
+        self.flagged_antennas[polarization][scan_id] += antenna_ids
 
     def flag_bad_antennas(self, is_bad):
         for antenna in self.antennas:
@@ -119,7 +118,6 @@ class MeasurementSet:
                     self.flag_antennas(state.polarization, state.scan_id, [antenna.id])
 
         CasaRunner.flagdata(BAD_ANTENNA)
-        logging.info(Color.HEADER + 'Flagged above antennas in CASA' + Color.ENDC)
 
     def _get_timerange_for_flagging(self, timerange):
         datetime_format = '%Y/%m/%d/%H:%M:%S'
@@ -133,11 +131,21 @@ class MeasurementSet:
     def flag_bad_antenna_time(self, polarization, scan_id, antenna_id, timerange):
         timerange_for_flagging = self._get_timerange_for_flagging(timerange)
         FlagRecorder.mark_entry(
-            {'mode': 'manual', 'antenna': antenna_id, 'reason': BAD_ANTENNA_TIME, 'correlation': polarization,
-             'scan': scan_id, 'timerange': '~'.join(timerange_for_flagging)})
+                {'mode': 'manual', 'antenna': antenna_id, 'reason': BAD_ANTENNA_TIME, 'correlation': polarization,
+                 'scan': scan_id, 'timerange': '~'.join(timerange_for_flagging)})
 
     def flag_bad_baseline_time(self, polarization, scan_id, baseline, timerange):
         timerange_for_flagging = self._get_timerange_for_flagging(timerange)
         FlagRecorder.mark_entry(
-            {'mode': 'manual', 'antenna': str(baseline), 'reason': BAD_BASELINE_TIME, 'correlation': polarization,
-             'scan': scan_id, 'timerange': '~'.join(timerange_for_flagging)})
+                {'mode': 'manual', 'antenna': str(baseline), 'reason': BAD_BASELINE_TIME, 'correlation': polarization,
+                 'scan': scan_id, 'timerange': '~'.join(timerange_for_flagging)})
+
+    def get_bad_antennas_with_scans_for(self, polarization, source_id):
+        scan_ids = self.scan_ids_for(source_id)  # 1,7
+        bad_antennas_with_scans = {}
+        for scan_id in scan_ids:
+            bad_antennas = self.flagged_antennas[polarization][scan_id]
+            for antenna in bad_antennas:
+                if not antenna in bad_antennas_with_scans: bad_antennas_with_scans[antenna] = []
+                bad_antennas_with_scans[antenna].append(scan_id)
+        return bad_antennas_with_scans

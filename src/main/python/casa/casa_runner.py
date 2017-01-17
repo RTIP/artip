@@ -13,6 +13,7 @@ class CasaRunner:
         script_path = 'casa_scripts/flag.py'
         script_parameters = "{0} {1}".format(DATASET, reason)
         CasaRunner._run(script_path, script_parameters)
+        logging.info(Color.HEADER + 'Flagged above antennas in CASA' + Color.ENDC)
 
     @staticmethod
     def apply_flux_calibration():
