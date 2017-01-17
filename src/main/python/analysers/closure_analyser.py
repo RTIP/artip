@@ -1,10 +1,11 @@
 import itertools
-
+import logging
+import numpy
 from src.main.python.analysers.analyser import Analyser
 from configs.config import GLOBAL_CONFIG
 from scipy import stats
 from closure_phase_util import ClosurePhaseUtil
-
+from terminal_color import Color
 from models.antenna_status import AntennaStatus
 
 
@@ -83,11 +84,17 @@ class ClosureAnalyser(Analyser):
                 return good_antennas
         return good_antennas
 
-    def _check_antenna_status(self, antenna_tuple, dd):
-        antenna_tuple_ids = (antenna_tuple[0].id, antenna_tuple[1].id, antenna_tuple[2].id)
+    def _check_antenna_status(self, antenna_triplet, dd):
+        antenna_tuple_ids = (antenna_triplet[0].id, antenna_triplet[1].id, antenna_triplet[2].id)
         closure_phase_array = self.__closure_util.closurePhTriads(antenna_tuple_ids, dd)
         percentileofscore = stats.percentileofscore(abs(closure_phase_array[0][0]),
                                                     self.source_config['closure_threshold'])
+
+        if percentileofscore < self.source_config['percentile_threshold']:
+            logging.debug(
+                "   {0}\t\t{1}\t\t\t{2}".format(antenna_triplet, round(numpy.median(closure_phase_array[0][0]), 4),
+                                                percentileofscore))
+
         return percentileofscore > \
                self.source_config['percentile_threshold']
 
@@ -96,7 +103,9 @@ class ClosureAnalyser(Analyser):
         scan_ids = self.measurement_set.scan_ids_for(self.source_config['field'])
 
         polarization_scan_id_combination = itertools.product(GLOBAL_CONFIG['polarizations'], scan_ids)
-
+        logging.debug(Color.WARNING + "The antenna triplets that do not qualify threshold are as below" + Color.ENDC)
+        logging.debug(Color.BOLD + "Antenna Triplet  Closure Phase Median \t Percentile above threshold " + str(
+            self.source_config['percentile_threshold']) + Color.ENDC)
         for polarization, scan_id in polarization_scan_id_combination:
             good_antennas = set([])
             doubtful_antennas = set([])

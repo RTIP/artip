@@ -6,7 +6,7 @@ from casa.casa_runner import CasaRunner
 from casa.flag_reasons import BAD_ANTENNA_TIME, BAD_BASELINE_TIME
 from configs.config import GLOBAL_CONFIG
 from analysers.detailed_analyser import DetailedAnalyser
-from analysers.closure_phases import ClosureAnalyser
+from analysers.closure_analyser import ClosureAnalyser
 from analysers.angular_dispersion import AngularDispersion
 
 
