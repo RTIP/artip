@@ -16,7 +16,7 @@ class CasaRunner:
 
     @staticmethod
     def apply_flux_calibration():
-        script_path = 'casa_scripts/calibration.py'
+        script_path = 'casa_scripts/flux_calibration.py'
         CasaRunner._run(script_path, DATASET)
 
     @staticmethod
@@ -38,6 +38,14 @@ class CasaRunner:
         script_parameters = "{0} {1} {2} {3}".format(DATASET, flux_cal_field, phase_cal_field, channels_to_avg)
         CasaRunner._run(script_path, script_parameters)
         logging.info(Color.HEADER + "Phase Calibration Applied..." + Color.ENDC)
+
+    @staticmethod
+    def apply_target_source_calibration(field):
+        logging.info(Color.HEADER + "Applying Calibration to Target Source..." + Color.ENDC)
+        script_path = 'casa_scripts/target_source_calibration.py'
+        script_parameters = "{0} {1}".format(DATASET, field)
+        CasaRunner._run(script_path, script_parameters)
+        logging.info(Color.HEADER + "Calibration Applied..." + Color.ENDC)
 
     @staticmethod
     def r_flag(source):

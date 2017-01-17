@@ -1,11 +1,12 @@
 global:
     polarizations: ['RR', 'LL']
-    flux_cal_field: &flux_field 0
-    phase_cal_field: &phase_field 1
+    flux_cal_field: &flux_cal_field 0
+    phase_cal_field: &phase_cal_field 1
+    target_src_field: &target_src_field 2
 
 
 flux_calibration:
-    field: *flux_field
+    field: *flux_cal_field
     spw: 0
     channel: 100
     refant: 2
@@ -29,7 +30,7 @@ flux_calibration:
       freqrange: '50~460'
 
 phase_calibration:
-    field: *phase_field
+    field: *phase_cal_field
     spw: 0
     channel: 100
     channels_to_avg: '80~120'
@@ -45,6 +46,10 @@ phase_calibration:
       timedevscale: 3.0
       growtime: 70.0
       growfreq: 90.0
+
+target_source:
+    field: *target_src_field
+    spw: 0
 
 casapy:
     path: '/Applications/CASA.app/Contents/MacOS/casapy'
