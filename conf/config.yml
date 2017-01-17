@@ -8,6 +8,9 @@ flux_calibration:
     field: *flux_field
     spw: 0
     channel: 100
+    refant: 2
+    minsnr: '2.0'
+    channels_to_avg: '80~120'
     r_threshold: 0.3
     percentage_threshold_for_min_doubtful_antennas: 30
     percentage_threshold_for_good_antenna: 70

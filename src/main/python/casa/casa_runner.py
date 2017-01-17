@@ -22,7 +22,14 @@ class CasaRunner:
     @staticmethod
     def apply_bandpass_calibration():
         script_path = 'casa_scripts/bandpass_calibration.py'
-        CasaRunner._run(script_path, DATASET)
+        source_config = ALL_CONFIGS['flux_calibration']
+        field = source_config['field']
+        refant = source_config['refant']
+        minsnr = source_config['minsnr']
+        spw = "{0}:{1}".format(source_config['spw'], source_config['channels_to_avg'])
+        script_parameters = "{0} {1} {2} {3} {4}".format(DATASET, field, refant, minsnr, spw)
+
+        CasaRunner._run(script_path, script_parameters)
 
     @staticmethod
     def apply_phase_calibration(flux_cal_field, phase_cal_field, channels_to_avg):
