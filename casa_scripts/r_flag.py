@@ -4,7 +4,8 @@ growtime = float(sys.argv[-1])
 growfreq = float(sys.argv[-2])
 timedevscale = float(sys.argv[-3])
 freqdevscale = float(sys.argv[-4])
-spw = sys.argv[-5]
+channels_to_average = sys.argv[-8]
+spw = "{0}:{1}".format(sys.argv[-5], channels_to_average)
 field = sys.argv[-6]
 ms_dataset = sys.argv[-7]
 

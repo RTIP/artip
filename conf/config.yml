@@ -23,6 +23,7 @@ flux_calibration:
       timedevscale: 3.0
       growtime: 70.0
       growfreq: 90.0
+      freqrange: '50~460'
 
 phase_calibration:
     field: *phase_field

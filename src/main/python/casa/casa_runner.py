@@ -37,7 +37,8 @@ class CasaRunner:
         source_config = ALL_CONFIGS[source]
         r_flag_config = source_config['r_flag']
         script_path = 'casa_scripts/r_flag.py'
-        script_parameters = "{0} {1} {2} {3} {4} {5} {6}".format(DATASET, source_config['field'],
+        script_parameters = "{0} {1} {2} {3} {4} {5} {6} {7}".format(r_flag_config['freqrange'], DATASET,
+                                                                 source_config['field'],
                                                                  source_config['spw'],
                                                                  r_flag_config['freqdevscale'],
                                                                  r_flag_config['timedevscale'],
