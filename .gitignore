@@ -8,4 +8,4 @@ htmlcov/*
 *.last
 *.table
 *.gcal/
-casa_scripts/flags.txt
+output

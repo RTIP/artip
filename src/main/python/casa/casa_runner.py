@@ -1,4 +1,4 @@
-from configs.config import ALL_CONFIGS, DATASET_PATH, CASAPY_CONFIG
+from configs.config import ALL_CONFIGS, DATASET_PATH, CASAPY_CONFIG, FLAG_FILE
 import os
 import subprocess
 import time
@@ -11,7 +11,7 @@ class CasaRunner:
     @staticmethod
     def flagdata(reason):
         script_path = 'casa_scripts/flag.py'
-        script_parameters = "{0} {1}".format(DATASET_PATH, reason)
+        script_parameters = "{0} {1} {2}".format(DATASET_PATH, FLAG_FILE, reason)
         CasaRunner._run(script_path, script_parameters)
         logging.info(Color.HEADER + 'Flagged above antennas in CASA' + Color.ENDC)
 
@@ -53,12 +53,12 @@ class CasaRunner:
         r_flag_config = source_config['r_flag']
         script_path = 'casa_scripts/r_flag.py'
         script_parameters = "{0} {1} {2} {3} {4} {5} {6} {7}".format(r_flag_config['freqrange'], DATASET_PATH,
-                                                                 source_config['field'],
-                                                                 source_config['spw'],
-                                                                 r_flag_config['freqdevscale'],
-                                                                 r_flag_config['timedevscale'],
-                                                                 r_flag_config['growfreq'],
-                                                                 r_flag_config['growtime'])
+                                                                     source_config['field'],
+                                                                     source_config['spw'],
+                                                                     r_flag_config['freqdevscale'],
+                                                                     r_flag_config['timedevscale'],
+                                                                     r_flag_config['growfreq'],
+                                                                     r_flag_config['growtime'])
         CasaRunner._run(script_path, script_parameters)
 
     @staticmethod
