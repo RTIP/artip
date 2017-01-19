@@ -82,7 +82,7 @@ class MeasurementSet:
         return antennas
 
     def antennaids(self):
-        first_scan_id = 1
+        first_scan_id = 1  # since antenna ids will be constant for all the scans
         return self.__metadata.antennasforscan(first_scan_id)
 
     def unflagged_antennaids(self, polarization, scan_id):
