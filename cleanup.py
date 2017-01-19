@@ -3,7 +3,7 @@ import os, re, shutil
 
 def clean():
     dir = "."
-    patterns = [".log", ".table", ".last"]
+    patterns = [".log", ".table", ".last", ".gcal"]
     for f in os.listdir(dir):
         for pattern in patterns:
             if re.search(pattern, f):

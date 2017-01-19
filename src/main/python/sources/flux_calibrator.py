@@ -39,7 +39,7 @@ class FluxCalibrator(Source):
             def is_bad(state):
                 return state.get_R_phase_status() == AntennaStatus.BAD and state.get_closure_phase_status() == AntennaStatus.BAD
 
-            self.measurement_set.flag_bad_antennas(is_bad)
+            self.measurement_set.flag_bad_antennas(is_bad, self.source_id)
             self.flag_bad_antennas_across_all_sources()
 
     def flag_bad_antennas_across_all_sources(self):

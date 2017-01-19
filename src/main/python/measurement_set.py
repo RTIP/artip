@@ -83,7 +83,7 @@ class MeasurementSet:
 
     def antennaids(self):
         first_scan_id = 1  # since antenna ids will be constant for all the scans
-        return self.__metadata.antennasforscan(first_scan_id)
+        return self.__metadata.antennasforscan(first_scan_id).tolist()
 
     def unflagged_antennaids(self, polarization, scan_id):
         return minus(self.antennaids(), self.flagged_antennas[polarization][scan_id])
@@ -111,9 +111,9 @@ class MeasurementSet:
         self.make_entry_in_flag_file(polarization, scan_id, antenna_ids)
         self.flagged_antennas[polarization][scan_id] += antenna_ids
 
-    def flag_bad_antennas(self, is_bad):
+    def flag_bad_antennas(self, is_bad, source):
         for antenna in self.antennas:
-            for state in antenna.get_states():
+            for state in antenna.get_states(self.scan_ids_for(source)):
                 if state.scan_id in self._scan_ids() and is_bad(state):
                     self.flag_antennas(state.polarization, state.scan_id, [antenna.id])
 

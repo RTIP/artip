@@ -26,7 +26,7 @@ class PhaseCalibrator(Source):
             def is_bad(state):
                 return state.get_closure_phase_status() == AntennaStatus.BAD
 
-            self.measurement_set.flag_bad_antennas(is_bad)
+            self.measurement_set.flag_bad_antennas(is_bad,self.source_id)
 
     def calibrate(self):
         flux_cal_field = GLOBAL_CONFIG['flux_cal_field']

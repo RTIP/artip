@@ -6,7 +6,9 @@ class Antenna:
     def add_state(self, antenna_state):
         self.__antenna_states.append(antenna_state)
 
-    def get_states(self):
+    def get_states(self, scan_ids=None):
+        if scan_ids:
+            return filter(lambda state: state.scan_id in scan_ids, self.__antenna_states)
         return self.__antenna_states
 
     def get_state_for(self, polarization, scan_id):
