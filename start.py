@@ -12,5 +12,7 @@ from configs import config
 config.DATASET = ms_dataset
 
 from main import main
+from cleanup import clean
+clean()
 main()
 
