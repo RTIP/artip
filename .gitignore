@@ -1,8 +1,7 @@
 .idea
 target
 *.pyc
-casapy-*.log
-ipython-*.log
+*.log
 *.DS_Store
 htmlcov/*
 .coverage
