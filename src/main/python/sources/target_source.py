@@ -2,6 +2,7 @@ from casa.casa_runner import CasaRunner
 from configs.config import ALL_CONFIGS, GLOBAL_CONFIG
 from casa.flag_reasons import BAD_ANTENNA
 from sources.source import Source
+from helpers import is_last_element
 
 
 class TargetSource(Source):
@@ -15,16 +16,33 @@ class TargetSource(Source):
     def flag_antennas(self):
         polarizations = GLOBAL_CONFIG['polarizations']
         for polarization in polarizations:
-            bad_antennas = self.get_bad_antennas_for_flux_cal(polarization)
+            self.flag_bad_antennas_of_phase_cal(polarization)
+        CasaRunner.flagdata(BAD_ANTENNA)
 
-            self.measurement_set.make_entry_in_flag_file(polarization, '', bad_antennas)
-            CasaRunner.flagdata(BAD_ANTENNA)
 
-    def get_bad_antennas_for_flux_cal(self, polarization):
-        flux_cal_field = GLOBAL_CONFIG['flux_cal_field']
-        scan_ids_count = len(self.measurement_set.scan_ids_for(flux_cal_field))
-        antennas_with_scans = self.measurement_set.get_bad_antennas_with_scans_for(polarization, flux_cal_field)
-        return filter(lambda antenna: len(antennas_with_scans[antenna]) == scan_ids_count, antennas_with_scans.keys())
+    def _get_next_scan_id(self, scan_id, source_id):
+        scan_ids = self.measurement_set.scan_ids_for(source_id)
+        index = scan_ids.index(scan_id)
+        if len(scan_ids) != index + 1:
+            return scan_ids[index + 1]
+
+    def _flag_bad_scans(self, polarization, antenna_id, bad_scan_ids, source_id):
+        for bad_scan_id in bad_scan_ids:
+            if not is_last_element(bad_scan_id, bad_scan_ids):
+                next_scan_id = self._get_next_scan_id(bad_scan_id, source_id)
+                if next_scan_id in bad_scan_ids:
+                    scans_to_flag = "{0}~{1}".format(bad_scan_id, next_scan_id)
+                    self.measurement_set.make_entry_in_flag_file(polarization, scans_to_flag, [antenna_id])
+
+    def flag_bad_antennas_of_phase_cal(self, polarization):
+        phase_cal_field = GLOBAL_CONFIG['phase_cal_field']
+
+        antennas_with_scans = self.measurement_set.get_bad_antennas_with_scans_for(polarization, phase_cal_field)
+
+        for antenna_id, bad_scan_ids in antennas_with_scans.iteritems():
+            if len(bad_scan_ids) > 1:
+                bad_scan_ids.sort()
+                self._flag_bad_scans(polarization, antenna_id, bad_scan_ids, phase_cal_field)
 
     def calibrate(self):
         CasaRunner.apply_target_source_calibration(self.source_id)

@@ -34,7 +34,7 @@ phase_calibration:
     spw: 0
     channel: 100
     channels_to_avg: '80~120'
-    closure_threshold: 3
+    closure_threshold: 0.4
     percentile_threshold: 70
     detail_falgging:
       sliding_window:
