@@ -84,9 +84,11 @@ class ClosureAnalyser(Analyser):
                 return good_antennas
         return good_antennas
 
-    def _check_antenna_status(self, antenna_triplet, dd):
+    def _check_antenna_status(self, antenna_triplet, data):
+        phase_data = data[self.source_config['phase_data_column']]
         antenna_tuple_ids = (antenna_triplet[0].id, antenna_triplet[1].id, antenna_triplet[2].id)
-        closure_phase_array = self.__closure_util.closurePhTriads(antenna_tuple_ids, dd)
+        closure_phase_array = self.__closure_util.closurePhTriads(antenna_tuple_ids, phase_data, data['antenna1'],
+                                                                  data['antenna2'])
         percentileofscore = stats.percentileofscore(abs(closure_phase_array[0][0]),
                                                     self.source_config['closure_threshold'])
 
@@ -110,9 +112,10 @@ class ClosureAnalyser(Analyser):
             good_antennas = set([])
             doubtful_antennas = set([])
             bad_antennas = set([])
-            data = self.measurement_set.get_data({'start': self.source_config['channel']}, polarization,
-                                                 {'scan_number': scan_id},
-                                                 ["antenna1", "antenna2", "phase"], True)
+            data = self.measurement_set.get_data(
+                {'start': self.source_config['channel'], 'width': self.source_config['width']}, polarization,
+                {'scan_number': scan_id},
+                ["antenna1", "antenna2", self.source_config['phase_data_column']], True)
 
             self._initial_level_screening(antennas, doubtful_antennas, good_antennas, data, polarization,
                                           scan_id)

@@ -26,7 +26,7 @@ class Source(object):
         logging.info(Color.HEADER + "Flagging bad antennas on" + self.source_type + "..." + Color.ENDC)
         self.flag_antennas()
         self.calibrate()
-        # self.flag_and_calibrate_in_detail()
+        self.flag_and_calibrate_in_detail()
 
     def flag_and_calibrate_in_detail(self):
         logging.info(Color.HEADER + "Started Detail Flagging..." + Color.ENDC)

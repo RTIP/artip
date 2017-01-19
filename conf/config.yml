@@ -13,18 +13,20 @@ flux_calibration:
     minsnr: '2.0'
     channels_to_avg: '80~120'
     r_threshold: 0.3
+    width: 1
+    phase_data_column: "phase"
     percentage_threshold_for_min_doubtful_antennas: 30
     percentage_threshold_for_good_antenna: 70
     closure_threshold: 0.3
     percentile_threshold: 70
-    detail_falgging:
+    detail_flagging:
       sliding_window:
         bucket_size: 10
         overlap: 5
       mad_scale_factor: 4
     r_flag:
-      freqdevscale: 3.0
-      timedevscale: 3.0
+      freqdevscale: 5.0
+      timedevscale: 5.0
       growtime: 70.0
       growfreq: 90.0
       freqrange: '50~460'
@@ -35,21 +37,24 @@ phase_calibration:
     channel: 100
     channels_to_avg: '80~120'
     closure_threshold: 0.4
+    width: 40
+    phase_data_column: "corrected_phase"
     percentile_threshold: 70
-    detail_falgging:
+    detail_flagging:
       sliding_window:
         bucket_size: 10
         overlap: 5
       mad_scale_factor: 4
     r_flag:
-      freqdevscale: 3.0
-      timedevscale: 3.0
+      freqdevscale: 5.0
+      timedevscale: 5.0
       growtime: 70.0
       growfreq: 90.0
 
 target_source:
     field: *target_src_field
     spw: 0
+    phase_data_column: "corrected_phase"
 
 casapy:
     path: '/Applications/CASA.app/Contents/MacOS/casapy'

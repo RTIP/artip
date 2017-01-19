@@ -2,10 +2,7 @@ import numpy
 
 
 class ClosurePhaseUtil:
-    def closurePhTriads(self, triad, data):
-        phase_data = data["phase"]
-        antenna1_list = data["antenna1"]
-        antenna2_list = data["antenna2"]
+    def closurePhTriads(self, triad, phase_data, antenna1_list, antenna2_list):
         signed_phase_triplet = self._triadRows(antenna1_list, antenna2_list, triad)
         closure_phase = self._rewrap(self._calculate_clousure_phase(phase_data, signed_phase_triplet))
         return closure_phase
