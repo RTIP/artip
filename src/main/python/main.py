@@ -21,11 +21,9 @@ def main():
     phase_calibrator = PhaseCalibrator(measurement_set)
     phase_calibrator.calibrate()
     phase_calibrator.reduce_data()
-    phase_calibrator.calibrate()
 
     target_source = TargetSource(measurement_set)
     target_source.reduce_data()
-    target_source.calibrate()
 
     end_time = datetime.datetime.now()
     logging.info(Color.UNDERLINE + 'Total time =' + str(abs((end_time - start_time).seconds)) + " seconds" + Color.ENDC)

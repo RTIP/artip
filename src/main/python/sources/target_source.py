@@ -24,6 +24,7 @@ class TargetSource(Source):
     def reduce_data(self):
         logging.info(Color.HEADER + "Flagging bad antennas on" + self.source_type + "..." + Color.ENDC)
         self.flag_antennas()
+        self.calibrate()
 
     def _get_next_scan_id(self, scan_id, source_id):
         scan_ids = self.measurement_set.scan_ids_for(source_id)
