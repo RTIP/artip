@@ -1,6 +1,6 @@
 import datetime
 import logging
-from configs.config import DATASET
+from configs.config import DATASET_PATH
 from sources.flux_calibrator import FluxCalibrator
 from sources.phase_calibrator import PhaseCalibrator
 from sources.target_source import TargetSource
@@ -10,7 +10,7 @@ from terminal_color import Color
 
 def main():
     start_time = datetime.datetime.now()
-    measurement_set = MeasurementSet(DATASET)
+    measurement_set = MeasurementSet(DATASET_PATH)
 
     flux_calibrator = FluxCalibrator(measurement_set)
     flux_calibrator.run_setjy()

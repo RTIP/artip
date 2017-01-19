@@ -9,7 +9,7 @@ flag_record_file.close()
 ms_dataset=sys.argv[1]
 
 from configs import config
-config.DATASET = ms_dataset
+config.DATASET_PATH = ms_dataset
 
 from main import main
 from cleanup import clean

@@ -4,5 +4,5 @@ import platform
 ALL_CONFIGS = ConfigLoader().load('conf/config.yml')
 GLOBAL_CONFIG = ALL_CONFIGS['global']
 DETAIL_FLAG_CONFIG = ALL_CONFIGS['flux_calibration']['detail_flagging']
-DATASET = None
+DATASET_PATH = None
 CASAPY_CONFIG = ALL_CONFIGS['casapy'][platform.system()]
