@@ -1,7 +1,6 @@
 from configs.config import GLOBAL_CONFIG
 from itertools import product
 from src.main.python.analysers.analyser import Analyser
-from src.main.python.flaggers.r_matrix import RMatrix
 from configs.config import ALL_CONFIGS, GLOBAL_CONFIG
 from models.antenna_status import AntennaStatus
 from analysers.analyser import Analyser
