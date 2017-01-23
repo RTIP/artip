@@ -24,7 +24,7 @@ flux_calibration:
       sliding_window:
         bucket_size: 10
         overlap: 5
-      mad_scale_factor: 3
+      mad_scale_factor: 4
     r_flag:
       freqdevscale: 5.0
       timedevscale: 5.0
