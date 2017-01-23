@@ -83,4 +83,4 @@ class CasaRunner:
         command = "{0} --nologger --nogui -c {1} {2}".format(casapy_path, script_full_path, script_parameters)
         process = subprocess.Popen(command, stdin=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)
         while process.poll() is None:
-            time.sleep(0.5)
+            time.sleep(1)

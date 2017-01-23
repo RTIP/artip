@@ -1,6 +1,7 @@
 import logging
 
 from casa.casa_runner import CasaRunner
+from casa.flag_reasons import BAD_ANTENNA
 from configs.config import ALL_CONFIGS, GLOBAL_CONFIG
 from configs.debugging_config import DEBUG_CONFIGS
 from report import Report
@@ -27,6 +28,7 @@ class PhaseCalibrator(Source):
                 return state.get_closure_phase_status() == AntennaStatus.BAD
 
             self.measurement_set.flag_bad_antennas(is_bad,self.source_id)
+        CasaRunner.flagdata(BAD_ANTENNA)
 
     def calibrate(self):
         flux_cal_field = GLOBAL_CONFIG['flux_cal_field']

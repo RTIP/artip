@@ -3,6 +3,7 @@ import numpy
 
 import logging
 from casa.casa_runner import CasaRunner
+from casa.flag_reasons import BAD_ANTENNA
 from configs.config import ALL_CONFIGS, GLOBAL_CONFIG
 from configs.debugging_config import DEBUG_CONFIGS
 from report import Report
@@ -41,6 +42,7 @@ class FluxCalibrator(Source):
 
             self.measurement_set.flag_bad_antennas(is_bad, self.source_id)
             self.flag_bad_antennas_across_all_sources()
+        CasaRunner.flagdata(BAD_ANTENNA)
 
     def flag_bad_antennas_across_all_sources(self):
         polarizations = GLOBAL_CONFIG['polarizations']
@@ -51,6 +53,7 @@ class FluxCalibrator(Source):
                                   antennas_with_scans.keys())
 
             self.measurement_set.make_entry_in_flag_file(polarization, '', bad_antennas)
+            self.measurement_set.update_antennas_list(bad_antennas)
 
     def calibrate(self):
         CasaRunner.apply_flux_calibration()
