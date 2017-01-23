@@ -55,10 +55,6 @@ class MeasurementSet:
         except RuntimeError:
             return []
 
-    def baselines(self):
-        baselines = list(itertools.combinations(self.antennaids(), 2))
-        return map(lambda baseline: (int(baseline[0]), int(baseline[1])), baselines)
-
     def baselines_for(self, antenna):
         remaining_antennas = list(self.antennas)
         remaining_antennas.remove(antenna)
@@ -71,7 +67,9 @@ class MeasurementSet:
         return map(sort_antennas, baselines)
 
     def create_antennas(self):
-        antennas = map(lambda id: Antenna(id), self.antennaids())
+        first_scan_id = 1  # since antenna ids will be constant for all the scans
+        antenna_ids = self.__metadata.antennasforscan(first_scan_id).tolist()
+        antennas = map(lambda id: Antenna(id), antenna_ids)
         scan_ids = self._scan_ids()
         product_pol_scan_ant = itertools.product(GLOBAL_CONFIG['polarizations'], scan_ids, antennas)
 
@@ -81,15 +79,13 @@ class MeasurementSet:
 
         return antennas
 
-    def antennaids(self):
-        first_scan_id = 1  # since antenna ids will be constant for all the scans
-        return self.__metadata.antennasforscan(first_scan_id).tolist()
+    def antenna_ids(self, polarization=None, scan_id=1):
+        antenna_ids = map(lambda antenna: antenna.id, self.antennas)
+        if not polarization: return antenna_ids
+        return minus(antenna_ids, self.flagged_antennas[polarization][scan_id])
 
-    def update_antennas_list(self, bad_antenna_ids):
+    def remove_bad_antennas(self, bad_antenna_ids):
         self.antennas = filter(lambda antenna: antenna.id not in bad_antenna_ids, self.antennas)
-
-    def unflagged_antennaids(self, polarization, scan_id):
-        return minus(self.antennaids(), self.flagged_antennas[polarization][scan_id])
 
     def antenna_count(self):
         return len(self.antennas)
@@ -101,14 +97,14 @@ class MeasurementSet:
         quanta = casac.casac.quanta()
         times_with_second = map(lambda time: str(time) + 's', self.__metadata.timesforscan(scan_id))
         return numpy.array(
-                map(lambda time: quanta.time(quanta.quantity(time), form='ymd'), times_with_second)).flatten()
+            map(lambda time: quanta.time(quanta.quantity(time), form='ymd'), times_with_second)).flatten()
 
     def make_entry_in_flag_file(self, polarization, scan_id, antenna_ids):
         if antenna_ids:
             FlagRecorder.mark_entry(
-                    {'mode': 'manual', 'antenna': ','.join(map(lambda antenna_id: str(antenna_id), antenna_ids)),
-                     'reason': BAD_ANTENNA, 'correlation': polarization,
-                     'scan': scan_id})
+                {'mode': 'manual', 'antenna': ','.join(map(lambda antenna_id: str(antenna_id), antenna_ids)),
+                 'reason': BAD_ANTENNA, 'correlation': polarization,
+                 'scan': scan_id})
 
     def flag_antennas(self, polarization, scan_id, antenna_ids):
         self.make_entry_in_flag_file(polarization, scan_id, antenna_ids)

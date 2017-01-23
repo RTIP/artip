@@ -23,10 +23,10 @@ class DetailedAnalyser:
             global_mad = amp_matrix.mad()
             self._print_polarization_details(global_mad, global_median, polarization, scan_id)
 
-            unflagged_antennaids = self.measurement_set.unflagged_antennaids(polarization, scan_id)
+            antennaids = self.measurement_set.antenna_ids(polarization, scan_id)
 
             # Sliding Window for Bad Antennas
-            for antenna in unflagged_antennaids:
+            for antenna in antennaids:
                 filtered_matrix = amp_matrix.filter_by_antenna(antenna)
                 if filtered_matrix.is_bad(global_median, global_mad):
                     logging.info(
