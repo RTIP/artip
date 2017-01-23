@@ -22,10 +22,9 @@ class CasaRunner:
         CasaRunner._run(script_path, DATASET_PATH)
 
     @staticmethod
-    def apply_bandpass_calibration():
+    def apply_bandpass_calibration(source_config):
         logging.info(Color.HEADER + "Running Bandpass Calibration..." + Color.ENDC)
         script_path = 'casa_scripts/bandpass_calibration.py'
-        source_config = ALL_CONFIGS['flux_calibration']
         field = source_config['field']
         refant = source_config['refant']
         minsnr = source_config['minsnr']

@@ -12,4 +12,4 @@ class BandpassCalibrator(Source):
         super(BandpassCalibrator, self).__init__(measurement_set, self.source_name)
 
     def calibrate(self):
-        CasaRunner.apply_bandpass_calibration()
+        CasaRunner.apply_bandpass_calibration(self.config)
