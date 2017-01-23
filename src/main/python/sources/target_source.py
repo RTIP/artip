@@ -1,10 +1,9 @@
 from casa.casa_runner import CasaRunner
 from configs.config import ALL_CONFIGS, GLOBAL_CONFIG
+from configs.pipeline_config import PIPELINE_CONFIGS
 from casa.flag_reasons import BAD_ANTENNA
 from sources.source import Source
 from helpers import is_last_element
-import logging
-from terminal_color import Color
 
 
 class TargetSource(Source):
@@ -22,8 +21,7 @@ class TargetSource(Source):
         CasaRunner.flagdata(BAD_ANTENNA)
 
     def reduce_data(self):
-        logging.info(Color.HEADER + "Flagging bad antennas on" + self.source_type + "..." + Color.ENDC)
-        self.flag_antennas()
+        if not PIPELINE_CONFIGS['manual_flag']: self.flag_antennas()
         self.calibrate()
 
     def _get_next_scan_id(self, scan_id, source_id):

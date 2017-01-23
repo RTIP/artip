@@ -10,10 +10,10 @@ from terminal_color import Color
 class CasaRunner:
     @staticmethod
     def flagdata(reason):
+        logging.info(Color.HEADER + "Flagging " + reason + Color.ENDC)
         script_path = 'casa_scripts/flag.py'
         script_parameters = "{0} {1} {2}".format(DATASET_PATH, FLAG_FILE, reason)
         CasaRunner._run(script_path, script_parameters)
-        logging.info(Color.HEADER + 'Flagged above antennas in CASA' + Color.ENDC)
 
     @staticmethod
     def apply_flux_calibration():
@@ -23,6 +23,7 @@ class CasaRunner:
 
     @staticmethod
     def apply_bandpass_calibration():
+        logging.info(Color.HEADER + "Running Bandpass Calibration..." + Color.ENDC)
         script_path = 'casa_scripts/bandpass_calibration.py'
         source_config = ALL_CONFIGS['flux_calibration']
         field = source_config['field']
@@ -59,11 +60,12 @@ class CasaRunner:
                                                                      r_flag_config['timedevscale'],
                                                                      r_flag_config['growfreq'],
                                                                      r_flag_config['growtime'])
+        logging.info(Color.HEADER + "Running Rflag for flagging in frequency..." + Color.ENDC)
         CasaRunner._run(script_path, script_parameters)
 
     @staticmethod
     def setjy(source_id, source_name):
-        logging.info(Color.HEADER + 'Running setjy on Flux calibrator' + Color.ENDC)
+        logging.info(Color.HEADER + 'Running setjy' + Color.ENDC)
         script_path = 'casa_scripts/setjy.py'
         freq_band = "L"
         model_path = "{0}/{1}_{2}.im".format(CASAPY_CONFIG['model_path'], source_name, freq_band)

@@ -1,6 +1,6 @@
 import numpy
 
-from configs.debugging_config import DEBUG_FLAG_ELEMENTS
+from configs.pipeline_config import FLAGGED_ELEMENTS
 
 
 def calculate_median(list):
@@ -31,4 +31,4 @@ class Debugger:
         self._measurement_set = measurement_set
 
     def flag_antennas(self, polarization, scan_id):
-        self._measurement_set.flag_antennas(polarization, scan_id, DEBUG_FLAG_ELEMENTS['antennas'])
+        self._measurement_set.flag_antennas(polarization, scan_id, FLAGGED_ELEMENTS['antennas'])

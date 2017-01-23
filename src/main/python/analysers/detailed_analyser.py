@@ -1,9 +1,8 @@
 import logging
-import itertools
 from helpers import *
 from amplitude_matrix import AmplitudeMatrix
 from window import Window
-from configs.debugging_config import DEBUG_CONFIGS
+from configs.pipeline_config import PIPELINE_CONFIGS
 from casa.flag_reasons import BAD_ANTENNA_TIME, BAD_BASELINE_TIME
 from terminal_color import Color
 
@@ -16,7 +15,7 @@ class DetailedAnalyser:
         logging.info(Color.HEADER + "Started detailed flagging on all unflagged antennas" + Color.ENDC)
         bad_window_present = False
         for polarization, scan_id in polarization_and_scan_product:
-            if DEBUG_CONFIGS['manual_flag']: debugger.flag_antennas(polarization, scan_id)
+            if PIPELINE_CONFIGS['manual_flag']: debugger.flag_antennas(polarization, scan_id)
             scan_times = self.measurement_set.timesforscan(scan_id)
             amp_matrix = AmplitudeMatrix(self.measurement_set, polarization, scan_id, source_config['channel'])
             global_median = amp_matrix.median()

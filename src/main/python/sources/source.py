@@ -1,13 +1,14 @@
 import itertools
 import logging
-from helpers import Debugger
-from terminal_color import Color
+from analysers.angular_dispersion import AngularDispersion
+from analysers.closure_analyser import ClosureAnalyser
+from analysers.detailed_analyser import DetailedAnalyser
 from casa.casa_runner import CasaRunner
 from casa.flag_reasons import BAD_ANTENNA_TIME, BAD_BASELINE_TIME
 from configs.config import GLOBAL_CONFIG
-from analysers.detailed_analyser import DetailedAnalyser
-from analysers.closure_analyser import ClosureAnalyser
-from analysers.angular_dispersion import AngularDispersion
+from configs.pipeline_config import PIPELINE_CONFIGS
+from helpers import Debugger
+from terminal_color import Color
 
 
 class Source(object):
@@ -16,15 +17,13 @@ class Source(object):
         self.measurement_set = measurement_set
 
     def run_rflag(self):
-        logging.info(Color.HEADER + "Running Rflag for flagging in frequency..." + Color.ENDC)
         CasaRunner.r_flag(self.source_type)
 
     def calibrate(self):
         raise NotImplementedError("Not implemented")
 
     def reduce_data(self):
-        logging.info(Color.HEADER + "Flagging bad antennas on" + self.source_type + "..." + Color.ENDC)
-        self.flag_antennas()
+        if not PIPELINE_CONFIGS['manual_flag']: self.flag_antennas()
         self.calibrate()
         self.flag_and_calibrate_in_detail()
 
@@ -69,12 +68,12 @@ class Source(object):
                 break
 
     def analyse_antennas_on_closure_phases(self):
-        logging.info(Color.HEADER + "Identifying bad Antennas based closure phases...\n" + Color.ENDC)
+        logging.info(Color.HEADER + "Identifying bad Antennas based on closure phases..." + Color.ENDC)
         closure_analyser = ClosureAnalyser(self.measurement_set, self.source_type)
         closure_analyser.identify_antennas_status()
 
     def analyse_antennas_on_angular_dispersion(self):
         logging.info(
-                Color.HEADER + "Identifying bad Antennas based on angular dispersion in phases...\n" + Color.ENDC)
+                Color.HEADER + "Identifying bad Antennas based on angular dispersion in phases..." + Color.ENDC)
         r_analyser = AngularDispersion(self.measurement_set, self.source_type)
         r_analyser.identify_antennas_status()

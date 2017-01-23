@@ -1,4 +1,6 @@
 class Color:
+
+    SOURCE_HEADING = '\033[93m'
     HEADER = '\033[95m'
     OKBLUE = '\033[94m'
     OKGREEN = '\033[92m'
