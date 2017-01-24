@@ -1,8 +1,9 @@
 import sys
 
-ms_dataset = sys.argv[-1]
+ms_dataset = sys.argv[-2]
+output_path = sys.argv[-1]
 field = '0'
-caltable = 'fluxcal.table'
+caltable = output_path + "/" + 'fluxcal.table'
 refant = '2'
 spw = '0:100'
 

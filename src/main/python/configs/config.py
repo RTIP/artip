@@ -6,4 +6,5 @@ GLOBAL_CONFIG = ALL_CONFIGS['global']
 DETAIL_FLAG_CONFIG = ALL_CONFIGS['flux_calibration']['detail_flagging']
 DATASET_PATH = None
 FLAG_FILE = None
+OUTPUT_PATH = None
 CASAPY_CONFIG = ALL_CONFIGS['casapy'][platform.system()]

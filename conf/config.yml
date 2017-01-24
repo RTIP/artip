@@ -4,7 +4,7 @@ global:
     bandpass_cal_field: &bandpass_cal_field 0
     phase_cal_field: &phase_cal_field 1
     target_src_field: &target_src_field 2
-    flag_file_directory: 'output'
+    output_path: 'output'
 
 
 flux_calibration:

@@ -1,24 +1,22 @@
-import sys
-import os
+import os, sys
 from sys import path
-
 path.append("src/main/python")
-
-ms_dataset = sys.argv[1]
-
+from cleanup import clean
 from configs import config
+config.DATASET_PATH = sys.argv[1]
 
-config.DATASET_PATH = ms_dataset
+def setup():
+    dataset_name = os.path.splitext(os.path.basename(config.DATASET_PATH))[0]
+    config.OUTPUT_PATH = config.GLOBAL_CONFIG['output_path'] + "/" + dataset_name
+    if not os.path.exists(config.OUTPUT_PATH):
+        os.makedirs(config.OUTPUT_PATH)
+    config.FLAG_FILE = "{0}/flags.txt".format(config.OUTPUT_PATH)
 
-# clear/create flag record file
-flag_file_name = "{0}_flags.txt".format(os.path.splitext(os.path.basename(ms_dataset))[0])
-config.FLAG_FILE = "{0}/{1}".format(config.GLOBAL_CONFIG['flag_file_directory'], flag_file_name)
+    flag_record_file = open(config.FLAG_FILE, 'w+')
+    flag_record_file.close()
 
-flag_record_file = open(config.FLAG_FILE, 'w+')
-flag_record_file.close()
+setup()
 
 from main import main
-from cleanup import clean
-
 clean()
 main()

@@ -1,4 +1,4 @@
-from configs.config import ALL_CONFIGS, DATASET_PATH, CASAPY_CONFIG, FLAG_FILE
+from configs.config import ALL_CONFIGS, DATASET_PATH, CASAPY_CONFIG, FLAG_FILE, OUTPUT_PATH
 import os
 import subprocess
 import time
@@ -19,7 +19,8 @@ class CasaRunner:
     def apply_flux_calibration():
         logging.info(Color.HEADER + "Applying Flux Calibration..." + Color.ENDC)
         script_path = 'casa_scripts/flux_calibration.py'
-        CasaRunner._run(script_path, DATASET_PATH)
+        script_parameters = "{0} {1}".format(DATASET_PATH, OUTPUT_PATH)
+        CasaRunner._run(script_path, script_parameters)
 
     @staticmethod
     def apply_bandpass_calibration(source_config):
@@ -29,7 +30,7 @@ class CasaRunner:
         refant = source_config['refant']
         minsnr = source_config['minsnr']
         spw = "{0}:{1}".format(source_config['spw'], source_config['channels_to_avg'])
-        script_parameters = "{0} {1} {2} {3} {4}".format(DATASET_PATH, field, refant, minsnr, spw)
+        script_parameters = "{0} {1} {2} {3} {4} {5}".format(DATASET_PATH, OUTPUT_PATH, field, refant, minsnr, spw)
 
         CasaRunner._run(script_path, script_parameters)
 
@@ -37,14 +38,15 @@ class CasaRunner:
     def apply_phase_calibration(flux_cal_field, phase_cal_field, channels_to_avg):
         logging.info(Color.HEADER + "Applying Phase Calibration..." + Color.ENDC)
         script_path = 'casa_scripts/phase_calibration.py'
-        script_parameters = "{0} {1} {2} {3}".format(DATASET_PATH, flux_cal_field, phase_cal_field, channels_to_avg)
+        script_parameters = "{0} {1} {2} {3} {4}".format(DATASET_PATH, OUTPUT_PATH, flux_cal_field, phase_cal_field,
+                                                         channels_to_avg)
         CasaRunner._run(script_path, script_parameters)
 
     @staticmethod
     def apply_target_source_calibration(field):
         logging.info(Color.HEADER + "Applying Calibration to Target Source..." + Color.ENDC)
         script_path = 'casa_scripts/target_source_calibration.py'
-        script_parameters = "{0} {1}".format(DATASET_PATH, field)
+        script_parameters = "{0} {1} {2}".format(DATASET_PATH, OUTPUT_PATH, field)
         CasaRunner._run(script_path, script_parameters)
 
     @staticmethod
