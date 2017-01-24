@@ -86,16 +86,16 @@ class ClosureAnalyser(Analyser):
 
     def _check_antenna_status(self, antenna_triplet, data):
         phase_data = data[self.source_config['phase_data_column']]
+        closure_threshold = self.source_config['closure_threshold'] * numpy.pi/180
         antenna_tuple_ids = (antenna_triplet[0].id, antenna_triplet[1].id, antenna_triplet[2].id)
         closure_phase_array = self.__closure_util.closurePhTriads(antenna_tuple_ids, phase_data, data['antenna1'],
                                                                   data['antenna2'])
-        percentileofscore = stats.percentileofscore(abs(closure_phase_array[0][0]),
-                                                    self.source_config['closure_threshold'])
+        percentileofscore = stats.percentileofscore(abs(closure_phase_array[0][0]), closure_threshold)
 
         if percentileofscore < self.source_config['percentile_threshold']:
             logging.debug(
-                "   {0}\t\t{1}\t\t\t{2}".format(antenna_triplet, round(numpy.median(closure_phase_array[0][0]), 4),
-                                                percentileofscore))
+                    "   {0}\t\t{1}\t\t\t{2}".format(antenna_triplet, round(numpy.median(closure_phase_array[0][0]), 4),
+                                                    percentileofscore))
 
         return percentileofscore > \
                self.source_config['percentile_threshold']
@@ -107,15 +107,15 @@ class ClosureAnalyser(Analyser):
         polarization_scan_id_combination = itertools.product(GLOBAL_CONFIG['polarizations'], scan_ids)
         logging.debug(Color.WARNING + "The antenna triplets that do not qualify threshold are as below" + Color.ENDC)
         logging.debug(Color.BOLD + "Antenna Triplet  Closure Phase Median \t Percentile above threshold " + str(
-            self.source_config['percentile_threshold']) + Color.ENDC)
+                self.source_config['percentile_threshold']) + Color.ENDC)
         for polarization, scan_id in polarization_scan_id_combination:
             good_antennas = set([])
             doubtful_antennas = set([])
             bad_antennas = set([])
             data = self.measurement_set.get_data(
-                {'start': self.source_config['channel'], 'width': self.source_config['width']}, polarization,
-                {'scan_number': scan_id},
-                ["antenna1", "antenna2", self.source_config['phase_data_column']], True)
+                    {'start': self.source_config['channel'], 'width': self.source_config['width']}, polarization,
+                    {'scan_number': scan_id},
+                    ["antenna1", "antenna2", self.source_config['phase_data_column']], True)
 
             self._initial_level_screening(antennas, doubtful_antennas, good_antennas, data, polarization,
                                           scan_id)
