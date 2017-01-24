@@ -49,21 +49,13 @@ class AmplitudeMatrix:
     def _mask_flagged_data_with_nan(self, data):
         amplitude_data = data['corrected_amplitude'][0][0]
         flagged_rows = data['flag'][0][0]
-        for idx, amp in enumerate(amplitude_data):
-            if flagged_rows[idx]:
-                amplitude_data[idx] = numpy.nan
-        return amplitude_data
+        return numpy.where(flagged_rows == True, numpy.nan, amplitude_data)
 
     def filter_by_antenna(self, antenna_id):
         antenna_matrix = dict((baseline, amp_data) for baseline, amp_data in self.amplitude_data_matrix.iteritems() if
                               baseline.contains(antenna_id))
 
         return AmplitudeMatrix(None, None, None, None, antenna_matrix)
-
-    def filter_by_time(self, time_index):
-        time_matrix = map(lambda baseline_amp: baseline_amp[time_index], self.amplitude_data_matrix.values())
-        return AmplitudeMatrix(None, None, None, None,
-                               {time_index: time_matrix})
 
     def filter_by_baseline(self, baseline):
         return AmplitudeMatrix(None, None, None, None,
