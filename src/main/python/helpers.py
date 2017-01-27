@@ -1,4 +1,5 @@
 import numpy
+import math
 
 from configs.pipeline_config import FLAGGED_ELEMENTS
 
@@ -9,6 +10,11 @@ def calculate_median(list):
 
 def minus(list1, list2):
     return filter(lambda elm: elm not in list2, list1)
+
+
+def nCr(n, r):
+    f = math.factorial
+    return f(n) / f(r) / f(n - r)
 
 
 def is_last_element(ele, elements):

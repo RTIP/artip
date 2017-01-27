@@ -7,6 +7,8 @@ from scipy import stats
 from closure_phase_util import ClosurePhaseUtil
 from terminal_color import Color
 from models.antenna_status import AntennaStatus
+from helpers import *
+import random
 
 
 class ClosureAnalyser(Analyser):
@@ -63,12 +65,23 @@ class ClosureAnalyser(Analyser):
     def _antenna_status_as_compared_to_good(self, bad_antennas, doubtful_antennas, good_antennas, dd, polarization,
                                             scan_id):
         good_antennas_list = list(good_antennas)
+        all_comb_count = nCr(len(good_antennas_list), 2)
+
         for antenna in doubtful_antennas:
             antenna1 = antenna
-            antenna2 = good_antennas_list[0]
-            antenna3 = good_antennas_list[1]
-            is_good_antenna = self._check_antenna_status((antenna1, antenna2, antenna3), dd)
-            if is_good_antenna:
+            visited_tuples = set()
+            good_count = 0
+            while len(visited_tuples) < min(10, all_comb_count):  # To be discussed about the configurability
+                antenna2_3 = tuple(random.sample(good_antennas_list, 2))
+                if antenna2_3 not in visited_tuples:
+                    visited_tuples.add(antenna2_3)
+                    is_good_antenna = self._check_antenna_status((antenna1, antenna2_3[0], antenna2_3[1]), dd)
+                    if is_good_antenna:
+                        good_count += 1
+
+                    if good_count == 4: break
+
+            if good_count == 4 or good_count == all_comb_count:
                 good_antennas.add(antenna)
                 antenna.get_state_for(polarization, scan_id).update_closure_phase_status(AntennaStatus.GOOD)
             else:
@@ -86,7 +99,7 @@ class ClosureAnalyser(Analyser):
 
     def _check_antenna_status(self, antenna_triplet, data):
         phase_data = data[self.source_config['phase_data_column']]
-        closure_threshold = self.source_config['closure_threshold'] * numpy.pi/180
+        closure_threshold = self.source_config['closure_threshold'] * numpy.pi / 180
         antenna_tuple_ids = (antenna_triplet[0].id, antenna_triplet[1].id, antenna_triplet[2].id)
         closure_phase_array = self.__closure_util.closurePhTriads(antenna_tuple_ids, phase_data, data['antenna1'],
                                                                   data['antenna2'])
@@ -94,8 +107,8 @@ class ClosureAnalyser(Analyser):
 
         if percentileofscore < self.source_config['percentile_threshold']:
             logging.debug(
-                    "   {0}\t\t{1}\t\t\t{2}".format(antenna_triplet, round(numpy.median(closure_phase_array[0][0]), 4),
-                                                    percentileofscore))
+                "   {0}\t\t{1}\t\t\t{2}".format(antenna_triplet, round(numpy.median(closure_phase_array[0][0]), 4),
+                                                percentileofscore))
 
         return percentileofscore > \
                self.source_config['percentile_threshold']
