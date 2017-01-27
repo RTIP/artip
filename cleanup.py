@@ -12,3 +12,14 @@ def clean():
                     shutil.rmtree(f)
                 else:
                     os.remove(f)
+
+
+def deep_clean():
+    clean()
+    dir = "./output"
+    for f in os.listdir(dir):
+        f = os.path.join(dir, f)
+        shutil.rmtree(f)
+
+
+deep_clean()
