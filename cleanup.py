@@ -22,4 +22,4 @@ def deep_clean():
         shutil.rmtree(f)
 
 
-deep_clean()
+# deep_clean()
