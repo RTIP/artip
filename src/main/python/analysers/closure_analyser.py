@@ -28,19 +28,24 @@ class ClosureAnalyser(Analyser):
                 self._mark_antenna_as_good(antenna2, polarization, scan_id, good_antenna_ids, doubtful_antenna_ids)
                 self._mark_antenna_as_good(antenna3, polarization, scan_id, good_antenna_ids, doubtful_antenna_ids)
             else:
-                self._mark_antenna_as_doubtful(antenna1, polarization, scan_id, doubtful_antenna_ids)
-                self._mark_antenna_as_doubtful(antenna2, polarization, scan_id, doubtful_antenna_ids)
-                self._mark_antenna_as_doubtful(antenna3, polarization, scan_id, doubtful_antenna_ids)
+                self._mark_antenna_as_doubtful(antenna1, polarization, scan_id, doubtful_antenna_ids, good_antenna_ids)
+                self._mark_antenna_as_doubtful(antenna2, polarization, scan_id, doubtful_antenna_ids, good_antenna_ids)
+                self._mark_antenna_as_doubtful(antenna3, polarization, scan_id, doubtful_antenna_ids, good_antenna_ids)
             if last_antenna_id in [antenna1.id, antenna2.id, antenna3.id]:
                 break
 
     def _mark_antenna_as_good(self, antenna, polarization, scan_id, good_antenna_ids, doubtful_antenna_ids):
-        good_antenna_ids.add(antenna)
-        antenna.get_state_for(polarization, scan_id).update_closure_phase_status(AntennaStatus.GOOD)
-        doubtful_antenna_ids.discard(antenna)
+        antenna_state = antenna.get_state_for(polarization, scan_id)
+        if antenna_state.get_closure_phase_status() is not AntennaStatus.DOUBTFUL:
+            good_antenna_ids.add(antenna)
+            antenna.get_state_for(polarization, scan_id).update_closure_phase_status(AntennaStatus.GOOD)
+            # doubtful_antenna_ids.discard(antenna)
 
-    def _mark_antenna_as_doubtful(self, antenna, polarization, scan_id, doubtful_antenna_ids):
-        antenna.get_state_for(polarization, scan_id).update_closure_phase_status(AntennaStatus.DOUBTFUL)
+    def _mark_antenna_as_doubtful(self, antenna, polarization, scan_id, doubtful_antenna_ids, good_antenna_ids):
+        antenna_state = antenna.get_state_for(polarization, scan_id)
+        if antenna_state.get_closure_phase_status() == AntennaStatus.GOOD:
+            good_antenna_ids.discard(antenna)
+        antenna_state.update_closure_phase_status(AntennaStatus.DOUBTFUL)
         doubtful_antenna_ids.add(antenna)
 
     def _antenna_status_of_all_triplet_combination(self, bad_antennas, dd, doubtful_antennas, good_antennas,
@@ -107,8 +112,10 @@ class ClosureAnalyser(Analyser):
 
         if percentileofscore < self.source_config['percentile_threshold']:
             logging.debug(
-                "   {0}\t\t{1}\t\t\t{2}".format(antenna_triplet, round(numpy.median(closure_phase_array[0][0]), 4),
-                                                percentileofscore))
+                "   {0}\t\t{1}\t\t\t{2}\t\t{3}".format(antenna_triplet,
+                                                       round(numpy.median(closure_phase_array[0][0]), 4),
+                                                       round(numpy.mean(closure_phase_array[0][0]), 4),
+                                                       percentileofscore))
 
         return percentileofscore > \
                self.source_config['percentile_threshold']
@@ -119,7 +126,8 @@ class ClosureAnalyser(Analyser):
 
         polarization_scan_id_combination = itertools.product(GLOBAL_CONFIG['polarizations'], scan_ids)
         logging.debug(Color.WARNING + "The antenna triplets that do not qualify threshold are as below" + Color.ENDC)
-        logging.debug(Color.BOLD + "Antenna Triplet  Closure Phase Median \t Percentile above threshold " + str(
+        logging.debug(
+            Color.BOLD + "Antenna Triplet  Closure Phase Median  Closure Phase Mean \t Percentile above threshold " + str(
                 self.source_config['percentile_threshold']) + Color.ENDC)
         for polarization, scan_id in polarization_scan_id_combination:
             good_antennas = set([])
