@@ -64,7 +64,6 @@ class DetailedAnalyser:
         sliding_window = Window(data_set)
         while True:
             window_matrix = sliding_window.slide()
-            if window_matrix.is_empty() or sliding_window.reached_end_of_collection(): break
             if window_matrix.is_bad(global_median, global_mad):
                 bad_window_found = True
                 start, end = sliding_window.current_position()
@@ -77,6 +76,7 @@ class DetailedAnalyser:
                     self.measurement_set.flag_bad_baseline_time(polarization, scan_id, element_id, bad_timerange)
                     logging.debug('Baseline=' + str(element_id) + ' was bad between' + scan_times[
                         start] + '[index=' + str(start) + '] and' + scan_times[end] + '[index=' + str(end) + ']\n')
+            if sliding_window.reached_end_of_collection(): break
         return bad_window_found
 
     def _print_polarization_details(self, global_mad, global_median, polarization, scan_id):
