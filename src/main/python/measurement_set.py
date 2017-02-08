@@ -31,6 +31,9 @@ class MeasurementSet:
             GLOBAL_CONFIG['polarizations']}
         return flag_data
 
+    def quack(self):
+        CasaRunner.quack()
+
     def _filter(self, channel, polarization, filters={}):
         self.__ms.selectinit(reset=True)
         self.__ms.selectpolarization(polarization)

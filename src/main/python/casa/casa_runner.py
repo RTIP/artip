@@ -16,6 +16,12 @@ class CasaRunner:
         CasaRunner._run(script_path, script_parameters)
 
     @staticmethod
+    def quack():
+        logging.info(Color.HEADER + "Running quack..." + Color.ENDC)
+        script_path = 'casa_scripts/quack.py'
+        CasaRunner._run(script_path)
+
+    @staticmethod
     def apply_flux_calibration():
         logging.info(Color.HEADER + "Applying Flux Calibration..." + Color.ENDC)
         script_path = 'casa_scripts/flux_calibration.py'

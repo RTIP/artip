@@ -13,6 +13,7 @@ from terminal_color import Color
 def main():
     start_time = datetime.datetime.now()
     measurement_set = MeasurementSet(DATASET_PATH)
+    measurement_set.quack()
 
     if STAGES_CONFIG['flux_calibration']:
         logging.info(Color.SOURCE_HEADING + "Flux Calibration" + Color.ENDC)
