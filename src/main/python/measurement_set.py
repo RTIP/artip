@@ -7,6 +7,7 @@ from casa.casa_runner import CasaRunner
 from casa.flag_reasons import BAD_ANTENNA, BAD_ANTENNA_TIME, BAD_BASELINE_TIME
 from casa.flag_recorder import FlagRecorder
 from configs.config import GLOBAL_CONFIG
+from configs.config import DATASET_PATH
 from helpers import minus
 from models.antenna import Antenna
 from models.antenna_state import AntennaState
@@ -39,6 +40,10 @@ class MeasurementSet:
         self.__ms.selectpolarization(polarization)
         self.__ms.selectchannel(**channel)
         if filters: self.__ms.select(filters)
+
+    def reload(self):
+        self.__ms.close()
+        self.__ms.open(DATASET_PATH)
 
     def get_data(self, channel, polarization, filters, selection_params, ifraxis=False):
         self._filter(channel, polarization, filters)

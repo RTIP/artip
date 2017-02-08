@@ -45,3 +45,4 @@ class FluxCalibrator(Source):
 
     def calibrate(self):
         CasaRunner.apply_flux_calibration()
+        self.measurement_set.reload()
