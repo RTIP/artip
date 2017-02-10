@@ -36,6 +36,8 @@ class ClosureAnalyser(Analyser):
 
         polarization_scan_id_combination = itertools.product(GLOBAL_CONFIG['polarizations'], scan_ids)
         for polarization, scan_id in polarization_scan_id_combination:
+            logging.debug(
+                Color.BACKGROUD_WHITE + "Polarization =" + polarization + " Scan Id=" + str(scan_id) + Color.ENDC)
             data = self.measurement_set.get_data(
                 {'start': self.source_config['channel'], 'width': self.source_config['width']}, polarization,
                 {'scan_number': scan_id},
@@ -58,7 +60,9 @@ class ClosureAnalyser(Analyser):
         percentage = (float(good_triplets_count) / float(len(antenna_combinations))) * 100
 
         logging.debug("Antenna={0}, total={1}, good_triplets_count={2}, Percentage={3}".format(antenna,
-                                                                                      len(antenna_combinations),
-                                                                                      good_triplets_count, percentage))
+                                                                                               len(
+                                                                                                   antenna_combinations),
+                                                                                               good_triplets_count,
+                                                                                               percentage))
 
         return percentage > self.source_config['percentile_threshold']
