@@ -66,31 +66,30 @@ class ClosureAnalyser(Analyser):
 
     def _antenna_status_as_compared_to_good(self, bad_antennas, doubtful_antennas, good_antennas, dd, polarization,
                                             scan_id):
-        good_antennas_list = list(good_antennas)
-        all_comb_count = nCr(len(good_antennas_list), 2)
 
-        for antenna in doubtful_antennas:
-            antenna1 = antenna
-            visited_tuples = set()
+        good_antenna_list = list(good_antennas)
+        last_antenna_id = good_antenna_list[-1].id
+        for d_antenna in doubtful_antennas:
+            good_antennas_cycle = itertools.cycle(good_antenna_list)
             good_count = 0
-            while len(visited_tuples) < min(10, all_comb_count):  # To be discussed about the configurability
-                antenna2_3 = tuple(random.sample(good_antennas_list, 2))
-                if antenna2_3 not in visited_tuples:
-                    visited_tuples.add(antenna2_3)
-                    is_good_antenna = self._check_antenna_status((antenna1, antenna2_3[0], antenna2_3[1]), dd, scan_id,
-                                                                 polarization)
-                    if is_good_antenna:
-                        good_count += 1
+            while True:
+                antenna1 = d_antenna
+                antenna2 = good_antennas_cycle.next()
+                antenna3 = good_antennas_cycle.next()
+                is_good_antenna = self._check_antenna_status((antenna1, antenna2, antenna3), dd, scan_id,
+                                                             polarization)
+                if is_good_antenna:
+                    good_count += 1
 
-                    if good_count == 4: break
+                if last_antenna_id in (antenna2.id, antenna3.id): break
 
-            if good_count == 4 or good_count == all_comb_count:
-                good_antennas.add(antenna)
-                antenna.get_state_for(polarization, scan_id).update_closure_phase_status(AntennaStatus.GOOD)
+            if float(good_count) / float(len(good_antennas)/2) > 0.7:
+                good_antennas.add(d_antenna)
+                d_antenna.get_state_for(polarization, scan_id).update_closure_phase_status(AntennaStatus.GOOD)
             else:
-                bad_antennas.add(antenna)
-                antenna.get_state_for(polarization, scan_id).update_closure_phase_status(AntennaStatus.BAD)
-        doubtful_antennas.clear()
+                bad_antennas.add(d_antenna)
+                d_antenna.get_state_for(polarization, scan_id).update_closure_phase_status(AntennaStatus.BAD)
+
 
     def _find_first_good_antenna_tuple(self, doubtful_antennas, dd, scan_id, polarization):
         good_antennas = []
@@ -109,8 +108,8 @@ class ClosureAnalyser(Analyser):
         percentileofscore = stats.percentileofscore(abs(closure_phase_array[0][0]), closure_threshold)
 
         if percentileofscore < self.source_config['percentile_threshold']:
-            Plotter.plot_pdf(closure_phase_array[0][0], antenna_tuple_ids, self.source_config['closure_threshold'],
-                             "{0}_{1}".format(scan, polarization))
+            # Plotter.plot_pdf(closure_phase_array[0][0], antenna_tuple_ids, self.source_config['closure_threshold'],
+            #                  "{0}_{1}".format(scan, polarization))
             logging.debug(
                 "   {0}\t\t{1}\t\t\t{2}\t\t{3}".format(antenna_triplet,
                                                        round(numpy.median(closure_phase_array[0][0]), 4),
