@@ -36,7 +36,16 @@ def main():
     if STAGES_CONFIG['target_source']:
         logging.info(Color.SOURCE_HEADING + "Target Source Calibration" + Color.ENDC)
         target_source = TargetSource(measurement_set)
-        target_source.reduce_data()
+        target_source.flag_bad_antennas_of_phase_cal()
+        target_source.calibrate()
+
+        reduced_target_source = target_source.split()
+        reduced_target_source.run_rflag()
+
+        continuum = reduced_target_source.create_continuum()
+        continuum.reduce_data()
+
+        # reduced_target_source.apply_continnum_flags()
 
     end_time = datetime.datetime.now()
     logging.info(Color.UNDERLINE + 'Total time =' + str(abs((end_time - start_time).seconds)) + " seconds" + Color.ENDC)

@@ -121,7 +121,7 @@ class MeasurementSet:
         self.make_entry_in_flag_file(polarization, scan_ids, antenna_ids)
         for scan_id in scan_ids:
             self.flagged_antennas[polarization][scan_id] = self.flagged_antennas[polarization][scan_id].union(
-                set(antenna_ids))
+                    set(antenna_ids))
 
     def flag_bad_antennas(self, is_bad, source):
         for antenna in self._antennas:
@@ -159,3 +159,7 @@ class MeasurementSet:
                 if not antenna in bad_antennas_with_scans: bad_antennas_with_scans[antenna] = []
                 bad_antennas_with_scans[antenna].append(scan_id)
         return bad_antennas_with_scans
+
+    def split(self, output_ms, field, spw, data_column):
+        self.__ms.split(output_ms, field=field, spw=spw,
+                        whichcol=data_column)

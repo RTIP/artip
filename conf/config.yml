@@ -70,6 +70,7 @@ target_source:
     field: *target_src_field
     spw: 0
     phase_data_column: "corrected_phase"
+    channels_for_line: "40~480"
 
 casapy:
     Darwin:

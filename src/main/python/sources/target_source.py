@@ -1,28 +1,22 @@
 from casa.casa_runner import CasaRunner
-from configs.config import ALL_CONFIGS, GLOBAL_CONFIG
-from configs.pipeline_config import PIPELINE_CONFIGS
+from configs.config import ALL_CONFIGS, GLOBAL_CONFIG, OUTPUT_PATH
 from casa.flag_reasons import BAD_ANTENNA
 from sources.source import Source
 from helpers import is_last_element
+from measurement_set import MeasurementSet
 
 
 class TargetSource(Source):
     def __init__(self, measurement_set):
+        self.__measurement_set = measurement_set
         self.source_type = 'target_source'
         self.config = ALL_CONFIGS[self.source_type]
         self.source_id = GLOBAL_CONFIG['target_src_field']
         self.source_name = measurement_set.get_field_name_for(self.source_id)
         super(TargetSource, self).__init__(measurement_set, self.source_name)
 
-    def flag_antennas(self):
-        polarizations = GLOBAL_CONFIG['polarizations']
-        for polarization in polarizations:
-            self.flag_bad_antennas_of_phase_cal(polarization)
-        CasaRunner.flagdata(BAD_ANTENNA)
-
     def reduce_data(self):
-        if not PIPELINE_CONFIGS['manual_flag']: self.flag_antennas()
-        self.calibrate()
+        self.flag_and_calibrate_in_detail()
 
     def _get_next_scan_id(self, scan_id, source_id):
         scan_ids = self.measurement_set.scan_ids_for(source_id)
@@ -53,3 +47,14 @@ class TargetSource(Source):
 
     def calibrate(self):
         CasaRunner.apply_target_source_calibration(self.source_id)
+
+    def split(self):
+        spw = "{0}:{1}".format(self.config["spw"], self.config["channels_for_line"])
+        sub_ms_path = OUTPUT_PATH + "/src_split.ms"
+        self.__measurement_set.split(sub_ms_path, [self.source_id], [spw], "CORRECTED_DATA")
+        return TargetSource(MeasurementSet(sub_ms_path))
+
+    def create_continuum(self):
+        continuum_path = OUTPUT_PATH + "/continuum.ms"
+        self.__measurement_set.split(continuum_path, [self.source_id], self.config["spw"], "DATA")
+        return TargetSource(MeasurementSet(continuum_path))
