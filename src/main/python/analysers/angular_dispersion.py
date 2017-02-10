@@ -5,6 +5,8 @@ from configs.config import ALL_CONFIGS, GLOBAL_CONFIG
 from models.antenna_status import AntennaStatus
 from analysers.analyser import Analyser
 from analysers.r_matrix import RMatrix
+import numpy
+from models.phase_set import PhaseSet
 
 
 class AngularDispersion(Analyser):
@@ -34,10 +36,22 @@ class AngularDispersion(Analyser):
         if base_antenna in history: return set()
 
         baselines = self.measurement_set.baselines_for(base_antenna)
+        data = self.measurement_set.get_data({'start': channel}, polarization,
+                                             {'scan_number': scan_id},
+                                             ["antenna1", "antenna2", 'phase'])
+        antenna1_list = data['antenna1']
+        antenna2_list = data['antenna2']
+        phase_list = data['phase'][0][0]
+
         for (antenna1, antenna2) in baselines:
             # TODO: dont calculate again if present in r-matrix
-            filter_params = {'scan_number': scan_id, 'antenna1': antenna1.id, 'antenna2': antenna2.id}
-            phase_set = self.measurement_set.get_phase_data({'start': channel}, polarization, filter_params)
+            baseline_indexes = numpy.logical_and(antenna1_list == antenna1.id,
+                                                 antenna2_list == antenna2.id).nonzero()[0]
+            phase_data = numpy.array([])
+            for index in baseline_indexes:
+                phase_data = numpy.append(phase_data, phase_list[index])
+
+            phase_set = PhaseSet(phase_data)
             r_value = phase_set.calculate_angular_dispersion()
 
             another_antenna = antenna2 if base_antenna == antenna1 else antenna1
