@@ -18,6 +18,13 @@ class AmplitudeMatrix:
     def _generate_matrix(self):
         antennaids = self._measurement_set.antenna_ids(self._polarization, self._scan_id)
         amplitude_data_matrix = {}
+        data = self._measurement_set.get_data({'start': self._channel}, self._polarization,
+                                              {'scan_number': self._scan_id},
+                                              ["antenna1", "antenna2", 'corrected_amplitude', 'flag'])
+        amplitudes = data['corrected_amplitude'][0][0]
+        antenna2_list = data['antenna2']
+        antenna1_list = data['antenna1']
+        flags = data['flag'][0][0]
 
         # TODO remove duplicate baselines
         for antenna1 in antennaids:
@@ -31,25 +38,18 @@ class AmplitudeMatrix:
 
                 if primary_antenna == secondary_antenna: continue
 
-                filters = {
-                    'antenna1': primary_antenna,
-                    'antenna2': secondary_antenna,
-                    'scan_number': self._scan_id
-                }
-
-                data = self._measurement_set.get_data({'start': self._channel}, self._polarization,
-                                                      filters, ['corrected_amplitude', 'flag'])
-
-                amplitude_data = self._mask_flagged_data_with_nan(data)
+                baseline_indexes = numpy.logical_and(antenna1_list == primary_antenna,
+                                                     antenna2_list == secondary_antenna).nonzero()[0]
+                amplitude_data = numpy.array([])
+                for index in baseline_indexes:
+                    if flags[index]:
+                        amplitude_data = numpy.append(amplitude_data, numpy.nan)
+                    else:
+                        amplitude_data = numpy.append(amplitude_data, amplitudes[index])
 
                 baseline = Baseline(primary_antenna, secondary_antenna)
                 amplitude_data_matrix[baseline] = amplitude_data
         return amplitude_data_matrix
-
-    def _mask_flagged_data_with_nan(self, data):
-        amplitude_data = data['corrected_amplitude'][0][0]
-        flagged_rows = data['flag'][0][0]
-        return numpy.where(flagged_rows == True, numpy.nan, amplitude_data)
 
     def filter_by_antenna(self, antenna_id):
         antenna_matrix = dict((baseline, amp_data) for baseline, amp_data in self.amplitude_data_matrix.iteritems() if
