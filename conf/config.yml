@@ -19,6 +19,8 @@ flux_calibration:
     percentage_threshold_for_min_doubtful_antennas: 30
     percentage_threshold_for_good_antenna: 70
     closure_threshold: 17
+    percentage_of_closures: 70
+    percentage_of_triplets: 70
     percentile_threshold: 70
     detail_flagging:
       sliding_window:
@@ -45,10 +47,11 @@ phase_calibration:
     spw: 0
     channel: 100
     channels_to_avg: '80~120'
-    closure_threshold: 23
+    closure_threshold: 30
+    percentage_of_closures: 70
+    percentage_of_triplets: 70
     width: 40
     phase_data_column: "corrected_phase"
-    percentile_threshold: 70
     detail_flagging:
       sliding_window:
         bucket_size: 10

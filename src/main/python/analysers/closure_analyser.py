@@ -28,7 +28,7 @@ class ClosureAnalyser(Analyser):
         # Plotter.plot_pdf(closure_phase_array[0][0], antenna_tuple_ids, self.source_config['closure_threshold'],
         #                  "{0}_{1}".format(scan, polarization))
 
-        return percentileofscore > self.source_config['percentile_threshold']
+        return percentileofscore > self.source_config['percentage_of_closures']
 
     def identify_antennas_status(self):
         antennas = self.measurement_set.antennas
@@ -65,4 +65,4 @@ class ClosureAnalyser(Analyser):
                                                                                                good_triplets_count,
                                                                                                percentage))
 
-        return percentage > self.source_config['percentile_threshold']
+        return percentage > self.source_config['percentage_of_triplets']
