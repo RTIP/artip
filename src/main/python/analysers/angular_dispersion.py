@@ -16,9 +16,9 @@ class AngularDispersion(Analyser):
     def identify_antennas_status(self):
         polarizations = GLOBAL_CONFIG['polarizations']
         scan_ids = self.measurement_set.scan_ids_for(self.source_config['field'])
-        base_antenna = self.measurement_set.antennas[0]
 
         for polarization, scan_id in product(polarizations, scan_ids):
+            base_antenna = self.measurement_set.get_antennas(polarization, scan_id)[0]
             r_matrix = RMatrix(polarization, scan_id)
             history = set()
             self._mark_antennas_status(polarization, scan_id, self.source_config, base_antenna, r_matrix, history)
@@ -35,7 +35,7 @@ class AngularDispersion(Analyser):
 
         if base_antenna in history: return set()
 
-        baselines = self.measurement_set.baselines_for(base_antenna)
+        baselines = self.measurement_set.baselines_for(base_antenna, polarization, scan_id)
         data = self.measurement_set.get_data({'start': channel}, polarization,
                                              {'scan_number': scan_id},
                                              ["antenna1", "antenna2", 'phase'])

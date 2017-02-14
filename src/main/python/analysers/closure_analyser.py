@@ -31,11 +31,12 @@ class ClosureAnalyser(Analyser):
         return percentileofscore > self.source_config['percentage_of_closures']
 
     def identify_antennas_status(self):
-        antennas = self.measurement_set.antennas
         scan_ids = self.measurement_set.scan_ids_for(self.source_config['field'])
 
         polarization_scan_id_combination = itertools.product(GLOBAL_CONFIG['polarizations'], scan_ids)
         for polarization, scan_id in polarization_scan_id_combination:
+            antennas = self.measurement_set.get_antennas(polarization, scan_id)
+
             logging.debug(
                 Color.BACKGROUD_WHITE + "Polarization =" + polarization + " Scan Id=" + str(scan_id) + Color.ENDC)
             data = self.measurement_set.get_data(

@@ -18,7 +18,7 @@ class PhaseCalibrator(Source):
         self.analyse_antennas_on_angular_dispersion()
         self.analyse_antennas_on_closure_phases()
         scan_ids = self.measurement_set.scan_ids_for(self.source_id)
-        Report(self.measurement_set.antennas).generate_report(scan_ids)
+        Report(self.measurement_set.get_antennas()).generate_report(scan_ids)
 
         def is_bad(state):
             return state.get_R_phase_status() == AntennaStatus.BAD and state.get_closure_phase_status() == AntennaStatus.BAD

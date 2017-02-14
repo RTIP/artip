@@ -23,7 +23,7 @@ class FluxCalibrator(Source):
         self.analyse_antennas_on_closure_phases()
 
         scan_ids = self.measurement_set.scan_ids_for(self.source_id)
-        Report(self.measurement_set.antennas).generate_report(scan_ids)
+        Report(self.measurement_set.get_antennas()).generate_report(scan_ids)
 
         def is_bad(state):
             return state.get_R_phase_status() == AntennaStatus.BAD and state.get_closure_phase_status() == AntennaStatus.BAD
@@ -35,13 +35,13 @@ class FluxCalibrator(Source):
     def flag_bad_antennas_across_all_sources(self):
         polarizations = GLOBAL_CONFIG['polarizations']
         for polarization in polarizations:
-            scan_ids_count = len(self.measurement_set.scan_ids_for(self.source_id))
+            scan_ids = self.measurement_set.scan_ids_for(self.source_id)
             antennas_with_scans = self.measurement_set.get_bad_antennas_with_scans_for(polarization, self.source_id)
-            bad_antennas = filter(lambda antenna: len(antennas_with_scans[antenna]) == scan_ids_count,
+            bad_antennas = filter(lambda antenna: len(antennas_with_scans[antenna]) == len(scan_ids),
                                   antennas_with_scans.keys())
 
             self.measurement_set.make_entry_in_flag_file(polarization, '', bad_antennas)
-            self.measurement_set.remove_bad_antennas(bad_antennas)
+            self.measurement_set.remove_bad_antennas(polarization, self.measurement_set.scan_ids(), bad_antennas)
 
     def calibrate(self):
         CasaRunner.apply_flux_calibration()
