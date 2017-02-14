@@ -35,13 +35,16 @@ class TargetSource(Source):
             if not is_last_element(bad_scan_id, bad_scan_ids):
                 next_scan_id = self._get_next_scan_id(bad_scan_id, source_id)
                 if next_scan_id in bad_scan_ids:
-                    scan_ids_to_flag = range(bad_scan_id, next_scan_id)
+                    scan_ids_to_flag = range(bad_scan_id, next_scan_id+1)
                     self.measurement_set.flag_antennas(polarization, scan_ids_to_flag, [antenna_id])
 
     def flag_bad_antennas_of_phase_cal(self, polarization):
         phase_cal_field = GLOBAL_CONFIG['phase_cal_field']
-
+        completely_bad_antennas = self.measurement_set.get_completely_flagged_antennas(polarization)
         antennas_with_scans = self.measurement_set.get_bad_antennas_with_scans_for(polarization, phase_cal_field)
+
+        for completely_bad_antenna in completely_bad_antennas:
+            del antennas_with_scans[completely_bad_antenna]
 
         for antenna_id, bad_scan_ids in antennas_with_scans.iteritems():
             if len(bad_scan_ids) > 1:

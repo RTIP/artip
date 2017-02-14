@@ -27,7 +27,7 @@ class MeasurementSet:
 
     def _initialize_flag_data(self):
         flag_data = {
-            polarization: {scan_id: [] for scan_id in self.scan_ids()} for
+            polarization: {scan_id: set() for scan_id in self.scan_ids()} for
             polarization in
             GLOBAL_CONFIG['polarizations']}
         return flag_data
@@ -107,6 +107,9 @@ class MeasurementSet:
         return numpy.array(
                 map(lambda time: quanta.time(quanta.quantity(time), form='ymd'), times_with_second)).flatten()
 
+    def get_completely_flagged_antennas(self, polarization):
+        return list(set.intersection(*self.flagged_antennas[polarization].values()))
+
     def make_entry_in_flag_file(self, polarization, scan_ids, antenna_ids):
         if antenna_ids:
             FlagRecorder.mark_entry(
@@ -117,8 +120,8 @@ class MeasurementSet:
     def flag_antennas(self, polarization, scan_ids, antenna_ids):
         self.make_entry_in_flag_file(polarization, scan_ids, antenna_ids)
         for scan_id in scan_ids:
-            self.flagged_antennas[polarization][scan_id] = list(
-                set(self.flagged_antennas[polarization][scan_id] + antenna_ids))
+            self.flagged_antennas[polarization][scan_id] = self.flagged_antennas[polarization][scan_id].union(
+                set(antenna_ids))
 
     def flag_bad_antennas(self, is_bad, source):
         for antenna in self._antennas:
@@ -148,7 +151,7 @@ class MeasurementSet:
                  'scan': scan_id, 'timerange': '~'.join(timerange_for_flagging)})
 
     def get_bad_antennas_with_scans_for(self, polarization, source_id):
-        scan_ids = self.scan_ids_for(source_id)  # 1,7
+        scan_ids = self.scan_ids_for(source_id)
         bad_antennas_with_scans = {}
         for scan_id in scan_ids:
             bad_antennas = self.flagged_antennas[polarization][scan_id]
