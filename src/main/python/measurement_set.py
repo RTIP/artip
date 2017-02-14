@@ -117,10 +117,8 @@ class MeasurementSet:
     def flag_antennas(self, polarization, scan_ids, antenna_ids):
         self.make_entry_in_flag_file(polarization, scan_ids, antenna_ids)
         for scan_id in scan_ids:
-            self.flagged_antennas[polarization][scan_id] += antenna_ids
-            # self.flagged_antennas[polarization][scan_id] = numpy.unique(
-            #         self.flagged_antennas[polarization][scan_id] + antenna_ids)
-
+            self.flagged_antennas[polarization][scan_id] = list(
+                set(self.flagged_antennas[polarization][scan_id] + antenna_ids))
 
     def flag_bad_antennas(self, is_bad, source):
         for antenna in self._antennas:
