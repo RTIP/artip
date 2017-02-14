@@ -12,11 +12,10 @@ class Antenna:
         return self.__antenna_states
 
     def get_state_for(self, polarization, scan_id):
-
-        def state_filter(state) :
+        def state_filter(state):
             return state.polarization == polarization and state.scan_id == scan_id
 
-        filtered_states = filter(state_filter , self.__antenna_states)
+        filtered_states = filter(state_filter, self.__antenna_states)
         return filtered_states[0]
 
     def update_state(self, polarization, scan_id, status):
@@ -24,4 +23,4 @@ class Antenna:
         current_state.update_R_phase_status(status)
 
     def __repr__(self):
-        return str(self.id)
+        return "Antenna=" + str(self.id)

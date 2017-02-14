@@ -91,14 +91,9 @@ class MeasurementSet:
         return map(lambda antenna: antenna.id, self.get_antennas(polarization, scan_id))
 
     def get_antennas(self, polarization=None, scan_id=None):
-        if not (polarization and scan_id):
+        if not (polarization or scan_id):
             return self._antennas
-        return filter(lambda antenna: antenna not in self.flagged_antennas[polarization][scan_id], self._antennas)
-
-    def remove_bad_antennas(self, polarization, scan_ids, bad_antenna_ids):
-        for scan_id in scan_ids:
-            self.flagged_antennas[polarization][scan_id] = numpy.unique(
-                    self.flagged_antennas[polarization][scan_id] + bad_antenna_ids)
+        return filter(lambda antenna: antenna.id not in self.flagged_antennas[polarization][scan_id], self._antennas)
 
     def antenna_count(self):
         return len(self._antennas)
@@ -112,22 +107,26 @@ class MeasurementSet:
         return numpy.array(
                 map(lambda time: quanta.time(quanta.quantity(time), form='ymd'), times_with_second)).flatten()
 
-    def make_entry_in_flag_file(self, polarization, scan_id, antenna_ids):
+    def make_entry_in_flag_file(self, polarization, scan_ids, antenna_ids):
         if antenna_ids:
             FlagRecorder.mark_entry(
-                    {'mode': 'manual', 'antenna': ','.join(map(lambda antenna_id: str(antenna_id), antenna_ids)),
+                    {'mode': 'manual', 'antenna': ','.join(map(str, antenna_ids)),
                      'reason': BAD_ANTENNA, 'correlation': polarization,
-                     'scan': scan_id})
+                     'scan': ','.join(map(str, scan_ids))})
 
-    def flag_antennas(self, polarization, scan_id, antenna_ids):
-        self.make_entry_in_flag_file(polarization, scan_id, antenna_ids)
-        self.flagged_antennas[polarization][scan_id] += antenna_ids
+    def flag_antennas(self, polarization, scan_ids, antenna_ids):
+        self.make_entry_in_flag_file(polarization, scan_ids, antenna_ids)
+        for scan_id in scan_ids:
+            self.flagged_antennas[polarization][scan_id] += antenna_ids
+            # self.flagged_antennas[polarization][scan_id] = numpy.unique(
+            #         self.flagged_antennas[polarization][scan_id] + antenna_ids)
+
 
     def flag_bad_antennas(self, is_bad, source):
         for antenna in self._antennas:
             for state in antenna.get_states(self.scan_ids_for(source)):
                 if state.scan_id in self.scan_ids() and is_bad(state):
-                    self.flag_antennas(state.polarization, state.scan_id, [antenna.id])
+                    self.flag_antennas(state.polarization, [state.scan_id], [antenna.id])
 
     def _get_timerange_for_flagging(self, timerange):
         datetime_format = '%Y/%m/%d/%H:%M:%S'

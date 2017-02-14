@@ -43,5 +43,5 @@ class Debugger:
     def __init__(self, measurement_set):
         self._measurement_set = measurement_set
 
-    def flag_antennas(self, polarization, scan_id):
-        self._measurement_set.flag_antennas(polarization, scan_id, FLAGGED_ELEMENTS['antennas'])
+    def flag_antennas(self, polarization, scan_ids):
+        self._measurement_set.flag_antennas(polarization, scan_ids, FLAGGED_ELEMENTS['antennas'])

@@ -15,7 +15,7 @@ class DetailedAnalyser:
         logging.info(Color.HEADER + "Started detailed flagging on all unflagged antennas" + Color.ENDC)
         bad_window_present = False
         for polarization, scan_id in polarization_and_scan_product:
-            if PIPELINE_CONFIGS['manual_flag']: debugger.flag_antennas(polarization, scan_id)
+            if PIPELINE_CONFIGS['manual_flag']: debugger.flag_antennas(polarization, [scan_id])
             scan_times = self.measurement_set.timesforscan(scan_id)
             amp_matrix = AmplitudeMatrix(self.measurement_set, polarization, scan_id, source_config['channel'])
             global_median = amp_matrix.median()

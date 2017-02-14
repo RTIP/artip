@@ -40,8 +40,7 @@ class FluxCalibrator(Source):
             bad_antennas = filter(lambda antenna: len(antennas_with_scans[antenna]) == len(scan_ids),
                                   antennas_with_scans.keys())
 
-            self.measurement_set.make_entry_in_flag_file(polarization, '', bad_antennas)
-            self.measurement_set.remove_bad_antennas(polarization, self.measurement_set.scan_ids(), bad_antennas)
+            self.measurement_set.flag_antennas(polarization, self.measurement_set.scan_ids(), bad_antennas)
 
     def calibrate(self):
         CasaRunner.apply_flux_calibration()
