@@ -9,4 +9,3 @@ htmlcov/*
 *.table
 *.gcal/
 output
-plots/*.png

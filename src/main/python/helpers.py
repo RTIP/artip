@@ -1,5 +1,6 @@
 import numpy
 import math
+import os
 
 from configs.pipeline_config import FLAGGED_ELEMENTS
 
@@ -30,6 +31,12 @@ def delete_indexes(array, indexes):
 
 def is_nan(array):
     return all(numpy.isnan(amp) for amp in numpy.array(array).flatten())
+
+
+def create_dir(directory):
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+    return os.path.abspath(directory)
 
 
 class Debugger:

@@ -1,8 +1,9 @@
+from configs.config import OUTPUT_PATH
 import matplotlib.pyplot as pyplot
 from matplotlib.colors import from_levels_and_colors
 import numpy
 import pylab
-import os
+from helpers import create_dir
 
 
 class Plotter:
@@ -21,8 +22,8 @@ class Plotter:
                        edgecolor='none')
         pylab.ion()
         pylab.show()
-        path = os.path.abspath("plots")
-        pylab.savefig(path + '/Triplet-{0}_{1}.png'.format(name_prefix, triplet))
+        pylab.savefig(
+            create_dir("{0}/CLOSURE_PLOTS".format(OUTPUT_PATH)) + '/Triplet-{0}_{1}.png'.format(name_prefix, triplet))
         pyplot.clf()
 
     @staticmethod
