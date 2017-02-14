@@ -15,12 +15,13 @@ class PhaseCalibrator(Source):
         super(PhaseCalibrator, self).__init__(measurement_set, self.source_name)
 
     def flag_antennas(self):
+        self.analyse_antennas_on_angular_dispersion()
         self.analyse_antennas_on_closure_phases()
         scan_ids = self.measurement_set.scan_ids_for(self.source_id)
         Report(self.measurement_set.antennas).generate_report(scan_ids)
 
         def is_bad(state):
-            return state.get_closure_phase_status() == AntennaStatus.BAD
+            return state.get_R_phase_status() == AntennaStatus.BAD and state.get_closure_phase_status() == AntennaStatus.BAD
 
         self.measurement_set.flag_bad_antennas(is_bad, self.source_id)
         CasaRunner.flagdata(BAD_ANTENNA)

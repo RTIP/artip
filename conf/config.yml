@@ -47,7 +47,10 @@ phase_calibration:
     spw: 0
     channel: 100
     channels_to_avg: '80~120'
-    closure_threshold: 30
+    r_threshold: 0.3
+    percentage_threshold_for_min_doubtful_antennas: 30
+    percentage_threshold_for_good_antenna: 70
+    closure_threshold: 35
     percentage_of_closures: 70
     percentage_of_triplets: 70
     width: 40

@@ -11,7 +11,7 @@ class Plotter:
         ar = numpy.arange(0, len(data), 1)
         pyplot.xlabel("Timerange")
         pyplot.ylabel("Closure Phase (Absolute)")
-        colors = ['green', 'red']
+        colors = ['blue', 'red']
         levels = [0, 1]
         cmap, norm = from_levels_and_colors(levels=levels, colors=colors, extend='max')
         phases_in_degree = numpy.array(numpy.absolute(data)) * 180 / numpy.pi
