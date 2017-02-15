@@ -24,10 +24,15 @@ class CasaRunner:
         script_path = 'casa_scripts/quack.py'
         self._run(script_path)
 
-    def apply_flux_calibration(self):
+    def apply_flux_calibration(self, source_config):
         logging.info(Color.HEADER + "Applying Flux Calibration..." + Color.ENDC)
         script_path = 'casa_scripts/flux_calibration.py'
-        script_parameters = "{0} {1}".format(self._dataset_path, self._output_path)
+        field = source_config['field']
+        refant = source_config['casa_scripts']['refant']
+        minsnr = source_config['casa_scripts']['minsnr']
+        spw = "{0}:{1}".format(source_config['spw'], source_config['channel'])
+        script_parameters = "{0} {1} {2} {3} {4} {5}".format(self._dataset_path, self._output_path,
+                                                             field, refant, spw, minsnr)
         self._run(script_path, script_parameters)
 
     def apply_bandpass_calibration(self, source_config):

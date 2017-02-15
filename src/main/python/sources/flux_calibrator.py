@@ -42,5 +42,5 @@ class FluxCalibrator(Source):
             self.measurement_set.flag_antennas(polarization, self.measurement_set.scan_ids(), bad_antennas)
 
     def calibrate(self):
-        self.measurement_set.casa_runner.apply_flux_calibration()
+        self.measurement_set.casa_runner.apply_flux_calibration(self.config)
         self.measurement_set.reload()
