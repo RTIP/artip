@@ -1,7 +1,8 @@
 import datetime
 import logging
+import os
 from configs.pipeline_config import STAGES_CONFIG
-from configs.config import DATASET_PATH
+from configs.config import OUTPUT_PATH
 from sources.flux_calibrator import FluxCalibrator
 from sources.bandpass_calibrator import BandpassCalibrator
 from sources.phase_calibrator import PhaseCalibrator
@@ -10,9 +11,9 @@ from measurement_set import MeasurementSet
 from terminal_color import Color
 
 
-def main():
+def main(dataset_path):
     start_time = datetime.datetime.now()
-    measurement_set = MeasurementSet(DATASET_PATH)
+    measurement_set = MeasurementSet(dataset_path, output_path(dataset_path))
     measurement_set.quack()
 
     if STAGES_CONFIG['flux_calibration']:
@@ -49,3 +50,11 @@ def main():
 
     end_time = datetime.datetime.now()
     logging.info(Color.UNDERLINE + 'Total time =' + str(abs((end_time - start_time).seconds)) + " seconds" + Color.ENDC)
+
+
+def output_path(dataset_path):
+    dataset_name = os.path.splitext(os.path.basename(dataset_path))[0]
+    ms_output_path = OUTPUT_PATH + "/" + dataset_name
+    if not os.path.exists(ms_output_path):
+        os.makedirs(ms_output_path)
+    return ms_output_path

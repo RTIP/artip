@@ -3,7 +3,6 @@ import logging
 from analysers.angular_dispersion import AngularDispersion
 from analysers.closure_analyser import ClosureAnalyser
 from analysers.detailed_analyser import DetailedAnalyser
-from casa.casa_runner import CasaRunner
 from casa.flag_reasons import BAD_ANTENNA_TIME, BAD_BASELINE_TIME
 from configs.config import GLOBAL_CONFIG
 from configs.pipeline_config import PIPELINE_CONFIGS
@@ -17,7 +16,7 @@ class Source(object):
         self.measurement_set = measurement_set
 
     def run_rflag(self):
-        CasaRunner.r_flag(self.source_type)
+        self.measurement_set.casa_runner.r_flag(self.source_type)
 
     def calibrate(self):
         raise NotImplementedError("Not implemented")
@@ -43,7 +42,7 @@ class Source(object):
             bad_antenna_present = detailed_analyser.analyse_antennas(polarization_scan_product, self.config, debugger)
             if bad_antenna_present:
                 logging.info(Color.HEADER + 'Flagging Bad Antenna Time in CASA' + Color.ENDC)
-                CasaRunner.flagdata(BAD_ANTENNA_TIME)
+                self.measurement_set.casa_runner.flagdata(BAD_ANTENNA_TIME)
                 self.calibrate()
             else:
                 logging.info(Color.OKGREEN + 'No Bad Antennas were Found' + Color.ENDC)
@@ -61,7 +60,7 @@ class Source(object):
                                                                        debugger)
             if bad_baseline_present:
                 logging.info(Color.HEADER + 'Flagging Bad Baselines Time in CASA' + Color.ENDC)
-                CasaRunner.flagdata(BAD_BASELINE_TIME)
+                self.measurement_set.casa_runner.flagdata(BAD_BASELINE_TIME)
                 self.calibrate()
             else:
                 logging.info(Color.OKGREEN + 'No Bad Baselines were Found' + Color.ENDC)

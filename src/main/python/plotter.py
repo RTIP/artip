@@ -22,8 +22,9 @@ class Plotter:
                        edgecolor='none')
         pylab.ion()
         pylab.show()
-        pylab.savefig(
-            create_dir("{0}/CLOSURE_PLOTS".format(OUTPUT_PATH)) + '/Triplet-{0}_{1}.png'.format(name_prefix, triplet))
+        plots_path = "{0}/CLOSURE_PLOTS".format(OUTPUT_PATH)
+        create_dir(plots_path)
+        pylab.savefig(plots_path + '/Triplet-{0}_{1}.png'.format(name_prefix, triplet))
         pyplot.clf()
 
     @staticmethod

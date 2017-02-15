@@ -1,4 +1,3 @@
-from casa.casa_runner import CasaRunner
 from configs.config import ALL_CONFIGS, GLOBAL_CONFIG
 from sources.source import Source
 
@@ -12,4 +11,4 @@ class BandpassCalibrator(Source):
         super(BandpassCalibrator, self).__init__(measurement_set, self.source_name)
 
     def calibrate(self):
-        CasaRunner.apply_bandpass_calibration(self.config)
+        self.measurement_set.casa_runner.apply_bandpass_calibration(self.config)

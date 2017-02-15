@@ -7,23 +7,32 @@ from casa.casa_runner import CasaRunner
 from casa.flag_reasons import BAD_ANTENNA, BAD_ANTENNA_TIME, BAD_BASELINE_TIME
 from casa.flag_recorder import FlagRecorder
 from configs.config import GLOBAL_CONFIG
-from configs.config import DATASET_PATH
-from helpers import minus
 from models.antenna import Antenna
 from models.antenna_state import AntennaState
 from models.phase_set import PhaseSet
 
 
 class MeasurementSet:
-    def __init__(self, dataset):
+    def __init__(self, dataset_path, output_path):
+        self._dataset_path = dataset_path
+        self._output_path = output_path
+        self.casa_runner = CasaRunner(dataset_path, output_path)
+        self.flag_recorder = FlagRecorder(output_path + "/flags.txt")
         self.__ms = casac.casac.ms()
-        self.__ms.open(dataset)
+        self.__ms.open(dataset_path)
         self.__metadata = self.__ms.metadata()
         self._antennas = self.create_antennas()
         self.flagged_antennas = self._initialize_flag_data()
 
+
     def __del__(self):
         self.__ms.close()
+
+    def get_dataset_path(self):
+        return self._dataset_path
+
+    def get_output_path(self):
+        return self._output_path
 
     def _initialize_flag_data(self):
         flag_data = {
@@ -33,7 +42,7 @@ class MeasurementSet:
         return flag_data
 
     def quack(self):
-        CasaRunner.quack()
+        self.casa_runner.quack()
 
     def _filter(self, channel, polarization, filters={}):
         self.__ms.selectinit(reset=True)
@@ -43,7 +52,7 @@ class MeasurementSet:
 
     def reload(self):
         self.__ms.close()
-        self.__ms.open(DATASET_PATH)
+        self.__ms.open(self._dataset_path)
 
     def get_data(self, channel, polarization, filters, selection_params, ifraxis=False):
         self._filter(channel, polarization, filters)
@@ -112,7 +121,7 @@ class MeasurementSet:
 
     def make_entry_in_flag_file(self, polarization, scan_ids, antenna_ids):
         if antenna_ids:
-            FlagRecorder.mark_entry(
+            self.flag_recorder.mark_entry(
                     {'mode': 'manual', 'antenna': ','.join(map(str, antenna_ids)),
                      'reason': BAD_ANTENNA, 'correlation': polarization,
                      'scan': ','.join(map(str, scan_ids))})
@@ -140,13 +149,13 @@ class MeasurementSet:
 
     def flag_bad_antenna_time(self, polarization, scan_id, antenna_id, timerange):
         timerange_for_flagging = self._get_timerange_for_flagging(timerange)
-        FlagRecorder.mark_entry(
+        self.flag_recorder.mark_entry(
                 {'mode': 'manual', 'antenna': antenna_id, 'reason': BAD_ANTENNA_TIME, 'correlation': polarization,
                  'scan': scan_id, 'timerange': '~'.join(timerange_for_flagging)})
 
     def flag_bad_baseline_time(self, polarization, scan_id, baseline, timerange):
         timerange_for_flagging = self._get_timerange_for_flagging(timerange)
-        FlagRecorder.mark_entry(
+        self.flag_recorder.mark_entry(
                 {'mode': 'manual', 'antenna': str(baseline), 'reason': BAD_BASELINE_TIME, 'correlation': polarization,
                  'scan': scan_id, 'timerange': '~'.join(timerange_for_flagging)})
 

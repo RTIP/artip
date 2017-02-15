@@ -1,8 +1,7 @@
-from casa.casa_runner import CasaRunner
 from configs.config import ALL_CONFIGS, GLOBAL_CONFIG, OUTPUT_PATH
-from casa.flag_reasons import BAD_ANTENNA
+from helpers import is_last_element, create_dir
 from sources.source import Source
-from helpers import is_last_element
+
 from measurement_set import MeasurementSet
 
 
@@ -29,7 +28,7 @@ class TargetSource(Source):
             if not is_last_element(bad_scan_id, bad_scan_ids):
                 next_scan_id = self._get_next_scan_id(bad_scan_id, source_id)
                 if next_scan_id in bad_scan_ids:
-                    scan_ids_to_flag = range(bad_scan_id, next_scan_id+1)
+                    scan_ids_to_flag = range(bad_scan_id, next_scan_id + 1)
                     self.measurement_set.flag_antennas(polarization, scan_ids_to_flag, [antenna_id])
 
     def flag_bad_antennas_of_phase_cal(self, polarization):
@@ -46,15 +45,22 @@ class TargetSource(Source):
                 self._flag_bad_scans(polarization, antenna_id, bad_scan_ids, phase_cal_field)
 
     def calibrate(self):
-        CasaRunner.apply_target_source_calibration(self.source_id)
+        self.measurement_set.casa_runner.apply_target_source_calibration(self.source_id)
 
     def split(self):
         spw = "{0}:{1}".format(self.config["spw"], self.config["channels_for_line"])
-        sub_ms_path = OUTPUT_PATH + "/src_split.ms"
-        self.__measurement_set.split(sub_ms_path, [self.source_id], [spw], "CORRECTED_DATA")
-        return TargetSource(MeasurementSet(sub_ms_path))
+        line_ms_path, line_output_path = self.prepare_output_dir("line")
+        self.__measurement_set.split(line_ms_path, [self.source_id], [spw], "CORRECTED_DATA")
+        return TargetSource(MeasurementSet(line_ms_path, line_output_path))
 
     def create_continuum(self):
-        continuum_path = OUTPUT_PATH + "/continuum.ms"
-        self.__measurement_set.split(continuum_path, [self.source_id], self.config["spw"], "DATA")
-        return TargetSource(MeasurementSet(continuum_path))
+        spw = "{0}:{1}".format(self.config["spw"], self.config["channels_for_line"])
+        continuum_ms_path, continuum_output_path = self.prepare_output_dir("continuum")
+        self.__measurement_set.split(continuum_ms_path, [self.source_id], spw, "DATA")
+        return TargetSource(MeasurementSet(continuum_ms_path))
+
+    def prepare_output_dir(self, new_dir):
+        output_path = self.__measurement_set.get_output_path() + "/" + new_dir
+        create_dir(output_path)
+        ms_path = output_path + "/{0}.ms".format(new_dir)
+        return ms_path, output_path
