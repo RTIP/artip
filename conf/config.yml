@@ -11,7 +11,7 @@ flux_calibration:
     field: *flux_cal_field
     spw: 0
     channel: 100
-    refant: 2
+    refant: 3
     minsnr: '2.0'
     r_threshold: 0.3
     width: 1
@@ -31,7 +31,7 @@ flux_calibration:
 bandpass_calibration:
     field: *bandpass_cal_field
     spw: 0
-    refant: 2
+    refant: 3
     minsnr: '2.0'
     channels_to_avg: '80~120'
     r_flag:

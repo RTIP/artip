@@ -35,8 +35,7 @@ class CasaRunner:
         field = source_config['field']
         refant = source_config['refant']
         minsnr = source_config['minsnr']
-        spw = "{0}:{1}".format(source_config['spw'], source_config['channels_to_avg'])
-        script_parameters = "{0} {1} {2} {3} {4} {5}".format(DATASET_PATH, OUTPUT_PATH, field, refant, minsnr, spw)
+        script_parameters = "{0} {1} {2} {3} {4} {5}".format(DATASET_PATH, OUTPUT_PATH, field, refant, minsnr)
 
         CasaRunner._run(script_path, script_parameters)
 
