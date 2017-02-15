@@ -1,12 +1,14 @@
 import sys
 
-ms_dataset = sys.argv[-3]
-output_path = sys.argv[-2]
-field = sys.argv[-1]
+ms_dataset = sys.argv[-5]
+output_path = sys.argv[-4]
+flux_cal_field = sys.argv[-3]
+phase_cal_field = sys.argv[-2]
+target_source_field = sys.argv[-1]
 
 bandpass_table = output_path + "/" + 'bandpass.bcal'
 scanphase_gcal = output_path + "/" + 'scanphase.gcal'
-amp_gcal = output_path + "/" + 'amp.gcal'
+flux_gcal = output_path + "/" + 'flux.gcal'
 
-applycal(vis=ms_dataset, field=field, gaintable=[bandpass_table, scanphase_gcal, amp_gcal],
-         gainfield=['0', '1', '1'], calwt=F)
+applycal(vis=ms_dataset, field=target_source_field, gaintable=[bandpass_table, scanphase_gcal, flux_gcal],
+         gainfield=[flux_cal_field, phase_cal_field, phase_cal_field], calwt=F)

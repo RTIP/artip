@@ -45,7 +45,9 @@ class TargetSource(Source):
                 self._flag_bad_scans(polarization, antenna_id, bad_scan_ids, phase_cal_field)
 
     def calibrate(self):
-        self.measurement_set.casa_runner.apply_target_source_calibration(self.source_id)
+        flux_cal_field = GLOBAL_CONFIG['flux_cal_field']
+        phase_cal_field = GLOBAL_CONFIG['phase_cal_field']
+        self.measurement_set.casa_runner.apply_target_source_calibration(flux_cal_field, phase_cal_field, self.config)
 
     def split(self):
         spw = "{0}:{1}".format(self.config["spw"], self.config["channels_for_line"])

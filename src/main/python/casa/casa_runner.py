@@ -57,10 +57,12 @@ class CasaRunner:
                                                                  spw, refant, minsnr)
         self._run(script_path, script_parameters)
 
-    def apply_target_source_calibration(self, field):
+    def apply_target_source_calibration(self, flux_cal_field, phase_cal_field, source_config):
         logging.info(Color.HEADER + "Applying Calibration to Target Source..." + Color.ENDC)
         script_path = 'casa_scripts/target_source_calibration.py'
-        script_parameters = "{0} {1} {2}".format(self._dataset_path, self._output_path, field)
+        script_parameters = "{0} {1} {2} {3} {4}".format(self._dataset_path, self._output_path,
+                                                         flux_cal_field, phase_cal_field,
+                                                         source_config['field'])
         self._run(script_path, script_parameters)
 
     def r_flag(self, source):
