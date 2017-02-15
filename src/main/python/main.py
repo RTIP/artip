@@ -25,7 +25,7 @@ def main(dataset_path):
     if STAGES_CONFIG['bandpass_calibration']:
         logging.info(Color.SOURCE_HEADING + "Bandpass Calibration" + Color.ENDC)
         bandpass_calibrator = BandpassCalibrator(measurement_set)
-        bandpass_calibrator.run_rflag()
+        # bandpass_calibrator.run_rflag()
         bandpass_calibrator.calibrate()
 
     if STAGES_CONFIG['phase_calibration']:
