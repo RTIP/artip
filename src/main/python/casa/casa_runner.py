@@ -45,12 +45,16 @@ class CasaRunner:
 
         self._run(script_path, script_parameters)
 
-    def apply_phase_calibration(self, flux_cal_field, phase_cal_field, channels_to_avg):
+    def apply_phase_calibration(self, flux_cal_field, source_config):
         logging.info(Color.HEADER + "Applying Phase Calibration..." + Color.ENDC)
         script_path = 'casa_scripts/phase_calibration.py'
-        script_parameters = "{0} {1} {2} {3} {4}".format(self._dataset_path, self._output_path, flux_cal_field,
-                                                         phase_cal_field,
-                                                         channels_to_avg)
+        phase_cal_field = source_config['field']
+        refant = source_config['casa_scripts']['refant']
+        minsnr = source_config['casa_scripts']['minsnr']
+        spw = "{0}:{1}".format(source_config['spw'], source_config['casa_scripts']['channels_to_avg'])
+        script_parameters = "{0} {1} {2} {3} {4} {5} {6}".format(self._dataset_path, self._output_path,
+                                                                 flux_cal_field, phase_cal_field,
+                                                                 spw, refant, minsnr)
         self._run(script_path, script_parameters)
 
     def apply_target_source_calibration(self, field):

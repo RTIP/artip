@@ -47,7 +47,6 @@ phase_calibration:
     field: *phase_cal_field
     spw: 0
     channel: 100
-    channels_to_avg: '80~120'
     r_threshold: 0.3
     percentage_threshold_for_min_doubtful_antennas: 30
     percentage_threshold_for_good_antenna: 70
@@ -66,6 +65,10 @@ phase_calibration:
       timedevscale: 5.0
       growtime: 70.0
       growfreq: 90.0
+    casa_scripts:
+      refant: 3
+      minsnr: 2.0
+      channels_to_avg: '80~120'
 
 target_source:
     field: *target_src_field

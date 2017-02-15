@@ -27,4 +27,4 @@ class PhaseCalibrator(Source):
 
     def calibrate(self):
         flux_cal_field = GLOBAL_CONFIG['flux_cal_field']
-        self.measurement_set.casa_runner.apply_phase_calibration(flux_cal_field, self.source_id, self.config['channels_to_avg'])
+        self.measurement_set.casa_runner.apply_phase_calibration(flux_cal_field, self.config)
