@@ -87,6 +87,15 @@ class CasaRunner:
         script_parameters = "{0} {1} {2}".format(self._dataset_path, source_id, model_path)
         self._run(script_path, script_parameters, CASAPY_CONFIG['path'])
 
+    def split(self, output_path, filters):
+        logging.info(Color.HEADER + "Splitting dataset at location {0}".format(output_path) + Color.ENDC)
+        script_path = 'casa_scripts/split_dataset.py'
+        spw = filters.get("spw", "all")
+        width = filters.get("width", 1)
+        script_parameters = "{0} {1} {2} {3} {4} {5}".format(self._dataset_path, output_path, filters['field'],
+                                                             filters['datacolumn'], width, spw)
+        self._run(script_path, script_parameters)
+
     def _unlock_dataset(self):
         table = casac.casac.table()
         table.open(self._dataset_path)

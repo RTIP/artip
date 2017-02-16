@@ -11,8 +11,7 @@ from terminal_color import Color
 
 
 class Source(object):
-    def __init__(self, measurement_set, source_name):
-        self.source_name = source_name
+    def __init__(self, measurement_set):
         self.measurement_set = measurement_set
 
     def run_rflag(self):
@@ -73,6 +72,6 @@ class Source(object):
 
     def analyse_antennas_on_angular_dispersion(self):
         logging.info(
-                Color.HEADER + "Identifying bad Antennas based on angular dispersion in phases..." + Color.ENDC)
+            Color.HEADER + "Identifying bad Antennas based on angular dispersion in phases..." + Color.ENDC)
         r_analyser = AngularDispersion(self.measurement_set, self.source_type)
         r_analyser.identify_antennas_status()

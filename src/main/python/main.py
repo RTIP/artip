@@ -9,6 +9,8 @@ from sources.phase_calibrator import PhaseCalibrator
 from sources.target_source import TargetSource
 from measurement_set import MeasurementSet
 from terminal_color import Color
+from sources.continuum_source import ContinuumSource
+from sources.line_source import LineSource
 
 
 def main(dataset_path):
@@ -38,14 +40,8 @@ def main(dataset_path):
         logging.info(Color.SOURCE_HEADING + "Target Source Calibration" + Color.ENDC)
         target_source = TargetSource(measurement_set)
         target_source.calibrate()
-
-        reduced_target_source = target_source.split()
-        reduced_target_source.run_rflag()
-
-        continuum = reduced_target_source.create_continuum()
-        continuum.reduce_data()
-
-        # reduced_target_source.apply_continnum_flags()
+        line_source = LineSource(target_source.line())
+        continuum_source = ContinuumSource(target_source.continuum())
 
     end_time = datetime.datetime.now()
     logging.info(Color.UNDERLINE + 'Total time =' + str(abs((end_time - start_time).seconds)) + " seconds" + Color.ENDC)

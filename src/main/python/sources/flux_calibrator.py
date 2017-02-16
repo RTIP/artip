@@ -11,11 +11,11 @@ class FluxCalibrator(Source):
         self.source_type = 'flux_calibration'
         self.config = ALL_CONFIGS[self.source_type]
         self.source_id = GLOBAL_CONFIG['flux_cal_field']
-        self.source_name = measurement_set.get_field_name_for(self.source_id)
-        super(FluxCalibrator, self).__init__(measurement_set, self.source_name)
+        super(FluxCalibrator, self).__init__(measurement_set)
 
     def run_setjy(self):
-        self.measurement_set.casa_runner.setjy(self.source_id, self.source_name)
+        source_name = self.measurement_set.get_field_name_for(self.source_id)
+        self.measurement_set.casa_runner.setjy(self.source_id, source_name)
 
     def flag_antennas(self):
         self.analyse_antennas_on_angular_dispersion()
