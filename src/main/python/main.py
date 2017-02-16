@@ -37,7 +37,6 @@ def main(dataset_path):
     if STAGES_CONFIG['target_source']:
         logging.info(Color.SOURCE_HEADING + "Target Source Calibration" + Color.ENDC)
         target_source = TargetSource(measurement_set)
-        target_source.flag_bad_antennas_of_phase_cal()
         target_source.calibrate()
 
         reduced_target_source = target_source.split()
