@@ -12,9 +12,6 @@ class TargetSource(Source):
         self.source_id = GLOBAL_CONFIG['target_src_field']
         super(TargetSource, self).__init__(measurement_set)
 
-    def reduce_data(self):
-        self.flag_and_calibrate_in_detail()
-
     def calibrate(self):
         flux_cal_field = GLOBAL_CONFIG['flux_cal_field']
         phase_cal_field = GLOBAL_CONFIG['phase_cal_field']

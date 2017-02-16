@@ -16,7 +16,7 @@ from sources.line_source import LineSource
 def main(dataset_path):
     start_time = datetime.datetime.now()
     measurement_set = MeasurementSet(dataset_path, output_path(dataset_path))
-    measurement_set.quack()
+    # measurement_set.quack()
 
     if STAGES_CONFIG['flux_calibration']:
         logging.info(Color.SOURCE_HEADING + "Flux Calibration" + Color.ENDC)
@@ -27,7 +27,7 @@ def main(dataset_path):
     if STAGES_CONFIG['bandpass_calibration']:
         logging.info(Color.SOURCE_HEADING + "Bandpass Calibration" + Color.ENDC)
         bandpass_calibrator = BandpassCalibrator(measurement_set)
-        # bandpass_calibrator.run_rflag()
+        bandpass_calibrator.run_rflag()
         bandpass_calibrator.calibrate()
 
     if STAGES_CONFIG['phase_calibration']:
@@ -40,8 +40,12 @@ def main(dataset_path):
         logging.info(Color.SOURCE_HEADING + "Target Source Calibration" + Color.ENDC)
         target_source = TargetSource(measurement_set)
         target_source.calibrate()
-        line_source = LineSource(target_source.line())
         continuum_source = ContinuumSource(target_source.continuum())
+        # line_source = LineSource(target_source.line())
+        # continuum_source.reduce_data()
+        continuum_source.self_calibrate()
+        # line_source.reduce_data()
+        # line_source.calibrate()
 
     end_time = datetime.datetime.now()
     logging.info(Color.UNDERLINE + 'Total time =' + str(abs((end_time - start_time).seconds)) + " seconds" + Color.ENDC)

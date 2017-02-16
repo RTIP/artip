@@ -77,6 +77,12 @@ target_source:
     continuum:
       channels_to_avg: '80~120'
       width: 41
+      image:
+        imsize: 256
+        cell: '0.5arcsec'
+        robust: 0.5
+        interactive: F
+        niter: 100
 
 casapy:
     Darwin:

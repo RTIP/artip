@@ -88,12 +88,22 @@ class CasaRunner:
         self._run(script_path, script_parameters, CASAPY_CONFIG['path'])
 
     def split(self, output_path, filters):
-        logging.info(Color.HEADER + "Splitting dataset at location {0}".format(output_path) + Color.ENDC)
         script_path = 'casa_scripts/split_dataset.py'
+        logging.info(Color.HEADER + "Splitting dataset at location {0}".format(output_path) + Color.ENDC)
         spw = filters.get("spw", "all")
         width = filters.get("width", 1)
         script_parameters = "{0} {1} {2} {3} {4} {5}".format(self._dataset_path, output_path, filters['field'],
                                                              filters['datacolumn'], width, spw)
+        self._run(script_path, script_parameters)
+
+    def base_image(self, image_config):
+        logging.info(Color.HEADER + "Creating base image for {0}".format(self._dataset_path) + Color.ENDC)
+        script_path = 'casa_scripts/clean.py'
+        image_path = '{0}/cont_base_image'.format(self._output_path)
+        script_parameters = "{0} {1} {2} {3} {4} {5} {6}".format(self._dataset_path, image_path, image_config['imsize'],
+                                                                 image_config['cell'], image_config['robust'],
+                                                                 image_config['interactive'], image_config['niter'])
+
         self._run(script_path, script_parameters)
 
     def _unlock_dataset(self):
