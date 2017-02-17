@@ -27,8 +27,7 @@ class TargetSource(Source):
         spw = "{0}:{1}".format(self.config['spw'], self.config['continuum']['channels_to_avg'])
         width = self.config['continuum']['width']
         self.measurement_set.split(continuum_ms_path,
-                                   {'datacolumn': 'data', 'spw': spw, 'width': width,
-                                    'field': self.source_id})
+                                   {'datacolumn': 'data', 'spw': spw, 'width': width })
         return MeasurementSet(continuum_ms_path, continuum_output_path)
 
     def prepare_output_dir(self, new_dir):

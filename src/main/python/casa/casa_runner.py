@@ -92,7 +92,8 @@ class CasaRunner:
         logging.info(Color.HEADER + "Splitting dataset at location {0}".format(output_path) + Color.ENDC)
         spw = filters.get("spw", "all")
         width = filters.get("width", 1)
-        script_parameters = "{0} {1} {2} {3} {4} {5}".format(self._dataset_path, output_path, filters['field'],
+        field = filters.get("field", 0)
+        script_parameters = "{0} {1} {2} {3} {4} {5}".format(self._dataset_path, output_path, field,
                                                              filters['datacolumn'], width, spw)
         self._run(script_path, script_parameters)
 
@@ -103,6 +104,24 @@ class CasaRunner:
         script_parameters = "{0} {1} {2} {3} {4} {5} {6}".format(self._dataset_path, image_path, image_config['imsize'],
                                                                  image_config['cell'], image_config['robust'],
                                                                  image_config['interactive'], image_config['niter'])
+
+        self._run(script_path, script_parameters)
+
+    def apply_self_calibration(self, self_cal_config):
+        logging.info(Color.HEADER + "Applying self calibration for {0}".format(self._dataset_path) + Color.ENDC)
+        script_path = 'casa_scripts/self_calibration.py'
+        image_path = '{0}/self_cal_image_'.format(self._output_path)
+        script_parameters = "{0} {1} {2} {3} {4} {5} {6} {7} {8} {9} {10}".format(self._dataset_path,
+                                                                                  self_cal_config['solint'],
+                                                                                  self_cal_config['refant'],
+                                                                                  self_cal_config['minsnr'],
+                                                                                  image_path,
+                                                                                  self_cal_config['imsize'],
+                                                                                  self_cal_config['cell'],
+                                                                                  self_cal_config['robust'],
+                                                                                  self_cal_config['interactive'],
+                                                                                  self_cal_config['niter'],
+                                                                                  self_cal_config['loop_count'])
 
         self._run(script_path, script_parameters)
 

@@ -77,12 +77,19 @@ target_source:
     continuum:
       channels_to_avg: '80~120'
       width: 41
-      image:
+      image: &base_image
         imsize: 256
         cell: '0.5arcsec'
         robust: 0.5
         interactive: F
         niter: 100
+      self_calibration:
+        <<: *base_image
+        solint: '2min'
+        refant: 3
+        minsnr: 2.0
+        loop_count : 2
+
 
 casapy:
     Darwin:
