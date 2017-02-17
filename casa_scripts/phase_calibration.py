@@ -30,8 +30,8 @@ gaincal(vis=ms_dataset, caltable=tmp_amp_gcal, field=phase_cal_field, spw=spw, r
 gaincal(vis=ms_dataset, caltable=scanphase_gcal, field=phase_cal_field, spw=spw, refant=refant, calmode='p',
         solint='inf', minsnr=minsnr)
 fluxscale(vis=ms_dataset, caltable=tmp_amp_gcal, fluxtable=flux_gcal, reference=flux_cal_field)
-applycal(vis=ms_dataset, field=phase_cal_field, gaintable=[bandpass_bcal, tmp_intphase_gcal, tmp_amp_gcal],
-         gainfield=[flux_cal_field, phase_cal_field, phase_cal_field], calwt=F)
+applycal(vis=ms_dataset, field=phase_cal_field, gaintable=[bandpass_bcal, tmp_intphase_gcal, flux_gcal],
+         gainfield=[flux_cal_field, phase_cal_field, phase_cal_field], calwt=F, applymode='calonly')
 
 os.system("rm -r {0}".format(tmp_intphase_gcal))
 os.system("rm -r {0}".format(tmp_amp_gcal))
