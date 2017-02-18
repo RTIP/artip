@@ -5,6 +5,7 @@ global:
     phase_cal_field: &phase_cal_field 1
     target_src_field: &target_src_field 2
     output_path: 'output'
+    spw: 0
 
 
 flux_calibration:
@@ -88,8 +89,11 @@ target_source:
         solint: '2min'
         refant: 3
         minsnr: 2.0
-        loop_count : 2
-
+        calmode:
+          p:
+            loop_count : 2
+          ap:
+            loop_count : 1
 
 casapy:
     Darwin:

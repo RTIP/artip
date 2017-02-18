@@ -1,6 +1,5 @@
 from casa.flag_reasons import BAD_ANTENNA
 from configs.config import ALL_CONFIGS, GLOBAL_CONFIG
-from configs.config import ALL_CONFIGS, GLOBAL_CONFIG
 from models.antenna_status import AntennaStatus
 from report import Report
 from sources.source import Source

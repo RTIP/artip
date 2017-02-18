@@ -107,22 +107,35 @@ class CasaRunner:
 
         self._run(script_path, script_parameters)
 
-    def apply_self_calibration(self, self_cal_config):
+    def apply_self_calibration(self, config, calibration_mode, output_ms_path, output_path):
         logging.info(Color.HEADER + "Applying self calibration for {0}".format(self._dataset_path) + Color.ENDC)
-        script_path = 'casa_scripts/self_calibration.py'
-        image_path = '{0}/self_cal_image_'.format(self._output_path)
-        script_parameters = "{0} {1} {2} {3} {4} {5} {6} {7} {8} {9} {10}".format(self._dataset_path,
-                                                                                  self_cal_config['solint'],
-                                                                                  self_cal_config['refant'],
-                                                                                  self_cal_config['minsnr'],
-                                                                                  image_path,
-                                                                                  self_cal_config['imsize'],
-                                                                                  self_cal_config['cell'],
-                                                                                  self_cal_config['robust'],
-                                                                                  self_cal_config['interactive'],
-                                                                                  self_cal_config['niter'],
-                                                                                  self_cal_config['loop_count'])
+        channel = 0
+        loop_count = config['calmode'][calibration_mode]['loop_count']
+        spw = "{0}:{1}".format(ALL_CONFIGS['global']['spw'], channel)
 
+        script_path = 'casa_scripts/self_calibration.py'
+        script_parameters = "{0} {1} {2} {3} {4} {5} {6} {7} {8} {9} {10} {11} {12} {13} {14}".format(
+            self._dataset_path,
+            output_path,
+            output_ms_path,
+            config['solint'],
+            config['refant'],
+            config['minsnr'],
+            self._output_path,
+            config['imsize'],
+            config['cell'],
+            config['robust'],
+            config['interactive'],
+            config['niter'],
+            loop_count,
+            calibration_mode, spw)
+
+        self._run(script_path, script_parameters)
+
+    def fourier_transform(self, field_name, model_name):
+        logging.info(Color.HEADER + "Calculating fourier transform on {0}".format(model_name) + Color.ENDC)
+        script_path = 'casa_scripts/fourier_transform.py'
+        script_parameters = "{0} {1} {2}".format(self._dataset_path, field_name, model_name)
         self._run(script_path, script_parameters)
 
     def _unlock_dataset(self):
