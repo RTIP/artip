@@ -7,20 +7,21 @@ from terminal_color import Color
 
 
 class AmplitudeMatrix:
-    def __init__(self, measurement_set, polarization, scan_id, channel, matrix={}):
+    def __init__(self, measurement_set, polarization, scan_id, config, matrix={}):
         self._measurement_set = measurement_set
         self._polarization = polarization
         self._scan_id = scan_id
-        self._channel = channel
+        self._config = config
         self.amplitude_data_matrix = self._generate_matrix() if measurement_set else matrix
 
     def _generate_matrix(self):
         antennaids = self._measurement_set.antenna_ids(self._polarization, self._scan_id)
+        amplitude_data_column = self._config['detail_flagging']['amplitude_data_column']
         amplitude_data_matrix = {}
-        data = self._measurement_set.get_data({'start': self._channel}, self._polarization,
+        data = self._measurement_set.get_data({'start': self._config['channel']}, self._polarization,
                                               {'scan_number': self._scan_id},
-                                              ["antenna1", "antenna2", 'corrected_amplitude', 'flag'])
-        amplitudes = data['corrected_amplitude'][0][0]
+                                              ["antenna1", "antenna2", amplitude_data_column, 'flag'])
+        amplitudes = data[amplitude_data_column][0][0]
         antenna2_list = data['antenna2']
         antenna1_list = data['antenna1']
         flags = data['flag'][0][0]

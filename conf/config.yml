@@ -26,6 +26,7 @@ flux_calibration:
         bucket_size: 10
         overlap: 5
       mad_scale_factor: 4
+      amplitude_data_column: 'corrected_amplitude'
     casa_scripts:
       refant: 3
       minsnr: 2.0
@@ -61,6 +62,7 @@ phase_calibration:
         bucket_size: 10
         overlap: 5
       mad_scale_factor: 3
+      amplitude_data_column: 'corrected_amplitude'
     r_flag:
       freqdevscale: 5.0
       timedevscale: 5.0
@@ -77,6 +79,7 @@ target_source:
     phase_data_column: "corrected_phase"
     continuum: &continuum
       channels_to_avg: '80~120'
+      channel: 0
       width: 41
       image: &base_image
         imsize: 256
@@ -94,6 +97,12 @@ target_source:
             loop_count : 2
           ap:
             loop_count : 1
+      detail_flagging:
+        sliding_window:
+          bucket_size: 10
+          overlap: 5
+        mad_scale_factor: 3
+        amplitude_data_column: 'amplitude'
 
     line:
       calmode: *calmode

@@ -17,7 +17,7 @@ class DetailedAnalyser:
         for polarization, scan_id in polarization_and_scan_product:
             if PIPELINE_CONFIGS['manual_flag']: debugger.flag_antennas(polarization, [scan_id])
             scan_times = self.measurement_set.timesforscan(scan_id)
-            amp_matrix = AmplitudeMatrix(self.measurement_set, polarization, scan_id, source_config['channel'])
+            amp_matrix = AmplitudeMatrix(self.measurement_set, polarization, scan_id, source_config)
             global_median = amp_matrix.median()
             global_mad = amp_matrix.mad()
             self._print_polarization_details(global_mad, global_median, polarization, scan_id)
@@ -29,8 +29,8 @@ class DetailedAnalyser:
                 filtered_matrix = amp_matrix.filter_by_antenna(antenna)
                 if filtered_matrix.is_bad(global_median, global_mad):
                     logging.info(
-                            Color.FAIL + 'Antenna ' + str(
-                                    antenna) + ' is Bad running sliding Window on it' + Color.ENDC)
+                        Color.FAIL + 'Antenna ' + str(
+                            antenna) + ' is Bad running sliding Window on it' + Color.ENDC)
                     flagged_bad_window = self._flag_bad_time_window(BAD_ANTENNA_TIME, antenna,
                                                                     filtered_matrix.amplitude_data_matrix,
                                                                     global_mad,
@@ -43,7 +43,7 @@ class DetailedAnalyser:
         bad_window_present = False
         logging.info(Color.HEADER + "Started detailed flagging on all baselines" + Color.ENDC)
         for polarization, scan_id in polarization_and_scan_product:
-            amp_matrix = AmplitudeMatrix(self.measurement_set, polarization, scan_id, source_config['channel'])
+            amp_matrix = AmplitudeMatrix(self.measurement_set, polarization, scan_id, source_config)
             global_median = amp_matrix.median()
             global_mad = amp_matrix.mad()
             scan_times = self.measurement_set.timesforscan(scan_id)

@@ -1,16 +1,37 @@
 from configs.config import ALL_CONFIGS
+from configs.config import GLOBAL_CONFIG
 from sources.target_source import TargetSource
 from measurement_set import MeasurementSet
+from helpers import Debugger
+from terminal_color import Color
+import itertools
+import logging
 
 
 class ContinuumSource(TargetSource):
     def __init__(self, measurement_set):
         super(ContinuumSource, self).__init__(measurement_set)
         self.source_type = 'continuum'
+        self.source_id = 0  # source_id will always be 0
         self.config = ALL_CONFIGS["target_source"][self.source_type]
 
     def reduce_data(self):
         self.flag_and_calibrate_in_detail()
+
+    def _flag_bad_time(self, reason, analyser):
+        debugger = Debugger(self.measurement_set)
+        polarizations = GLOBAL_CONFIG['polarizations']
+        scan_ids = self.measurement_set.scan_ids_for(self.source_id)
+        polarization_scan_product = list(itertools.product(polarizations, scan_ids))
+        self._flag_only_once(reason, analyser, polarization_scan_product, debugger)
+
+    def _flag_only_once(self, reason, analyser, polarization_scan_product, debugger):
+        bad_time_present = analyser(polarization_scan_product, self.config, debugger)
+        if bad_time_present:
+            logging.info(Color.HEADER + 'Flagging {0} in CASA'.format(reason) + Color.ENDC)
+            self.measurement_set.casa_runner.flagdata(reason)
+        else:
+            logging.info(Color.OKGREEN + 'No {0} Found'.format(reason) + Color.ENDC)
 
     def self_calibrate(self):
         config = self.config['self_calibration']

@@ -27,42 +27,23 @@ class Source(object):
 
     def flag_and_calibrate_in_detail(self):
         logging.info(Color.HEADER + "Started Detail Flagging..." + Color.ENDC)
-        self.flag_antennas_in_detail()
-        self.flag_baselines_in_detail()
-
-    def flag_antennas_in_detail(self):
-        debugger = Debugger(self.measurement_set)
         detailed_analyser = DetailedAnalyser(self.measurement_set)
+        self._flag_bad_time(BAD_ANTENNA_TIME, detailed_analyser.analyse_antennas)
+        self._flag_bad_time(BAD_BASELINE_TIME, detailed_analyser.analyse_baselines)
+
+    def _flag_bad_time(self, reason, analyser):
+        debugger = Debugger(self.measurement_set)
         polarizations = GLOBAL_CONFIG['polarizations']
         scan_ids = self.measurement_set.scan_ids_for(self.source_id)
         polarization_scan_product = list(itertools.product(polarizations, scan_ids))
-
         while True:
-            bad_antenna_present = detailed_analyser.analyse_antennas(polarization_scan_product, self.config, debugger)
-            if bad_antenna_present:
-                logging.info(Color.HEADER + 'Flagging Bad Antenna Time in CASA' + Color.ENDC)
-                self.measurement_set.casa_runner.flagdata(BAD_ANTENNA_TIME)
+            bad_time_present = analyser(polarization_scan_product, self.config, debugger)
+            if bad_time_present:
+                logging.info(Color.HEADER + 'Flagging {0} in CASA'.format(reason) + Color.ENDC)
+                self.measurement_set.casa_runner.flagdata(reason)
                 self.calibrate()
             else:
-                logging.info(Color.OKGREEN + 'No Bad Antennas were Found' + Color.ENDC)
-                break
-
-    def flag_baselines_in_detail(self):
-        debugger = Debugger(self.measurement_set)
-        detailed_analyser = DetailedAnalyser(self.measurement_set)
-        polarizations = GLOBAL_CONFIG['polarizations']
-        scan_ids = self.measurement_set.scan_ids_for(self.source_id)
-        polarization_scan_product = list(itertools.product(polarizations, scan_ids))
-
-        while True:
-            bad_baseline_present = detailed_analyser.analyse_baselines(polarization_scan_product, self.config,
-                                                                       debugger)
-            if bad_baseline_present:
-                logging.info(Color.HEADER + 'Flagging Bad Baselines Time in CASA' + Color.ENDC)
-                self.measurement_set.casa_runner.flagdata(BAD_BASELINE_TIME)
-                self.calibrate()
-            else:
-                logging.info(Color.OKGREEN + 'No Bad Baselines were Found' + Color.ENDC)
+                logging.info(Color.OKGREEN + 'No {0} Found'.format(reason) + Color.ENDC)
                 break
 
     def analyse_antennas_on_closure_phases(self):
