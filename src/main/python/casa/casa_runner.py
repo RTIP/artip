@@ -1,4 +1,4 @@
-from configs.config import ALL_CONFIGS, CASAPY_CONFIG
+from configs import config
 from casa.flag_reasons import BAD_ANTENNA_TIME, BAD_BASELINE_TIME
 import os
 import subprocess
@@ -68,7 +68,7 @@ class CasaRunner:
         self._run(script_path, script_parameters)
 
     def r_flag(self, source):
-        source_config = ALL_CONFIGS[source]
+        source_config = config.ALL_CONFIGS[source]
         r_flag_config = source_config['r_flag']
         script_path = 'casa_scripts/r_flag.py'
         script_parameters = "{0} {1} {2} {3} {4} {5} {6} {7}".format(r_flag_config['freqrange'], self._dataset_path,
@@ -85,9 +85,9 @@ class CasaRunner:
         logging.info(Color.HEADER + 'Running setjy' + Color.ENDC)
         script_path = 'casa_scripts/setjy.py'
         freq_band = "L"
-        model_path = "{0}/{1}_{2}.im".format(CASAPY_CONFIG['model_path'], source_name, freq_band)
+        model_path = "{0}/{1}_{2}.im".format(config.CASAPY_CONFIG['model_path'], source_name, freq_band)
         script_parameters = "{0} {1} {2}".format(self._dataset_path, source_id, model_path)
-        self._run(script_path, script_parameters, CASAPY_CONFIG['path'])
+        self._run(script_path, script_parameters, config.CASAPY_CONFIG['path'])
 
     def split(self, output_path, filters):
         script_path = 'casa_scripts/split_dataset.py'
@@ -109,26 +109,26 @@ class CasaRunner:
 
         self._run(script_path, script_parameters)
 
-    def apply_self_calibration(self, config, calibration_mode, output_ms_path, output_path):
+    def apply_self_calibration(self, self_cal_config, calibration_mode, output_ms_path, output_path):
         logging.info(Color.HEADER + "Applying self calibration for {0}".format(self._dataset_path) + Color.ENDC)
         channel = 0
-        loop_count = config['calmode'][calibration_mode]['loop_count']
-        spw = "{0}:{1}".format(ALL_CONFIGS['global']['spw'], channel)
+        loop_count = self_cal_config['calmode'][calibration_mode]['loop_count']
+        spw = "{0}:{1}".format(config.ALL_CONFIGS['global']['spw'], channel)
 
         script_path = 'casa_scripts/self_calibration.py'
         script_parameters = "{0} {1} {2} {3} {4} {5} {6} {7} {8} {9} {10} {11} {12} {13} {14}".format(
             self._dataset_path,
             output_path,
             output_ms_path,
-            config['solint'],
-            config['refant'],
-            config['minsnr'],
+            self_cal_config['solint'],
+            self_cal_config['refant'],
+            self_cal_config['minsnr'],
             self._output_path,
-            config['imsize'],
-            config['cell'],
-            config['robust'],
-            config['interactive'],
-            config['niter'],
+            self_cal_config['imsize'],
+            self_cal_config['cell'],
+            self_cal_config['robust'],
+            self_cal_config['interactive'],
+            self_cal_config['niter'],
             loop_count,
             calibration_mode, spw)
 
@@ -143,7 +143,7 @@ class CasaRunner:
     def apply_line_calibration(self, calmode_config):
         logging.info(Color.HEADER + "Applying calibration on Line.." + Color.ENDC)
         script_path = 'casa_scripts/apply_line_calibration.py'
-        script_parameters = "{0} {1} {2} {3}".format(self._dataset_path, self._output_path,
+        script_parameters = "{0} {1} {2} {3}".format(self._dataset_path, config.OUTPUT_PATH,
                                                      calmode_config["p"]["loop_count"],
                                                      calmode_config["ap"]["loop_count"])
         self._run(script_path, script_parameters)
@@ -158,7 +158,7 @@ class CasaRunner:
         table.open(self._dataset_path)
         table.unlock()
 
-    def _run(self, script, script_parameters=None, casapy_path=CASAPY_CONFIG['path']):
+    def _run(self, script, script_parameters=None, casapy_path=config.CASAPY_CONFIG['path']):
         if not script_parameters: script_parameters = self._dataset_path
         self._unlock_dataset()
         script_full_path = os.path.realpath(script)
