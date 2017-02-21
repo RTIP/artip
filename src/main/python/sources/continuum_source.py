@@ -14,18 +14,13 @@ class ContinuumSource(TargetSource):
 
     def self_calibrate(self):
         config = self.config['self_calibration']
-        self_caled_p = self.split_phase_cal(config, 'p')
-        self_caled_p.attach_model(config, 'p')
-        self_caled_p.split_amp_phase_cal(config, 'ap')
-
-    def split_phase_cal(self, config, cal_mode):
         self._base_image()
-        ms_path, output_path = self.prepare_output_dir("self_caled_p")
-        self.measurement_set.casa_runner.apply_self_calibration(config, cal_mode, ms_path, output_path)
-        return ContinuumSource(MeasurementSet(ms_path, output_path))
+        self_caled_p = self.apply_self_calibration(config, 'p')
+        self_caled_p.attach_model(config, 'p')
+        self_caled_p.apply_self_calibration(config, 'ap')
 
-    def split_amp_phase_cal(self, config, cal_mode):
-        ms_path, output_path = self.prepare_output_dir("self_caled_ap")
+    def apply_self_calibration(self, config, cal_mode):
+        ms_path, output_path = self.prepare_output_dir("self_caled_{0}".format(cal_mode))
         self.measurement_set.casa_runner.apply_self_calibration(config, cal_mode, ms_path, output_path)
         return ContinuumSource(MeasurementSet(ms_path, output_path))
 
