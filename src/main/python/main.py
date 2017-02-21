@@ -44,7 +44,7 @@ def main(dataset_path):
         continuum_source = ContinuumSource(line_source.continuum())
         # continuum_source.reduce_data()
         continuum_source.self_calibrate()
-        line_source.reduce_data()
+        # line_source.reduce_data()
         line_source.apply_calibration()
 
     end_time = datetime.datetime.now()
