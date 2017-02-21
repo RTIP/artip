@@ -1,4 +1,5 @@
 from configs.config import ALL_CONFIGS, CASAPY_CONFIG
+from casa.flag_reasons import BAD_ANTENNA_TIME, BAD_BASELINE_TIME
 import os
 import subprocess
 import time
@@ -12,11 +13,12 @@ class CasaRunner:
         self._output_path = output_path
         self._dataset_path = dataset_path
 
-    def flagdata(self, reason):
-        logging.info(Color.HEADER + "Flagging " + reason + Color.ENDC)
+    def flagdata(self, reasons, output_path=None):
+        if not output_path: output_path = self._output_path
+        logging.info(Color.HEADER + "Flagging " + reasons + Color.ENDC)
         script_path = 'casa_scripts/flag.py'
-        flag_file = self._output_path + "/flags.txt"
-        script_parameters = "{0} {1} {2}".format(self._dataset_path, flag_file, reason)
+        flag_file = output_path + "/flags.txt"
+        script_parameters = "{0} {1} {2}".format(self._dataset_path, flag_file, reasons)
         self._run(script_path, script_parameters)
 
     def quack(self):
@@ -137,6 +139,19 @@ class CasaRunner:
         script_path = 'casa_scripts/fourier_transform.py'
         script_parameters = "{0} {1} {2}".format(self._dataset_path, field_name, model_name)
         self._run(script_path, script_parameters)
+
+    def apply_line_calibration(self, calmode_config):
+        logging.info(Color.HEADER + "Applying calibration on Line.." + Color.ENDC)
+        script_path = 'casa_scripts/apply_line_calibration.py'
+        script_parameters = "{0} {1} {2} {3}".format(self._dataset_path, self._output_path,
+                                                     calmode_config["p"]["loop_count"],
+                                                     calmode_config["ap"]["loop_count"])
+        self._run(script_path, script_parameters)
+
+    def extend_continuum_flags(self):
+        logging.info(Color.HEADER + "Extending continuum flags on line..." + Color.ENDC)
+        flag_reasons = "{0},{1}".format(BAD_ANTENNA_TIME, BAD_BASELINE_TIME)
+        self.flagdata(flag_reasons, self._output_path + "/continuum/")
 
     def _unlock_dataset(self):
         table = casac.casac.table()

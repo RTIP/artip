@@ -19,8 +19,8 @@ spw = sys.argv[-1]
 image_path = "{0}/self_cal_image".format(image_output_path)
 
 for loop_id in range(0, loop_count):
-    cal_table = "{0}_selfcaltable_{1}.gcal".format(calmode, loop_id)
-    image_name = "{0}_{1}_{2}".format(image_path, calmode, loop_id)
+    cal_table = "{0}/{1}_selfcaltable_{2}.gcal".format(image_output_path, calmode, loop_id+1)
+    image_name = "{0}_{1}_{2}".format(image_path, calmode, loop_id+1)
     gaincal(vis=dataset, caltable=cal_table, calmode=calmode, solint=solint, refant=refant,
             minsnr=minsnr)
     applycal(vis=dataset, gaintable=[cal_table])

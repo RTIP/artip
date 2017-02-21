@@ -75,7 +75,7 @@ target_source:
     field: *target_src_field
     spw: 0
     phase_data_column: "corrected_phase"
-    continuum:
+    continuum: &continuum
       channels_to_avg: '80~120'
       width: 41
       image: &base_image
@@ -89,11 +89,16 @@ target_source:
         solint: '2min'
         refant: 3
         minsnr: 2.0
-        calmode:
+        calmode: &calmode
           p:
             loop_count : 2
           ap:
             loop_count : 1
+
+    line:
+      calmode: *calmode
+      continuum: *continuum
+
 
 casapy:
     Darwin:

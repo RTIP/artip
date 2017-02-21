@@ -43,4 +43,4 @@ class ContinuumSource(TargetSource):
     def _image_model(self, self_calibration_config, cal_mode):
         image_path = '{0}/self_cal_image'.format(self.measurement_set.get_output_path())
         return "{0}_{1}_{2}.model".format(image_path, cal_mode,
-                                          self_calibration_config['calmode'][cal_mode]['loop_count'] - 1)
+                                          self_calibration_config['calmode'][cal_mode]['loop_count'])
