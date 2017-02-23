@@ -85,7 +85,7 @@ class CasaRunner:
         logging.info(Color.HEADER + 'Running setjy' + Color.ENDC)
         script_path = 'casa_scripts/setjy.py'
         freq_band = "L"
-        model_path = "{0}/{1}_{2}.im".format(config.CASAPY_CONFIG['model_path'], source_name, freq_band)
+        model_path = "{0}/{1}_{2}.im".format(config.CASAPY_CONFIG['model_path'], source_name.split("_")[0], freq_band)
         script_parameters = "{0} {1} {2}".format(self._dataset_path, source_id, model_path)
         self._run(script_path, script_parameters, config.CASAPY_CONFIG['path'])
 
@@ -151,7 +151,7 @@ class CasaRunner:
     def extend_continuum_flags(self):
         logging.info(Color.HEADER + "Extending continuum flags on line..." + Color.ENDC)
         flag_reasons = "{0},{1}".format(BAD_ANTENNA_TIME, BAD_BASELINE_TIME)
-        self.flagdata(flag_reasons, self._output_path + "/continuum/")
+        self.flagdata(flag_reasons, config.OUTPUT_PATH + "/continuum/")
 
     def _unlock_dataset(self):
         table = casac.casac.table()
