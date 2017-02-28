@@ -13,3 +13,6 @@ class LineSource(TargetSource):
 
     def reduce_data(self):
         self.measurement_set.casa_runner.extend_continuum_flags()
+
+    def create_line_image(self):
+        self.measurement_set.casa_runner.create_line_image(self.config['image'])

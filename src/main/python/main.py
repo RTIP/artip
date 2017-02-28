@@ -45,6 +45,7 @@ def main(dataset_path):
         continuum_source.self_calibrate()
         line_source.reduce_data()
         line_source.apply_calibration()
+        line_source.create_line_image()
 
     end_time = datetime.datetime.now()
     logging.info(Color.UNDERLINE + 'Total time =' + str(abs((end_time - start_time).seconds)) + " seconds" + Color.ENDC)

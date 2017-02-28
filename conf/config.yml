@@ -107,6 +107,14 @@ target_source:
     line:
       calmode: *calmode
       continuum: *continuum
+      image:
+        threshold : '1000mJy'
+        imsize : 256
+        niter: 1
+        interactive : F
+        robust: 0.5
+        cell: '0.5arcsec'
+
 
 
 casapy:

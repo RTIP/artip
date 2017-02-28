@@ -153,6 +153,23 @@ class CasaRunner:
         flag_reasons = "{0},{1}".format(BAD_ANTENNA_TIME, BAD_BASELINE_TIME)
         self.flagdata(flag_reasons, config.OUTPUT_PATH + "/continuum/")
 
+    def create_line_image(self, image_config, model="-"):
+        logging.info(Color.HEADER + "Creating line image at {0}".format(self._output_path) + Color.ENDC)
+
+        script_path = 'casa_scripts/create_line_image.py'
+        script_parameters = "{0} {1} {2} {3} {4} {5} {6} {7} {8}".format(
+            self._dataset_path,
+            self._output_path,
+            model,
+            image_config['threshold'],
+            image_config['imsize'],
+            image_config['interactive'],
+            image_config['robust'],
+            image_config['cell'],
+            image_config['niter'])
+
+        self._run(script_path, script_parameters)
+
     def _unlock_dataset(self):
         table = casac.casac.table()
         table.open(self._dataset_path)
