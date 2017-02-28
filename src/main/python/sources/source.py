@@ -34,7 +34,7 @@ class Source(object):
     def _flag_bad_time(self, reason, analyser):
         debugger = Debugger(self.measurement_set)
         polarizations = GLOBAL_CONFIG['polarizations']
-        scan_ids = self.measurement_set.scan_ids_for(self.source_id)
+        scan_ids = self.measurement_set.scan_ids_for(self.source_ids)
         polarization_scan_product = list(itertools.product(polarizations, scan_ids))
         while True:
             bad_time_present = analyser(polarization_scan_product, self.config, debugger)

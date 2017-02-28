@@ -29,18 +29,18 @@ class CasaRunner:
     def apply_flux_calibration(self, source_config):
         logging.info(Color.HEADER + "Applying Flux Calibration..." + Color.ENDC)
         script_path = 'casa_scripts/flux_calibration.py'
-        field = source_config['field']
+        fields = ",".join(map(str, source_config['fields']))
         refant = source_config['casa_scripts']['refant']
         minsnr = source_config['casa_scripts']['minsnr']
         spw = "{0}:{1}".format(config.GLOBAL_CONFIG['spw'], source_config['channel'])
         script_parameters = "{0} {1} {2} {3} {4} {5}".format(self._dataset_path, self._output_path,
-                                                             field, refant, spw, minsnr)
+                                                             fields, refant, spw, minsnr)
         self._run(script_path, script_parameters)
 
     def apply_bandpass_calibration(self, source_config):
         logging.info(Color.HEADER + "Running Bandpass Calibration..." + Color.ENDC)
         script_path = 'casa_scripts/bandpass_calibration.py'
-        field = source_config['field']
+        field = source_config['fields']
         refant = source_config['refant']
         minsnr = source_config['minsnr']
         script_parameters = "{0} {1} {2} {3} {4}".format(self._dataset_path, self._output_path, field, refant, minsnr)
@@ -50,7 +50,7 @@ class CasaRunner:
     def apply_phase_calibration(self, flux_cal_field, source_config):
         logging.info(Color.HEADER + "Applying Phase Calibration..." + Color.ENDC)
         script_path = 'casa_scripts/phase_calibration.py'
-        phase_cal_field = source_config['field']
+        phase_cal_field = source_config['fields']
         refant = source_config['casa_scripts']['refant']
         minsnr = source_config['casa_scripts']['minsnr']
         spw = "{0}:{1}".format(config.GLOBAL_CONFIG['spw'], source_config['casa_scripts']['channels_to_avg'])

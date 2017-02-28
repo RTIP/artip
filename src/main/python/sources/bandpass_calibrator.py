@@ -6,7 +6,7 @@ class BandpassCalibrator(Source):
     def __init__(self, measurement_set):
         self.source_type = 'bandpass_calibrator'
         self.config = ALL_CONFIGS[self.source_type]
-        self.source_id = GLOBAL_CONFIG['bandpass_cal_field']
+        self.source_id = GLOBAL_CONFIG['bandpass_cal_fields']
         super(BandpassCalibrator, self).__init__(measurement_set)
 
     def calibrate(self):

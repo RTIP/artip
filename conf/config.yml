@@ -1,15 +1,15 @@
 global:
     polarizations: ['RR', 'LL']
-    flux_cal_field: &flux_cal_field 0
-    bandpass_cal_field: &bandpass_cal_field 0
-    phase_cal_field: &phase_cal_field 1
-    target_src_field: &target_src_field 2
+    flux_cal_fields: &flux_cal_fields [0]
+    bandpass_cal_fields: &bandpass_cal_fields [0]
+    phase_cal_fields: &phase_cal_fields [1]
+    target_src_field: &target_src_field [2]
     output_path: 'output'
     spw: 0
 
 
-flux_calibrator:
-    field: *flux_cal_field
+flux_calibration:
+    fields: *flux_cal_fields
     channel: 100
     r_threshold: 0.3
     width: 1
@@ -30,8 +30,8 @@ flux_calibrator:
       refant: 3
       minsnr: 2.0
 
-bandpass_calibrator:
-    field: *bandpass_cal_field
+bandpass_calibration:
+    fields: *bandpass_cal_fields
     refant: 3
     minsnr: '2.0'
     channels_to_avg: '80~120'
@@ -42,9 +42,8 @@ bandpass_calibrator:
       growfreq: 90.0
       freqrange: '50~460'
 
-
-phase_calibrator:
-    field: *phase_cal_field
+phase_calibration:
+    fields: *phase_cal_fields
     channel: 100
     r_threshold: 0.3
     percentage_threshold_for_min_doubtful_antennas: 30

@@ -15,7 +15,7 @@ class AngularDispersion(Analyser):
 
     def identify_antennas_status(self):
         polarizations = GLOBAL_CONFIG['polarizations']
-        scan_ids = self.measurement_set.scan_ids_for(self.source_config['field'])
+        scan_ids = self.measurement_set.scan_ids_for(self.source_config['fields'])
 
         for polarization, scan_id in product(polarizations, scan_ids):
             base_antenna = self.measurement_set.get_antennas(polarization, scan_id)[0]

@@ -12,7 +12,7 @@ class ContinuumSource(TargetSource):
     def __init__(self, measurement_set):
         super(ContinuumSource, self).__init__(measurement_set)
         self.source_type = 'continuum'
-        self.source_id = 0  # source_id will always be 0
+        self.source_ids = [0]  # source_id will always be 0
         self.config = ALL_CONFIGS["target_source"][self.source_type]
 
     def reduce_data(self):
@@ -21,7 +21,7 @@ class ContinuumSource(TargetSource):
     def _flag_bad_time(self, reason, analyser):
         debugger = Debugger(self.measurement_set)
         polarizations = GLOBAL_CONFIG['polarizations']
-        scan_ids = self.measurement_set.scan_ids_for(self.source_id)
+        scan_ids = self.measurement_set.scan_ids_for(self.source_ids)
         polarization_scan_product = list(itertools.product(polarizations, scan_ids))
         self._flag_only_once(reason, analyser, polarization_scan_product, debugger)
 

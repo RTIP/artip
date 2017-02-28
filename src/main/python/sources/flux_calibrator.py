@@ -9,32 +9,33 @@ class FluxCalibrator(Source):
     def __init__(self, measurement_set):
         self.source_type = 'flux_calibrator'
         self.config = ALL_CONFIGS[self.source_type]
-        self.source_id = GLOBAL_CONFIG['flux_cal_field']
+        self.source_ids = GLOBAL_CONFIG['flux_cal_fields']
         super(FluxCalibrator, self).__init__(measurement_set)
 
     def run_setjy(self):
-        source_name = self.measurement_set.get_field_name_for(self.source_id)
-        self.measurement_set.casa_runner.setjy(self.source_id, source_name)
+        for source_id in self.source_ids:
+            source_name = self.measurement_set.get_field_name_for(source_id)
+            self.measurement_set.casa_runner.setjy(source_id, source_name)
 
     def flag_antennas(self):
         self.analyse_antennas_on_angular_dispersion()
         self.analyse_antennas_on_closure_phases()
 
-        scan_ids = self.measurement_set.scan_ids_for(self.source_id)
+        scan_ids = self.measurement_set.scan_ids_for(self.source_ids)
         Report(self.measurement_set.get_antennas()).generate_report(scan_ids)
 
         def is_bad(state):
             return state.get_R_phase_status() == AntennaStatus.BAD and state.get_closure_phase_status() == AntennaStatus.BAD
 
-        self.measurement_set.flag_bad_antennas(is_bad, self.source_id)
+        self.measurement_set.flag_bad_antennas(is_bad, self.source_ids)
         self._extend_bad_antennas_across_all_sources()
         self.measurement_set.casa_runner.flagdata(BAD_ANTENNA)
 
     def _extend_bad_antennas_across_all_sources(self):
         polarizations = GLOBAL_CONFIG['polarizations']
         for polarization in polarizations:
-            scan_ids = self.measurement_set.scan_ids_for(self.source_id)
-            antennas_with_scans = self.measurement_set.get_bad_antennas_with_scans_for(polarization, self.source_id)
+            scan_ids = self.measurement_set.scan_ids_for(self.source_ids)
+            antennas_with_scans = self.measurement_set.get_bad_antennas_with_scans_for(polarization, self.source_ids)
             bad_antennas = filter(lambda antenna: len(antennas_with_scans[antenna]) == len(scan_ids),
                                   antennas_with_scans.keys())
 

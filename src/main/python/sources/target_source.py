@@ -9,17 +9,18 @@ class TargetSource(Source):
     def __init__(self, measurement_set):
         self.source_type = 'target_source'
         self.config = config.ALL_CONFIGS[self.source_type]
-        self.source_id = config.GLOBAL_CONFIG['target_src_field']
+        self.source_ids = config.GLOBAL_CONFIG['target_src_field']
         super(TargetSource, self).__init__(measurement_set)
 
     def calibrate(self):
-        flux_cal_field = config.GLOBAL_CONFIG['flux_cal_field']
-        phase_cal_field = config.GLOBAL_CONFIG['phase_cal_field']
+        flux_cal_field = config.GLOBAL_CONFIG['flux_cal_fields']
+        phase_cal_field = config.GLOBAL_CONFIG['phase_cal_fields']
         self.measurement_set.casa_runner.apply_target_source_calibration(flux_cal_field, phase_cal_field, self.config)
 
     def line(self):
         line_ms_path, line_output_path = self.prepare_output_dir("line")
-        self.measurement_set.split(line_ms_path, {'datacolumn': 'corrected', 'field': self.source_id})
+        source_fields = ",".join(map(str,self.source_ids))
+        self.measurement_set.split(line_ms_path, {'datacolumn': 'corrected', 'field': source_fields})
         return MeasurementSet(line_ms_path, line_output_path)
 
     def continuum(self):
