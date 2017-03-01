@@ -40,30 +40,32 @@ class CasaRunner:
     def apply_bandpass_calibration(self, source_config):
         logging.info(Color.HEADER + "Running Bandpass Calibration..." + Color.ENDC)
         script_path = 'casa_scripts/bandpass_calibration.py'
-        field = source_config['fields']
+        fields = ",".join(map(str, source_config['fields']))
         refant = source_config['refant']
         minsnr = source_config['minsnr']
-        script_parameters = "{0} {1} {2} {3} {4}".format(self._dataset_path, self._output_path, field, refant, minsnr)
+        script_parameters = "{0} {1} {2} {3} {4}".format(self._dataset_path, self._output_path, fields, refant, minsnr)
 
         self._run(script_path, script_parameters)
 
     def apply_phase_calibration(self, flux_cal_field, source_config):
         logging.info(Color.HEADER + "Applying Phase Calibration..." + Color.ENDC)
         script_path = 'casa_scripts/phase_calibration.py'
-        phase_cal_field = source_config['fields']
+        phase_cal_fields = ",".join(map(str, source_config['fields']))
         refant = source_config['casa_scripts']['refant']
         minsnr = source_config['casa_scripts']['minsnr']
         spw = "{0}:{1}".format(config.GLOBAL_CONFIG['spw'], source_config['casa_scripts']['channels_to_avg'])
         script_parameters = "{0} {1} {2} {3} {4} {5} {6}".format(self._dataset_path, self._output_path,
-                                                                 flux_cal_field, phase_cal_field,
+                                                                 flux_cal_field, phase_cal_fields,
                                                                  spw, refant, minsnr)
         self._run(script_path, script_parameters)
 
-    def apply_target_source_calibration(self, flux_cal_field, phase_cal_field, source_config):
+    def apply_target_source_calibration(self, source_config):
         logging.info(Color.HEADER + "Applying Calibration to Target Source..." + Color.ENDC)
+        flux_cal_fields = ",".join(map(str, config.GLOBAL_CONFIG['flux_cal_fields']))
+        phase_cal_fields = ",".join(map(str, config.GLOBAL_CONFIG['phase_cal_fields']))
         script_path = 'casa_scripts/target_source_calibration.py'
         script_parameters = "{0} {1} {2} {3} {4}".format(self._dataset_path, self._output_path,
-                                                         flux_cal_field, phase_cal_field,
+                                                         flux_cal_fields, phase_cal_fields,
                                                          source_config['field'])
         self._run(script_path, script_parameters)
 

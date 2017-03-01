@@ -13,9 +13,7 @@ class TargetSource(Source):
         super(TargetSource, self).__init__(measurement_set)
 
     def calibrate(self):
-        flux_cal_field = config.GLOBAL_CONFIG['flux_cal_fields']
-        phase_cal_field = config.GLOBAL_CONFIG['phase_cal_fields']
-        self.measurement_set.casa_runner.apply_target_source_calibration(flux_cal_field, phase_cal_field, self.config)
+        self.measurement_set.casa_runner.apply_target_source_calibration(self.config)
 
     def line(self):
         line_ms_path, line_output_path = self.prepare_output_dir("line")

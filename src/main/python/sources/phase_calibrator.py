@@ -27,8 +27,8 @@ class PhaseCalibrator(Source):
         self.measurement_set.casa_runner.flagdata(BAD_ANTENNA)
 
     def calibrate(self):
-        flux_cal_field = GLOBAL_CONFIG['flux_cal_fields']
-        self.measurement_set.casa_runner.apply_phase_calibration(flux_cal_field, self.config)
+        flux_cal_fields = ",".join(map(str, GLOBAL_CONFIG['flux_cal_fields']))
+        self.measurement_set.casa_runner.apply_phase_calibration(flux_cal_fields, self.config)
 
     def _extend_bad_antennas_on_target_source(self):
         polarizations = GLOBAL_CONFIG['polarizations']
