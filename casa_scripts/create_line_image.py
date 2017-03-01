@@ -17,4 +17,3 @@ fitspw = '0:20~150;350~470'
 uvcontsub(vis=ms_input, field=field, spw='', fitspw=fitspw, solint='int', fitorder=0)
 clean(vis=ms_input, imagename=image_name, imagermode='csclean', imsize=imsize, cell=[cell],
       mode='channel', weighting='briggs', robust=robust, threshold=threshold, interactive=interactive, niter=niter)
-viewer(infile=image_name, displaytype="raster", gui=True)

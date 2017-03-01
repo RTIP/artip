@@ -32,7 +32,7 @@ class CasaRunner:
         field = source_config['field']
         refant = source_config['casa_scripts']['refant']
         minsnr = source_config['casa_scripts']['minsnr']
-        spw = "{0}:{1}".format(source_config['spw'], source_config['channel'])
+        spw = "{0}:{1}".format(config.GLOBAL_CONFIG['spw'], source_config['channel'])
         script_parameters = "{0} {1} {2} {3} {4} {5}".format(self._dataset_path, self._output_path,
                                                              field, refant, spw, minsnr)
         self._run(script_path, script_parameters)
@@ -53,7 +53,7 @@ class CasaRunner:
         phase_cal_field = source_config['field']
         refant = source_config['casa_scripts']['refant']
         minsnr = source_config['casa_scripts']['minsnr']
-        spw = "{0}:{1}".format(source_config['spw'], source_config['casa_scripts']['channels_to_avg'])
+        spw = "{0}:{1}".format(config.GLOBAL_CONFIG['spw'], source_config['casa_scripts']['channels_to_avg'])
         script_parameters = "{0} {1} {2} {3} {4} {5} {6}".format(self._dataset_path, self._output_path,
                                                                  flux_cal_field, phase_cal_field,
                                                                  spw, refant, minsnr)
@@ -73,7 +73,7 @@ class CasaRunner:
         script_path = 'casa_scripts/r_flag.py'
         script_parameters = "{0} {1} {2} {3} {4} {5} {6} {7}".format(r_flag_config['freqrange'], self._dataset_path,
                                                                      source_config['field'],
-                                                                     source_config['spw'],
+                                                                     config.GLOBAL_CONFIG['spw'],
                                                                      r_flag_config['freqdevscale'],
                                                                      r_flag_config['timedevscale'],
                                                                      r_flag_config['growfreq'],
@@ -113,7 +113,7 @@ class CasaRunner:
         logging.info(Color.HEADER + "Applying self calibration for {0}".format(self._dataset_path) + Color.ENDC)
         channel = 0
         loop_count = self_cal_config['calmode'][calibration_mode]['loop_count']
-        spw = "{0}:{1}".format(config.ALL_CONFIGS['global']['spw'], channel)
+        spw = "{0}:{1}".format(config.GLOBAL_CONFIG['spw'], channel)
 
         script_path = 'casa_scripts/self_calibration.py'
         script_parameters = "{0} {1} {2} {3} {4} {5} {6} {7} {8} {9} {10} {11} {12} {13} {14}".format(
