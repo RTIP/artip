@@ -8,7 +8,7 @@ global:
     spw: 0
 
 
-flux_calibration:
+flux_calibrator:
     field: *flux_cal_field
     channel: 100
     r_threshold: 0.3
@@ -30,7 +30,7 @@ flux_calibration:
       refant: 3
       minsnr: 2.0
 
-bandpass_calibration:
+bandpass_calibrator:
     field: *bandpass_cal_field
     refant: 3
     minsnr: '2.0'
@@ -43,7 +43,7 @@ bandpass_calibration:
       freqrange: '50~460'
 
 
-phase_calibration:
+phase_calibrator:
     field: *phase_cal_field
     channel: 100
     r_threshold: 0.3

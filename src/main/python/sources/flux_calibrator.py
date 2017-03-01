@@ -7,7 +7,7 @@ from sources.source import Source
 
 class FluxCalibrator(Source):
     def __init__(self, measurement_set):
-        self.source_type = 'flux_calibration'
+        self.source_type = 'flux_calibrator'
         self.config = ALL_CONFIGS[self.source_type]
         self.source_id = GLOBAL_CONFIG['flux_cal_field']
         super(FluxCalibrator, self).__init__(measurement_set)

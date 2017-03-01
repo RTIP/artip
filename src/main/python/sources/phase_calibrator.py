@@ -8,7 +8,7 @@ from helpers import is_last_element
 
 class PhaseCalibrator(Source):
     def __init__(self, measurement_set):
-        self.source_type = 'phase_calibration'
+        self.source_type = 'phase_calibrator'
         self.config = ALL_CONFIGS[self.source_type]
         self.source_id = GLOBAL_CONFIG['phase_cal_field']
         super(PhaseCalibrator, self).__init__(measurement_set)
