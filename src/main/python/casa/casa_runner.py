@@ -104,11 +104,11 @@ class CasaRunner:
 
     def base_image(self, image_config):
         logging.info(Color.HEADER + "Creating base image for {0}".format(self._dataset_path) + Color.ENDC)
-        script_path = 'casa_scripts/clean.py'
-        image_path = '{0}/cont_base_image'.format(self._output_path)
-        script_parameters = "{0} {1} {2} {3} {4} {5} {6}".format(self._dataset_path, image_path, image_config['imsize'],
-                                                                 image_config['cell'], image_config['robust'],
-                                                                 image_config['interactive'], image_config['niter'])
+        script_path = 'casa_scripts/base_image.py'
+        script_parameters = "{0} {1} {2} {3} {4} {5} {6}".format(self._dataset_path, self._output_path,
+                                                                 image_config['imsize'], image_config['cell'],
+                                                                 image_config['robust'], image_config['interactive'],
+                                                                 image_config['niter'])
 
         self._run(script_path, script_parameters)
 
