@@ -24,4 +24,4 @@ ia.setbrightnessunit('Jy/beam')
 ia.close()
 
 clean(vis=dataset, imagename=cont_base_image, imagermode='csclean', imsize=imsize, cell=[cell], mode='mfs',
-      weighting='briggs', robust=robust, interactive=F, niter=niter, mask=mask_path)
+      weighting='briggs', robust=robust, interactive=interactive, niter=niter, mask=mask_path)

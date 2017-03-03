@@ -114,12 +114,12 @@ class CasaRunner:
 
     def apply_self_calibration(self, self_cal_config, calibration_mode, output_ms_path, output_path):
         logging.info(Color.HEADER + "Applying self calibration for {0}".format(self._dataset_path) + Color.ENDC)
+        cal_mode = self_cal_config['calmode']
         channel = 0
-        loop_count = self_cal_config['calmode'][calibration_mode]['loop_count']
         spw = "{0}:{1}".format(config.GLOBAL_CONFIG['spw'], channel)
 
         script_path = 'casa_scripts/self_calibration.py'
-        script_parameters = "{0} {1} {2} {3} {4} {5} {6} {7} {8} {9} {10} {11} {12} {13} {14}".format(
+        script_parameters = "{0} {1} {2} {3} {4} {5} {6} {7} {8} {9} {10} {11} {12} {13} {14} {15}".format(
             self._dataset_path,
             output_path,
             output_ms_path,
@@ -132,7 +132,8 @@ class CasaRunner:
             self_cal_config['robust'],
             self_cal_config['interactive'],
             self_cal_config['niter'],
-            loop_count,
+            cal_mode['ap']['loop_count'],
+            cal_mode['p']['loop_count'],
             calibration_mode, spw)
 
         self._run(script_path, script_parameters)
