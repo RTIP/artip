@@ -23,7 +23,7 @@ class AngularDispersion(Analyser):
             logging.debug(
                     Color.BACKGROUD_WHITE + "Polarization =" + polarization + " Scan Id=" + str(scan_id) + Color.ENDC)
             if GLOBAL_CONFIG['refant']:
-                base_antenna =  self.measurement_set.get_antenna_by_id(GLOBAL_CONFIG['refant'])
+                base_antenna = self.measurement_set.get_antenna_by_id(GLOBAL_CONFIG['refant'])
             else:
                 base_antenna = self.measurement_set.get_antennas(polarization, scan_id)[0]
             r_matrix = RMatrix(polarization, scan_id)
@@ -75,7 +75,7 @@ class AngularDispersion(Analyser):
         else:
             doubtful_antennas = set()
             base_antenna.update_state(polarization, scan_id, AntennaStatus.BAD)
-            logging.debug("Antenna={0} Marked bad".format(base_antenna))
+            logging.debug("Antenna={0}, Doubtfuls={1} Marked bad".format(base_antenna, doubtful_antennas))
 
         history.add(base_antenna)
 
