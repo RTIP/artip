@@ -1,4 +1,5 @@
 from configs import config
+from configs.config import GLOBAL_CONFIG
 from casa.flag_reasons import BAD_ANTENNA_TIME, BAD_BASELINE_TIME
 import os
 import subprocess
@@ -30,7 +31,7 @@ class CasaRunner:
         logging.info(Color.HEADER + "Applying Flux Calibration..." + Color.ENDC)
         script_path = 'casa_scripts/flux_calibration.py'
         fields = ",".join(map(str, source_config['fields']))
-        refant = source_config['casa_scripts']['refant']
+        refant = GLOBAL_CONFIG['refant']
         minsnr = source_config['casa_scripts']['minsnr']
         spw = "{0}:{1}".format(config.GLOBAL_CONFIG['spw'], source_config['channel'])
         script_parameters = "{0} {1} {2} {3} {4} {5}".format(self._dataset_path, self._output_path,
@@ -41,7 +42,7 @@ class CasaRunner:
         logging.info(Color.HEADER + "Running Bandpass Calibration..." + Color.ENDC)
         script_path = 'casa_scripts/bandpass_calibration.py'
         fields = ",".join(map(str, source_config['fields']))
-        refant = source_config['refant']
+        refant = GLOBAL_CONFIG['refant']
         minsnr = source_config['minsnr']
         script_parameters = "{0} {1} {2} {3} {4}".format(self._dataset_path, self._output_path, fields, refant, minsnr)
 
@@ -51,7 +52,7 @@ class CasaRunner:
         logging.info(Color.HEADER + "Applying Phase Calibration..." + Color.ENDC)
         script_path = 'casa_scripts/phase_calibration.py'
         phase_cal_fields = ",".join(map(str, source_config['fields']))
-        refant = source_config['casa_scripts']['refant']
+        refant = GLOBAL_CONFIG['refant']
         minsnr = source_config['casa_scripts']['minsnr']
         spw = "{0}:{1}".format(config.GLOBAL_CONFIG['spw'], source_config['casa_scripts']['channels_to_avg'])
         script_parameters = "{0} {1} {2} {3} {4} {5} {6}".format(self._dataset_path, self._output_path,
@@ -123,7 +124,7 @@ class CasaRunner:
             output_path,
             output_ms_path,
             self_cal_config['solint'],
-            self_cal_config['refant'],
+            GLOBAL_CONFIG['refant'],
             self_cal_config['minsnr'],
             self._output_path,
             self_cal_config['imsize'],

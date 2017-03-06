@@ -23,4 +23,4 @@ class Antenna:
         current_state.update_R_phase_status(status)
 
     def __repr__(self):
-        return "Antenna=" + str(self.id)
+        return "A" + str(self.id)

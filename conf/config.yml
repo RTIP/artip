@@ -6,6 +6,7 @@ global:
     target_src_field: &target_src_field [2]
     output_path: 'output'
     spw: 0
+    refant: 2
 
 
 flux_calibrator:
@@ -14,7 +15,7 @@ flux_calibrator:
     r_threshold: 0.3
     width: 1
     phase_data_column: "phase"
-    percentage_threshold_for_min_doubtful_antennas: 30
+    percentage_threshold_for_min_doubtful_antennas: 20
     percentage_threshold_for_good_antenna: 70
     closure_threshold: 17
     percentage_of_closures: 70
@@ -27,12 +28,10 @@ flux_calibrator:
       mad_scale_factor: 4
       amplitude_data_column: 'corrected_amplitude'
     casa_scripts:
-      refant: 3
       minsnr: 2.0
 
 bandpass_calibrator:
     fields: *bandpass_cal_fields
-    refant: 3
     minsnr: '2.0'
     channels_to_avg: '80~120'
     r_flag:
@@ -65,7 +64,6 @@ phase_calibrator:
       growtime: 70.0
       growfreq: 90.0
     casa_scripts:
-      refant: 3
       minsnr: 2.0
       channels_to_avg: '80~120'
 
@@ -85,7 +83,6 @@ target_source:
       self_calibration:
         <<: *base_image
         solint: '2min'
-        refant: 3
         minsnr: 2.0
         calmode: &calmode
           p:

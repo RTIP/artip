@@ -67,7 +67,7 @@ class MeasurementSet:
     def scan_ids_for(self, source_ids):
         scan_ids = reduce(lambda scan_ids, source_id:
                           scan_ids + list(self.__metadata.scansforfield(source_id)),
-                            source_ids, [])
+                          source_ids, [])
         return map(lambda scan_id: int(scan_id), scan_ids)
 
     def baselines_for(self, antenna, polarization, scan_id):
@@ -96,6 +96,9 @@ class MeasurementSet:
 
     def antenna_ids(self, polarization, scan_id):
         return map(lambda antenna: antenna.id, self.get_antennas(polarization, scan_id))
+
+    def get_antenna_by_id(self, id):
+        return filter(lambda antenna: antenna.id == id, self.get_antennas())[0]
 
     def get_antennas(self, polarization=None, scan_id=None):
         if not (polarization or scan_id):
