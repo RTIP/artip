@@ -84,6 +84,9 @@ target_source:
         <<: *base_image
         solint: '2min'
         minsnr: 2.0
+        masking:
+          threshold: '0.0'
+          mask_path: ''
         calmode: &calmode
           p:
             loop_count : 2

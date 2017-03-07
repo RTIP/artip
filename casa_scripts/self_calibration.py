@@ -3,18 +3,20 @@ import distutils.util
 import re
 import time
 
-dataset = sys.argv[-16]
-image_output_path = sys.argv[-15]
-outputvis = sys.argv[-14]
-solint = sys.argv[-13]
-refant = sys.argv[-12]
-minsnr = float(sys.argv[-11])
-output_path = sys.argv[-10]
-imsize = int(sys.argv[-9])
-cell = sys.argv[-8]
-robust = float(sys.argv[-7])
-interactive = bool(distutils.util.strtobool(sys.argv[-6]))
-niter = int(sys.argv[-5])
+dataset = sys.argv[-18]
+image_output_path = sys.argv[-17]
+outputvis = sys.argv[-16]
+solint = sys.argv[-15]
+refant = sys.argv[-14]
+minsnr = float(sys.argv[-13])
+output_path = sys.argv[-12]
+imsize = int(sys.argv[-11])
+cell = sys.argv[-10]
+robust = float(sys.argv[-9])
+interactive = bool(distutils.util.strtobool(sys.argv[-8]))
+niter = int(sys.argv[-7])
+threshold = sys.argv[-6]
+mask_path = sys.argv[-5]
 loop_count = {'p': int(sys.argv[-3]), 'ap': int(sys.argv[-4])}
 calmode = sys.argv[-2]
 spw = sys.argv[-1]
@@ -34,13 +36,20 @@ def model_for_masking(index):
 
 for loop_id in range(1, loop_count[calmode] + 1):
     base_model = model_for_masking(loop_id)
-    mask_path = "{0}/{1}mask{2}".format(image_output_path, calmode, loop_id)
     model_path = "{0}/{1}model{2}".format(image_output_path, calmode, loop_id)
     masked_model_path = "{0}/{1}maskmodel{2}".format(image_output_path, calmode, loop_id)
 
-    im.open(dataset)
-    im.mask(mask=mask_path, image=base_model, threshold='0.0')
-    im.close()
+    if loop_id == 1 and calmode == 'p':
+        if mask_path == 'None':
+            mask_path = "{0}/{1}mask{2}".format(image_output_path, calmode, loop_id)
+            im.open(dataset)
+            im.mask(mask=mask_path, image=base_model, threshold=threshold)
+            im.close()
+    else:
+        mask_path = "{0}/{1}mask{2}".format(image_output_path, calmode, loop_id)
+        im.open(dataset)
+        im.mask(mask=mask_path, image=base_model, threshold=threshold)
+        im.close()
 
     ia.open(mask_path)
     ia.setbrightnessunit('Jy/pixel')

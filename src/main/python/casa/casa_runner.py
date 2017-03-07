@@ -117,9 +117,10 @@ class CasaRunner:
         cal_mode = self_cal_config['calmode']
         channel = 0
         spw = "{0}:{1}".format(config.GLOBAL_CONFIG['spw'], channel)
+        mask_path = self_cal_config['masking']['mask_path'] if self_cal_config['masking']['mask_path'] else 'None'
 
         script_path = 'casa_scripts/self_calibration.py'
-        script_parameters = "{0} {1} {2} {3} {4} {5} {6} {7} {8} {9} {10} {11} {12} {13} {14} {15}".format(
+        script_parameters = "{0} {1} {2} {3} {4} {5} {6} {7} {8} {9} {10} {11} {12} {13} {14} {15} {16} {17}".format(
             self._dataset_path,
             output_path,
             output_ms_path,
@@ -132,6 +133,8 @@ class CasaRunner:
             self_cal_config['robust'],
             self_cal_config['interactive'],
             self_cal_config['niter'],
+            self_cal_config['masking']['threshold'],
+            mask_path,
             cal_mode['ap']['loop_count'],
             cal_mode['p']['loop_count'],
             calibration_mode, spw)
