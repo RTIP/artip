@@ -95,7 +95,7 @@ class AmplitudeMatrix:
         return abs(actual_median - global_median) > (DETAIL_FLAG_CONFIG['mad_scale_factor'] * global_mad)
 
     def _scattered_amplitude(self, global_mad, actual_mad):
-        return actual_mad > (DETAIL_FLAG_CONFIG['mad_scale_factor'] * global_mad
+        return actual_mad > (DETAIL_FLAG_CONFIG['mad_scale_factor'] * global_mad)
 
     def __repr__(self):
         return "AmpMatrix=" + str(self.amplitude_data_matrix) + " med=" + \
