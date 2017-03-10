@@ -3,19 +3,20 @@ import distutils.util
 import re
 import time
 
-dataset = sys.argv[-18]
-image_output_path = sys.argv[-17]
-outputvis = sys.argv[-16]
-solint = sys.argv[-15]
-refant = sys.argv[-14]
-minsnr = float(sys.argv[-13])
-output_path = sys.argv[-12]
-imsize = int(sys.argv[-11])
-cell = sys.argv[-10]
-robust = float(sys.argv[-9])
-interactive = bool(distutils.util.strtobool(sys.argv[-8]))
-niter = int(sys.argv[-7])
-threshold = sys.argv[-6]
+dataset = sys.argv[-19]
+image_output_path = sys.argv[-18]
+outputvis = sys.argv[-17]
+solint = sys.argv[-16]
+refant = sys.argv[-15]
+minsnr = float(sys.argv[-14])
+output_path = sys.argv[-13]
+imsize = int(sys.argv[-12])
+cell = sys.argv[-11]
+robust = float(sys.argv[-10])
+interactive = bool(distutils.util.strtobool(sys.argv[-9]))
+niter = int(sys.argv[-8])
+clean_threshold = sys.argv[-7]
+mask_threshold = sys.argv[-6]
 mask_path = sys.argv[-5]
 loop_count = {'p': int(sys.argv[-3]), 'ap': int(sys.argv[-4])}
 calmode = sys.argv[-2]
@@ -43,12 +44,12 @@ for loop_id in range(1, loop_count[calmode] + 1):
         if mask_path == 'None':
             mask_path = "{0}/{1}mask{2}".format(image_output_path, calmode, loop_id)
             im.open(dataset)
-            im.mask(mask=mask_path, image=base_model, threshold=threshold)
+            im.mask(mask=mask_path, image=base_model, threshold=mask_threshold)
             im.close()
     else:
         mask_path = "{0}/{1}mask{2}".format(image_output_path, calmode, loop_id)
         im.open(dataset)
-        im.mask(mask=mask_path, image=base_model, threshold=threshold)
+        im.mask(mask=mask_path, image=base_model, threshold=mask_threshold)
         im.close()
 
     ia.open(mask_path)
@@ -63,10 +64,11 @@ for loop_id in range(1, loop_count[calmode] + 1):
     ft(vis=dataset, field='0', model=masked_model_path)
     cal_table = "{0}/{1}_selfcaltable_{2}.gcal".format(image_output_path, calmode, loop_id)
     image_name = "{0}_{1}_{2}".format(image_path, calmode, loop_id)
-    gaincal(vis=dataset, caltable=cal_table, calmode=calmode, solint=solint, refant=refant, minsnr=3.0)
-    applycal(vis=dataset, gaintable=[cal_table])
+    gaincal(vis=dataset, caltable=cal_table, calmode=calmode, solint=solint, refant=refant, minsnr=minsnr)
+    applycal(vis=dataset, gaintable=[cal_table], applymode='calonly')
 
     clean(vis=dataset, imagename=image_name, imagermode='csclean', imsize=imsize, cell=[cell],
-          mode='mfs', weighting='briggs', robust=robust, interactive=interactive, niter=niter)
+          mode='mfs', robust=robust, weighting='briggs', interactive=interactive, threshold=clean_threshold,
+          niter=niter)
 
 split(vis=dataset, outputvis=outputvis, spw=spw, datacolumn='corrected')

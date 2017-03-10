@@ -105,10 +105,11 @@ class CasaRunner:
     def base_image(self, image_config):
         logging.info(Color.HEADER + "Creating base image for {0}".format(self._dataset_path) + Color.ENDC)
         script_path = 'casa_scripts/base_image.py'
-        script_parameters = "{0} {1} {2} {3} {4} {5} {6}".format(self._dataset_path, self._output_path,
-                                                                 image_config['imsize'], image_config['cell'],
-                                                                 image_config['robust'], image_config['interactive'],
-                                                                 image_config['niter'])
+        script_parameters = "{0} {1} {2} {3} {4} {5} {6} {7}".format(self._dataset_path, self._output_path,
+                                                                     image_config['imsize'], image_config['cell'],
+                                                                     image_config['robust'],
+                                                                     image_config['clean_threshold'],                                                                    image_config['interactive'],
+                                                                     image_config['niter'])
 
         self._run(script_path, script_parameters)
 
@@ -120,19 +121,20 @@ class CasaRunner:
         mask_path = self_cal_config['masking']['mask_path'] if self_cal_config['masking']['mask_path'] else 'None'
 
         script_path = 'casa_scripts/self_calibration.py'
-        script_parameters = "{0} {1} {2} {3} {4} {5} {6} {7} {8} {9} {10} {11} {12} {13} {14} {15} {16} {17}".format(
+        script_parameters = "{0} {1} {2} {3} {4} {5} {6} {7} {8} {9} {10} {11} {12} {13} {14} {15} {16} {17} {18}".format(
             self._dataset_path,
             output_path,
             output_ms_path,
-            self_cal_config['solint'],
+            cal_mode[calibration_mode]['solint'],
             GLOBAL_CONFIG['refant'],
             self_cal_config['minsnr'],
             self._output_path,
             self_cal_config['imsize'],
             self_cal_config['cell'],
-            self_cal_config['robust'],
+            cal_mode[calibration_mode]['robust'],
             self_cal_config['interactive'],
             self_cal_config['niter'],
+            self_cal_config['clean_threshold'],
             self_cal_config['masking']['threshold'],
             mask_path,
             cal_mode['ap']['loop_count'],

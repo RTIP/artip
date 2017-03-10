@@ -66,23 +66,29 @@ target_source:
     channel: 0
     width: 1
     image: &base_image
-      imsize: 256
+      imsize: 2048
       cell: '0.5arcsec'
       robust: 0.5
+      clean_threshold: '2.0mJy'
       interactive: F
-      niter: 100
+      niter: 100000
+      cyclefactor: 4
     self_calibration:
       <<: *base_image
-      solint: '2min'
       minsnr: 2.0
+      clean_threshold: '1.2mJy'
       masking:
         threshold: '0.0'
         mask_path: ''
       calmode: &calmode
         p:
-          loop_count : 2
+          loop_count : 5
+          solint: '2min'
+          robust: 0.5
         ap:
-          loop_count : 1
+          loop_count : 4
+          solint: '10min'
+          robust: 0.5
     detail_flagging:
       <<: *detail_flagging
       mad_scale_factor: 3
