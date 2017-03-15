@@ -26,7 +26,7 @@ class ContinuumSource(TargetSource):
         self._flag_only_once(reason, analyser, polarization_scan_product, debugger)
 
     def _flag_only_once(self, reason, analyser, polarization_scan_product, debugger):
-        bad_time_present = analyser(polarization_scan_product, self.config, debugger)
+        bad_time_present = analyser(polarization_scan_product, debugger)
         if bad_time_present:
             logging.info(Color.HEADER + 'Flagging {0} in CASA'.format(reason) + Color.ENDC)
             self.measurement_set.casa_runner.flagdata(reason)

@@ -1,16 +1,13 @@
 from amplitude_matrix import AmplitudeMatrix
-import numpy
-from configs.config import DETAIL_FLAG_CONFIG
-
 
 class Window:
-    def __init__(self, collection, bucket_size=DETAIL_FLAG_CONFIG['sliding_window']['bucket_size'],
-                 overlap_count=DETAIL_FLAG_CONFIG['sliding_window']['overlap']):
+    def __init__(self, collection, config):
         self._collection = collection
-        self._bucket_size = bucket_size
-        self._overlap_count = overlap_count
+        self._bucket_size = config['detail_flagging']['sliding_window']['bucket_size']
+        self._overlap_count = config['detail_flagging']['sliding_window']['overlap']
         self._window_start_index = 0
         self._window_data = None
+        self._config = config
 
     def slide(self):
         self._window_data = dict(
@@ -19,7 +16,7 @@ class Window:
         if self._window_item_count() == self._bucket_size:
             self._window_start_index = self._next_window_start_index()
 
-        return AmplitudeMatrix(None, None, None, None, self._window_data)
+        return AmplitudeMatrix(None, None, None, self._config, self._window_data)
 
     def current_position(self):
         start = (self._window_start_index - self._bucket_size) + self._overlap_count

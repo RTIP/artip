@@ -8,16 +8,17 @@ from terminal_color import Color
 
 
 class DetailedAnalyser:
-    def __init__(self, measurement_set):
+    def __init__(self, measurement_set, source_config):
         self.measurement_set = measurement_set
+        self._source_config = source_config
 
-    def analyse_antennas(self, polarization_and_scan_product, source_config, debugger):
+    def analyse_antennas(self, polarization_and_scan_product, debugger):
         logging.info(Color.HEADER + "Started detailed flagging on all unflagged antennas" + Color.ENDC)
         bad_window_present = False
         for polarization, scan_id in polarization_and_scan_product:
             if PIPELINE_CONFIGS['manual_flag']: debugger.flag_antennas(polarization, [scan_id])
             scan_times = self.measurement_set.timesforscan(scan_id)
-            amp_matrix = AmplitudeMatrix(self.measurement_set, polarization, scan_id, source_config)
+            amp_matrix = AmplitudeMatrix(self.measurement_set, polarization, scan_id, self._source_config)
             global_median = amp_matrix.median()
             global_mad = amp_matrix.mad()
             self._print_polarization_details(global_mad, global_median, polarization, scan_id)
@@ -39,11 +40,11 @@ class DetailedAnalyser:
 
         return bad_window_present
 
-    def analyse_baselines(self, polarization_and_scan_product, source_config, debugger):
+    def analyse_baselines(self, polarization_and_scan_product, debugger):
         bad_window_present = False
         logging.info(Color.HEADER + "Started detailed flagging on all baselines" + Color.ENDC)
         for polarization, scan_id in polarization_and_scan_product:
-            amp_matrix = AmplitudeMatrix(self.measurement_set, polarization, scan_id, source_config)
+            amp_matrix = AmplitudeMatrix(self.measurement_set, polarization, scan_id, self._source_config)
             global_median = amp_matrix.median()
             global_mad = amp_matrix.mad()
             scan_times = self.measurement_set.timesforscan(scan_id)
@@ -61,7 +62,7 @@ class DetailedAnalyser:
     def _flag_bad_time_window(self, reason, element_id, data_set, global_mad, global_median, scan_times, polarization,
                               scan_id):
         bad_window_found = False
-        sliding_window = Window(data_set)
+        sliding_window = Window(data_set, self._source_config)
         while True:
             window_matrix = sliding_window.slide()
             if window_matrix.is_bad(global_median, global_mad):

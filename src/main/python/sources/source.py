@@ -27,7 +27,7 @@ class Source(object):
 
     def flag_and_calibrate_in_detail(self):
         logging.info(Color.HEADER + "Started Detail Flagging..." + Color.ENDC)
-        detailed_analyser = DetailedAnalyser(self.measurement_set)
+        detailed_analyser = DetailedAnalyser(self.measurement_set, self.config)
         self._flag_bad_time(BAD_ANTENNA_TIME, detailed_analyser.analyse_antennas)
         self._flag_bad_time(BAD_BASELINE_TIME, detailed_analyser.analyse_baselines)
 
@@ -37,7 +37,7 @@ class Source(object):
         scan_ids = self.measurement_set.scan_ids_for(self.source_ids)
         polarization_scan_product = list(itertools.product(polarizations, scan_ids))
         while True:
-            bad_time_present = analyser(polarization_scan_product, self.config, debugger)
+            bad_time_present = analyser(polarization_scan_product, debugger)
             if bad_time_present:
                 logging.info(Color.HEADER + 'Flagging {0} in CASA'.format(reason) + Color.ENDC)
                 self.measurement_set.casa_runner.flagdata(reason)

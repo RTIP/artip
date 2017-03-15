@@ -1,7 +1,6 @@
 import logging
 from models.baseline import Baseline
 from helpers import *
-from configs.config import DETAIL_FLAG_CONFIG
 import numpy
 from terminal_color import Color
 
@@ -55,10 +54,10 @@ class AmplitudeMatrix:
         antenna_matrix = dict((baseline, amp_data) for baseline, amp_data in self.amplitude_data_matrix.iteritems() if
                               baseline.contains(antenna_id))
 
-        return AmplitudeMatrix(None, None, None, None, antenna_matrix)
+        return AmplitudeMatrix(None, None, None, self._config, antenna_matrix)
 
     def filter_by_baseline(self, baseline):
-        return AmplitudeMatrix(None, None, None, None,
+        return AmplitudeMatrix(None, None, None, self._config,
                                {baseline: self.amplitude_data_matrix[baseline]})
 
     def readings_count(self):
@@ -92,10 +91,10 @@ class AmplitudeMatrix:
         return deviated_median or scattered_amplitude
 
     def _deviated_median(self, global_median, global_mad, actual_median):
-        return abs(actual_median - global_median) > (DETAIL_FLAG_CONFIG['mad_scale_factor'] * global_mad)
+        return abs(actual_median - global_median) > (self._config['detail_flagging']['mad_scale_factor'] * global_mad)
 
     def _scattered_amplitude(self, global_mad, actual_mad):
-        return actual_mad > (DETAIL_FLAG_CONFIG['mad_scale_factor'] * global_mad)
+        return actual_mad > (self._config['detail_flagging']['mad_scale_factor'] * global_mad)
 
     def __repr__(self):
         return "AmpMatrix=" + str(self.amplitude_data_matrix) + " med=" + \
