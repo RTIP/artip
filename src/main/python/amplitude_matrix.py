@@ -17,7 +17,7 @@ class AmplitudeMatrix:
         antennaids = self._measurement_set.antenna_ids(self._polarization, self._scan_id)
         amplitude_data_column = self._config['detail_flagging']['amplitude_data_column']
         amplitude_data_matrix = {}
-        data = self._measurement_set.get_data({'start': self._config['channel']}, self._polarization,
+        data = self._measurement_set.get_data({'start': self._config['channel'], 'width': self._config['width']}, self._polarization,
                                               {'scan_number': self._scan_id},
                                               ["antenna1", "antenna2", amplitude_data_column, 'flag'])
         amplitudes = data[amplitude_data_column][0][0]

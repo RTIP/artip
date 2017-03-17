@@ -32,6 +32,7 @@ class AngularDispersion(Analyser):
 
     def _mark_antennas_status(self, polarization, scan_id, source_config, base_antenna, r_matrix, history):
         channel = source_config['channel']
+        width = source_config['width']
         r_threshold = source_config['r_threshold']
         number_of_antenna_pairs = self.measurement_set.antenna_count()-1
 
@@ -42,7 +43,7 @@ class AngularDispersion(Analyser):
 
         if base_antenna in history: return set()
         baselines = self.measurement_set.baselines_for(base_antenna, polarization, scan_id)
-        data = self.measurement_set.get_data({'start': channel}, polarization,
+        data = self.measurement_set.get_data({'start': channel, 'width': width}, polarization,
                                              {'scan_number': scan_id},
                                              ["antenna1", "antenna2", 'phase'])
         antenna1_list = data['antenna1']
