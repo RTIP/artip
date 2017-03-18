@@ -32,7 +32,7 @@ class CasaRunner:
         script_path = 'casa_scripts/flux_calibration.py'
         fields = ",".join(map(str, source_config['fields']))
         refant = GLOBAL_CONFIG['refant']
-        minsnr = source_config['casa_scripts']['minsnr']
+        minsnr = source_config['minsnr']
         spw = "{0}:{1}".format(config.GLOBAL_CONFIG['spw'], source_config['channel'])
         script_parameters = "{0} {1} {2} {3} {4} {5}".format(self._dataset_path, self._output_path,
                                                              fields, refant, spw, minsnr)
@@ -53,8 +53,8 @@ class CasaRunner:
         script_path = 'casa_scripts/phase_calibration.py'
         phase_cal_fields = ",".join(map(str, source_config['fields']))
         refant = GLOBAL_CONFIG['refant']
-        minsnr = source_config['casa_scripts']['minsnr']
-        spw = "{0}:{1}".format(config.GLOBAL_CONFIG['spw'], source_config['casa_scripts']['channels_to_avg'])
+        minsnr = source_config['minsnr']
+        spw = "{0}:{1}".format(config.GLOBAL_CONFIG['spw'], source_config['channels_to_avg'])
         script_parameters = "{0} {1} {2} {3} {4} {5} {6}".format(self._dataset_path, self._output_path,
                                                                  flux_cal_field, phase_cal_fields,
                                                                  spw, refant, minsnr)

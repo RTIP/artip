@@ -19,7 +19,7 @@ class ClosureAnalyser(Analyser):
 
     def _is_triplet_good(self, antenna_triplet, data, scan, polarization):
         phase_data = data[self.source_config['phase_data_column']]
-        closure_threshold = self.source_config['closure_threshold'] * numpy.pi / 180
+        closure_threshold = self.source_config['closure']['threshold'] * numpy.pi / 180
         antenna_tuple_ids = (antenna_triplet[0].id, antenna_triplet[1].id, antenna_triplet[2].id)
         closure_phase_array = self.__closure_util.closurePhTriads(antenna_tuple_ids, phase_data, data['antenna1'],
                                                                   data['antenna2'])
@@ -27,8 +27,7 @@ class ClosureAnalyser(Analyser):
 
         # Plotter.plot_pdf(closure_phase_array[0][0], antenna_tuple_ids, self.source_config['closure_threshold'],
         #                  "{0}_{1}".format(scan, polarization))
-
-        return percentileofscore > self.source_config['percentage_of_closures']
+        return percentileofscore > self.source_config['closure']['percentage_of_closures']
 
     def identify_antennas_status(self):
         scan_ids = self.measurement_set.scan_ids_for(self.source_config['fields'])
@@ -64,6 +63,5 @@ class ClosureAnalyser(Analyser):
                                                                                                len(
                                                                                                    antenna_combinations),
                                                                                                good_triplets_count,
-                                                                                               percentage))
-
-        return percentage > self.source_config['percentage_of_triplets']
+                                                                                              percentage))
+        return percentage > self.source_config['closure']['percentage_of_good_triplets']

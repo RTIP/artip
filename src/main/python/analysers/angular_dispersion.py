@@ -33,12 +33,12 @@ class AngularDispersion(Analyser):
     def _mark_antennas_status(self, polarization, scan_id, source_config, base_antenna, r_matrix, history):
         channel = source_config['channel']
         width = source_config['width']
-        r_threshold = source_config['r_threshold']
+        r_threshold = source_config['angular_dispersion']['r_threshold']
         number_of_antenna_pairs = self.measurement_set.antenna_count()-1
 
-        min_doubtful_antennas = int((source_config['percentage_threshold_for_min_doubtful_antennas']
+        min_doubtful_antennas = int((source_config['angular_dispersion']['percentage_of_min_doubtful_antennas']
                                      * number_of_antenna_pairs) / 100)
-        good_antennas_threshold = int((source_config['percentage_threshold_for_good_antenna']
+        good_antennas_threshold = int((source_config['angular_dispersion']['percentage_of_good_antennas']
                                        * number_of_antenna_pairs) / 100)
 
         if base_antenna in history: return set()
