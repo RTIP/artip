@@ -90,7 +90,9 @@ target_source:
           solint: '10min'
           robust: 0.5
     detail_flagging:
-      <<: *detail_flagging
+      sliding_window:
+        bucket_size: 10
+        overlap: 5
       mad_scale_factor: 3
       amplitude_data_column: 'amplitude'
 

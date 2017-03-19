@@ -105,11 +105,13 @@ class CasaRunner:
     def base_image(self, image_config):
         logging.info(Color.HEADER + "Creating base image for {0}".format(self._dataset_path) + Color.ENDC)
         script_path = 'casa_scripts/base_image.py'
-        script_parameters = "{0} {1} {2} {3} {4} {5} {6} {7}".format(self._dataset_path, self._output_path,
-                                                                     image_config['imsize'], image_config['cell'],
-                                                                     image_config['robust'],
-                                                                     image_config['clean_threshold'],                                                                    image_config['interactive'],
-                                                                     image_config['niter'])
+        script_parameters = "{0} {1} {2} {3} {4} {5} {6} {7} {8}".format(self._dataset_path, self._output_path,
+                                                                         image_config['imsize'], image_config['cell'],
+                                                                         image_config['robust'],
+                                                                         image_config['clean_threshold'],
+                                                                         image_config['interactive'],
+                                                                         image_config['niter'],
+                                                                         image_config['cyclefactor'])
 
         self._run(script_path, script_parameters)
 
@@ -121,7 +123,7 @@ class CasaRunner:
         mask_path = self_cal_config['masking']['mask_path'] if self_cal_config['masking']['mask_path'] else 'None'
 
         script_path = 'casa_scripts/self_calibration.py'
-        script_parameters = "{0} {1} {2} {3} {4} {5} {6} {7} {8} {9} {10} {11} {12} {13} {14} {15} {16} {17} {18}".format(
+        script_parameters = "{0} {1} {2} {3} {4} {5} {6} {7} {8} {9} {10} {11} {12} {13} {14} {15} {16} {17} {18} {19}".format(
             self._dataset_path,
             output_path,
             output_ms_path,
@@ -139,6 +141,7 @@ class CasaRunner:
             mask_path,
             cal_mode['ap']['loop_count'],
             cal_mode['p']['loop_count'],
+            self_cal_config['cyclefactor'],
             calibration_mode, spw)
 
         self._run(script_path, script_parameters)

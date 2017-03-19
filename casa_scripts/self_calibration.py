@@ -3,22 +3,23 @@ import distutils.util
 import re
 import time
 
-dataset = sys.argv[-19]
-image_output_path = sys.argv[-18]
-outputvis = sys.argv[-17]
-solint = sys.argv[-16]
-refant = sys.argv[-15]
-minsnr = float(sys.argv[-14])
-output_path = sys.argv[-13]
-imsize = int(sys.argv[-12])
-cell = sys.argv[-11]
-robust = float(sys.argv[-10])
-interactive = bool(distutils.util.strtobool(sys.argv[-9]))
-niter = int(sys.argv[-8])
-clean_threshold = sys.argv[-7]
-mask_threshold = sys.argv[-6]
-mask_path = sys.argv[-5]
-loop_count = {'p': int(sys.argv[-3]), 'ap': int(sys.argv[-4])}
+dataset = sys.argv[-20]
+image_output_path = sys.argv[-19]
+outputvis = sys.argv[-18]
+solint = sys.argv[-17]
+refant = sys.argv[-16]
+minsnr = float(sys.argv[-15])
+output_path = sys.argv[-14]
+imsize = int(sys.argv[-13])
+cell = sys.argv[-12]
+robust = float(sys.argv[-11])
+interactive = bool(distutils.util.strtobool(sys.argv[-10]))
+niter = int(sys.argv[-9])
+clean_threshold = sys.argv[-8]
+mask_threshold = sys.argv[-7]
+mask_path = sys.argv[-6]
+loop_count = {'p': int(sys.argv[-4]), 'ap': int(sys.argv[-5])}
+cyclefactor = float(sys.argv[-3])
 calmode = sys.argv[-2]
 spw = sys.argv[-1]
 image_path = "{0}/self_cal_image".format(image_output_path)
@@ -69,6 +70,6 @@ for loop_id in range(1, loop_count[calmode] + 1):
 
     clean(vis=dataset, imagename=image_name, imagermode='csclean', imsize=imsize, cell=[cell],
           mode='mfs', robust=robust, weighting='briggs', interactive=interactive, threshold=clean_threshold,
-          niter=niter)
+          niter=niter, cyclefactor=cyclefactor)
 
 split(vis=dataset, outputvis=outputvis, spw=spw, datacolumn='corrected')
