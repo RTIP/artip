@@ -17,7 +17,8 @@ class AmplitudeMatrix:
         antennaids = self._measurement_set.antenna_ids(self._polarization, self._scan_id)
         amplitude_data_column = self._config['detail_flagging']['amplitude_data_column']
         amplitude_data_matrix = {}
-        data = self._measurement_set.get_data({'start': self._config['channel'], 'width': self._config['width']}, self._polarization,
+        data = self._measurement_set.get_data({'start': self._config['channel'], 'width': self._config['width']},
+                                              self._polarization,
                                               {'scan_number': self._scan_id},
                                               ["antenna1", "antenna2", amplitude_data_column, 'flag'])
         amplitudes = data[amplitude_data_column][0][0]
@@ -72,30 +73,33 @@ class AmplitudeMatrix:
         matrix = self.amplitude_data_matrix.values()
         return numpy.nanmedian(abs(numpy.array(matrix) - numpy.nanmedian(matrix)))
 
+    def sigma(self):
+        return 1.4826 * self.mad()
+
     def is_empty(self):
         return len(numpy.array(self.amplitude_data_matrix.values()).flatten()) == 0
 
-    def is_bad(self, global_median, global_mad):
+    def is_bad(self, global_median, global_sigma):
         matrix_median = self.median()
-        matrix_mad = self.mad()
-        if numpy.isnan(matrix_median) or numpy.isnan(matrix_mad): return False
+        matrix_sigma = self.sigma()
+        if numpy.isnan(matrix_median) or numpy.isnan(matrix_sigma): return False
 
-        deviated_median = self._deviated_median(global_median, global_mad, matrix_median)
-        scattered_amplitude = self._scattered_amplitude(global_mad, matrix_mad)
+        deviated_median = self._deviated_median(global_median, global_sigma, matrix_median)
+        scattered_amplitude = self._scattered_amplitude(global_sigma, matrix_sigma)
         if deviated_median or scattered_amplitude:
             logging.debug(Color.UNDERLINE + "matrix=" + str(self.amplitude_data_matrix) + Color.ENDC)
             logging.debug(Color.UNDERLINE + "matrix median=" + str(matrix_median) + ", matrix mad=" + str(
-                matrix_mad) + Color.ENDC)
+                    matrix_sigma) + Color.ENDC)
             logging.debug(Color.WARNING + "median deviated=" + str(deviated_median) + ", amplitude scattered=" + str(
-                scattered_amplitude) + Color.ENDC)
+                    scattered_amplitude) + Color.ENDC)
         return deviated_median or scattered_amplitude
 
-    def _deviated_median(self, global_median, global_mad, actual_median):
-        return abs(actual_median - global_median) > (self._config['detail_flagging']['mad_scale_factor'] * global_mad)
+    def _deviated_median(self, global_median, global_sigma, actual_median):
+        return abs(actual_median - global_median) > (self._config['detail_flagging']['mad_scale_factor'] * global_sigma)
 
-    def _scattered_amplitude(self, global_mad, actual_mad):
-        return actual_mad > (self._config['detail_flagging']['mad_scale_factor'] * global_mad)
+    def _scattered_amplitude(self, global_sigma, actual_sigma):
+        return actual_sigma > (self._config['detail_flagging']['mad_scale_factor'] * global_sigma)
 
     def __repr__(self):
         return "AmpMatrix=" + str(self.amplitude_data_matrix) + " med=" + \
-               str(self.median()) + " mad=" + str(self.mad())
+               str(self.median()) + " sigma=" + str(self.sigma())
