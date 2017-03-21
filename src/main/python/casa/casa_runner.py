@@ -190,8 +190,10 @@ class CasaRunner:
     def _run(self, script, script_parameters=None, casapy_path=config.CASAPY_CONFIG['path']):
         if not script_parameters: script_parameters = self._dataset_path
         self._unlock_dataset()
+        logfile = config.OUTPUT_PATH + "/casa.log"
         script_full_path = os.path.realpath(script)
-        command = "{0} --nologger --nogui -c {1} {2}".format(casapy_path, script_full_path, script_parameters)
+        command = "{0} --nologger --nogui  --logfile {1} -c {2} {3}".format(casapy_path, logfile, script_full_path,
+                                                                            script_parameters)
         process = subprocess.Popen(command, stdin=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)
         while process.poll() is None:
             time.sleep(1)
