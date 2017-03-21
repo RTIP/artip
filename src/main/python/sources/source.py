@@ -8,6 +8,8 @@ from configs.config import GLOBAL_CONFIG
 from configs.pipeline_config import PIPELINE_CONFIGS
 from helpers import Debugger
 from terminal_color import Color
+from casa.flag_reasons import BAD_ANTENNA
+from report import Report
 
 
 class Source(object):
@@ -24,6 +26,17 @@ class Source(object):
         if not PIPELINE_CONFIGS['manual_flag']: self.flag_antennas()
         self.calibrate()
         self.flag_and_calibrate_in_detail()
+
+    def flag_antennas(self):
+        self.analyse_antennas_on_angular_dispersion()
+        self.analyse_antennas_on_closure_phases()
+
+        scan_ids = self.measurement_set.scan_ids_for(self.source_ids)
+        Report(self.measurement_set.get_antennas()).generate_report(scan_ids)
+
+        self.measurement_set.flag_bad_antennas(self.source_ids)
+        self.extend_flags()
+        self.measurement_set.casa_runner.flagdata(BAD_ANTENNA)
 
     def flag_and_calibrate_in_detail(self):
         logging.info(Color.HEADER + "Started Detail Flagging..." + Color.ENDC)

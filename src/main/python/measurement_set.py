@@ -133,10 +133,10 @@ class MeasurementSet:
             self.flagged_antennas[polarization][scan_id] = self.flagged_antennas[polarization][scan_id].union(
                     set(antenna_ids))
 
-    def flag_bad_antennas(self, is_bad, sources):
+    def flag_bad_antennas(self, sources):
         for antenna in self._antennas:
             for state in antenna.get_states(self.scan_ids_for(sources)):
-                if state.scan_id in self.scan_ids() and is_bad(state):
+                if state.scan_id in self.scan_ids() and state.is_bad():
                     self.flag_antennas(state.polarization, [state.scan_id], [antenna.id])
 
     def _get_timerange_for_flagging(self, timerange):

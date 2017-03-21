@@ -5,7 +5,7 @@ class Window:
         self._collection = collection
         self._bucket_size = config['detail_flagging']['sliding_window']['bucket_size']
         self._overlap_count = config['detail_flagging']['sliding_window']['overlap']
-        self._window_start_index = 0
+        self._window_start_index = 3
         self._window_data = None
         self._config = config
 

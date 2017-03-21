@@ -1,8 +1,7 @@
-from casa.flag_reasons import BAD_ANTENNA
+import logging
 from configs.config import ALL_CONFIGS, GLOBAL_CONFIG
-from models.antenna_status import AntennaStatus
-from report import Report
 from sources.source import Source
+from terminal_color import Color
 
 
 class FluxCalibrator(Source):
@@ -17,19 +16,9 @@ class FluxCalibrator(Source):
             source_name = self.measurement_set.get_field_name_for(source_id)
             self.measurement_set.casa_runner.setjy(source_id, source_name)
 
-    def flag_antennas(self):
-        self.analyse_antennas_on_angular_dispersion()
-        self.analyse_antennas_on_closure_phases()
-
-        scan_ids = self.measurement_set.scan_ids_for(self.source_ids)
-        Report(self.measurement_set.get_antennas()).generate_report(scan_ids)
-
-        def is_bad(state):
-            return state.get_R_phase_status() == AntennaStatus.BAD and state.get_closure_phase_status() == AntennaStatus.BAD
-
-        self.measurement_set.flag_bad_antennas(is_bad, self.source_ids)
+    def extend_flags(self):
+        logging.info(Color.HEADER + "Extending flags..." + Color.ENDC)
         self._extend_bad_antennas_across_all_sources()
-        self.measurement_set.casa_runner.flagdata(BAD_ANTENNA)
 
     def _extend_bad_antennas_across_all_sources(self):
         polarizations = GLOBAL_CONFIG['polarizations']

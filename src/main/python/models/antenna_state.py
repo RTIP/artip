@@ -1,6 +1,5 @@
 from antenna_status import AntennaStatus
 
-
 class AntennaState:
     def __init__(self, antenna_id, polarization, scan_id):
         self.antenna = antenna_id
@@ -14,6 +13,10 @@ class AntennaState:
             self.__closure_phase_status = status
             return True
         return False
+
+    def is_bad(self):
+        return self.__R_phase_status == AntennaStatus.BAD and \
+               self.__closure_phase_status == AntennaStatus.BAD
 
     def get_closure_phase_status(self):
         return self.__closure_phase_status
