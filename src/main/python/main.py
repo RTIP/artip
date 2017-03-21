@@ -15,7 +15,7 @@ from sources.line_source import LineSource
 
 def main(dataset_path):
     start_time = datetime.datetime.now()
-    measurement_set = MeasurementSet(dataset_path, output_path(dataset_path))
+    measurement_set = MeasurementSet(dataset_path, config.OUTPUT_PATH)
     measurement_set.quack()
     if STAGES_CONFIG['flux_calibration']:
         logging.info(Color.SOURCE_HEADING + "Flux Calibration" + Color.ENDC)
@@ -50,10 +50,3 @@ def main(dataset_path):
     end_time = datetime.datetime.now()
     logging.info(Color.UNDERLINE + 'Total time =' + str(abs((end_time - start_time).seconds)) + " seconds" + Color.ENDC)
 
-
-def output_path(dataset_path):
-    dataset_name = os.path.splitext(os.path.basename(dataset_path))[0]
-    config.OUTPUT_PATH = config.OUTPUT_PATH + "/" + dataset_name
-    if not os.path.exists(config.OUTPUT_PATH):
-        os.makedirs(config.OUTPUT_PATH)
-    return config.OUTPUT_PATH
