@@ -64,32 +64,43 @@ class AmplitudeMatrix:
     def readings_count(self):
         return len(self.amplitude_data_matrix[list(self.amplitude_data_matrix)[0]])
 
+    def is_nan(self):
+        return all(numpy.isnan(amp) for amp in numpy.array(self.amplitude_data_matrix.values()).flatten())
+
     def median(self):
-        if is_nan(self.amplitude_data_matrix.values()): return numpy.nan
-        return calculate_median(self.amplitude_data_matrix.values())
+        if self.is_nan(): return numpy.nan
+        return numpy.nanmedian(self.amplitude_data_matrix.values())
 
     def mad(self):
-        if is_nan(self.amplitude_data_matrix.values()): return numpy.nan
+        if self.is_nan(): return numpy.nan
         matrix = self.amplitude_data_matrix.values()
         return numpy.nanmedian(abs(numpy.array(matrix) - numpy.nanmedian(matrix)))
 
-    def sigma(self):
+    def mad_sigma(self):
         return 1.4826 * self.mad()
+
+    def mean(self):
+        if self.is_nan(): return numpy.nan
+        return numpy.nanmean(self.amplitude_data_matrix.values())
+
+    def mean_sigma(self):
+        if self.is_nan(): return numpy.nan
+        return numpy.nanstd(self.amplitude_data_matrix.values())
 
     def is_empty(self):
         return len(numpy.array(self.amplitude_data_matrix.values()).flatten()) == 0
 
     def is_bad(self, global_median, global_sigma):
         matrix_median = self.median()
-        matrix_sigma = self.sigma()
+        matrix_sigma = self.mad_sigma()
         if numpy.isnan(matrix_median) or numpy.isnan(matrix_sigma): return False
 
         deviated_median = self._deviated_median(global_median, global_sigma, matrix_median)
         scattered_amplitude = self._scattered_amplitude(global_sigma, matrix_sigma)
         if deviated_median or scattered_amplitude:
             logging.debug(Color.UNDERLINE + "matrix=" + str(self.amplitude_data_matrix) + Color.ENDC)
-            logging.debug(Color.UNDERLINE + "matrix median=" + str(matrix_median) + ", matrix mad=" + str(
-                    matrix_sigma) + Color.ENDC)
+            logging.debug(Color.UNDERLINE + " median=" + str(matrix_median) + ", median sigma=" + str(matrix_sigma)
+                          + ", mean=" + str(self.mean()) + ", mean sigma=" + str(self.mean_sigma()) + Color.ENDC)
             logging.debug(Color.WARNING + "median deviated=" + str(deviated_median) + ", amplitude scattered=" + str(
                     scattered_amplitude) + Color.ENDC)
         return deviated_median or scattered_amplitude
@@ -102,4 +113,4 @@ class AmplitudeMatrix:
 
     def __repr__(self):
         return "AmpMatrix=" + str(self.amplitude_data_matrix) + " med=" + \
-               str(self.median()) + " sigma=" + str(self.sigma())
+               str(self.median()) + " mad sigma=" + str(self.mad_sigma())

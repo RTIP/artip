@@ -19,7 +19,7 @@ class DetailedAnalyser:
             scan_times = self.measurement_set.timesforscan(scan_id)
             amp_matrix = AmplitudeMatrix(self.measurement_set, polarization, scan_id, self._source_config)
             global_median = amp_matrix.median()
-            global_sigma = amp_matrix.sigma()
+            global_sigma = amp_matrix.mad_sigma()
             self._print_polarization_details(global_sigma, global_median, polarization, scan_id)
 
             antennaids = self.measurement_set.antenna_ids(polarization, scan_id)
@@ -45,7 +45,7 @@ class DetailedAnalyser:
         for polarization, scan_id in polarization_and_scan_product:
             amp_matrix = AmplitudeMatrix(self.measurement_set, polarization, scan_id, self._source_config)
             global_median = amp_matrix.median()
-            global_sigma = amp_matrix.sigma()
+            global_sigma = amp_matrix.mad_sigma()
             scan_times = self.measurement_set.timesforscan(scan_id)
             self._print_polarization_details(global_sigma, global_median, polarization, scan_id)
 

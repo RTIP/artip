@@ -5,10 +5,6 @@ import os
 from configs.pipeline_config import FLAGGED_ELEMENTS
 
 
-def calculate_median(list):
-    return numpy.nanmedian(numpy.array(list))
-
-
 def minus(list1, list2):
     return filter(lambda elm: elm not in list2, list1)
 
@@ -27,10 +23,6 @@ def delete_indexes(array, indexes):
     for index, time_index in enumerate(indexes):
         result = numpy.delete(array, time_index, 0) if index == 0 else numpy.delete(result, time_index - 1, 0)
     return result
-
-
-def is_nan(array):
-    return all(numpy.isnan(amp) for amp in numpy.array(array).flatten())
 
 
 def create_dir(directory):
