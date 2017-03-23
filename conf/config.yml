@@ -26,7 +26,7 @@ common: &common
     sliding_window:
       bucket_size: 10
       overlap: 5
-    mad_scale_factor: 2
+    mad_scale_factor: 3
     amplitude_data_column: 'corrected_amplitude'
   r_flag: &rflag
     freqdevscale: 5.0
