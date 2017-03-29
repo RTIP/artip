@@ -4,8 +4,7 @@ from analysers.angular_dispersion import AngularDispersion
 from analysers.closure_analyser import ClosureAnalyser
 from analysers.detailed_analyser import DetailedAnalyser
 from casa.flag_reasons import BAD_ANTENNA_TIME, BAD_BASELINE_TIME
-from configs.config import GLOBAL_CONFIG
-from configs.pipeline_config import PIPELINE_CONFIGS
+from configs import config,pipeline_config
 from helpers import Debugger
 from terminal_color import Color
 from casa.flag_reasons import BAD_ANTENNA
@@ -23,7 +22,7 @@ class Source(object):
         raise NotImplementedError("Not implemented")
 
     def reduce_data(self):
-        if not PIPELINE_CONFIGS['manual_flag']: self.flag_antennas()
+        if not pipeline_config.PIPELINE_CONFIGS['manual_flag']: self.flag_antennas()
         self.calibrate()
         self.flag_and_calibrate_in_detail()
 
@@ -46,7 +45,7 @@ class Source(object):
 
     def _flag_bad_time(self, reason, analyser):
         debugger = Debugger(self.measurement_set)
-        polarizations = GLOBAL_CONFIG['polarizations']
+        polarizations = config.GLOBAL_CONFIG['polarizations']
         scan_ids = self.measurement_set.scan_ids_for(self.source_ids)
         polarization_scan_product = list(itertools.product(polarizations, scan_ids))
         while True:

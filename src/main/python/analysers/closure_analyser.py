@@ -1,8 +1,8 @@
 import itertools
 import logging
 import numpy
-from src.main.python.analysers.analyser import Analyser
-from configs.config import GLOBAL_CONFIG
+from analysers.analyser import Analyser
+from configs import config
 from scipy import stats
 from closure_phase_util import ClosurePhaseUtil
 from terminal_color import Color
@@ -32,7 +32,7 @@ class ClosureAnalyser(Analyser):
     def identify_antennas_status(self):
         scan_ids = self.measurement_set.scan_ids_for(self.source_config['fields'])
 
-        polarization_scan_id_combination = itertools.product(GLOBAL_CONFIG['polarizations'], scan_ids)
+        polarization_scan_id_combination = itertools.product(config.GLOBAL_CONFIG['polarizations'], scan_ids)
         for polarization, scan_id in polarization_scan_id_combination:
             antennas = self.measurement_set.get_antennas(polarization, scan_id)
 

@@ -1,5 +1,4 @@
 from configs import config
-from configs.config import GLOBAL_CONFIG
 from casa.flag_reasons import BAD_ANTENNA_TIME, BAD_BASELINE_TIME
 import os
 import subprocess
@@ -31,7 +30,7 @@ class CasaRunner:
         logging.info(Color.HEADER + "Applying Flux Calibration..." + Color.ENDC)
         script_path = 'casa_scripts/flux_calibration.py'
         fields = ",".join(map(str, source_config['fields']))
-        refant = GLOBAL_CONFIG['refant']
+        refant = config.GLOBAL_CONFIG['refant']
         minsnr = source_config['minsnr']
         spw = "{0}:{1}".format(config.GLOBAL_CONFIG['spw'], source_config['channel'])
         script_parameters = "{0} {1} {2} {3} {4} {5}".format(self._dataset_path, self._output_path,
@@ -42,7 +41,7 @@ class CasaRunner:
         logging.info(Color.HEADER + "Running Bandpass Calibration..." + Color.ENDC)
         script_path = 'casa_scripts/bandpass_calibration.py'
         fields = ",".join(map(str, source_config['fields']))
-        refant = GLOBAL_CONFIG['refant']
+        refant = config.GLOBAL_CONFIG['refant']
         minsnr = source_config['minsnr']
         script_parameters = "{0} {1} {2} {3} {4}".format(self._dataset_path, self._output_path, fields, refant, minsnr)
 
@@ -52,7 +51,7 @@ class CasaRunner:
         logging.info(Color.HEADER + "Applying Phase Calibration..." + Color.ENDC)
         script_path = 'casa_scripts/phase_calibration.py'
         phase_cal_fields = ",".join(map(str, source_config['fields']))
-        refant = GLOBAL_CONFIG['refant']
+        refant = config.GLOBAL_CONFIG['refant']
         minsnr = source_config['minsnr']
         spw = "{0}:{1}".format(config.GLOBAL_CONFIG['spw'], source_config['channels_to_avg'])
         script_parameters = "{0} {1} {2} {3} {4} {5} {6}".format(self._dataset_path, self._output_path,
@@ -90,7 +89,7 @@ class CasaRunner:
         freq_band = "L"
         model_path = "{0}/{1}_{2}.im".format(config.CASAPY_CONFIG['model_path'], source_name.split("_")[0], freq_band)
         script_parameters = "{0} {1} {2}".format(self._dataset_path, source_id, model_path)
-        self._run(script_path, script_parameters, config.CASAPY_CONFIG['path'])
+        self._run(script_path, script_parameters)
 
     def split(self, output_path, filters):
         script_path = 'casa_scripts/split_dataset.py'
@@ -128,7 +127,7 @@ class CasaRunner:
             output_path,
             output_ms_path,
             cal_mode[calibration_mode]['solint'],
-            GLOBAL_CONFIG['refant'],
+            config.GLOBAL_CONFIG['refant'],
             self_cal_config['minsnr'],
             self._output_path,
             self_cal_config['imsize'],
@@ -187,7 +186,8 @@ class CasaRunner:
         table.open(self._dataset_path)
         table.unlock()
 
-    def _run(self, script, script_parameters=None, casapy_path=config.CASAPY_CONFIG['path']):
+    def _run(self, script, script_parameters=None):
+        casapy_path = config.CASAPY_CONFIG['path']
         if not script_parameters: script_parameters = self._dataset_path
         self._unlock_dataset()
         logfile = config.OUTPUT_PATH + "/casa.log"

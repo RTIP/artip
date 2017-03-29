@@ -1,5 +1,4 @@
-from configs.config import ALL_CONFIGS
-from configs.config import GLOBAL_CONFIG
+from configs import config
 from sources.target_source import TargetSource
 from measurement_set import MeasurementSet
 from helpers import Debugger
@@ -13,14 +12,14 @@ class ContinuumSource(TargetSource):
         super(ContinuumSource, self).__init__(measurement_set)
         self.source_type = 'continuum'
         self.source_ids = [0]  # source_id will always be 0
-        self.config = ALL_CONFIGS["target_source"][self.source_type]
+        self.config = config.ALL_CONFIGS["target_source"][self.source_type]
 
     def reduce_data(self):
         self.flag_and_calibrate_in_detail()
 
     def _flag_bad_time(self, reason, analyser):
         debugger = Debugger(self.measurement_set)
-        polarizations = GLOBAL_CONFIG['polarizations']
+        polarizations = config.GLOBAL_CONFIG['polarizations']
         scan_ids = self.measurement_set.scan_ids_for(self.source_ids)
         polarization_scan_product = list(itertools.product(polarizations, scan_ids))
         self._flag_only_once(reason, analyser, polarization_scan_product, debugger)

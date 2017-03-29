@@ -1,8 +1,6 @@
-from configs.config import GLOBAL_CONFIG
+from configs import config
 import logging
 from itertools import product
-from src.main.python.analysers.analyser import Analyser
-from configs.config import ALL_CONFIGS, GLOBAL_CONFIG
 from models.antenna_status import AntennaStatus
 from analysers.analyser import Analyser
 from analysers.r_matrix import RMatrix
@@ -16,14 +14,14 @@ class AngularDispersion(Analyser):
         super(AngularDispersion, self).__init__(measurement_set, source)
 
     def identify_antennas_status(self):
-        polarizations = GLOBAL_CONFIG['polarizations']
+        polarizations = config.GLOBAL_CONFIG['polarizations']
         scan_ids = self.measurement_set.scan_ids_for(self.source_config['fields'])
 
         for polarization, scan_id in product(polarizations, scan_ids):
             logging.debug(
                     Color.BACKGROUD_WHITE + "Polarization =" + polarization + " Scan Id=" + str(scan_id) + Color.ENDC)
-            if GLOBAL_CONFIG['refant']:
-                base_antenna = self.measurement_set.get_antenna_by_id(GLOBAL_CONFIG['refant'])
+            if config.GLOBAL_CONFIG['refant']:
+                base_antenna = self.measurement_set.get_antenna_by_id(config.GLOBAL_CONFIG['refant'])
             else:
                 base_antenna = self.measurement_set.get_antennas(polarization, scan_id)[0]
             r_matrix = RMatrix(polarization, scan_id)

@@ -1,13 +1,12 @@
 from unittest import TestCase
 from models.phase_set import PhaseSet
-from configs.config import FLUX_CAL_CONFIG
 import math
 
 
 class PhaseSetTest(TestCase):
     @classmethod
     def setUpClass(self):
-        self.r_threshold = FLUX_CAL_CONFIG['r_threshold']
+        self.r_threshold = 0.3
 
     def test_is_dispersed_should_return_false_for_dispersion_of_less_than_200_degrees_for_flux_calibrator(self):
         phase_data_in_radian = self.degree_to_radian(

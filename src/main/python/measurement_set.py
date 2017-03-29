@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 from casa.casa_runner import CasaRunner
 from casa.flag_reasons import BAD_ANTENNA, BAD_ANTENNA_TIME, BAD_BASELINE_TIME
 from casa.flag_recorder import FlagRecorder
-from configs.config import GLOBAL_CONFIG
+from configs import config
 from models.antenna import Antenna
 from models.antenna_state import AntennaState
 from models.phase_set import PhaseSet
@@ -18,14 +18,14 @@ class MeasurementSet:
         self._output_path = output_path
         self.casa_runner = CasaRunner(dataset_path, output_path)
         self.flag_recorder = FlagRecorder(output_path + "/flags.txt")
-        self.__ms = casac.casac.ms()
-        self.__ms.open(dataset_path)
-        self.__metadata = self.__ms.metadata()
+        self._ms = casac.casac.ms()
+        self._ms.open(dataset_path)
+        self._metadata = self._ms.metadata()
         self._antennas = self.create_antennas()
         self.flagged_antennas = self._initialize_flag_data()
 
     def __del__(self):
-        self.__ms.close()
+        self._ms.close()
 
     def get_dataset_path(self):
         return self._dataset_path
@@ -37,36 +37,36 @@ class MeasurementSet:
         flag_data = {
             polarization: {scan_id: set() for scan_id in self.scan_ids()} for
             polarization in
-            GLOBAL_CONFIG['polarizations']}
+            config.GLOBAL_CONFIG['polarizations']}
         return flag_data
 
     def quack(self):
         self.casa_runner.quack()
 
     def _filter(self, channel, polarization, filters={}):
-        self.__ms.selectinit(reset=True)
-        self.__ms.selectpolarization(polarization)
-        self.__ms.selectchannel(**channel)
-        if filters: self.__ms.select(filters)
+        self._ms.selectinit(reset=True)
+        self._ms.selectpolarization(polarization)
+        self._ms.selectchannel(**channel)
+        if filters: self._ms.select(filters)
 
     def reload(self):
-        self.__ms.close()
-        self.__ms.open(self._dataset_path)
+        self._ms.close()
+        self._ms.open(self._dataset_path)
 
     def get_data(self, channel, polarization, filters, selection_params, ifraxis=False):
         self._filter(channel, polarization, filters)
-        data_items = self.__ms.getdata(selection_params, ifraxis=ifraxis)
+        data_items = self._ms.getdata(selection_params, ifraxis=ifraxis)
         return data_items
 
     def get_phase_data(self, channel, polarization, filters={}):
         return PhaseSet(self.get_data(channel, polarization, filters, ['phase'])['phase'][0][0])
 
     def get_field_name_for(self, field_id):
-        return self.__metadata.fieldnames()[field_id]
+        return self._metadata.fieldnames()[field_id]
 
     def scan_ids_for(self, source_ids):
         scan_ids = reduce(lambda scan_ids, source_id:
-                          scan_ids + list(self.__metadata.scansforfield(source_id)),
+                          scan_ids + list(self._metadata.scansforfield(source_id)),
                           source_ids, [])
         return map(lambda scan_id: int(scan_id), scan_ids)
 
@@ -82,11 +82,11 @@ class MeasurementSet:
         return map(sort_antennas, baselines)
 
     def create_antennas(self):
-        first_scan_id = self.__metadata.scannumbers()[0]  # since antenna ids will be constant for all the scans
-        antenna_ids = self.__metadata.antennasforscan(first_scan_id).tolist()
+        first_scan_id = self._metadata.scannumbers()[0]  # since antenna ids will be constant for all the scans
+        antenna_ids = self._metadata.antennasforscan(first_scan_id).tolist()
         antennas = map(lambda id: Antenna(id), antenna_ids)
         scan_ids = self.scan_ids()
-        product_pol_scan_ant = itertools.product(GLOBAL_CONFIG['polarizations'], scan_ids, antennas)
+        product_pol_scan_ant = itertools.product(config.GLOBAL_CONFIG['polarizations'], scan_ids, antennas)
 
         for polarization, scan_id, antenna in product_pol_scan_ant:
             antennaState = AntennaState(antenna.id, polarization, scan_id)
@@ -109,11 +109,11 @@ class MeasurementSet:
         return len(self._antennas)
 
     def scan_ids(self):
-        return self.__metadata.scannumbers()
+        return self._metadata.scannumbers()
 
     def timesforscan(self, scan_id):
         quanta = casac.casac.quanta()
-        times_with_second = map(lambda time: str(time) + 's', self.__metadata.timesforscan(scan_id))
+        times_with_second = map(lambda time: str(time) + 's', self._metadata.timesforscan(scan_id))
         return numpy.array(
                 map(lambda time: quanta.time(quanta.quantity(time), form='ymd'), times_with_second)).flatten()
 

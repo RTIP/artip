@@ -8,4 +8,7 @@ htmlcov/*
 *.last
 *.table
 *.gcal/
+*.ms*
+cgrid_ft.im
 output
+src/integrationtest/output
