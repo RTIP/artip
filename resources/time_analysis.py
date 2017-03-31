@@ -1,12 +1,13 @@
 import numpy
-ms.open('../MS_DATASET/june20.ms')
+
+ms.open('~/Downloads/MS_DATASET/june20.ms')
 ms.selectinit(reset=True)
-ms.selectpolarization('RR')
-ms.select({'antenna1': 2, 'antenna2': 7, 'field_id': [0], 'scan_number': 1})
+# ms.selectpolarization('RR')
+ms.select({'antenna1': 0, 'antenna2': 26, 'field_id': [0, 3], 'scan_number': 1})
 data_with_flags = ms.getdata(['corrected_data', 'flag'])
 data = data_with_flags['corrected_data']
 flags = data_with_flags['flag']
-timedev = 6.9490706511693014
+timedev = 6.82925
 winsize = 3
 total_timestamps = 55
 effective_center = (int)(winsize - 1) / 2
@@ -14,10 +15,10 @@ winstart = effective_center
 noise_sum = [0] * 512
 noise_sum_count = [0] * 512
 noise_sum_squares = [0] * 512
-count  = 0
+count = 0
 for i in range(effective_center, total_timestamps - effective_center):
     for chan in range(0, 512):
-        for pol in range(0, 1):
+        for pol in range(0, 2):
             SumWeight = 0
             StdTotal = 0
             SumReal = 0
