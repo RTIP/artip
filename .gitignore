@@ -3,12 +3,8 @@ target
 *.pyc
 *.log
 *.DS_Store
-htmlcov/*
-.coverage
 *.last
 *.table
-*.gcal/
 *.fits
 cgrid_ft.im
 output
-src/integrationtest/output

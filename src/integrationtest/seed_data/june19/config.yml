@@ -1,8 +1,8 @@
 global:
   polarizations: ['RR', 'LL']
-  flux_cal_fields: &flux_cal_fields [0]
-  bandpass_cal_fields: &bandpass_cal_fields [0]
-  phase_cal_fields: &phase_cal_fields [1]
+  flux_cal_fields: &flux_cal_fields [0,4]
+  bandpass_cal_fields: &bandpass_cal_fields [0,4]
+  phase_cal_fields: &phase_cal_fields [1,3]
   target_src_field: &target_src_field [2]
   output_path: 'src/integrationtest/output'
   spw: 0

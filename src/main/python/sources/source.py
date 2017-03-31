@@ -4,7 +4,7 @@ from analysers.angular_dispersion import AngularDispersion
 from analysers.closure_analyser import ClosureAnalyser
 from analysers.detailed_analyser import DetailedAnalyser
 from casa.flag_reasons import BAD_ANTENNA_TIME, BAD_BASELINE_TIME
-from configs import config,pipeline_config
+from configs import config, pipeline_config
 from helpers import Debugger
 from terminal_color import Color
 from casa.flag_reasons import BAD_ANTENNA

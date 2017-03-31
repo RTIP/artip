@@ -14,11 +14,15 @@ After the successful installation of packages, run the following command from wi
 If you get 'ImportError: No module named casac', check your pip/pyb installation, it should point to the new anaconda python installation.
 If not, uninstall the existing ones, and reinstall pip/pyb normally, and it should automatically pick the new anaconda python installation.
 
-Now, to run the application, execute
->> python start.py <ms_dataset_path> 
-    e.g. python start.py '~/Downloads/may14.ms'
+Now, to run tests and build,
+Copy datasets in the src/integrationtest/seed_data/ required for testing
+Then execute
+>> pyb
+
+And to run the application, execute
+>> pyb run -P dataset="<ms_dataset_path>"
+    e.g. pyb run -P dataset="~/Downloads/may14.ms"
+    #Do not forget to put the quotes on the property value
 
 
 ----------------------------------------------------------------------------------------------
-For running flagging and calibration
->> /Applications/CASA.app/Contents/MacOS/casapy -c scripts/calibration.py <ms_dataset_path>

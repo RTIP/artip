@@ -2,7 +2,7 @@ import numpy
 import math
 import os
 
-from configs.pipeline_config import FLAGGED_ELEMENTS
+from configs import pipeline_config
 
 
 def minus(list1, list2):
@@ -35,4 +35,4 @@ class Debugger:
         self._measurement_set = measurement_set
 
     def flag_antennas(self, polarization, scan_ids):
-        self._measurement_set.flag_antennas(polarization, scan_ids, FLAGGED_ELEMENTS['antennas'])
+        self._measurement_set.flag_antennas(polarization, scan_ids, pipeline_config.FLAGGED_ELEMENTS['antennas'])
