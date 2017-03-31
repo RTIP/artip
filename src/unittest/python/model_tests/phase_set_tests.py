@@ -5,8 +5,8 @@ import math
 
 class PhaseSetTest(TestCase):
     @classmethod
-    def setUpClass(self):
-        self.r_threshold = 0.3
+    def setUpClass(cls):
+        cls.r_threshold = 0.3
 
     def test_is_dispersed_should_return_false_for_dispersion_of_less_than_200_degrees_for_flux_calibrator(self):
         phase_data_in_radian = self.degree_to_radian(
