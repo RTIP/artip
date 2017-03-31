@@ -1,9 +1,9 @@
 # These configs are used only in development/debugging
 
 stages:
-  flux_calibration: true
-  bandpass_calibration: true
-  phase_calibration: true
+  flux_calibration: false
+  bandpass_calibration: false
+  phase_calibration: false
   target_source: false
 
 manual_flag: false

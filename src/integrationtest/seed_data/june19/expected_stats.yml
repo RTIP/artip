@@ -1,0 +1,4 @@
+calibration:
+  stddev: 3.450589073495734
+  median: 17.134225845336914
+  npts: 90031104.0 #number of unflagged points
