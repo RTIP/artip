@@ -1,4 +1,4 @@
-from configs import config
+from configs import config, pipeline_config
 import casac
 import subprocess, time
 
@@ -17,8 +17,26 @@ def fits_to_ms(fits_file, ms_path):
 def get_stats(ms_path, fields):
     ms = casac.casac.ms()
     ms.open(ms_path)
-    return ms.statistics(column="CORRECTED_DATA", complex_value='amp', field=",".join(map(str,fields)))['CORRECTED']
+    return ms.statistics(column="CORRECTED_DATA", complex_value='amp', field=",".join(map(str, fields)))['CORRECTED']
 
 
 def is_subset(superset, subset):
     return set(subset.items()).issubset(set(superset.items()))
+
+
+def enable_flagging_and_calibration():
+    pipeline_config.STAGES_CONFIG.update({'flux_calibration': True, 'bandpass_calibration': True,
+                                          'phase_calibration': True})
+
+
+def disable_flagging_and_calibration():
+    pipeline_config.STAGES_CONFIG.update({'flux_calibration': False, 'bandpass_calibration': False,
+                                          'phase_calibration': False})
+
+
+def enable_imaging():
+    pipeline_config.STAGES_CONFIG.update({'target_source': True})
+
+
+def disable_imaging():
+    pipeline_config.STAGES_CONFIG.update({'target_source': False})

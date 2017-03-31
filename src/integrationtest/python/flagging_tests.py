@@ -28,8 +28,8 @@ class FlaggingTest(unittest.TestCase):
         self.assert_calibration()
 
     def assert_flagging(self):
-        pipeline_config.STAGES_CONFIG.update({'flux_calibration': True, 'bandpass_calibration': True,
-                                              'phase_calibration': True})
+        enable_flagging_and_calibration()
+        disable_imaging()
         main(self.ms_file)
 
         actual_flags = open(config.OUTPUT_PATH + '/flags.txt').read()
