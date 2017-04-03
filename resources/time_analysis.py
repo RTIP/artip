@@ -1,13 +1,13 @@
 import numpy
 
-ms.open('~/Downloads/MS_DATASET/june20.ms')
+ms.open('~/Downloads/MS_DATASET/may30.ms')
 ms.selectinit(reset=True)
 # ms.selectpolarization('RR')
-ms.select({'antenna1': 0, 'antenna2': 26, 'field_id': [0, 3], 'scan_number': 1})
+ms.select({'antenna1': 2, 'antenna2': 11, 'field_id': [0], 'scan_number': 1})
 data_with_flags = ms.getdata(['corrected_data', 'flag'])
 data = data_with_flags['corrected_data']
 flags = data_with_flags['flag']
-timedev = 6.82925
+timedev = 3.26948
 winsize = 3
 total_timestamps = 55
 effective_center = (int)(winsize - 1) / 2
@@ -16,6 +16,7 @@ noise_sum = [0] * 512
 noise_sum_count = [0] * 512
 noise_sum_squares = [0] * 512
 count = 0
+print "chan | pol | CentralTime | StdTotal\t"
 for i in range(effective_center, total_timestamps - effective_center):
     for chan in range(0, 512):
         for pol in range(0, 2):
@@ -50,5 +51,8 @@ for i in range(effective_center, total_timestamps - effective_center):
                 noise_sum_squares[chan] += StdTotal * StdTotal
                 noise_sum_count[chan] += 1
                 if StdTotal > timedev:
+                # if chan in range(25, 80) and pol == 1:
                     count += 1
-                    print "chan, pol, CentralTime, StdTotal", chan, pol, i, StdTotal, count
+                    print chan, "\t", pol, "\t", i, "\t", StdTotal
+
+print "Total times flagged, ", count
