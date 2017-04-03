@@ -86,11 +86,11 @@ target_source:
         mask_path: ''
       calmode: &calmode
         p:
-          loop_count : 5
+          loop_count : 1
           solint: '2min'
           robust: 0.5
         ap:
-          loop_count : 4
+          loop_count : 1
           solint: '10min'
           robust: 0.5
     detail_flagging:
