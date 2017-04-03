@@ -42,5 +42,6 @@ def run(project):
     config.load(config_path)
     start.snapshot_config(config_path)
     start.create_output_dir(dataset_path)
+    start.create_flag_file()
     main(dataset_path)
     start.clean()

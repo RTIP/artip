@@ -4,10 +4,10 @@ import os
 class FlagRecorder:
     def __init__(self, flag_file_name):
         self._flag_file_name = flag_file_name
-        self.create_flag_file()
+        self.touch_flag_file()
 
-    def create_flag_file(self):
-        flag_record_file = open(self._flag_file_name, 'w+')
+    def touch_flag_file(self):
+        flag_record_file = open(self._flag_file_name, 'a')
         flag_record_file.close()
 
     def mark_entry(self, details):

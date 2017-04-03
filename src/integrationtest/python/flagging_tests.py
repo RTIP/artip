@@ -8,12 +8,9 @@ from test_helper import *
 
 
 class FlaggingTest(unittest.TestCase):
-    def __init__(self, dataset_name):
-        unittest.TestCase.__init__(self, methodName='test_actual_flags_should_match_expected_flags')
+    def setup(self, dataset_name):
         self.seed_data_path = "src/integrationtest/seed_data/"
         self.dataset_name = dataset_name
-
-    def setUp(self):
         pipeline_config.load("src/integrationtest/conf/pipeline_config.yml")
         logging_config.load()
 
@@ -23,7 +20,15 @@ class FlaggingTest(unittest.TestCase):
         start.create_output_dir(fits_file)
         fits_to_ms(fits_file, self.ms_file)
 
-    def test_actual_flags_should_match_expected_flags(self):
+    def test_should_run_all_stages_on_aug_7(self):
+        self.setup('aug7')
+        start.create_flag_file()
+        self.assert_flagging()
+        self.assert_calibration()
+        self.assert_imaging()
+
+    def test_should_run_all_stages_on_june19(self):
+        self.setup('june19')
         self.assert_flagging()
         self.assert_calibration()
         self.assert_imaging()
@@ -74,12 +79,5 @@ class FlaggingTest(unittest.TestCase):
     # def tearDown(self):
     #     rmtree(config.OUTPUT_PATH)
 
-
-def get_test_data_suite():
-    dataset_names = filter(lambda file_name: not file_name.startswith('.'), listdir('src/integrationtest/seed_data/'))
-    return unittest.TestSuite([FlaggingTest(dataset) for dataset in dataset_names])
-
-
 if __name__ == '__main__':
-    testRunner = unittest.TextTestRunner()
-    testRunner.run(get_test_data_suite())
+    unittest.main()

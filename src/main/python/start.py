@@ -1,7 +1,8 @@
-from os import path,listdir,makedirs, remove
+from os import path, listdir, makedirs, remove
 from re import search
 from shutil import copyfile, rmtree
 from configs import config
+
 
 def create_output_dir(dataset_path):
     dataset_name = path.splitext(path.basename(dataset_path))[0]
@@ -9,6 +10,7 @@ def create_output_dir(dataset_path):
     if not path.exists(config.OUTPUT_PATH):
         makedirs(config.OUTPUT_PATH)
     return config.OUTPUT_PATH
+
 
 def clean():
     dir = "."
@@ -23,7 +25,10 @@ def clean():
                     remove(f)
 
 
+def create_flag_file():
+    flag_record_file = open(config.OUTPUT_PATH + "/flags.txt", 'w+')
+    flag_record_file.close()
+
 
 def snapshot_config(config_path):
-    copyfile(config_path, config.OUTPUT_PATH+"/config.yml")
-
+    copyfile(config_path, config.OUTPUT_PATH + "/config.yml")
