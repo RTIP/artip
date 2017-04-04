@@ -2,12 +2,11 @@ import unittest
 from configs import config, pipeline_config, logging_config
 import start
 from main import main
-from os import listdir
 from shutil import rmtree
 from test_helper import *
 
 
-class FlaggingTest(unittest.TestCase):
+class PipelineTest(unittest.TestCase):
     def setup(self, dataset_name):
         self.seed_data_path = "src/integrationtest/seed_data/"
         self.dataset_name = dataset_name
@@ -76,8 +75,8 @@ class FlaggingTest(unittest.TestCase):
                                                                            imaging_stats['beam']['minor']))
 
 
-    # def tearDown(self):
-    #     rmtree(config.OUTPUT_PATH)
+    def tearDown(self):
+        rmtree(config.GLOBAL_CONFIG['output_path'])
 
 if __name__ == '__main__':
     unittest.main()
