@@ -1,9 +1,9 @@
 import numpy
 
-ms.open('../MS_DATASET/may30.ms')
+ms.open('~/Downloads/MS_DATASET/june17.ms')
 ms.selectinit(reset=True)
 # ms.selectpolarization('RR')
-ms.select({'antenna1': 0, 'antenna2': 12, 'field_id': 0, 'scan_number': 1})
+ms.select({'antenna1': 16, 'antenna2': 18, 'field_id': 0, 'scan_number': 1})
 data_with_flags = ms.getdata(['corrected_data', 'flag'])
 data = data_with_flags['corrected_data']
 flags = data_with_flags['flag']
@@ -72,8 +72,8 @@ for timestep in range(effective_center, total_timestamps - effective_center):
                 for chan in range(0, 512):
                     print "Flagging", chan, pol, timestep, "Std Real :", StdReal, "StdImag :", StdImag
             else:
-                visibility = data[pol][chan][timestep]
-
-                if (abs(visibility.real - AverageReal) > scutof) or (abs(visibility.imag - AverageImag) > scutof):
-                    print "Flagging", chan, pol, timestep, abs(visibility.real - AverageReal), abs(
-                        visibility.imag - AverageImag)
+                for chan in range(0, 512):
+                    visibility = data[pol][chan][timestep]
+                    if ((abs(visibility.real - AverageReal) > scutof) or (abs(visibility.imag - AverageImag) > scutof)) and pol == 1:
+                        print "Flagging", chan, pol, timestep, abs(visibility.real - AverageReal), abs(
+                            visibility.imag - AverageImag)
