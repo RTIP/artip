@@ -8,14 +8,20 @@ channels_to_average = sys.argv[-8]
 spw = "{0}:{1}".format(sys.argv[-5], channels_to_average)
 field = sys.argv[-6]
 ms_dataset = sys.argv[-7]
+maxnpieces = sys.argv[-13]
+usewindowstats = sys.argv[-12]
+halfwin = int(sys.argv[-11])
+freqcutoff = float(sys.argv[-10])
+timecutoff = float(sys.argv[-9])
 
-flagdata(vis=ms_dataset, mode='rflag', field=field, spw=spw, datacolumn='corrected',
-         freqdevscale=freqdevscale, timedevscale=timedevscale,
-         growtime=growtime, growfreq=growfreq)
+tfcrop_command = "mode='tfcrop' maxnpieces={0} usewindowstats='{1}' halfwin={2} timecutoff={3}" \
+                 " freqcutoff={4}".format(maxnpieces, usewindowstats, halfwin, timecutoff, freqcutoff)
 
-# freqdevscale  => deviations from the calculated RMS in frequency (the default is 5.0).
-# timedevscale  => deviations from the calculated RMS in time (the default is 5.0).
-# growtime=50.0 => will flag all data for a given channel if more than 50% of that channel's
-#                  time is already flagged.
-# growfreq=90.0 => will flag the entire spectrum for an integration if more than 90% of the
-#                  channels in that integration are already flagged.
+r_flag_command = "mode='rflag' extendflags=False timedevscale={0} freqdevscale={1} ".format(timedevscale, freqdevscale)
+
+extend_flag_command = "mode='extend' growaround=True flagnearfreq=True flagneartime=True" \
+                      " extendpols=False growtime={0} growfreq={1}".format(growtime, growfreq)
+
+cmdlist = [tfcrop_command, r_flag_command, extend_flag_command]
+
+flagdata(vis=ms_dataset, mode='list', inpfile=cmdlist, display='data', field=field, datacolumn='corrected', spw=spw)

@@ -28,12 +28,19 @@ common: &common
       overlap: 5
     mad_scale_factor: 3
     amplitude_data_column: 'corrected_amplitude'
-  r_flag: &rflag
-    freqdevscale: 5.0
-    timedevscale: 5.0
-    growtime: 70.0
-    growfreq: 90.0
-
+  auto_flagging_casa: &auto_flagging_casa
+    r_flag:
+      freqdevscale: 6.5
+      timedevscale: 5.0
+      growtime: 60.0
+      growfreq: 60.0
+      freqrange: '40~470'
+    tf_crop:
+      maxnpieces: 4
+      usewindowstats: 'std'
+      halfwin: 1
+      freqcutoff: 3.8
+      timecutoff: 3.0
 
 flux_calibrator:
   <<: *common
@@ -44,9 +51,8 @@ bandpass_calibrator:
   <<: *common
   fields: *bandpass_cal_fields
   channels_to_avg: '80~120'
-  r_flag:
-    <<: *rflag
-    freqrange: '50~460'
+  auto_flagging_casa:
+    <<: *auto_flagging_casa
 
 phase_calibrator:
   <<: *common
