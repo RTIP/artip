@@ -25,7 +25,4 @@ And to run the application, execute
     #Do not forget to put the quotes on the property value
 
 
-To build the Distribution file
->> $python setup.py sdist
->> This will build a distributable package inside /dist directory 
 ----------------------------------------------------------------------------------------------

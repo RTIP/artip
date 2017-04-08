@@ -1,2 +1,0 @@
-include casa_scripts/*.py
-include conf/*.yml
