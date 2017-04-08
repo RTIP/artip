@@ -18,10 +18,10 @@ class PipelineTest(unittest.TestCase):
         fits_file = "{0}/{1}/{1}.fits".format(self.seed_data_path, self.dataset_name)
         start.create_output_dir(fits_file)
         fits_to_ms(fits_file, self.ms_file)
+        start.create_flag_file()
 
     def test_should_run_all_stages_on_aug_7(self):
         self.setup('aug7')
-        start.create_flag_file()
         self.assert_flagging()
         self.assert_calibration()
         self.assert_imaging()
@@ -60,23 +60,23 @@ class PipelineTest(unittest.TestCase):
         actual_flux = image_flux(imaging_stats['flux_region'])
         actual_beam = image_beam()
 
-        self.assertAlmostEqual(actual_rms, imaging_stats['rms'],2,
+        self.assertAlmostEqual(actual_rms, imaging_stats['rms'], 2,
                                msg="Dataset= {0} actual={1} expected={2}".format(self.dataset_name, actual_rms,
                                                                                  imaging_stats['rms']))
-        self.assertAlmostEqual(actual_flux, imaging_stats['flux'],2,
+        self.assertAlmostEqual(actual_flux, imaging_stats['flux'], 2,
                                msg="Dataset= {0} actual={1} expected={2}".format(self.dataset_name, actual_flux,
                                                                                  imaging_stats['flux']))
 
-        self.assertAlmostEqual(actual_beam[0], imaging_stats['beam']['major'],2,
-                         msg="Dataset= {0} actual={1} expected={2}".format(self.dataset_name, actual_beam[0],
-                                                                           imaging_stats['beam']['major']))
-        self.assertAlmostEqual(actual_beam[1], imaging_stats['beam']['minor'],2,
-                         msg="Dataset= {0} actual={1} expected={2}".format(self.dataset_name, actual_beam[1],
-                                                                           imaging_stats['beam']['minor']))
-
+        self.assertAlmostEqual(actual_beam[0], imaging_stats['beam']['major'], 2,
+                               msg="Dataset= {0} actual={1} expected={2}".format(self.dataset_name, actual_beam[0],
+                                                                                 imaging_stats['beam']['major']))
+        self.assertAlmostEqual(actual_beam[1], imaging_stats['beam']['minor'], 2,
+                               msg="Dataset= {0} actual={1} expected={2}".format(self.dataset_name, actual_beam[1],
+                                                                                 imaging_stats['beam']['minor']))
 
     def tearDown(self):
         rmtree(config.GLOBAL_CONFIG['output_path'])
+
 
 if __name__ == '__main__':
     unittest.main()
