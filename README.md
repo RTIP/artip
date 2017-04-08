@@ -24,5 +24,9 @@ And to run the application, execute
     e.g. pyb run -P dataset="~/Downloads/may14.ms"
     #Do not forget to put the quotes on the property value
 
+To build the Distributable package
+>> $ pyb
+>> This will build a distributable package inside "target/dist/artip-version.dev0/dist" 
+>> directory 
 
 ----------------------------------------------------------------------------------------------

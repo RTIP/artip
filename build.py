@@ -1,5 +1,6 @@
 from sys import path
 from pybuilder.core import use_plugin, init, task
+
 path.append("src/main/python")
 from configs import config, pipeline_config, logging_config
 import start
@@ -10,6 +11,7 @@ use_plugin("python.unittest")
 use_plugin("python.integrationtest")
 use_plugin("python.install_dependencies")
 use_plugin("python.distutils")
+use_plugin("copy_resources")
 
 name = "artip"
 default_task = ["clean", "install_dependencies", "publish"]
@@ -23,14 +25,29 @@ def set_dependencies(project):
 
 
 @init
+def initialize(project):
+    project.get_property("copy_resources_glob").append("conf/*.yml")
+    project.get_property("copy_resources_glob").append("casa_scripts/*.py")
+    project.get_property("copy_resources_glob").append("build.py")
+    project.install_file("conf/*.yml", "conf/*.yml")
+    project.install_file("casa_scripts/*.py", "casa_scripts/*.py")
+    project.install_file("build.py", 'build.py')
+
+
+@init
 def set_properties(project):
+    project.version = "1.0"
+    project.set_property("distutils_commands", ["sdist"])
+    project.set_property("copy_resources_target", "$dir_dist")
     project.set_property('integrationtest_always_verbose', True)
     project.set_property("integrationtest_inherit_environment", True)
     # project.set_property('integrationtest_parallel', True)
 
+
 @task
 def run_integration_tests():
     start.clean()
+
 
 @task
 def run(project):
