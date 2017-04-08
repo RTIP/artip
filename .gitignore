@@ -8,3 +8,5 @@ target
 *.fits
 cgrid_ft.im
 output
+*.egg-info/
+dist/
