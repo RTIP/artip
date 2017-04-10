@@ -16,7 +16,10 @@ class Source(object):
         self.measurement_set = measurement_set
 
     def run_rflag(self):
-        self.measurement_set.casa_runner.r_flag(self.source_type)
+        self.measurement_set.casa_runner.r_flag(self.config)
+
+    def run_tfcrop(self):
+        self.measurement_set.casa_runner.tfcrop(self.config)
 
     def calibrate(self):
         raise NotImplementedError("Not implemented")

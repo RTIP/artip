@@ -32,15 +32,16 @@ common: &common
     r_flag:
       freqdevscale: 6.5
       timedevscale: 5.0
-      growtime: 60.0
-      growfreq: 60.0
-      freqrange: '40~470'
     tf_crop:
-      maxnpieces: 4
-      usewindowstats: 'std'
+      maxnpieces: 7
+      usewindowstats: 'none'
       halfwin: 1
-      freqcutoff: 3.8
-      timecutoff: 3.0
+      freqcutoff: 4.0
+      timecutoff: 4.0
+    freqrange: '40~470'
+    growtime: 60.0
+    growfreq: 60.0
+
 
 flux_calibrator:
   <<: *common
@@ -107,6 +108,7 @@ target_source:
       amplitude_data_column: 'amplitude'
 
   line:
+    fields: *target_src_field
     calmode: *calmode
     continuum: *continuum
     image:
@@ -116,6 +118,8 @@ target_source:
       interactive : F
       robust: 0.5
       cell: '0.5arcsec'
+    auto_flagging_casa:
+      <<: *auto_flagging_casa
 
 casapy:
     Darwin:
