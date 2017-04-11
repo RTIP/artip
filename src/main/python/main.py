@@ -29,6 +29,7 @@ def main(dataset_path):
         logging.info(Color.SOURCE_HEADING + "Bandpass Calibration" + Color.ENDC)
         bandpass_calibrator = BandpassCalibrator(measurement_set)
         bandpass_calibrator.calibrate()
+        bandpass_calibrator.flux_cal_with_bandpass()
         # bandpass_calibrator.run_tfcrop()
         # bandpass_calibrator.run_rflag()
 

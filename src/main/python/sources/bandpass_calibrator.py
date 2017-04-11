@@ -11,3 +11,6 @@ class BandpassCalibrator(Source):
 
     def calibrate(self):
         self.measurement_set.casa_runner.apply_bandpass_calibration(self.config)
+
+    def flux_cal_with_bandpass(self):
+        self.measurement_set.casa_runner.apply_flux_calibration(self.config, True)

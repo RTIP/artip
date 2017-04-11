@@ -26,15 +26,19 @@ class CasaRunner:
         script_path = 'casa_scripts/quack.py'
         self._run(script_path)
 
-    def apply_flux_calibration(self, source_config):
-        logging.info(Color.HEADER + "Applying Flux Calibration..." + Color.ENDC)
+    def apply_flux_calibration(self, source_config, run_with_bandpass=False):
+        logger_message = "Applying Flux Calibration"
+        if run_with_bandpass: logger_message += " with bandpass"
+
+        logging.info(Color.HEADER + logger_message + Color.ENDC)
         script_path = 'casa_scripts/flux_calibration.py'
         fields = ",".join(map(str, source_config['fields']))
         refant = config.GLOBAL_CONFIG['refant']
         minsnr = source_config['minsnr']
         spw = "{0}:{1}".format(config.GLOBAL_CONFIG['spw'], source_config['channel'])
-        script_parameters = "{0} {1} {2} {3} {4} {5}".format(self._dataset_path, self._output_path,
-                                                             fields, refant, spw, minsnr)
+        script_parameters = "{0} {1} {2} {3} {4} {5} {6}".format(run_with_bandpass, self._dataset_path,
+                                                                 self._output_path,
+                                                                 fields, refant, spw, minsnr)
         self._run(script_path, script_parameters)
 
     def apply_bandpass_calibration(self, source_config):
@@ -99,17 +103,17 @@ class CasaRunner:
         script_path = 'casa_scripts/tfcrop.py'
         print self._dataset_path
         script_parameters = "{0} {1} {2} {3} {4} {5} {6} {7} {8} {9} {10}".format(auto_flagging_casa['freqrange'],
-                                                                             tf_crop_config['maxnpieces'],
-                                                                             tf_crop_config['usewindowstats'],
-                                                                             tf_crop_config['halfwin'],
-                                                                             tf_crop_config['freqcutoff'],
-                                                                             tf_crop_config['timecutoff']
-                                                                             , self._dataset_path,
-                                                                             fields,
-                                                                             config.GLOBAL_CONFIG['spw'],
-                                                                             auto_flagging_casa['growfreq'],
-                                                                             auto_flagging_casa['growtime']
-                                                                             )
+                                                                                  tf_crop_config['maxnpieces'],
+                                                                                  tf_crop_config['usewindowstats'],
+                                                                                  tf_crop_config['halfwin'],
+                                                                                  tf_crop_config['freqcutoff'],
+                                                                                  tf_crop_config['timecutoff']
+                                                                                  , self._dataset_path,
+                                                                                  fields,
+                                                                                  config.GLOBAL_CONFIG['spw'],
+                                                                                  auto_flagging_casa['growfreq'],
+                                                                                  auto_flagging_casa['growtime']
+                                                                                  )
         logging.info(Color.HEADER + "Running Tfcrop auto-flagging algorithm" + Color.ENDC)
         self._run(script_path, script_parameters)
 
