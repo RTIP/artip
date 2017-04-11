@@ -44,12 +44,14 @@ def main(dataset_path):
         target_source = TargetSource(measurement_set)
         target_source.calibrate()
         line_source = LineSource(target_source.line())
+        # line_source.run_tfcrop()
+        # line_source.run_rflag()
         continuum_source = ContinuumSource(line_source.continuum())
         continuum_source.reduce_data()
         continuum_source.self_calibrate()
         line_source.reduce_data()
         line_source.apply_calibration()
-        # line_source.run_rflag()
+
         line_source.create_line_image()
 
     end_time = datetime.datetime.now()

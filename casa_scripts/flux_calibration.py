@@ -14,7 +14,7 @@ amp_caltable = output_path + "/" + 'amp.gcal'
 amp2_caltable = output_path + "/" + 'amp2.gcal'
 bandpass_bcal = output_path + "/" + 'bandpass.bcal'
 
-if run_with_bandpass:
+if run_with_bandpass == "True":
     gaincal(vis=ms_dataset, caltable=intphase2_caltable, field=field, spw=spw, refant=refant, calmode='p',
             solint='60s',
             minsnr=2.0, gaintable=bandpass_bcal)
