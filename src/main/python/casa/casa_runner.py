@@ -74,46 +74,41 @@ class CasaRunner:
         self._run(script_path, script_parameters)
 
     def r_flag(self, source_config):
-        auto_flagging_casa = source_config['auto_flagging_casa']
-        r_flag_config = auto_flagging_casa['r_flag']
-        tf_crop_config = auto_flagging_casa['tf_crop']
+        auto_flagging_algo = source_config['auto_flagging_algo']
+        r_flag_config = auto_flagging_algo['r_flag']
         fields = ",".join(map(str, source_config['fields']))
         script_path = 'casa_scripts/r_flag.py'
 
-        script_parameters = "{0} {1} {2} {3} {4} {5} {6} {7} {8} {9} {10} {11} {12}".format(
-            tf_crop_config['maxnpieces'],
-            tf_crop_config['usewindowstats'],
-            tf_crop_config['halfwin'],
-            tf_crop_config['freqcutoff'],
-            tf_crop_config['timecutoff'],
-            auto_flagging_casa['freqrange'], self._dataset_path,
-            fields,
-            config.GLOBAL_CONFIG['spw'],
-            r_flag_config['freqdevscale'],
-            r_flag_config['timedevscale'],
-            auto_flagging_casa['growfreq'],
-            auto_flagging_casa['growtime'])
+        script_parameters = "{0} {1} {2} {3} {4} {5} {6} {7} {8}".format(auto_flagging_algo['datacolumn'],
+                                                                     auto_flagging_algo['freqrange'],
+                                                                     self._dataset_path,
+                                                                     fields,
+                                                                     config.GLOBAL_CONFIG['spw'],
+                                                                     r_flag_config['freqdevscale'],
+                                                                     r_flag_config['timedevscale'],
+                                                                     auto_flagging_algo['growfreq'],
+                                                                     auto_flagging_algo['growtime'])
         logging.info(Color.HEADER + "Running Rflag auto-flagging algorithm" + Color.ENDC)
         self._run(script_path, script_parameters)
 
     def tfcrop(self, source_config):
-        auto_flagging_casa = source_config['auto_flagging_casa']
-        tf_crop_config = auto_flagging_casa['tf_crop']
+        auto_flagging_algo = source_config['auto_flagging_algo']
+        tf_crop_config = auto_flagging_algo['tf_crop']
         fields = ",".join(map(str, source_config['fields']))
         script_path = 'casa_scripts/tfcrop.py'
-        print self._dataset_path
-        script_parameters = "{0} {1} {2} {3} {4} {5} {6} {7} {8} {9} {10}".format(auto_flagging_casa['freqrange'],
-                                                                                  tf_crop_config['maxnpieces'],
-                                                                                  tf_crop_config['usewindowstats'],
-                                                                                  tf_crop_config['halfwin'],
-                                                                                  tf_crop_config['freqcutoff'],
-                                                                                  tf_crop_config['timecutoff']
-                                                                                  , self._dataset_path,
-                                                                                  fields,
-                                                                                  config.GLOBAL_CONFIG['spw'],
-                                                                                  auto_flagging_casa['growfreq'],
-                                                                                  auto_flagging_casa['growtime']
-                                                                                  )
+        script_parameters = "{0} {1} {2} {3} {4} {5} {6} {7} {8} {9} {10} {11}".format(auto_flagging_algo['datacolumn'],
+                                                                                       auto_flagging_algo['freqrange'],
+                                                                                       tf_crop_config['maxnpieces'],
+                                                                                       tf_crop_config['usewindowstats'],
+                                                                                       tf_crop_config['halfwin'],
+                                                                                       tf_crop_config['freqcutoff'],
+                                                                                       tf_crop_config['timecutoff']
+                                                                                       , self._dataset_path,
+                                                                                       fields,
+                                                                                       config.GLOBAL_CONFIG['spw'],
+                                                                                       auto_flagging_algo['growfreq'],
+                                                                                       auto_flagging_algo['growtime']
+                                                                                       )
         logging.info(Color.HEADER + "Running Tfcrop auto-flagging algorithm" + Color.ENDC)
         self._run(script_path, script_parameters)
 

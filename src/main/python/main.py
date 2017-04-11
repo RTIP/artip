@@ -30,8 +30,8 @@ def main(dataset_path):
         bandpass_calibrator = BandpassCalibrator(measurement_set)
         bandpass_calibrator.calibrate()
         bandpass_calibrator.flux_cal_with_bandpass()
-        # bandpass_calibrator.run_tfcrop()
-        # bandpass_calibrator.run_rflag()
+        bandpass_calibrator.run_tfcrop()
+        bandpass_calibrator.run_rflag()
 
     if pipeline_config.STAGES_CONFIG['phase_calibration']:
         logging.info(Color.SOURCE_HEADING + "Phase Calibration" + Color.ENDC)
@@ -44,8 +44,8 @@ def main(dataset_path):
         target_source = TargetSource(measurement_set)
         target_source.calibrate()
         line_source = LineSource(target_source.line())
-        # line_source.run_tfcrop()
-        # line_source.run_rflag()
+        line_source.run_tfcrop()
+        line_source.run_rflag()
         continuum_source = ContinuumSource(line_source.continuum())
         continuum_source.reduce_data()
         continuum_source.self_calibrate()
