@@ -44,9 +44,20 @@ bandpass_calibrator:
   <<: *common
   fields: *bandpass_cal_fields
   channels_to_avg: '80~120'
-  r_flag:
-    <<: *rflag
-    freqrange: '50~460'
+  auto_flagging_algo:
+        r_flag:
+          freqdevscale: 6.5
+          timedevscale: 5.0
+        tf_crop:
+          maxnpieces: 7
+          usewindowstats: 'none'
+          halfwin: 1
+          freqcutoff: 4.0
+          timecutoff: 4.0
+        datacolumn: 'corrected'
+        freqrange: '40~470'
+        growtime: 60.0
+        growfreq: 60.0
 
 phase_calibrator:
   <<: *common
@@ -110,7 +121,20 @@ target_source:
       interactive : F
       robust: 0.5
       cell: '0.5arcsec'
-
+    auto_flagging_algo:
+        r_flag:
+          freqdevscale: 6.5
+          timedevscale: 5.0
+        tf_crop:
+          maxnpieces: 7
+          usewindowstats: 'none'
+          halfwin: 1
+          freqcutoff: 4.5
+          timecutoff: 4.5
+        datacolumn: 'data'
+        freqrange: '40~470'
+        growtime: 60.0
+        growfreq: 60.0
 casapy:
     Darwin:
       path: '/Applications/CASA.app/Contents/MacOS/casapy'
