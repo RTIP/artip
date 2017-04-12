@@ -22,4 +22,4 @@ extend_flag_command = "mode='extend' growaround=True flagnearfreq=True flagneart
 
 cmdlist = [r_flag_command, extend_flag_command]
 
-flagdata(vis=ms_dataset, mode='list', inpfile=cmdlist, action='apply', display='data')
+flagdata(vis=ms_dataset, mode='list', inpfile=cmdlist, action='apply')
