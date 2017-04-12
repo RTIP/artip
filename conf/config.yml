@@ -125,8 +125,8 @@ target_source:
           maxnpieces: 7
           usewindowstats: 'none'
           halfwin: 1
-          freqcutoff: 4.0
-          timecutoff: 4.0
+          freqcutoff: 4.5
+          timecutoff: 4.5
         datacolumn: 'data'
         freqrange: '40~470'
         growtime: 60.0
