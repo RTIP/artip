@@ -26,9 +26,9 @@ class CasaRunner:
         script_path = 'casa_scripts/quack.py'
         self._run(script_path)
 
-    def apply_flux_calibration(self, source_config, run_with_bandpass=False):
+    def apply_flux_calibration(self, source_config, run_count):
         logger_message = "Applying Flux Calibration"
-        if run_with_bandpass: logger_message += " with bandpass"
+        if run_count > 1: logger_message += " with bandpass"
 
         logging.info(Color.HEADER + logger_message + Color.ENDC)
         script_path = 'casa_scripts/flux_calibration.py'
@@ -36,7 +36,7 @@ class CasaRunner:
         refant = config.GLOBAL_CONFIG['refant']
         minsnr = source_config['minsnr']
         spw = "{0}:{1}".format(config.GLOBAL_CONFIG['spw'], source_config['channel'])
-        script_parameters = "{0} {1} {2} {3} {4} {5} {6}".format(run_with_bandpass, self._dataset_path,
+        script_parameters = "{0} {1} {2} {3} {4} {5} {6}".format(run_count, self._dataset_path,
                                                                  self._output_path,
                                                                  fields, refant, spw, minsnr)
         self._run(script_path, script_parameters)
@@ -80,14 +80,14 @@ class CasaRunner:
         script_path = 'casa_scripts/r_flag.py'
 
         script_parameters = "{0} {1} {2} {3} {4} {5} {6} {7} {8}".format(auto_flagging_algo['datacolumn'],
-                                                                     auto_flagging_algo['freqrange'],
-                                                                     self._dataset_path,
-                                                                     fields,
-                                                                     config.GLOBAL_CONFIG['spw'],
-                                                                     r_flag_config['freqdevscale'],
-                                                                     r_flag_config['timedevscale'],
-                                                                     auto_flagging_algo['growfreq'],
-                                                                     auto_flagging_algo['growtime'])
+                                                                         auto_flagging_algo['freqrange'],
+                                                                         self._dataset_path,
+                                                                         fields,
+                                                                         config.GLOBAL_CONFIG['spw'],
+                                                                         r_flag_config['freqdevscale'],
+                                                                         r_flag_config['timedevscale'],
+                                                                         auto_flagging_algo['growfreq'],
+                                                                         auto_flagging_algo['growtime'])
         logging.info(Color.HEADER + "Running Rflag auto-flagging algorithm" + Color.ENDC)
         self._run(script_path, script_parameters)
 

@@ -1,6 +1,6 @@
 import sys
 
-run_with_bandpass = sys.argv[-7]
+run_count = int(sys.argv[-7])
 ms_dataset = sys.argv[-6]
 output_path = sys.argv[-5]
 field = sys.argv[-4]
@@ -9,12 +9,12 @@ spw = sys.argv[-2]
 minsnr = float(sys.argv[-1])
 
 intphase_caltable = output_path + "/" + 'intphase.gcal'
-intphase2_caltable = output_path + "/" + 'intphase2.gcal'
+intphase2_caltable = output_path + "/" + 'intphase{0}.gcal'.format(run_count)
 amp_caltable = output_path + "/" + 'amp.gcal'
-amp2_caltable = output_path + "/" + 'amp2.gcal'
+amp2_caltable = output_path + "/" + 'amp{0}.gcal'.format(run_count)
 bandpass_bcal = output_path + "/" + 'bandpass.bcal'
 
-if run_with_bandpass == "True":
+if run_count > 1:
     gaincal(vis=ms_dataset, caltable=intphase2_caltable, field=field, spw=spw, refant=refant, calmode='p',
             solint='60s',
             minsnr=2.0, gaintable=bandpass_bcal)

@@ -15,9 +15,7 @@ from casa.flag_recorder import FlagRecorder
 
 def main(dataset_path):
     start_time = datetime.datetime.now()
-    # print "here", config.OUTPUT_PATH
     measurement_set = MeasurementSet(dataset_path, config.OUTPUT_PATH)
-    # print "********"
     measurement_set.quack()
     if pipeline_config.STAGES_CONFIG['flux_calibration']:
         logging.info(Color.SOURCE_HEADING + "Flux Calibration" + Color.ENDC)
@@ -28,11 +26,10 @@ def main(dataset_path):
     if pipeline_config.STAGES_CONFIG['bandpass_calibration']:
         logging.info(Color.SOURCE_HEADING + "Bandpass Calibration" + Color.ENDC)
         bandpass_calibrator = BandpassCalibrator(measurement_set)
-        bandpass_calibrator.calibrate()
-        bandpass_calibrator.flux_cal_with_bandpass()
+        bandpass_calibrator.calibrate() # Calcute gains
         bandpass_calibrator.run_tfcrop()
         bandpass_calibrator.run_rflag()
-
+        bandpass_calibrator.calibrate() # Calcute gains
     if pipeline_config.STAGES_CONFIG['phase_calibration']:
         logging.info(Color.SOURCE_HEADING + "Phase Calibration" + Color.ENDC)
         phase_calibrator = PhaseCalibrator(measurement_set)
