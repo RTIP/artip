@@ -16,15 +16,15 @@ growtime = float(sys.argv[-1])
 growfreq = float(sys.argv[-2])
 
 tfcrop_command = "mode='tfcrop' extendflags=False maxnpieces={0} usewindowstats='{1}' halfwin={2} timecutoff={3}" \
-                 " freqcutoff={4}  spw='{5}' datacolumn={6} ".format(maxnpieces, usewindowstats, halfwin, timecutoff,
-                                                                     freqcutoff,
-                                                                     spw_with_freq, datacolumn)
+                 " freqcutoff={4}  spw='{5}' datacolumn={6} field='{7}'".format(maxnpieces, usewindowstats, halfwin,
+                                                                              timecutoff,
+                                                                              freqcutoff,
+                                                                              spw_with_freq, datacolumn, field)
 
 extend_flag_command = "mode='extend' growaround=False flagnearfreq=False flagneartime=False" \
-                      " extendpols=False growtime={0} growfreq={1}  spw='{2}' datacolumn='{3}'".format(growtime,
-                                                                                                       growfreq, spw,
-                                                                                                       datacolumn)
+                      " extendpols=False growtime={0} growfreq={1}  spw='{2}' datacolumn='{3}' " \
+                      "field='{4}'".format(growtime, growfreq, spw, datacolumn, field)
 
 cmdlist = [tfcrop_command, extend_flag_command]
 
-flagdata(vis=ms_dataset, mode='list', inpfile=cmdlist, field=field, action='apply')
+flagdata(vis=ms_dataset, mode='list', inpfile=cmdlist, action='apply')

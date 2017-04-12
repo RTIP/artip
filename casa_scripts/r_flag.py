@@ -12,14 +12,14 @@ field = sys.argv[-6]
 ms_dataset = sys.argv[-7]
 
 r_flag_command = "mode='rflag' extendflags=False timedevscale={0} " \
-                 "freqdevscale={1}  spw='{2}' datacolumn='{3}'".format(timedevscale, freqdevscale, spw_with_freq,
-                                                                       datacolumn)
+                 "freqdevscale={1}  spw='{2}' datacolumn='{3}' field='{4}' ".format(timedevscale, freqdevscale,
+                                                                                  spw_with_freq,
+                                                                                  datacolumn, field)
 
 extend_flag_command = "mode='extend' growaround=True flagnearfreq=True flagneartime=True" \
-                      " extendpols=False growtime={0} growfreq={1}  spw='{2}' datacolumn='{3}'".format(growtime,
-                                                                                                       growfreq,
-                                                                                                       spw, datacolumn)
+                      " extendpols=False growtime={0} growfreq={1}  spw='{2}' datacolumn='{3}' " \
+                      "field='{4}'".format(growtime, growfreq, spw, datacolumn, field)
 
 cmdlist = [r_flag_command, extend_flag_command]
 
-flagdata(vis=ms_dataset, mode='list', inpfile=cmdlist, field=field, action='apply')
+flagdata(vis=ms_dataset, mode='list', inpfile=cmdlist, action='apply', display='data')

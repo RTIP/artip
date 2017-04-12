@@ -107,7 +107,7 @@ target_source:
       amplitude_data_column: 'amplitude'
 
   line:
-    fields: *target_src_field
+    fields: [0]
     calmode: *calmode
     continuum: *continuum
     image:
