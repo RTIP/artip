@@ -26,30 +26,33 @@ def main(dataset_path):
     if pipeline_config.STAGES_CONFIG['bandpass_calibration']:
         logging.info(Color.SOURCE_HEADING + "Bandpass Calibration" + Color.ENDC)
         bandpass_calibrator = BandpassCalibrator(measurement_set)
-        bandpass_calibrator.calibrate() # Calcute gains
+        bandpass_calibrator.calibrate()  # Calcute gains
         bandpass_calibrator.run_tfcrop()
         bandpass_calibrator.run_rflag()
-        bandpass_calibrator.calibrate() # Calcute gains
+        bandpass_calibrator.calibrate()  # Calcute gains
     if pipeline_config.STAGES_CONFIG['phase_calibration']:
         logging.info(Color.SOURCE_HEADING + "Phase Calibration" + Color.ENDC)
         phase_calibrator = PhaseCalibrator(measurement_set)
         phase_calibrator.calibrate()
         phase_calibrator.reduce_data()
 
-    if pipeline_config.STAGES_CONFIG['target_source']:
+    target_source_exec_steps = pipeline_config.STAGES_CONFIG['target_source']
+    if target_source_exec_steps['run_target_source']:
         logging.info(Color.SOURCE_HEADING + "Target Source Calibration" + Color.ENDC)
         target_source = TargetSource(measurement_set)
         target_source.calibrate()
         line_source = LineSource(target_source.line())
-        line_source.run_tfcrop()
-        line_source.run_rflag()
-        continuum_source = ContinuumSource(line_source.continuum())
-        continuum_source.reduce_data()
-        continuum_source.self_calibrate()
-        line_source.reduce_data()
-        line_source.apply_calibration()
-
-        line_source.create_line_image()
+        if target_source_exec_steps['run_auto_flagging']:
+            line_source.run_tfcrop()
+            line_source.run_rflag()
+        if target_source_exec_steps['create_continuum']:
+            continuum_source = ContinuumSource(line_source.continuum())
+            continuum_source.reduce_data()
+            continuum_source.self_calibrate()
+            line_source.reduce_data()
+        if target_source_exec_steps['create_line_image']:
+            line_source.apply_calibration()
+            line_source.create_line_image()
 
     end_time = datetime.datetime.now()
     logging.info(Color.UNDERLINE + 'Total time =' + str(abs((end_time - start_time).seconds)) + " seconds" + Color.ENDC)
