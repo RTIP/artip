@@ -4,7 +4,11 @@ stages:
   flux_calibration: false
   bandpass_calibration: false
   phase_calibration: false
-  target_source: false
+  target_source:
+    run_target_source: false
+    run_auto_flagging: false
+    create_continuum: false
+    create_line_image: false
 
 manual_flag: false
 flagged:

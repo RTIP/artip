@@ -28,11 +28,6 @@ common: &common
       overlap: 5
     mad_scale_factor: 3
     amplitude_data_column: 'corrected_amplitude'
-  r_flag: &rflag
-    freqdevscale: 5.0
-    timedevscale: 5.0
-    growtime: 70.0
-    growfreq: 90.0
 
 
 flux_calibrator:
@@ -58,7 +53,6 @@ bandpass_calibrator:
         freqrange: '40~470'
         growtime: 60.0
         growfreq: 60.0
-
 
 phase_calibrator:
   <<: *common
@@ -113,6 +107,7 @@ target_source:
       amplitude_data_column: 'amplitude'
 
   line:
+    fields: [0]
     calmode: *calmode
     continuum: *continuum
     image:

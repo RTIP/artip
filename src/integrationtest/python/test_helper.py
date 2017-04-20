@@ -76,8 +76,19 @@ def disable_flagging_and_calibration():
 
 
 def enable_imaging():
-    pipeline_config.STAGES_CONFIG.update({'target_source': True})
+    pipeline_config.STAGES_CONFIG.update({'target_source': {
+        'run_target_source': True,
+        'run_auto_flagging': True,
+        'create_continuum': True,
+        'create_line_image': True
+    }})
 
 
 def disable_imaging():
-    pipeline_config.STAGES_CONFIG.update({'target_source': False})
+    pipeline_config.STAGES_CONFIG.update({'target_source': {
+        'run_target_source': False,
+        'run_auto_flagging': False,
+        'create_continuum': False,
+        'create_line_image': False
+    }})
+

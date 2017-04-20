@@ -1,16 +1,16 @@
 calibration:
-  stddev: 3.272554231487641
-  median: 15.716300964355469
-  npts: 14611968.0 #number of unflagged points
+  stddev: 1.3397923559530174
+  median: 14.735806465148926
+  npts: 13986433.0 #number of unflagged points
 imaging:
   beam:
-    major: 2.3042
-    minor: 1.8501
+    major: 2.295382261276245
+    minor: 1.8374965190887451
   rms_region:
     cordinate1: [976,1079]
     cordinate2: [1011,1042]
-  rms: 0.0011683 #0.0002 #unit=mJy, masked
+  rms: 0.0012118 #0.0002 #unit=mJy, masked
   flux_region:
     radius: 8
     centre: [1023,1024]
-  flux: 0.35055153 #unit=Jy, unmasked
+  flux: 0.323191987108 #unit=Jy, unmasked
