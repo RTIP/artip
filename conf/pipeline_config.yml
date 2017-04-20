@@ -5,7 +5,6 @@ stages:
   bandpass_calibration: true
   phase_calibration: true
   target_source:
-    run_target_source: true
     run_auto_flagging: true
     create_continuum: true
     create_line_image: true

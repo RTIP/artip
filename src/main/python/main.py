@@ -26,10 +26,10 @@ def main(dataset_path):
     if pipeline_config.STAGES_CONFIG['bandpass_calibration']:
         logging.info(Color.SOURCE_HEADING + "Bandpass Calibration" + Color.ENDC)
         bandpass_calibrator = BandpassCalibrator(measurement_set)
-        bandpass_calibrator.calibrate()  # Calcute gains
+        bandpass_calibrator.calibrate()
         bandpass_calibrator.run_tfcrop()
         bandpass_calibrator.run_rflag()
-        bandpass_calibrator.calibrate()  # Calcute gains
+        bandpass_calibrator.calibrate()
     if pipeline_config.STAGES_CONFIG['phase_calibration']:
         logging.info(Color.SOURCE_HEADING + "Phase Calibration" + Color.ENDC)
         phase_calibrator = PhaseCalibrator(measurement_set)
@@ -37,7 +37,7 @@ def main(dataset_path):
         phase_calibrator.reduce_data()
 
     target_source_exec_steps = pipeline_config.STAGES_CONFIG['target_source']
-    if target_source_exec_steps['run_target_source']:
+    if run_target_source(target_source_exec_steps):
         logging.info(Color.SOURCE_HEADING + "Target Source Calibration" + Color.ENDC)
         target_source = TargetSource(measurement_set)
         target_source.calibrate()
@@ -56,3 +56,8 @@ def main(dataset_path):
 
     end_time = datetime.datetime.now()
     logging.info(Color.UNDERLINE + 'Total time =' + str(abs((end_time - start_time).seconds)) + " seconds" + Color.ENDC)
+
+
+def run_target_source(target_source_exec_steps):
+    return target_source_exec_steps['create_line_image'] or target_source_exec_steps['create_continuum'] or \
+           target_source_exec_steps['run_auto_flagging']
