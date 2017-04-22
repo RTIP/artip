@@ -11,13 +11,13 @@ class DetailedAnalyser:
         self.measurement_set = measurement_set
         self._source_config = source_config
 
-    def analyse_antennas(self, polarization_and_scan_product, debugger):
+    def analyse_antennas(self, spw_polarization_and_scan_product, debugger):
         logging.info(Color.HEADER + "Started detailed flagging on all unflagged antennas" + Color.ENDC)
         bad_window_present = False
-        for polarization, scan_id in polarization_and_scan_product:
+        for spw, polarization, scan_id in spw_polarization_and_scan_product:
             if pipeline_config.PIPELINE_CONFIGS['manual_flag']: debugger.flag_antennas(polarization, [scan_id])
             scan_times = self.measurement_set.timesforscan(scan_id)
-            amp_matrix = AmplitudeMatrix(self.measurement_set, polarization, scan_id, self._source_config)
+            amp_matrix = AmplitudeMatrix(self.measurement_set, polarization, scan_id, spw, self._source_config)
             global_median = amp_matrix.median()
             global_sigma = amp_matrix.mad_sigma()
             self._print_polarization_details(global_sigma, global_median, polarization, scan_id)
@@ -39,11 +39,11 @@ class DetailedAnalyser:
 
         return bad_window_present
 
-    def analyse_baselines(self, polarization_and_scan_product, debugger):
+    def analyse_baselines(self, spw_polarization_and_scan_product, debugger):
         bad_window_present = False
         logging.info(Color.HEADER + "Started detailed flagging on all baselines" + Color.ENDC)
-        for polarization, scan_id in polarization_and_scan_product:
-            amp_matrix = AmplitudeMatrix(self.measurement_set, polarization, scan_id, self._source_config)
+        for spw, polarization, scan_id in spw_polarization_and_scan_product:
+            amp_matrix = AmplitudeMatrix(self.measurement_set, polarization, scan_id, spw, self._source_config)
             global_median = amp_matrix.median()
             global_sigma = amp_matrix.mad_sigma()
             scan_times = self.measurement_set.timesforscan(scan_id)
@@ -81,7 +81,7 @@ class DetailedAnalyser:
 
     def _print_polarization_details(self, global_sigma, global_median, polarization, scan_id):
         logging.info(
-                Color.BACKGROUD_WHITE + "Polarization =" + polarization + " Scan Id=" + str(scan_id) + Color.ENDC)
+            Color.BACKGROUD_WHITE + "Polarization =" + polarization + " Scan Id=" + str(scan_id) + Color.ENDC)
         logging.debug(
-                Color.BACKGROUD_WHITE + "Ideal values = { median:" + str(global_median) + ", sigma:" + str(
-                        global_sigma) + " }" + Color.ENDC)
+            Color.BACKGROUD_WHITE + "Ideal values = { median:" + str(global_median) + ", sigma:" + str(
+                global_sigma) + " }" + Color.ENDC)

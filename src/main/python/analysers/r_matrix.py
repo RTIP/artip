@@ -3,8 +3,9 @@ from models.antenna_status import AntennaStatus
 
 
 class RMatrix:
-    def __init__(self, polarization, scan_id):
+    def __init__(self, spw, polarization, scan_id):
         self.polarization = polarization
+        self.spw = spw
         self.scan_id = scan_id
         self._r_matrix = {}
 

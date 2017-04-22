@@ -16,7 +16,7 @@ class Window:
         if self._window_item_count() == self._bucket_size:
             self._window_start_index = self._next_window_start_index()
 
-        return AmplitudeMatrix(None, None, None, self._config, self._window_data)
+        return AmplitudeMatrix(None, None, None, None, self._config, self._window_data)
 
     def current_position(self):
         start = (self._window_start_index - self._bucket_size) + self._overlap_count

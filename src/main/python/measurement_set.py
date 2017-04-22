@@ -43,8 +43,9 @@ class MeasurementSet:
     def quack(self):
         self.casa_runner.quack()
 
-    def _filter(self, channel, polarization, filters={}):
+    def _filter(self, spw, channel, polarization, filters={}):
         self._ms.selectinit(reset=True)
+        self._ms.msselect({"spw": spw})
         self._ms.selectpolarization(polarization)
         self._ms.selectchannel(**channel)
         if filters: self._ms.select(filters)
@@ -53,13 +54,13 @@ class MeasurementSet:
         self._ms.close()
         self._ms.open(self._dataset_path)
 
-    def get_data(self, channel, polarization, filters, selection_params, ifraxis=False):
-        self._filter(channel, polarization, filters)
+    def get_data(self, spw, channel, polarization, filters, selection_params, ifraxis=False):
+        self._filter(spw, channel, polarization, filters)
         data_items = self._ms.getdata(selection_params, ifraxis=ifraxis)
         return data_items
 
-    def get_phase_data(self, channel, polarization, filters={}):
-        return PhaseSet(self.get_data(channel, polarization, filters, ['phase'])['phase'][0][0])
+    def get_phase_data(self, channel, polarization, filters={}):  # To be removed
+        return PhaseSet(self.get_data("0", channel, polarization, filters, ['phase'])['phase'][0][0])
 
     def get_field_name_for(self, field_id):
         return self._metadata.fieldnames()[field_id]
@@ -115,7 +116,7 @@ class MeasurementSet:
         quanta = casac.casac.quanta()
         times_with_second = map(lambda time: str(time) + 's', self._metadata.timesforscan(scan_id))
         return numpy.array(
-                map(lambda time: quanta.time(quanta.quantity(time), form='ymd'), times_with_second)).flatten()
+            map(lambda time: quanta.time(quanta.quantity(time), form='ymd'), times_with_second)).flatten()
 
     def get_completely_flagged_antennas(self, polarization):
         return list(set.intersection(*self.flagged_antennas[polarization].values()))
@@ -123,15 +124,15 @@ class MeasurementSet:
     def make_entry_in_flag_file(self, polarization, scan_ids, antenna_ids):
         if antenna_ids:
             self.flag_recorder.mark_entry(
-                    {'mode': 'manual', 'antenna': ','.join(map(str, antenna_ids)),
-                     'reason': BAD_ANTENNA, 'correlation': polarization,
-                     'scan': ','.join(map(str, scan_ids))})
+                {'mode': 'manual', 'antenna': ','.join(map(str, antenna_ids)),
+                 'reason': BAD_ANTENNA, 'correlation': polarization,
+                 'scan': ','.join(map(str, scan_ids))})
 
     def flag_antennas(self, polarization, scan_ids, antenna_ids):
         self.make_entry_in_flag_file(polarization, scan_ids, antenna_ids)
         for scan_id in scan_ids:
             self.flagged_antennas[polarization][scan_id] = self.flagged_antennas[polarization][scan_id].union(
-                    set(antenna_ids))
+                set(antenna_ids))
 
     def flag_bad_antennas(self, sources):
         for antenna in self._antennas:
@@ -151,14 +152,14 @@ class MeasurementSet:
     def flag_bad_antenna_time(self, polarization, scan_id, antenna_id, timerange):
         timerange_for_flagging = self._get_timerange_for_flagging(timerange)
         self.flag_recorder.mark_entry(
-                {'mode': 'manual', 'antenna': antenna_id, 'reason': BAD_ANTENNA_TIME, 'correlation': polarization,
-                 'scan': scan_id, 'timerange': '~'.join(timerange_for_flagging)})
+            {'mode': 'manual', 'antenna': antenna_id, 'reason': BAD_ANTENNA_TIME, 'correlation': polarization,
+             'scan': scan_id, 'timerange': '~'.join(timerange_for_flagging)})
 
     def flag_bad_baseline_time(self, polarization, scan_id, baseline, timerange):
         timerange_for_flagging = self._get_timerange_for_flagging(timerange)
         self.flag_recorder.mark_entry(
-                {'mode': 'manual', 'antenna': str(baseline), 'reason': BAD_BASELINE_TIME, 'correlation': polarization,
-                 'scan': scan_id, 'timerange': '~'.join(timerange_for_flagging)})
+            {'mode': 'manual', 'antenna': str(baseline), 'reason': BAD_BASELINE_TIME, 'correlation': polarization,
+             'scan': scan_id, 'timerange': '~'.join(timerange_for_flagging) })
 
     def get_bad_antennas_with_scans_for(self, polarization, source_id):
         scan_ids = self.scan_ids_for(source_id)

@@ -15,24 +15,24 @@ class AngularDispersion(Analyser):
 
     def identify_antennas_status(self):
         polarizations = config.GLOBAL_CONFIG['polarizations']
+        spws = "0"  # config.GLOBAL_CONFIG['spw']
         scan_ids = self.measurement_set.scan_ids_for(self.source_config['fields'])
-
-        for polarization, scan_id in product(polarizations, scan_ids):
+        for spw, polarization, scan_id in product(spws, polarizations, scan_ids):
             logging.debug(
-                    Color.BACKGROUD_WHITE + "Polarization =" + polarization + " Scan Id=" + str(scan_id) + Color.ENDC)
+                Color.BACKGROUD_WHITE + "Polarization =" + polarization + " Scan Id=" + str(scan_id) + Color.ENDC)
             if config.GLOBAL_CONFIG['refant']:
                 base_antenna = self.measurement_set.get_antenna_by_id(config.GLOBAL_CONFIG['refant'])
             else:
                 base_antenna = self.measurement_set.get_antennas(polarization, scan_id)[0]
-            r_matrix = RMatrix(polarization, scan_id)
+            r_matrix = RMatrix(spw, polarization, scan_id)
             history = set()
-            self._mark_antennas_status(polarization, scan_id, self.source_config, base_antenna, r_matrix, history)
+            self._mark_antennas_status(spw, polarization, scan_id, self.source_config, base_antenna, r_matrix, history)
 
-    def _mark_antennas_status(self, polarization, scan_id, source_config, base_antenna, r_matrix, history):
+    def _mark_antennas_status(self, spw, polarization, scan_id, source_config, base_antenna, r_matrix, history):
         channel = source_config['channel']
         width = source_config['width']
         r_threshold = source_config['angular_dispersion']['r_threshold']
-        number_of_antenna_pairs = self.measurement_set.antenna_count()-1
+        number_of_antenna_pairs = self.measurement_set.antenna_count() - 1
 
         min_doubtful_antennas = int((source_config['angular_dispersion']['percentage_of_min_doubtful_antennas']
                                      * number_of_antenna_pairs) / 100)
@@ -41,7 +41,7 @@ class AngularDispersion(Analyser):
 
         if base_antenna in history: return set()
         baselines = self.measurement_set.baselines_for(base_antenna, polarization, scan_id)
-        data = self.measurement_set.get_data({'start': channel, 'width': width}, polarization,
+        data = self.measurement_set.get_data(spw, {'start': channel, 'width': width}, polarization,
                                              {'scan_number': scan_id},
                                              ["antenna1", "antenna2", 'phase'])
         antenna1_list = data['antenna1']
@@ -82,5 +82,5 @@ class AngularDispersion(Analyser):
         history.add(base_antenna)
 
         for doubtful_antenna in doubtful_antennas:
-            self._mark_antennas_status(polarization, scan_id, source_config,
+            self._mark_antennas_status(spw, polarization, scan_id, source_config,
                                        doubtful_antenna, r_matrix, history)

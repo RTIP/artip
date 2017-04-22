@@ -5,9 +5,10 @@ from terminal_color import Color
 
 
 class AmplitudeMatrix:
-    def __init__(self, measurement_set, polarization, scan_id, config, matrix={}):
+    def __init__(self, measurement_set, polarization, scan_id, spw, config, matrix={}):
         self._measurement_set = measurement_set
         self._polarization = polarization
+        self._spw = spw
         self._scan_id = scan_id
         self._config = config
         self.amplitude_data_matrix = self._generate_matrix() if measurement_set else matrix
@@ -16,7 +17,8 @@ class AmplitudeMatrix:
         antennaids = self._measurement_set.antenna_ids(self._polarization, self._scan_id)
         amplitude_data_column = self._config['detail_flagging']['amplitude_data_column']
         amplitude_data_matrix = {}
-        data = self._measurement_set.get_data({'start': self._config['channel'], 'width': self._config['width']},
+        data = self._measurement_set.get_data(self._spw,
+                                              {'start': self._config['channel'], 'width': self._config['width']},
                                               self._polarization,
                                               {'scan_number': self._scan_id},
                                               ["antenna1", "antenna2", amplitude_data_column, 'flag'])
@@ -54,10 +56,10 @@ class AmplitudeMatrix:
         antenna_matrix = dict((baseline, amp_data) for baseline, amp_data in self.amplitude_data_matrix.iteritems() if
                               baseline.contains(antenna_id))
 
-        return AmplitudeMatrix(None, None, None, self._config, antenna_matrix)
+        return AmplitudeMatrix(None, None, None, None, self._config, antenna_matrix)
 
     def filter_by_baseline(self, baseline):
-        return AmplitudeMatrix(None, None, None, self._config,
+        return AmplitudeMatrix(None, None, None, None, self._config,
                                {baseline: self.amplitude_data_matrix[baseline]})
 
     def readings_count(self):
@@ -101,7 +103,7 @@ class AmplitudeMatrix:
             logging.debug(Color.UNDERLINE + " median=" + str(matrix_median) + ", median sigma=" + str(matrix_sigma)
                           + ", mean=" + str(self.mean()) + ", mean sigma=" + str(self.mean_sigma()) + Color.ENDC)
             logging.debug(Color.WARNING + "median deviated=" + str(deviated_median) + ", amplitude scattered=" + str(
-                    scattered_amplitude) + Color.ENDC)
+                scattered_amplitude) + Color.ENDC)
         return deviated_median or scattered_amplitude
 
     def _deviated_median(self, global_median, global_sigma, actual_median):

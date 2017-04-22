@@ -32,16 +32,20 @@ class ClosureAnalyser(Analyser):
     def identify_antennas_status(self):
         scan_ids = self.measurement_set.scan_ids_for(self.source_config['fields'])
 
-        polarization_scan_id_combination = itertools.product(config.GLOBAL_CONFIG['polarizations'], scan_ids)
-        for polarization, scan_id in polarization_scan_id_combination:
+        polarizations = config.GLOBAL_CONFIG['polarizations']
+        spw = "0"  # config.GLOBAL_CONFIG['spw']
+        spw_polarization_scan_id_combination = itertools.product(spw, polarizations, scan_ids)
+        for spw, polarization, scan_id in spw_polarization_scan_id_combination:
             antennas = self.measurement_set.get_antennas(polarization, scan_id)
 
             logging.debug(
                 Color.BACKGROUD_WHITE + "Polarization =" + polarization + " Scan Id=" + str(scan_id) + Color.ENDC)
-            data = self.measurement_set.get_data(
-                {'start': self.source_config['channel'], 'width': self.source_config['width']}, polarization,
-                {'scan_number': scan_id},
-                ["antenna1", "antenna2", self.source_config['phase_data_column']], True)
+            data = self.measurement_set.get_data(spw,
+                                                 {'start': self.source_config['channel'],
+                                                  'width': self.source_config['width']}, polarization,
+                                                 {'scan_number': scan_id},
+                                                 ["antenna1", "antenna2", self.source_config['phase_data_column']],
+                                                 True)
 
             for antenna in antennas:
                 if self._is_antenna_good(antenna, antennas, data, polarization, scan_id):
@@ -63,5 +67,5 @@ class ClosureAnalyser(Analyser):
                                                                                                len(
                                                                                                    antenna_combinations),
                                                                                                good_triplets_count,
-                                                                                              percentage))
+                                                                                               percentage))
         return percentage > self.source_config['closure']['percentage_of_good_triplets']
