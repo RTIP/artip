@@ -117,7 +117,8 @@ class CasaRunner:
         script_path = 'casa_scripts/setjy.py'
         freq_band = "L"
         model_path = "{0}/{1}_{2}.im".format(config.CASAPY_CONFIG['model_path'], source_name.split("_")[0], freq_band)
-        script_parameters = "{0} {1} {2}".format(self._dataset_path, source_id, model_path)
+        script_parameters = "{0} {1} {2} {3}".format(config.GLOBAL_CONFIG['spw_range'], self._dataset_path, source_id,
+                                                     model_path)
         self._run(script_path, script_parameters)
 
     def split(self, output_path, filters):
