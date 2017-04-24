@@ -49,7 +49,7 @@ class Source(object):
     def _flag_bad_time(self, reason, analyser):
         debugger = Debugger(self.measurement_set)
         polarizations = config.GLOBAL_CONFIG['polarizations']
-        spw = "0"  # config.GLOBAL_CONFIG['spw']
+        spw = config.GLOBAL_CONFIG['default_spw']
         scan_ids = self.measurement_set.scan_ids_for(self.source_ids)
         spw_polarization_scan_product = list(itertools.product(spw, polarizations, scan_ids))
         while True:

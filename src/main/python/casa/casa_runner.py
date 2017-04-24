@@ -35,7 +35,7 @@ class CasaRunner:
         fields = ",".join(map(str, source_config['fields']))
         refant = config.GLOBAL_CONFIG['refant']
         minsnr = source_config['minsnr']
-        spw = "{0}:{1}".format(config.GLOBAL_CONFIG['spw'], source_config['channel'])
+        spw = "{0}:{1}".format(config.GLOBAL_CONFIG['spw_range'], source_config['channel'])
         script_parameters = "{0} {1} {2} {3} {4} {5} {6}".format(run_count, self._dataset_path,
                                                                  self._output_path,
                                                                  fields, refant, spw, minsnr)
@@ -57,7 +57,7 @@ class CasaRunner:
         phase_cal_fields = ",".join(map(str, source_config['fields']))
         refant = config.GLOBAL_CONFIG['refant']
         minsnr = source_config['minsnr']
-        spw = "{0}:{1}".format(config.GLOBAL_CONFIG['spw'], source_config['channels_to_avg'])
+        spw = "{0}:{1}".format(config.GLOBAL_CONFIG['spw_range'], source_config['channels_to_avg'])
         script_parameters = "{0} {1} {2} {3} {4} {5} {6}".format(self._dataset_path, self._output_path,
                                                                  flux_cal_field, phase_cal_fields,
                                                                  spw, refant, minsnr)
@@ -83,7 +83,7 @@ class CasaRunner:
                                                                          auto_flagging_algo['freqrange'],
                                                                          self._dataset_path,
                                                                          fields,
-                                                                         config.GLOBAL_CONFIG['spw'],
+                                                                         config.GLOBAL_CONFIG['spw_range'],
                                                                          r_flag_config['freqdevscale'],
                                                                          r_flag_config['timedevscale'],
                                                                          auto_flagging_algo['growfreq'],
@@ -105,7 +105,8 @@ class CasaRunner:
                                                                                        tf_crop_config['timecutoff']
                                                                                        , self._dataset_path,
                                                                                        fields,
-                                                                                       config.GLOBAL_CONFIG['spw'],
+                                                                                       config.GLOBAL_CONFIG[
+                                                                                           'spw_range'],
                                                                                        auto_flagging_algo['growfreq'],
                                                                                        auto_flagging_algo['growtime']
                                                                                        )
@@ -148,7 +149,7 @@ class CasaRunner:
         logging.info(Color.HEADER + "Applying self calibration for {0}".format(self._dataset_path) + Color.ENDC)
         cal_mode = self_cal_config['calmode']
         channel = 0
-        spw = "{0}:{1}".format(config.GLOBAL_CONFIG['spw'], channel)
+        spw = "{0}:{1}".format(config.GLOBAL_CONFIG['spw_range'], channel)
         mask_path = self_cal_config['masking']['mask_path'] if self_cal_config['masking']['mask_path'] else 'None'
 
         script_path = 'casa_scripts/self_calibration.py'
