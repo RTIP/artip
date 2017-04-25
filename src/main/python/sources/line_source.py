@@ -10,6 +10,7 @@ class LineSource(TargetSource):
 
     def apply_calibration(self):
         self.measurement_set.casa_runner.apply_line_calibration(self.config["calmode"])
+        self.measurement_set.reload()
 
     def reduce_data(self):
         self.measurement_set.casa_runner.extend_continuum_flags()

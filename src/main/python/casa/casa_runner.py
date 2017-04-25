@@ -197,9 +197,10 @@ class CasaRunner:
 
     def create_line_image(self, image_config, model="-"):
         logging.info(Color.HEADER + "Creating line image at {0}".format(self._output_path) + Color.ENDC)
-
+        fitspw = "{0}:{1}".format(config.GLOBAL_CONFIG['spw_range'], image_config['fitspw_channels'])
         script_path = 'casa_scripts/create_line_image.py'
-        script_parameters = "{0} {1} {2} {3} {4} {5} {6} {7} {8}".format(
+        script_parameters = "{0} {1} {2} {3} {4} {5} {6} {7} {8} {9}".format(
+            fitspw,
             self._dataset_path,
             self._output_path,
             model,

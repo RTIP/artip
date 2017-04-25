@@ -117,6 +117,7 @@ target_source:
       niter: 1
       interactive : F
       robust: 0.5
+      fitspw_channels: '20~150;350~470'
       cell: '0.5arcsec'
     auto_flagging_algo:
         r_flag:

@@ -15,6 +15,7 @@ class FluxCalibrator(Source):
         for source_id in self.source_ids:
             source_name = self.measurement_set.get_field_name_for(source_id)
             self.measurement_set.casa_runner.setjy(source_id, source_name)
+        self.measurement_set.reload()
 
     def extend_flags(self):
         logging.info(Color.HEADER + "Extending flags..." + Color.ENDC)
