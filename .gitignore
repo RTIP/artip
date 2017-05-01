@@ -8,3 +8,4 @@ target
 *.fits
 cgrid_ft.im
 output
+profile_result.out
