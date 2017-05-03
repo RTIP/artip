@@ -8,6 +8,7 @@ global:
   default_spw: "0"
   spw_range: "0"
   refant: 2
+  target_phase_src_map: {2:[1]}
 
 common: &common
   channel: 100
@@ -70,7 +71,7 @@ phase_calibrator:
 
 target_source:
   <<: *common
-  field: *target_src_field
+  fields: *target_src_field
   continuum: &continuum
     channels_to_avg: '80~120'
     channel_width_to_avg: 41
@@ -117,7 +118,7 @@ target_source:
       niter: 1
       interactive : F
       robust: 0.5
-      fitspw_channels: '20~150;350~470'
+      fitspw_channels: '20~150\;350~470' #add skip char if using semicolon(;)
       cell: '0.5arcsec'
     auto_flagging_algo:
         r_flag:
