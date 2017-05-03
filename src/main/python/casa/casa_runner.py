@@ -63,14 +63,14 @@ class CasaRunner:
                                                                  spw, refant, minsnr)
         self._run(script_path, script_parameters)
 
-    def apply_target_source_calibration(self, source_config):
+    def apply_target_source_calibration(self, source_config, source_id):
         logging.info(Color.HEADER + "Applying Calibration to Target Source..." + Color.ENDC)
         flux_cal_fields = ",".join(map(str, config.GLOBAL_CONFIG['flux_cal_fields']))
-        phase_cal_fields = ",".join(map(str, config.GLOBAL_CONFIG['phase_cal_fields']))
+        phase_cal_fields = ",".join(map(str, config.GLOBAL_CONFIG['target_phase_src_map'][source_id]))
         script_path = 'casa_scripts/target_source_calibration.py'
         script_parameters = "{0} {1} {2} {3} {4}".format(self._dataset_path, self._output_path,
                                                          flux_cal_fields, phase_cal_fields,
-                                                         source_config['field'])
+                                                         source_id)
         self._run(script_path, script_parameters)
 
     def r_flag(self, source_config):
@@ -145,7 +145,7 @@ class CasaRunner:
 
         self._run(script_path, script_parameters)
 
-    def apply_self_calibration(self, self_cal_config, calibration_mode, output_ms_path, output_path):
+    def apply_self_calibration(self, self_cal_config, calibration_mode, output_ms_path, output_path, source_id):
         logging.info(Color.HEADER + "Applying self calibration for {0}".format(self._dataset_path) + Color.ENDC)
         cal_mode = self_cal_config['calmode']
         channel = 0
@@ -182,18 +182,18 @@ class CasaRunner:
         script_parameters = "{0} {1} {2}".format(self._dataset_path, field_name, model_name)
         self._run(script_path, script_parameters)
 
-    def apply_line_calibration(self, calmode_config):
+    def apply_line_calibration(self, calmode_config, source_id):
         logging.info(Color.HEADER + "Applying calibration on Line.." + Color.ENDC)
         script_path = 'casa_scripts/apply_line_calibration.py'
-        script_parameters = "{0} {1} {2} {3}".format(self._dataset_path, config.OUTPUT_PATH,
+        script_parameters = "{0} {1} {2} {3} {4}".format(source_id, self._dataset_path, config.OUTPUT_PATH,
                                                      calmode_config["p"]["loop_count"],
                                                      calmode_config["ap"]["loop_count"])
         self._run(script_path, script_parameters)
 
-    def extend_continuum_flags(self):
+    def extend_continuum_flags(self, source_id):
         logging.info(Color.HEADER + "Extending continuum flags on line..." + Color.ENDC)
         flag_reasons = "{0},{1}".format(BAD_ANTENNA_TIME, BAD_BASELINE_TIME)
-        self.flagdata(flag_reasons, config.OUTPUT_PATH + "/continuum/")
+        self.flagdata(flag_reasons, config.OUTPUT_PATH + "/continuum_{0}/".format(source_id))
 
     def create_line_image(self, image_config, model="-"):
         logging.info(Color.HEADER + "Creating line image at {0}".format(self._output_path) + Color.ENDC)
@@ -210,7 +210,6 @@ class CasaRunner:
             image_config['robust'],
             image_config['cell'],
             image_config['niter'])
-
         self._run(script_path, script_parameters)
 
     def _unlock_dataset(self):

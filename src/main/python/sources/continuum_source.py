@@ -8,8 +8,8 @@ import logging
 
 
 class ContinuumSource(TargetSource):
-    def __init__(self, measurement_set):
-        super(ContinuumSource, self).__init__(measurement_set)
+    def __init__(self, measurement_set, source_id):
+        super(ContinuumSource, self).__init__(measurement_set, source_id)
         self.source_type = 'continuum'
         self.source_ids = [0]  # source_id will always be 0
         self.config = config.ALL_CONFIGS["target_source"][self.source_type]
@@ -41,9 +41,9 @@ class ContinuumSource(TargetSource):
         self_caled_p.apply_self_calibration(config, 'ap')
 
     def apply_self_calibration(self, config, cal_mode):
-        ms_path, output_path = self.prepare_output_dir("self_caled_{0}".format(cal_mode))
-        self.measurement_set.casa_runner.apply_self_calibration(config, cal_mode, ms_path, output_path)
-        return ContinuumSource(MeasurementSet(ms_path, output_path))
+        ms_path, output_path = self.prepare_output_dir("self_caled_{0}_{1}".format(cal_mode, self.source_id))
+        self.measurement_set.casa_runner.apply_self_calibration(config, cal_mode, ms_path, output_path, self.source_id)
+        return ContinuumSource(MeasurementSet(ms_path, output_path), self.source_id)
 
     def attach_model(self, self_calibration_config, cal_mode):
         self.measurement_set.casa_runner.fourier_transform(self._source_name(),

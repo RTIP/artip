@@ -23,9 +23,8 @@ def main(dataset_path):
     if pipeline_config.STAGES_CONFIG['phase_calibration']:
         pipeline_stages.phase_calibration()
 
-    target_source_exec_steps = pipeline_config.STAGES_CONFIG['target_source']
-    if run_target_source(target_source_exec_steps):
-        pipeline_stages.target_source(target_source_exec_steps)
+    if run_target_source(pipeline_config.STAGES_CONFIG['target_source']):
+        pipeline_stages.target_source()
 
     end_time = datetime.datetime.now()
     logging.info(Color.UNDERLINE + 'Total time =' + str(abs((end_time - start_time).seconds)) + " seconds" + Color.ENDC)
