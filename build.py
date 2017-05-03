@@ -56,13 +56,13 @@ def run_integration_tests():
 
 @task
 def run(project):
+    config_path = "conf/config.yml"
+    config.load(config_path)
     pipeline_config.load("conf/pipeline_config.yml")
 
     with conditional(pipeline_config.PIPELINE_CONFIGS['code_profiling'], Profiler()):
         dataset_path = project.get_property("dataset")
-        config_path = "conf/config.yml"
         logging_config.load()
-        config.load(config_path)
         start.create_output_dir(dataset_path)
         start.snapshot_config(config_path)
         start.create_flag_file()

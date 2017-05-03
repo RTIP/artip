@@ -1,5 +1,6 @@
 import cProfile
 import lsprofcalltree
+from configs import config
 
 
 class Profiler(object):
@@ -8,12 +9,11 @@ class Profiler(object):
 
     def __enter__(self):
         self.c_profile.enable()
-        return self.c_profile
 
     def __exit__(self, *args):
         self.c_profile.disable()
         k_profile = lsprofcalltree.KCacheGrind(self.c_profile)
-        k_file = open('profile_result.out', 'w+')
+        k_file = open("{0}/profile_result.out".format(config.OUTPUT_PATH), 'w+')
         k_profile.output(k_file)
         k_file.close()
         self.c_profile.print_stats('cumulative')
