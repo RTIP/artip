@@ -6,6 +6,7 @@ from configs import config, pipeline_config, logging_config
 import start
 from main import main
 from profiler import Profiler
+from conditional import conditional
 
 use_plugin("python.core")
 use_plugin("python.unittest")
@@ -25,6 +26,8 @@ def set_dependencies(project):
     project.build_depends_on('coloredlogs')
     project.build_depends_on('cProfile')
     project.build_depends_on('lsprofcalltree')
+    project.build_depends_on('conditional')
+
 
 @init
 def initialize(project):
@@ -53,11 +56,11 @@ def run_integration_tests():
 
 @task
 def run(project):
-    with Profiler():
+    pipeline_config.load("conf/pipeline_config.yml")
+
+    with conditional(pipeline_config.PIPELINE_CONFIGS['code_profiling'], Profiler()):
         dataset_path = project.get_property("dataset")
         config_path = "conf/config.yml"
-
-        pipeline_config.load("conf/pipeline_config.yml")
         logging_config.load()
         config.load(config_path)
         start.create_output_dir(dataset_path)
