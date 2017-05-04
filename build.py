@@ -24,7 +24,6 @@ def set_dependencies(project):
     # Build dependencies
     project.build_depends_on('mock')
     project.build_depends_on('coloredlogs')
-    project.build_depends_on('cProfile')
     project.build_depends_on('lsprofcalltree')
     project.build_depends_on('conditional')
 
