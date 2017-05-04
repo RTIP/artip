@@ -15,7 +15,7 @@ class AngularDispersion(Analyser):
 
     def identify_antennas_status(self):
         polarizations = config.GLOBAL_CONFIG['polarizations']
-        spws = "0"  # config.GLOBAL_CONFIG['spw']
+        spws = config.GLOBAL_CONFIG['default_spw']
         scan_ids = self.measurement_set.scan_ids_for(self.source_config['fields'])
         for spw, polarization, scan_id in product(spws, polarizations, scan_ids):
             logging.debug(
