@@ -8,6 +8,8 @@ global:
   default_spw: "0"
   spw_range: "0"
   refant: 2
+  target_phase_src_map: {1:[0]}
+
 
 common: &common
   channel: 100
@@ -70,7 +72,7 @@ phase_calibrator:
 
 target_source:
   <<: *common
-  field: *target_src_field
+  fields: *target_src_field
   continuum: &continuum
     channels_to_avg: '80~120'
     channel_width_to_avg: 41
