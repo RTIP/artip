@@ -153,7 +153,8 @@ class CasaRunner:
         mask_path = self_cal_config['masking']['mask_path'] if self_cal_config['masking']['mask_path'] else 'None'
 
         script_path = 'casa_scripts/self_calibration.py'
-        script_parameters = "{0} {1} {2} {3} {4} {5} {6} {7} {8} {9} {10} {11} {12} {13} {14} {15} {16} {17} {18} {19}".format(
+        script_parameters = "{0} {1} {2} {3} {4} {5} {6} {7} {8} {9} {10} {11} {12} {13} " \
+                            "{14} {15} {16} {17} {18} {19} {20} {21} {22} {23}".format(
             self._dataset_path,
             output_path,
             output_ms_path,
@@ -168,6 +169,10 @@ class CasaRunner:
             self_cal_config['niter'],
             self_cal_config['clean_threshold'],
             self_cal_config['masking']['threshold'],
+            self_cal_config['masking']['bmask']['bottom_left_corner']['x_coordinate'],
+            self_cal_config['masking']['bmask']['bottom_left_corner']['y_coordinate'],
+            self_cal_config['masking']['bmask']['top_right_corner']['x_coordinate'],
+            self_cal_config['masking']['bmask']['top_right_corner']['y_coordinate'],
             mask_path,
             cal_mode['ap']['loop_count'],
             cal_mode['p']['loop_count'],
