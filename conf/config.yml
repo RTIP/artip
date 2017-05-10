@@ -67,7 +67,7 @@ phase_calibrator:
     <<: *closure
     threshold: 35
   width: 40
-  channels_to_avg: '80~120'
+  channels_to_avg: '200~240'
 
 target_source:
   <<: *common
@@ -92,6 +92,13 @@ target_source:
       masking:
         threshold: '0.0'
         mask_path: ''
+        bmask:
+          bottom_left_corner:
+            x_coordinate: 240
+            y_coordinate: 240
+          top_right_corner:
+            x_coordinate: 270
+            y_coordinate: 270
       calmode: &calmode
         p:
           loop_count : 5
