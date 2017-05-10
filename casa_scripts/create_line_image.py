@@ -14,5 +14,5 @@ niter = int(sys.argv[-1])
 field = '0'
 
 uvcontsub(vis=ms_input, field=field, spw='', fitspw=fitspw, solint='int', fitorder=0)
-clean(vis=ms_input, imagename=image_name, imagermode='csclean', imsize=imsize, cell=[cell],
+clean(vis="{0}.contsub".format(ms_input), imagename=image_name, imagermode='csclean', imsize=imsize, cell=[cell],
       mode='channel', weighting='briggs', robust=robust, threshold=threshold, interactive=interactive, niter=niter)
