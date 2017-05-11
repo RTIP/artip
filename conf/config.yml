@@ -78,17 +78,17 @@ target_source:
     channel: 0
     width: 1
     image: &base_image
-      imsize: 2048
+      imsize: 512
       cell: '0.5arcsec'
       robust: 0.5
-      clean_threshold: '2.0mJy'
+      clean_threshold: '10.0mJy'
       interactive: F
       niter: 100000
       cyclefactor: 4
     self_calibration:
       <<: *base_image
       minsnr: 2.0
-      clean_threshold: '1.2mJy'
+      clean_threshold: '10.0mJy'
       masking:
         threshold: '0.0'
         mask_path: ''
@@ -121,7 +121,7 @@ target_source:
     continuum: *continuum
     image:
       threshold : '1000mJy'
-      imsize : 256
+      imsize : 512
       niter: 1
       interactive : F
       robust: 0.5
