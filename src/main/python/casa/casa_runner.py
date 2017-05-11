@@ -191,8 +191,8 @@ class CasaRunner:
         logging.info(Color.HEADER + "Applying calibration on Line.." + Color.ENDC)
         script_path = 'casa_scripts/apply_line_calibration.py'
         script_parameters = "{0} {1} {2} {3} {4}".format(source_id, self._dataset_path, config.OUTPUT_PATH,
-                                                     calmode_config["p"]["loop_count"],
-                                                     calmode_config["ap"]["loop_count"])
+                                                         calmode_config["p"]["loop_count"],
+                                                         calmode_config["ap"]["loop_count"])
         self._run(script_path, script_parameters)
 
     def extend_continuum_flags(self, source_id):
@@ -230,6 +230,4 @@ class CasaRunner:
         script_full_path = os.path.realpath(script)
         command = "{0} --nologger --nogui  --logfile {1} -c {2} {3}".format(casapy_path, logfile, script_full_path,
                                                                             script_parameters)
-        process = subprocess.Popen(command, stdin=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)
-        while process.poll() is None:
-            time.sleep(1)
+        subprocess.Popen(command, stdin=subprocess.PIPE, stdout=subprocess.PIPE, shell=True).wait()
