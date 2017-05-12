@@ -2,6 +2,7 @@ from configs import config
 from casa.flag_reasons import BAD_ANTENNA_TIME, BAD_BASELINE_TIME
 import os
 import subprocess
+import sys
 import time
 import casac
 import logging
@@ -230,4 +231,4 @@ class CasaRunner:
         script_full_path = os.path.realpath(script)
         command = "{0} --nologger --nogui  --logfile {1} -c {2} {3}".format(casapy_path, logfile, script_full_path,
                                                                             script_parameters)
-        subprocess.Popen(command, stdin=subprocess.PIPE, stdout=subprocess.PIPE, shell=True).wait()
+        subprocess.Popen(command, stdin=subprocess.PIPE, stdout=open(os.devnull, 'wb'), shell=True).wait()
