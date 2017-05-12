@@ -10,6 +10,8 @@ from terminal_color import Color
 
 
 class CasaRunner:
+    SUBPROCESS_STDOUT = open(os.devnull, 'wb')
+
     def __init__(self, dataset_path, output_path):
         self._output_path = output_path
         self._dataset_path = dataset_path
@@ -231,4 +233,4 @@ class CasaRunner:
         script_full_path = os.path.realpath(script)
         command = "{0} --nologger --nogui  --logfile {1} -c {2} {3}".format(casapy_path, logfile, script_full_path,
                                                                             script_parameters)
-        subprocess.Popen(command, stdin=subprocess.PIPE, stdout=open(os.devnull, 'wb'), shell=True).wait()
+        subprocess.Popen(command, stdin=subprocess.PIPE, stdout=CasaRunner.SUBPROCESS_STDOUT, shell=True).wait()
