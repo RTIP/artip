@@ -2,6 +2,7 @@ from os import path, listdir, makedirs, remove
 from re import search
 from shutil import copyfile, rmtree
 from configs import config
+from os.path import expanduser
 
 
 def create_output_dir(dataset_path):
@@ -11,6 +12,13 @@ def create_output_dir(dataset_path):
         makedirs(config.OUTPUT_PATH)
     return config.OUTPUT_PATH
 
+
+def add_configs_module_in_casa():
+    config_module = path.realpath('./configs')
+    casarc_file_path = "{0}/.casarc".format(expanduser("~"))
+    with open(casarc_file_path, "a+") as casarc_file:
+        if not config_module in open(casarc_file_path, "r").read():
+            casarc_file.write(config_module + "\n")
 
 def clean():
     dir = "."
