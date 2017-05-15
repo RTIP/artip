@@ -62,6 +62,7 @@ def run(project):
     with conditional(pipeline_config.PIPELINE_CONFIGS['code_profiling'], Profiler()):
         dataset_path = project.get_property("dataset")
         logging_config.load()
+        start.add_configs_module_in_casa()
         start.create_output_dir(dataset_path)
         start.snapshot_config(config_path)
         start.create_flag_file()
