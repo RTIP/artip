@@ -1,4 +1,4 @@
-import logging
+from logger import logger
 from models.baseline import Baseline
 import numpy
 from terminal_color import Color
@@ -99,10 +99,10 @@ class AmplitudeMatrix:
         deviated_median = self._deviated_median(global_median, global_sigma, matrix_median)
         scattered_amplitude = self._scattered_amplitude(global_sigma, matrix_sigma)
         if deviated_median or scattered_amplitude:
-            logging.debug(Color.UNDERLINE + "matrix=" + str(self.amplitude_data_matrix) + Color.ENDC)
-            logging.debug(Color.UNDERLINE + " median=" + str(matrix_median) + ", median sigma=" + str(matrix_sigma)
-                          + ", mean=" + str(self.mean()) + ", mean sigma=" + str(self.mean_sigma()) + Color.ENDC)
-            logging.debug(Color.WARNING + "median deviated=" + str(deviated_median) + ", amplitude scattered=" + str(
+            logger.debug(Color.UNDERLINE + "matrix=" + str(self.amplitude_data_matrix) + Color.ENDC)
+            logger.debug(Color.UNDERLINE + " median=" + str(matrix_median) + ", median sigma=" + str(matrix_sigma)
+                         + ", mean=" + str(self.mean()) + ", mean sigma=" + str(self.mean_sigma()) + Color.ENDC)
+            logger.debug(Color.WARNING + "median deviated=" + str(deviated_median) + ", amplitude scattered=" + str(
                 scattered_amplitude) + Color.ENDC)
         return deviated_median or scattered_amplitude
 

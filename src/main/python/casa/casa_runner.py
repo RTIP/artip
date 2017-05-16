@@ -5,7 +5,7 @@ import subprocess
 import sys
 import time
 import casac
-import logging
+from logger import logger
 from terminal_color import Color
 
 
@@ -18,14 +18,14 @@ class CasaRunner:
 
     def flagdata(self, reasons, output_path=None):
         if not output_path: output_path = self._output_path
-        logging.info(Color.HEADER + "Flagging " + reasons + Color.ENDC)
+        logger.info(Color.HEADER + "Flagging " + reasons + Color.ENDC)
         script_path = 'casa_scripts/flag.py'
         flag_file = output_path + "/flags.txt"
         script_parameters = "{0} {1} {2}".format(self._dataset_path, flag_file, reasons)
         self._run(script_path, script_parameters)
 
     def quack(self):
-        logging.info(Color.HEADER + "Running quack..." + Color.ENDC)
+        logger.info(Color.HEADER + "Running quack..." + Color.ENDC)
         script_path = 'casa_scripts/quack.py'
         self._run(script_path)
 
@@ -33,7 +33,7 @@ class CasaRunner:
         logger_message = "Applying Flux Calibration"
         if run_count > 1: logger_message += " with bandpass"
 
-        logging.info(Color.HEADER + logger_message + Color.ENDC)
+        logger.info(Color.HEADER + logger_message + Color.ENDC)
         script_path = 'casa_scripts/flux_calibration.py'
         fields = ",".join(map(str, source_config['fields']))
         refant = config.GLOBAL_CONFIG['refant']
@@ -45,7 +45,7 @@ class CasaRunner:
         self._run(script_path, script_parameters)
 
     def apply_bandpass_calibration(self, source_config):
-        logging.info(Color.HEADER + "Running Bandpass Calibration..." + Color.ENDC)
+        logger.info(Color.HEADER + "Running Bandpass Calibration..." + Color.ENDC)
         script_path = 'casa_scripts/bandpass_calibration.py'
         fields = ",".join(map(str, source_config['fields']))
         refant = config.GLOBAL_CONFIG['refant']
@@ -55,7 +55,7 @@ class CasaRunner:
         self._run(script_path, script_parameters)
 
     def apply_phase_calibration(self, flux_cal_field, source_config):
-        logging.info(Color.HEADER + "Applying Phase Calibration..." + Color.ENDC)
+        logger.info(Color.HEADER + "Applying Phase Calibration..." + Color.ENDC)
         script_path = 'casa_scripts/phase_calibration.py'
         phase_cal_fields = ",".join(map(str, source_config['fields']))
         refant = config.GLOBAL_CONFIG['refant']
@@ -67,7 +67,7 @@ class CasaRunner:
         self._run(script_path, script_parameters)
 
     def apply_target_source_calibration(self, source_config, source_id):
-        logging.info(Color.HEADER + "Applying Calibration to Target Source..." + Color.ENDC)
+        logger.info(Color.HEADER + "Applying Calibration to Target Source..." + Color.ENDC)
         flux_cal_fields = ",".join(map(str, config.GLOBAL_CONFIG['flux_cal_fields']))
         phase_cal_fields = ",".join(map(str, config.GLOBAL_CONFIG['target_phase_src_map'][source_id]))
         script_path = 'casa_scripts/target_source_calibration.py'
@@ -91,7 +91,7 @@ class CasaRunner:
                                                                          r_flag_config['timedevscale'],
                                                                          auto_flagging_algo['growfreq'],
                                                                          auto_flagging_algo['growtime'])
-        logging.info(Color.HEADER + "Running Rflag auto-flagging algorithm" + Color.ENDC)
+        logger.info(Color.HEADER + "Running Rflag auto-flagging algorithm" + Color.ENDC)
         self._run(script_path, script_parameters)
 
     def tfcrop(self, source_config):
@@ -113,11 +113,11 @@ class CasaRunner:
                                                                                        auto_flagging_algo['growfreq'],
                                                                                        auto_flagging_algo['growtime']
                                                                                        )
-        logging.info(Color.HEADER + "Running Tfcrop auto-flagging algorithm" + Color.ENDC)
+        logger.info(Color.HEADER + "Running Tfcrop auto-flagging algorithm" + Color.ENDC)
         self._run(script_path, script_parameters)
 
     def setjy(self, source_id, source_name):
-        logging.info(Color.HEADER + 'Running setjy' + Color.ENDC)
+        logger.info(Color.HEADER + 'Running setjy' + Color.ENDC)
         script_path = 'casa_scripts/setjy.py'
         freq_band = "L"
         model_path = "{0}/{1}_{2}.im".format(config.CASAPY_CONFIG['model_path'], source_name.split("_")[0], freq_band)
@@ -127,7 +127,7 @@ class CasaRunner:
 
     def split(self, output_path, filters):
         script_path = 'casa_scripts/split_dataset.py'
-        logging.info(Color.HEADER + "Splitting dataset at location {0}".format(output_path) + Color.ENDC)
+        logger.info(Color.HEADER + "Splitting dataset at location {0}".format(output_path) + Color.ENDC)
         spw = filters.get("spw", "all")
         width = filters.get("width", 1)
         field = filters.get("field", 0)
@@ -136,7 +136,7 @@ class CasaRunner:
         self._run(script_path, script_parameters)
 
     def base_image(self, image_config):
-        logging.info(Color.HEADER + "Creating base image for {0}".format(self._dataset_path) + Color.ENDC)
+        logger.info(Color.HEADER + "Creating base image for {0}".format(self._dataset_path) + Color.ENDC)
         script_path = 'casa_scripts/base_image.py'
         script_parameters = "{0} {1} {2} {3} {4} {5} {6} {7} {8}".format(self._dataset_path, self._output_path,
                                                                          image_config['imsize'], image_config['cell'],
@@ -149,7 +149,7 @@ class CasaRunner:
         self._run(script_path, script_parameters)
 
     def apply_self_calibration(self, self_cal_config, calibration_mode, output_ms_path, output_path, source_id):
-        logging.info(Color.HEADER + "Applying self calibration for {0}".format(self._dataset_path) + Color.ENDC)
+        logger.info(Color.HEADER + "Applying self calibration for {0}".format(self._dataset_path) + Color.ENDC)
         cal_mode = self_cal_config['calmode']
         channel = 0
         spw = "{0}:{1}".format(config.GLOBAL_CONFIG['spw_range'], channel)
@@ -183,15 +183,16 @@ class CasaRunner:
             calibration_mode, spw)
 
         self._run(script_path, script_parameters)
+        print ">>>>>>>>>>>>>>>>>>>>>>"
 
     def fourier_transform(self, field_name, model_name):
-        logging.info(Color.HEADER + "Calculating fourier transform on {0}".format(model_name) + Color.ENDC)
+        logger.info(Color.HEADER + "Calculating fourier transform on {0}".format(model_name) + Color.ENDC)
         script_path = 'casa_scripts/fourier_transform.py'
         script_parameters = "{0} {1} {2}".format(self._dataset_path, field_name, model_name)
         self._run(script_path, script_parameters)
 
     def apply_line_calibration(self, calmode_config, source_id):
-        logging.info(Color.HEADER + "Applying calibration on Line.." + Color.ENDC)
+        logger.info(Color.HEADER + "Applying calibration on Line.." + Color.ENDC)
         script_path = 'casa_scripts/apply_line_calibration.py'
         script_parameters = "{0} {1} {2} {3} {4}".format(source_id, self._dataset_path, config.OUTPUT_PATH,
                                                          calmode_config["p"]["loop_count"],
@@ -199,12 +200,12 @@ class CasaRunner:
         self._run(script_path, script_parameters)
 
     def extend_continuum_flags(self, source_id):
-        logging.info(Color.HEADER + "Extending continuum flags on line..." + Color.ENDC)
+        logger.info(Color.HEADER + "Extending continuum flags on line..." + Color.ENDC)
         flag_reasons = "{0},{1}".format(BAD_ANTENNA_TIME, BAD_BASELINE_TIME)
         self.flagdata(flag_reasons, config.OUTPUT_PATH + "/continuum_{0}/".format(source_id))
 
     def create_line_image(self, image_config, model="-"):
-        logging.info(Color.HEADER + "Creating line image at {0}".format(self._output_path) + Color.ENDC)
+        logger.info(Color.HEADER + "Creating line image at {0}".format(self._output_path) + Color.ENDC)
         fitspw = "{0}:{1}".format(config.GLOBAL_CONFIG['spw_range'], image_config['fitspw_channels'])
         script_path = 'casa_scripts/create_line_image.py'
         script_parameters = "{0} {1} {2} {3} {4} {5} {6} {7} {8} {9}".format(

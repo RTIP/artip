@@ -1,9 +1,8 @@
-import logging
+from logger import logger
 from configs import config
 from sources.source import Source
 from helpers import is_last_element
 from terminal_color import Color
-
 
 class PhaseCalibrator(Source):
     def __init__(self, measurement_set):
@@ -13,7 +12,7 @@ class PhaseCalibrator(Source):
         super(PhaseCalibrator, self).__init__(measurement_set)
 
     def extend_flags(self):
-        logging.info(Color.HEADER + "Extending flags..." + Color.ENDC)
+        logger.info(Color.HEADER + "Extending flags..." + Color.ENDC)
         self._extend_bad_antennas_on_target_source()
 
     def calibrate(self):

@@ -1,8 +1,7 @@
-import logging
+from logger import logger 
 from configs import config
 from sources.source import Source
 from terminal_color import Color
-
 
 class FluxCalibrator(Source):
     def __init__(self, measurement_set):
@@ -18,7 +17,7 @@ class FluxCalibrator(Source):
         self.measurement_set.reload()
 
     def extend_flags(self):
-        logging.info(Color.HEADER + "Extending flags..." + Color.ENDC)
+        logger.info(Color.HEADER + "Extending flags..." + Color.ENDC)
         self._extend_bad_antennas_across_all_sources()
 
     def _extend_bad_antennas_across_all_sources(self):

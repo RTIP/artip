@@ -1,5 +1,5 @@
 import datetime
-import logging
+from logger import logger
 from configs import pipeline_config
 from configs import config
 from measurement_set import MeasurementSet
@@ -27,7 +27,7 @@ def main(dataset_path):
         pipeline_stages.target_source()
 
     end_time = datetime.datetime.now()
-    logging.info(Color.UNDERLINE + 'Total time =' + str(abs((end_time - start_time).seconds)) + " seconds" + Color.ENDC)
+    logger.info(Color.UNDERLINE + 'Total time =' + str(abs((end_time - start_time).seconds)) + " seconds" + Color.ENDC)
 
 
 def run_target_source(target_source_exec_steps):

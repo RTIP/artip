@@ -1,10 +1,9 @@
-import logging
+from logger import logger
 from amplitude_matrix import AmplitudeMatrix
 from window import Window
 from configs import pipeline_config
 from casa.flag_reasons import BAD_ANTENNA_TIME, BAD_BASELINE_TIME
 from terminal_color import Color
-
 
 class DetailedAnalyser:
     def __init__(self, measurement_set, source_config):
@@ -12,7 +11,7 @@ class DetailedAnalyser:
         self._source_config = source_config
 
     def analyse_antennas(self, spw_polarization_and_scan_product, debugger):
-        logging.info(Color.HEADER + "Started detailed flagging on all unflagged antennas" + Color.ENDC)
+        logger.info(Color.HEADER + "Started detailed flagging on all unflagged antennas" + Color.ENDC)
         bad_window_present = False
         for spw, polarization, scan_id in spw_polarization_and_scan_product:
             if pipeline_config.PIPELINE_CONFIGS['manual_flag']: debugger.flag_antennas(polarization, [scan_id])
@@ -28,7 +27,7 @@ class DetailedAnalyser:
             for antenna in antennaids:
                 filtered_matrix = amp_matrix.filter_by_antenna(antenna)
                 if filtered_matrix.is_bad(global_median, global_sigma):
-                    logging.info(
+                    logger.info(
                         Color.FAIL + 'Antenna ' + str(
                             antenna) + ' is Bad running sliding Window on it' + Color.ENDC)
                     flagged_bad_window = self._flag_bad_time_window(BAD_ANTENNA_TIME, antenna,
@@ -41,7 +40,7 @@ class DetailedAnalyser:
 
     def analyse_baselines(self, spw_polarization_and_scan_product, debugger):
         bad_window_present = False
-        logging.info(Color.HEADER + "Started detailed flagging on all baselines" + Color.ENDC)
+        logger.info(Color.HEADER + "Started detailed flagging on all baselines" + Color.ENDC)
         for spw, polarization, scan_id in spw_polarization_and_scan_product:
             amp_matrix = AmplitudeMatrix(self.measurement_set, polarization, scan_id, spw, self._source_config)
             global_median = amp_matrix.median()
@@ -70,18 +69,18 @@ class DetailedAnalyser:
                 bad_timerange = scan_times[start], scan_times[end]
                 if reason == BAD_ANTENNA_TIME:
                     self.measurement_set.flag_bad_antenna_time(polarization, scan_id, element_id, bad_timerange)
-                    logging.debug('Antenna=' + str(element_id) + ' was bad between' + scan_times[
+                    logger.debug('Antenna=' + str(element_id) + ' was bad between' + scan_times[
                         start] + '[index=' + str(start) + '] and' + scan_times[end] + '[index=' + str(end) + ']\n')
                 else:
                     self.measurement_set.flag_bad_baseline_time(polarization, scan_id, element_id, bad_timerange)
-                    logging.debug('Baseline=' + str(element_id) + ' was bad between' + scan_times[
+                    logger.debug('Baseline=' + str(element_id) + ' was bad between' + scan_times[
                         start] + '[index=' + str(start) + '] and' + scan_times[end] + '[index=' + str(end) + ']\n')
             if sliding_window.reached_end_of_collection(): break
         return bad_window_found
 
     def _print_polarization_details(self, global_sigma, global_median, polarization, scan_id):
-        logging.info(
+        logger.info(
             Color.BACKGROUD_WHITE + "Polarization =" + polarization + " Scan Id=" + str(scan_id) + Color.ENDC)
-        logging.debug(
+        logger.debug(
             Color.BACKGROUD_WHITE + "Ideal values = { median:" + str(global_median) + ", sigma:" + str(
                 global_sigma) + " }" + Color.ENDC)

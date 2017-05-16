@@ -4,7 +4,7 @@ from measurement_set import MeasurementSet
 from helpers import Debugger
 from terminal_color import Color
 import itertools
-import logging
+from logger import logger
 
 
 class ContinuumSource(TargetSource):
@@ -28,10 +28,10 @@ class ContinuumSource(TargetSource):
     def _flag_only_once(self, reason, analyser, spw_polarization_scan_product, debugger):
         bad_time_present = analyser(spw_polarization_scan_product, debugger)
         if bad_time_present:
-            logging.info(Color.HEADER + 'Flagging {0} in CASA'.format(reason) + Color.ENDC)
+            logger.info(Color.HEADER + 'Flagging {0} in CASA'.format(reason) + Color.ENDC)
             self.measurement_set.casa_runner.flagdata(reason)
         else:
-            logging.info(Color.OKGREEN + 'No {0} Found'.format(reason) + Color.ENDC)
+            logger.info(Color.OKGREEN + 'No {0} Found'.format(reason) + Color.ENDC)
 
     def self_calibrate(self):
         config = self.config['self_calibration']

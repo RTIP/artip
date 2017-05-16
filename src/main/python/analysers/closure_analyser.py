@@ -1,5 +1,5 @@
 import itertools
-import logging
+from logger import logger
 import numpy
 from analysers.analyser import Analyser
 from configs import config
@@ -38,7 +38,7 @@ class ClosureAnalyser(Analyser):
         for spw, polarization, scan_id in spw_polarization_scan_id_combination:
             antennas = self.measurement_set.get_antennas(polarization, scan_id)
 
-            logging.debug(
+            logger.debug(
                 Color.BACKGROUD_WHITE + "Polarization =" + polarization + " Scan Id=" + str(scan_id) + Color.ENDC)
             data = self.measurement_set.get_data(spw,
                                                  {'start': self.source_config['channel'],
@@ -63,7 +63,7 @@ class ClosureAnalyser(Analyser):
             if triplet_good: good_triplets_count += 1
         percentage = (float(good_triplets_count) / float(len(antenna_combinations))) * 100
 
-        logging.debug("Antenna={0}, total={1}, good_triplets_count={2}, Percentage={3}".format(antenna,
+        logger.debug("Antenna={0}, total={1}, good_triplets_count={2}, Percentage={3}".format(antenna,
                                                                                                len(
                                                                                                    antenna_combinations),
                                                                                                good_triplets_count,

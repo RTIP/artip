@@ -1,5 +1,5 @@
 from configs import config
-import logging
+from logger import logger
 from itertools import product
 from models.antenna_status import AntennaStatus
 from analysers.analyser import Analyser
@@ -18,7 +18,7 @@ class AngularDispersion(Analyser):
         spws = config.GLOBAL_CONFIG['default_spw']
         scan_ids = self.measurement_set.scan_ids_for(self.source_config['fields'])
         for spw, polarization, scan_id in product(spws, polarizations, scan_ids):
-            logging.debug(
+            logger.debug(
                 Color.BACKGROUD_WHITE + "Polarization =" + polarization + " Scan Id=" + str(scan_id) + Color.ENDC)
             if config.GLOBAL_CONFIG['refant']:
                 base_antenna = self.measurement_set.get_antenna_by_id(config.GLOBAL_CONFIG['refant'])
@@ -64,7 +64,7 @@ class AngularDispersion(Analyser):
             r_matrix.add(base_antenna, another_antenna, r_value)
 
         doubtful_antennas = r_matrix.get_doubtful_antennas(base_antenna, r_threshold, min_doubtful_antennas)
-        logging.debug("Antenna={0}, History={1}, Doubtfuls={2}".format(base_antenna, history, doubtful_antennas))
+        logger.debug("Antenna={0}, History={1}, Doubtfuls={2}".format(base_antenna, history, doubtful_antennas))
         # print "~~~~~~",base_antenna.id
         # if base_antenna.id ==9: print r_matrix
 
@@ -77,7 +77,7 @@ class AngularDispersion(Analyser):
         else:
             doubtful_antennas = set()
             base_antenna.update_state(polarization, scan_id, AntennaStatus.BAD)
-            logging.debug("Antenna={0}, Doubtfuls={1} Marked bad".format(base_antenna, doubtful_antennas))
+            logger.debug("Antenna={0}, Doubtfuls={1} Marked bad".format(base_antenna, doubtful_antennas))
 
         history.add(base_antenna)
 
