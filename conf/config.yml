@@ -66,8 +66,8 @@ phase_calibrator:
   closure:
     <<: *closure
     threshold: 35
-  width: 40
-  channels_to_avg: '200~240'
+  width: 41
+  channels_to_avg: '80~120'
 
 target_source:
   <<: *common

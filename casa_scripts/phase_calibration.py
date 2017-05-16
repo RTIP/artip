@@ -23,14 +23,20 @@ flux_gcal = output_path + "/" + 'flux.gcal'
 os.system("cp -r {0} {1}".format(intphase2_gcal, tmp_intphase2_gcal))
 os.system("cp -r {0} {1}".format(amp2_gcal, tmp_amp2_gcal))
 
+sys.stdout.write("\n##### Started calculating intphase gains on Phase calibrator#####\n")
 gaincal(vis=ms_dataset, caltable=tmp_intphase2_gcal, field=phase_cal_field, spw=spw, refant=refant, calmode='p',
         solint='60s', minsnr=minsnr, gaintable=[bandpass_bcal], append=True)
+sys.stdout.write("\n##### Finished calculating intphase gains on Phase calibrator#####\n")
 
+sys.stdout.write("\n##### Started calculating amp gains on Phase calibrator#####\n")
 gaincal(vis=ms_dataset, caltable=tmp_amp2_gcal, field=phase_cal_field, spw=spw, refant=refant, calmode='ap',
         solint='inf', minsnr=minsnr, gaintable=[bandpass_bcal, tmp_intphase2_gcal], append=True)
+sys.stdout.write("\n##### Finished calculating amp gains on Phase calibrator#####\n")
 
+sys.stdout.write("\n##### Started calculating scanphase gains on Phase calibrator#####\n")
 gaincal(vis=ms_dataset, caltable=scanphase_gcal, field=phase_cal_field, spw=spw, refant=refant, calmode='p',
         solint='inf', minsnr=minsnr, gaintable=[bandpass_bcal])
+sys.stdout.write("\n##### Finished calculating amp gains on Phase calibrator#####\n")
 
 fluxscale(vis=ms_dataset, caltable=tmp_amp2_gcal, fluxtable=flux_gcal, reference=flux_cal_field)
 

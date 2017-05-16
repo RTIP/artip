@@ -79,7 +79,11 @@ for loop_id in range(1, loop_count[calmode] + 1):
     ft(vis=dataset, field='0', model=bmasked_model_path)
     cal_table = "{0}/{1}_selfcaltable_{2}.gcal".format(image_output_path, calmode, loop_id)
     image_name = "{0}_{1}_{2}".format(image_path, calmode, loop_id)
+    sys.stdout.write("\n##### Started calculating selfcal gains on {0}, loop={1} and calmode={2}#####\n".format(dataset, loop_id,
+                                                                                                   calmode))
     gaincal(vis=dataset, caltable=cal_table, calmode=calmode, solint=solint, refant=refant, minsnr=minsnr)
+    sys.stdout.write("\n##### Finished calculating selfcal gains on {0}, loop={1} and calmode={2}#####\n".format(dataset, loop_id,
+                                                                                                   calmode))
     applycal(vis=dataset, gaintable=[cal_table], applymode='calonly')
 
     clean(vis=dataset, imagename=image_name, imagermode='csclean', imsize=imsize, cell=[cell],
