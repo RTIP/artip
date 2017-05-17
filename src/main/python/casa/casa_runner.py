@@ -75,22 +75,10 @@ class CasaRunner:
                                                          source_id)
         self._run(script_path, script_parameters)
 
-    def r_flag(self, source_config):
-        auto_flagging_algo = source_config['auto_flagging_algo']
-        r_flag_config = auto_flagging_algo['r_flag']
-        fields = ",".join(map(str, source_config['fields']))
+    def r_flag(self, source_type):
         script_path = 'casa_scripts/r_flag.py'
-
-        script_parameters = "{0} {1} {2} {3} {4} {5} {6} {7} {8}".format(auto_flagging_algo['datacolumn'],
-                                                                         auto_flagging_algo['freqrange'],
-                                                                         self._dataset_path,
-                                                                         fields,
-                                                                         config.GLOBAL_CONFIG['spw_range'],
-                                                                         r_flag_config['freqdevscale'],
-                                                                         r_flag_config['timedevscale'],
-                                                                         auto_flagging_algo['growfreq'],
-                                                                         auto_flagging_algo['growtime'])
-        logger.info(Color.HEADER + "Running Rflag auto-flagging algorithm" + Color.ENDC)
+        script_parameters = "{0} {1}".format(self._dataset_path, source_type)
+        logging.info(Color.HEADER + "Running Rflag auto-flagging algorithm" + Color.ENDC)
         self._run(script_path, script_parameters)
 
     def tfcrop(self, source_config):

@@ -1,0 +1,28 @@
+auto_flagging_algo: &auto_flagging_algo
+  rflag:
+    freqdevscale: 6.5
+    timedevscale: 5.0
+  tfcrop:
+    maxnpieces: 7
+    usewindowstats: 'none'
+    halfwin: 1
+    freqcutoff: 4.5
+    timecutoff: 4.5
+  datacolumn: 'data'
+  freqrange: '40~470'
+  growtime: 60.0
+  growfreq: 60.0
+
+bandpass_calibrator:
+  auto_flagging_algo:
+    spw0:
+     <<: *auto_flagging_algo
+     tf_crop:
+        freqcutoff: 4.0
+        timecutoff: 4.0
+     datacolumn: 'corrected'
+
+line:
+  auto_flagging_algo:
+    spw0:
+     <<: *auto_flagging_algo

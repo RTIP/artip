@@ -16,7 +16,7 @@ class Source(object):
         self.measurement_set = measurement_set
 
     def run_rflag(self):
-        self.measurement_set.casa_runner.r_flag(self.config)
+        self.measurement_set.casa_runner.r_flag(self.source_type)
 
     def run_tfcrop(self):
         self.measurement_set.casa_runner.tfcrop(self.config)

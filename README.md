@@ -30,3 +30,14 @@ To build the Distributable package
 >> directory 
 
 ----------------------------------------------------------------------------------------------
+For supporting RFlag/TFcrop configs we are loading Rflag and Tfcrop configs inside casa, this requires
+pyaml pip module to be installed in CASA.
+
+-------------------------------------
+Imstalling pip modules in CASA
+-------------------------------------
+1. $ curl -O https://raw.githubusercontent.com/radio-tools/casa-python/master/setup_casapy_pip.py
+2. $ python setup_casapy_pip.py
+3. You should then add $HOME/.casa/bin/ to your path.
+4. $ casa-pip install pyaml
+---------------------------------------------------------------------------------------------
