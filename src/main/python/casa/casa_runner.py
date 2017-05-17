@@ -81,25 +81,9 @@ class CasaRunner:
         logging.info(Color.HEADER + "Running Rflag auto-flagging algorithm" + Color.ENDC)
         self._run(script_path, script_parameters)
 
-    def tfcrop(self, source_config):
-        auto_flagging_algo = source_config['auto_flagging_algo']
-        tf_crop_config = auto_flagging_algo['tf_crop']
-        fields = ",".join(map(str, source_config['fields']))
+    def tfcrop(self, source_type):
         script_path = 'casa_scripts/tfcrop.py'
-        script_parameters = "{0} {1} {2} {3} {4} {5} {6} {7} {8} {9} {10} {11}".format(auto_flagging_algo['datacolumn'],
-                                                                                       auto_flagging_algo['freqrange'],
-                                                                                       tf_crop_config['maxnpieces'],
-                                                                                       tf_crop_config['usewindowstats'],
-                                                                                       tf_crop_config['halfwin'],
-                                                                                       tf_crop_config['freqcutoff'],
-                                                                                       tf_crop_config['timecutoff']
-                                                                                       , self._dataset_path,
-                                                                                       fields,
-                                                                                       config.GLOBAL_CONFIG[
-                                                                                           'spw_range'],
-                                                                                       auto_flagging_algo['growfreq'],
-                                                                                       auto_flagging_algo['growtime']
-                                                                                       )
+        script_parameters = "{0} {1}".format(self._dataset_path, source_type)
         logger.info(Color.HEADER + "Running Tfcrop auto-flagging algorithm" + Color.ENDC)
         self._run(script_path, script_parameters)
 

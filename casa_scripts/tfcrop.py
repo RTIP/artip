@@ -1,30 +1,47 @@
 import sys
+import yaml
 
-channels_to_average = sys.argv[-11]
-spw = sys.argv[-3]
-spw_with_freq = "{0}:{1}".format(spw, channels_to_average)
-field = sys.argv[-4]
-ms_dataset = sys.argv[-5]
-datacolumn = sys.argv[-12]
-maxnpieces = sys.argv[-10]
-usewindowstats = sys.argv[-9]
-halfwin = int(sys.argv[-8])
-freqcutoff = float(sys.argv[-7])
-timecutoff = float(sys.argv[-6])
 
-growtime = float(sys.argv[-1])
-growfreq = float(sys.argv[-2])
+def load(config_file_name):
+    config_file = open(config_file_name)
+    configs = yaml.load(config_file)
+    config_file.close()
+    return configs
 
-tfcrop_command = "mode='tfcrop' extendflags=False maxnpieces={0} usewindowstats='{1}' halfwin={2} timecutoff={3}" \
-                 " freqcutoff={4}  spw='{5}' datacolumn={6} field='{7}'".format(maxnpieces, usewindowstats, halfwin,
-                                                                              timecutoff,
-                                                                              freqcutoff,
-                                                                              spw_with_freq, datacolumn, field)
 
-extend_flag_command = "mode='extend' growaround=False flagnearfreq=False flagneartime=False" \
-                      " extendpols=False growtime={0} growfreq={1}  spw='{2}' datacolumn='{3}' " \
-                      "field='{4}'".format(growtime, growfreq, spw, datacolumn, field)
+source_type = sys.argv[-1]
+ms_dataset = sys.argv[-2]
+AUTO_FLAGGING_CONFIGS = load("conf/auto_flagging_config.yml")
+SOURCE_AUTOFLAGGING_CONFIGS = AUTO_FLAGGING_CONFIGS[source_type]['auto_flagging_algo']
+config = load("conf/config.yml")
+GLOBAL_CONFIG = config["global"]
+SOURCE_CONFIG = config[source_type]
+spw_range = GLOBAL_CONFIG['spw_range'].split("~")
+for spw in range(int(spw_range[0]), int(spw_range[-1]) + 1):  # to be modified
+    spw_config = "spw{0}".format(spw)
+    datacolumn = SOURCE_AUTOFLAGGING_CONFIGS[spw_config]['datacolumn']
+    growtime = SOURCE_AUTOFLAGGING_CONFIGS[spw_config]['growtime']
+    growfreq = SOURCE_AUTOFLAGGING_CONFIGS[spw_config]['growfreq']
+    timecutoff = SOURCE_AUTOFLAGGING_CONFIGS[spw_config]['tfcrop']['timecutoff']
+    freqcutoff = SOURCE_AUTOFLAGGING_CONFIGS[spw_config]['tfcrop']['freqcutoff']
+    maxnpieces = SOURCE_AUTOFLAGGING_CONFIGS[spw_config]['tfcrop']['maxnpieces']
+    usewindowstats = SOURCE_AUTOFLAGGING_CONFIGS[spw_config]['tfcrop']['usewindowstats']
+    halfwin = SOURCE_AUTOFLAGGING_CONFIGS[spw_config]['tfcrop']['halfwin']
+    freqrange = SOURCE_AUTOFLAGGING_CONFIGS[spw_config]['freqrange']
 
-cmdlist = [tfcrop_command, extend_flag_command]
+    spw_with_freq = "{0}:{1}".format(spw, freqrange)
+    fields = ",".join(map(str, SOURCE_CONFIG["fields"]))
 
-flagdata(vis=ms_dataset, mode='list', inpfile=cmdlist, action='apply')
+    tfcrop_command = "mode='tfcrop' extendflags=False maxnpieces={0} usewindowstats='{1}' halfwin={2} timecutoff={3}" \
+                     " freqcutoff={4}  spw='{5}' datacolumn={6} field='{7}'".format(maxnpieces, usewindowstats, halfwin,
+                                                                                    timecutoff,
+                                                                                    freqcutoff,
+                                                                                    spw_with_freq, datacolumn, fields)
+
+    extend_flag_command = "mode='extend' growaround=False flagnearfreq=False flagneartime=False" \
+                          " extendpols=False growtime={0} growfreq={1}  spw='{2}' datacolumn='{3}' " \
+                          "field='{4}'".format(growtime, growfreq, spw, datacolumn, fields)
+
+    cmdlist = [tfcrop_command, extend_flag_command]
+
+    flagdata(vis=ms_dataset, mode='list', inpfile=cmdlist, action='apply')

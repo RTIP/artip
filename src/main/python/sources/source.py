@@ -19,7 +19,7 @@ class Source(object):
         self.measurement_set.casa_runner.r_flag(self.source_type)
 
     def run_tfcrop(self):
-        self.measurement_set.casa_runner.tfcrop(self.config)
+        self.measurement_set.casa_runner.tfcrop(self.source_type)
 
     def calibrate(self):
         raise NotImplementedError("Not implemented")
