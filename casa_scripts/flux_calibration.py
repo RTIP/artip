@@ -18,12 +18,12 @@ if run_count > 1:
     sys.stdout.write("\n##### Started calculating intphase gains on Flux calibrator after bandpass calibration #####\n")
     gaincal(vis=ms_dataset, caltable=intphase2_caltable, field=field, spw=spw, refant=refant, calmode='p',
             solint='60s',
-            minsnr=2.0, gaintable=bandpass_bcal)
+            minsnr=minsnr, gaintable=bandpass_bcal)
     sys.stdout.write("\n##### Finished calculating intphase gains on Flux calibrator after bandpass calibration #####\n")
 
     sys.stdout.write("\n##### Started calculating amp gains on Flux calibrator after bandpass calibration #####\n")
     gaincal(vis=ms_dataset, caltable=amp2_caltable, field=field, spw=spw, refant=refant, calmode='ap', solint='inf',
-            minsnr=2.0, gaintable=[intphase2_caltable, bandpass_bcal])
+            minsnr=minsnr, gaintable=[intphase2_caltable, bandpass_bcal])
     sys.stdout.write("\n##### Finished calculating amp gains on Flux calibrator after bandpass calibration #####\n")
 
     applycal(vis=ms_dataset, field=field, gaintable=[bandpass_bcal, intphase2_caltable, amp2_caltable],
