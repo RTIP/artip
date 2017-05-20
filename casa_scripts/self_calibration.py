@@ -3,16 +3,17 @@ import distutils.util
 import re
 import time
 
-dataset = sys.argv[-24]
-image_output_path = sys.argv[-23]
-outputvis = sys.argv[-22]
-solint = sys.argv[-21]
-refant = sys.argv[-20]
-minsnr = float(sys.argv[-19])
-output_path = sys.argv[-18]
-imsize = int(sys.argv[-17])
-cell = sys.argv[-16]
-robust = float(sys.argv[-15])
+dataset = sys.argv[-25]
+image_output_path = sys.argv[-24]
+outputvis = sys.argv[-23]
+solint = sys.argv[-22]
+refant = sys.argv[-21]
+minsnr = float(sys.argv[-20])
+output_path = sys.argv[-19]
+imsize = int(sys.argv[-18])
+cell = sys.argv[-17]
+robust = float(sys.argv[-16])
+applymode = sys.argv[-15]
 interactive = bool(distutils.util.strtobool(sys.argv[-14]))
 niter = int(sys.argv[-13])
 clean_threshold = sys.argv[-12]
@@ -84,7 +85,7 @@ for loop_id in range(1, loop_count[calmode] + 1):
     gaincal(vis=dataset, caltable=cal_table, calmode=calmode, solint=solint, refant=refant, minsnr=minsnr)
     sys.stdout.write("\n##### Finished calculating selfcal gains on {0}, loop={1} and calmode={2}#####\n".format(dataset, loop_id,
                                                                                                    calmode))
-    applycal(vis=dataset, gaintable=[cal_table], applymode='calonly')
+    applycal(vis=dataset, gaintable=[cal_table], applymode=applymode)
 
     clean(vis=dataset, imagename=image_name, imagermode='csclean', imsize=imsize, cell=[cell],
           mode='mfs', robust=robust, weighting='briggs', interactive=interactive, threshold=clean_threshold,

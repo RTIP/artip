@@ -156,7 +156,7 @@ class CasaRunner:
 
         script_path = 'casa_scripts/self_calibration.py'
         script_parameters = "{0} {1} {2} {3} {4} {5} {6} {7} {8} {9} {10} {11} {12} {13} " \
-                            "{14} {15} {16} {17} {18} {19} {20} {21} {22} {23}".format(
+                            "{14} {15} {16} {17} {18} {19} {20} {21} {22} {23} {24}".format(
             self._dataset_path,
             output_path,
             output_ms_path,
@@ -167,6 +167,7 @@ class CasaRunner:
             self_cal_config['imsize'],
             self_cal_config['cell'],
             cal_mode[calibration_mode]['robust'],
+            cal_mode[calibration_mode]['applymode'],
             self_cal_config['interactive'],
             self_cal_config['niter'],
             self_cal_config['clean_threshold'],
