@@ -63,9 +63,7 @@ class PipelineStage(object):
                 continuum_source = ContinuumSource(line_source.continuum(), source_id)
                 continuum_source.reduce_data()
                 continuum_source.self_calibrate()
-                print "here....."
                 line_source.reduce_data()
-                print "here222222"
 
             if target_source_exec_steps['create_line_image']:
                 line_source.apply_calibration()

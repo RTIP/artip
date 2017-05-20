@@ -182,7 +182,6 @@ class CasaRunner:
             calibration_mode, spw)
 
         self._run(script_path, script_parameters)
-        print ">>>>>>>>>>>>>>>>>>>>>>"
 
     def fourier_transform(self, field_name, model_name):
         logger.info(Color.HEADER + "Calculating fourier transform on {0}".format(model_name) + Color.ENDC)
