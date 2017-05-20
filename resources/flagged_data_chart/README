@@ -1,0 +1,16 @@
+The scripts requires following pip modules:
+---------------------------------------------
+$ pip install pygal
+$ pip install tinydb
+
+The chart.py scripts plots the flagged data percentage at different stages of the pipeline.
+
+Before capturing the flagged data percentage snapshot check the charting_config.
+The charting_config contains input to the casac get_data.
+
+To capture the flagged data percentage at different stages
+$ python chart.py 'path_to_ms.ms' stage1
+$ python chart.py 'path_to_ms.ms' stage2
+
+To plot the flagged data percentage chart
+$ python chart.py 'path_to_ms.ms' plot
