@@ -9,3 +9,5 @@ target
 cgrid_ft.im
 output
 profile_result.out
+resources/flagged_data_chart/*.svg
+resources/flagged_data_chart/*.json

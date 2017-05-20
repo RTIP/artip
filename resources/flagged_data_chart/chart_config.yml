@@ -1,0 +1,5 @@
+spw: '0'
+channel: 100
+polarization: ['LL','RR']
+channel_width: 40
+# scan_id: 1
