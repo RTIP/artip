@@ -8,11 +8,11 @@ class LineSource(TargetSource):
         self.source_type = 'line'
         self.config = config.ALL_CONFIGS["target_source"][self.source_type]
 
-    def apply_calibration(self):
-        self.measurement_set.casa_runner.apply_line_calibration(self.config["calmode"], self.source_id)
+    def apply_calibration(self, mode):
+        self.measurement_set.casa_runner.apply_line_calibration(self.config["calmode"], self.source_id, mode)
         self.measurement_set.reload()
 
-    def reduce_data(self):
+    def extend_continuum_flags(self):
         self.measurement_set.casa_runner.extend_continuum_flags(self.source_id)
 
     def create_line_image(self):

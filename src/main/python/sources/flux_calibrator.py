@@ -1,4 +1,4 @@
-from logger import logger 
+from logger import logger
 from configs import config
 from sources.source import Source
 from terminal_color import Color

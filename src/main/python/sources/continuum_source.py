@@ -8,11 +8,13 @@ from logger import logger
 
 
 class ContinuumSource(TargetSource):
-    def __init__(self, measurement_set, source_id):
+    def __init__(self, measurement_set, source_id, spw, cont_mode):
         super(ContinuumSource, self).__init__(measurement_set, source_id)
         self.source_type = 'continuum'
+        self.spw = spw
         self.source_ids = [0]  # source_id will always be 0
         self.config = config.ALL_CONFIGS["target_source"][self.source_type]
+        self.cont_mode = cont_mode
 
     def reduce_data(self):
         self.flag_and_calibrate_in_detail()
@@ -21,8 +23,7 @@ class ContinuumSource(TargetSource):
         debugger = Debugger(self.measurement_set)
         polarizations = config.GLOBAL_CONFIG['polarizations']
         scan_ids = self.measurement_set.scan_ids_for(self.source_ids)
-        spws = config.GLOBAL_CONFIG['default_spw']
-        spw_polarization_scan_product = list(itertools.product(spws, polarizations, scan_ids))
+        spw_polarization_scan_product = list(itertools.product(self.spw, polarizations, scan_ids))
         self._flag_only_once(reason, analyser, spw_polarization_scan_product, debugger)
 
     def _flag_only_once(self, reason, analyser, spw_polarization_scan_product, debugger):
@@ -33,21 +34,23 @@ class ContinuumSource(TargetSource):
         else:
             logger.info(Color.OKGREEN + 'No {0} Found'.format(reason) + Color.ENDC)
 
-    def self_calibrate(self):
+    def self_calibrate(self, mode):
         config = self.config['self_calibration']
         self._base_image()
-        self_caled_p = self.apply_self_calibration(config, 'p')
+        self_caled_p = self.apply_self_calibration(config, 'p', mode)
         self_caled_p.attach_model(config, 'p')
-        self_caled_p.apply_self_calibration(config, 'ap')
+        self_caled_p.apply_self_calibration(config, 'ap', mode)
 
-    def apply_self_calibration(self, config, cal_mode):
-        ms_path, output_path = self.prepare_output_dir("self_caled_{0}_{1}".format(cal_mode, self.source_id))
-        self.measurement_set.casa_runner.apply_self_calibration(config, cal_mode, ms_path, output_path, self.source_id)
-        return ContinuumSource(MeasurementSet(ms_path, output_path), self.source_id)
+    def apply_self_calibration(self, config, cal_mode, mode):
+        ms_path, output_path = self.prepare_output_dir("self_caled_{0}_{1}_{2}".format(cal_mode, mode, self.source_id))
+        self.measurement_set.casa_runner.apply_self_calibration(config, cal_mode, ms_path, output_path,
+                                                                self.spw)
+        return ContinuumSource(MeasurementSet(ms_path, output_path), self.source_id, self.spw, mode)
 
     def attach_model(self, self_calibration_config, cal_mode):
-        self.measurement_set.casa_runner.fourier_transform(self._source_name(),
-                                                           self._image_model(self_calibration_config, cal_mode))
+        self.measurement_set.casa_runner.fourier_transform(self._source_name(), cal_mode,
+                                                           self.spw,
+                                                           self_calibration_config['calmode'][cal_mode]['loop_count'])
 
     def _base_image(self):
         self.measurement_set.casa_runner.base_image(self.config['image'])
@@ -55,8 +58,3 @@ class ContinuumSource(TargetSource):
     def _source_name(self):
         continuum_source_id = 0  # Will be always 0
         return self.measurement_set.get_field_name_for(continuum_source_id)
-
-    def _image_model(self, self_calibration_config, cal_mode):
-        image_path = '{0}/self_cal_image'.format(self.measurement_set.get_output_path())
-        return "{0}_{1}_{2}.model".format(image_path, cal_mode,
-                                          self_calibration_config['calmode'][cal_mode]['loop_count'])

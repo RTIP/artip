@@ -15,9 +15,13 @@ AUTO_FLAGGING_CONFIGS = load("conf/auto_flagging_config.yml")
 SOURCE_AUTOFLAGGING_CONFIGS = AUTO_FLAGGING_CONFIGS[source_type]['auto_flagging_algo']
 config = load("conf/config.yml")
 GLOBAL_CONFIG = config["global"]
-SOURCE_CONFIG = config[source_type]
+if source_type == "bandpass_calibrator":
+    SOURCE_CONFIG = config[source_type]
+else:
+    SOURCE_CONFIG = config['target_source'][source_type]
+
 spw_range = GLOBAL_CONFIG['spw_range'].split("~")
-for spw in range(int(spw_range[0]), int(spw_range[-1])+1):  # to be modified
+for spw in range(int(spw_range[0]), int(spw_range[-1]) + 1):  # to be modified
     spw_config = "spw{0}".format(spw)
     datacolumn = SOURCE_AUTOFLAGGING_CONFIGS[spw_config]['datacolumn']
     growtime = SOURCE_AUTOFLAGGING_CONFIGS[spw_config]['growtime']

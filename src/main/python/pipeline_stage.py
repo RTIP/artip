@@ -56,15 +56,29 @@ class PipelineStage(object):
             target_source = TargetSource(self.measurement_set, source_id)
             target_source.calibrate()
             line_source = LineSource(target_source.line(), source_id)
-            if target_source_exec_steps['run_auto_flagging']:
+
+            if target_source_exec_steps['reference_spw']['create_continuum']:
+                spw = '0'
+                cont_mode = 'ref'
+                continuum_source_ref = ContinuumSource(
+                    line_source.continuum(config.GLOBAL_CONFIG['default_spw'], cont_mode),
+                    source_id, spw, cont_mode)
+                continuum_source_ref.reduce_data()
+                continuum_source_ref.self_calibrate(cont_mode)
+                line_source.extend_continuum_flags()
+
+            if target_source_exec_steps['all_spw']['run_auto_flagging']:
                 line_source.run_tfcrop()
                 line_source.run_rflag()
-            if target_source_exec_steps['create_continuum']:
-                continuum_source = ContinuumSource(line_source.continuum(), source_id)
-                continuum_source.reduce_data()
-                continuum_source.self_calibrate()
-                line_source.reduce_data()
 
-            if target_source_exec_steps['create_line_image']:
-                line_source.apply_calibration()
+            cont_mode = 'spw'
+            if target_source_exec_steps['all_spw']['create_continuum']:
+                spw_range = config.GLOBAL_CONFIG['spw_range']
+                continuum_source = ContinuumSource(
+                    line_source.continuum(spw_range, cont_mode),
+                    source_id, spw_range, cont_mode)
+                continuum_source.self_calibrate(cont_mode)
+
+            if target_source_exec_steps['all_spw']['create_line_image']:
+                line_source.apply_calibration(cont_mode)
                 line_source.create_line_image()

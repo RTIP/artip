@@ -6,7 +6,7 @@ stages:
   phase_calibration: false
   target_source:
     run_auto_flagging: false
-    create_continuum: false
+    create_continuum: true
     create_line_image: false
 
 manual_flag: false

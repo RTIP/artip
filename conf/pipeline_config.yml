@@ -5,9 +5,13 @@ stages:
   bandpass_calibration: true
   phase_calibration: true
   target_source:
-    run_auto_flagging: true
-    create_continuum: true
-    create_line_image: true
+    reference_spw:
+      create_continuum: true
+      create_line_image: true
+    all_spw:
+      run_auto_flagging: true
+      create_line_image: true
+      create_continuum: true
 
 manual_flag: false
 flagged:

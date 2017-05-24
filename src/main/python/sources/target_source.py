@@ -1,7 +1,7 @@
 from configs import config
 from helpers import is_last_element, create_dir
 from sources.source import Source
-
+import numpy
 from measurement_set import MeasurementSet
 
 
@@ -20,12 +20,13 @@ class TargetSource(Source):
         self.measurement_set.split(line_ms_path, {'datacolumn': 'corrected', 'field': self.source_id})
         return MeasurementSet(line_ms_path, line_output_path)
 
-    def continuum(self):
-        continuum_ms_path, continuum_output_path = self.prepare_output_dir("continuum_{0}".format(self.source_id))
-        spw = "{0}:{1}".format(config.GLOBAL_CONFIG['spw_range'], self.config['continuum']['channels_to_avg'])
-        width = self.config['continuum']['channel_width_to_avg']
+    def continuum(self, spw, key):
+        continuum_ms_path, continuum_output_path = self.prepare_output_dir(
+            "continuum_{0}_{1}".format(key, self.source_id))
+        width = self.config['continuum'][key]['channel_width']
         self.measurement_set.split(continuum_ms_path,
-                                   {'datacolumn': 'data', 'spw': spw, 'width': width})
+                                   {'datacolumn': 'data', 'spw': spw, 'width': width,
+                                    'channels_to_avg': self.config['continuum'][key]['channels_to_avg']})
         return MeasurementSet(continuum_ms_path, continuum_output_path)
 
     def prepare_output_dir(self, new_dir):

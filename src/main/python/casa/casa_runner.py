@@ -2,15 +2,12 @@ from configs import config
 from casa.flag_reasons import BAD_ANTENNA_TIME, BAD_BASELINE_TIME
 import os
 import subprocess
-import sys
-import time
 import casac
 from logger import logger
 from terminal_color import Color
 
 
 class CasaRunner:
-
     def __init__(self, dataset_path, output_path):
         self._output_path = output_path
         self._dataset_path = dataset_path
@@ -78,7 +75,7 @@ class CasaRunner:
     def r_flag(self, source_type):
         script_path = 'casa_scripts/r_flag.py'
         script_parameters = "{0} {1}".format(self._dataset_path, source_type)
-        logging.info(Color.HEADER + "Running Rflag auto-flagging algorithm" + Color.ENDC)
+        logger.info(Color.HEADER + "Running Rflag auto-flagging algorithm" + Color.ENDC)
         self._run(script_path, script_parameters)
 
     def tfcrop(self, source_type):
@@ -100,10 +97,11 @@ class CasaRunner:
         script_path = 'casa_scripts/split_dataset.py'
         logger.info(Color.HEADER + "Splitting dataset at location {0}".format(output_path) + Color.ENDC)
         spw = filters.get("spw", "all")
-        width = filters.get("width", 1)
+        width = filters.get("width", '1')
         field = filters.get("field", 0)
-        script_parameters = "{0} {1} {2} {3} {4} {5}".format(self._dataset_path, output_path, field,
-                                                             filters['datacolumn'], width, spw)
+        channels = filters.get("channels_to_avg", '')
+        script_parameters = "{0} {1} {2} {3} {4} {5} {6}".format(channels, self._dataset_path, output_path, field,
+                                                                 filters['datacolumn'], width, spw)
         self._run(script_path, script_parameters)
 
     def base_image(self, image_config):
@@ -119,11 +117,9 @@ class CasaRunner:
 
         self._run(script_path, script_parameters)
 
-    def apply_self_calibration(self, self_cal_config, calibration_mode, output_ms_path, output_path, source_id):
+    def apply_self_calibration(self, self_cal_config, calibration_mode, output_ms_path, output_path, spw):
         logger.info(Color.HEADER + "Applying self calibration for {0}".format(self._dataset_path) + Color.ENDC)
         cal_mode = self_cal_config['calmode']
-        channel = 0
-        spw = "{0}:{1}".format(config.GLOBAL_CONFIG['spw_range'], channel)
         mask_path = self_cal_config['masking']['mask_path'] if self_cal_config['masking']['mask_path'] else 'None'
 
         script_path = 'casa_scripts/self_calibration.py'
@@ -156,31 +152,36 @@ class CasaRunner:
 
         self._run(script_path, script_parameters)
 
-    def fourier_transform(self, field_name, model_name):
-        logger.info(Color.HEADER + "Calculating fourier transform on {0}".format(model_name) + Color.ENDC)
+    def fourier_transform(self, field_name, cal_mode, spw_range, loop_count):
+        logger.info(Color.HEADER + "Calculating fourier transform on {0}".format(field_name) + Color.ENDC)
         script_path = 'casa_scripts/fourier_transform.py'
-        script_parameters = "{0} {1} {2}".format(self._dataset_path, field_name, model_name)
+        script_parameters = "{0} {1} {2} {3} {4} {5}".format(spw_range, self._output_path, cal_mode, loop_count,
+                                                             self._dataset_path,
+                                                             field_name)
+
         self._run(script_path, script_parameters)
 
-    def apply_line_calibration(self, calmode_config, source_id):
+    def apply_line_calibration(self, calmode_config, source_id, mode):
         logger.info(Color.HEADER + "Applying calibration on Line.." + Color.ENDC)
         script_path = 'casa_scripts/apply_line_calibration.py'
-        script_parameters = "{0} {1} {2} {3} {4}".format(source_id, self._dataset_path, config.OUTPUT_PATH,
-                                                         calmode_config["p"]["loop_count"],
-                                                         calmode_config["ap"]["loop_count"])
+        p_table = '{0}/self_caled_p_{1}_{2}/p_selfcaltable_{3}.gcal'.format(config.OUTPUT_PATH, mode, source_id,
+                                                                            calmode_config["p"]["loop_count"])
+        ap_table = '{0}/self_caled_ap_{1}_{2}/ap_selfcaltable_{3}.gcal'.format(config.OUTPUT_PATH, mode, source_id,
+                                                                               calmode_config["ap"]["loop_count"])
+        script_parameters = "{0} {1} {2}".format(ap_table, p_table, self._dataset_path)
         self._run(script_path, script_parameters)
 
     def extend_continuum_flags(self, source_id):
         logger.info(Color.HEADER + "Extending continuum flags on line..." + Color.ENDC)
         flag_reasons = "{0},{1}".format(BAD_ANTENNA_TIME, BAD_BASELINE_TIME)
-        self.flagdata(flag_reasons, config.OUTPUT_PATH + "/continuum_{0}/".format(source_id))
+        self.flagdata(flag_reasons, config.OUTPUT_PATH + "/continuum_ref_{0}/".format(source_id))
 
     def create_line_image(self, image_config, model="-"):
         logger.info(Color.HEADER + "Creating line image at {0}".format(self._output_path) + Color.ENDC)
-        fitspw = "{0}:{1}".format(config.GLOBAL_CONFIG['spw_range'], image_config['fitspw_channels'])
         script_path = 'casa_scripts/create_line_image.py'
-        script_parameters = "{0} {1} {2} {3} {4} {5} {6} {7} {8} {9}".format(
-            fitspw,
+        script_parameters = "{0} {1} {2} {3} {4} {5} {6} {7} {8} {9} {10}".format(
+            config.GLOBAL_CONFIG['spw_range'],
+            image_config['fitspw_channels'],
             self._dataset_path,
             self._output_path,
             model,
