@@ -20,8 +20,8 @@ if source_type == "bandpass_calibrator":
 else:
     SOURCE_CONFIG = config['target_source'][source_type]
 
-spw_range = GLOBAL_CONFIG['spw_range'].split("~")
-for spw in range(int(spw_range[0]), int(spw_range[-1]) + 1):  # to be modified
+spw_list = GLOBAL_CONFIG['spw_range']
+for spw in spw_list.split(','):
     spw_config = "spw{0}".format(spw)
     datacolumn = SOURCE_AUTOFLAGGING_CONFIGS[spw_config]['datacolumn']
     growtime = SOURCE_AUTOFLAGGING_CONFIGS[spw_config]['growtime']

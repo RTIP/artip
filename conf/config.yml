@@ -6,7 +6,7 @@ global:
   target_src_field: &target_src_field [2]
   output_path: 'output'
   default_spw: "0"
-  spw_range: "0"   #Example: "0~9"
+  spw_range: "0"   #Example: "0,1,2,4"
   refant: 2
   target_phase_src_map: {2:[1]}
 
