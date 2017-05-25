@@ -22,4 +22,4 @@ for spw in spw_list.split(","):
     uvcontsub(vis=spw_line_ms, field=field, spw='0', fitspw=fitspw, solint='int', fitorder=0)
     clean(vis="{0}.contsub".format(spw_line_ms), imagename=image_name, imagermode='csclean', imsize=imsize, cell=[cell],
           mode='channel', weighting='briggs', robust=robust, threshold=threshold, interactive=interactive, niter=niter,
-          spw=str(spw))
+          spw='0')
