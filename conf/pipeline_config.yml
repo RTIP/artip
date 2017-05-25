@@ -7,7 +7,6 @@ stages:
   target_source:
     reference_spw:
       create_continuum: true
-      create_line_image: true
     all_spw:
       run_auto_flagging: true
       create_line_image: true

@@ -33,5 +33,4 @@ def main(dataset_path):
 def run_target_source(target_source_exec_steps):
     return target_source_exec_steps['all_spw']['create_line_image'] or target_source_exec_steps['all_spw'][
         'create_continuum'] or target_source_exec_steps['all_spw']['run_auto_flagging'] or \
-           target_source_exec_steps['reference_spw'][
-               'create_line_image'] or target_source_exec_steps['reference_spw']['create_continuum']
+           target_source_exec_steps['reference_spw']['create_continuum']
