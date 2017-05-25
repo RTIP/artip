@@ -8,7 +8,7 @@ from logger import logger
 
 
 class ContinuumSource(TargetSource):
-    def __init__(self, measurement_set, source_id, spw, cont_mode):
+    def __init__(self, measurement_set, source_id, cont_mode, spw='0'):
         super(ContinuumSource, self).__init__(measurement_set, source_id)
         self.source_type = 'continuum'
         self.spw = spw
@@ -45,7 +45,7 @@ class ContinuumSource(TargetSource):
         ms_path, output_path = self.prepare_output_dir("self_caled_{0}_{1}_{2}".format(cal_mode, mode, self.source_id))
         self.measurement_set.casa_runner.apply_self_calibration(config, cal_mode, ms_path, output_path,
                                                                 self.spw)
-        return ContinuumSource(MeasurementSet(ms_path, output_path), self.source_id, self.spw, mode)
+        return ContinuumSource(MeasurementSet(ms_path, output_path), self.source_id, mode, self.spw)
 
     def attach_model(self, self_calibration_config, cal_mode):
         self.measurement_set.casa_runner.fourier_transform(self._source_name(), cal_mode,
