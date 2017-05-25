@@ -5,6 +5,7 @@ import subprocess
 import casac
 from logger import logger
 from terminal_color import Color
+from helpers import format_spw_with_channels
 
 
 class CasaRunner:
@@ -99,9 +100,12 @@ class CasaRunner:
         spw = filters.get("spw", "all")
         width = filters.get("width", '1')
         field = filters.get("field", 0)
-        channels = filters.get("channels_to_avg", '')
-        script_parameters = "{0} {1} {2} {3} {4} {5} {6}".format(channels, self._dataset_path, output_path, field,
-                                                                 filters['datacolumn'], width, spw)
+
+        if spw != "all":
+            spw = format_spw_with_channels(spw, filters.get("channels_to_avg", ''))
+
+        script_parameters = "{0} {1} {2} {3} {4} {5}".format(self._dataset_path, output_path, field,
+                                                             filters['datacolumn'], width, spw)
         self._run(script_path, script_parameters)
 
     def base_image(self, image_config):
