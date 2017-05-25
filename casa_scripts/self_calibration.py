@@ -22,7 +22,7 @@ mask_path = sys.argv[-6]
 loop_count = {'p': int(sys.argv[-4]), 'ap': int(sys.argv[-5])}
 cyclefactor = float(sys.argv[-3])
 calmode = sys.argv[-2]
-spw_range = sys.argv[-1]
+spw_list = sys.argv[-1]
 image_path = "{0}/self_cal_image".format(image_output_path)
 
 
@@ -38,8 +38,7 @@ def model_for_masking(index, spw):
     return model
 
 
-for spw in range(int(spw_range[0]), int(spw_range[-1]) + 1):  # to be modified
-    spw = str(spw)
+for spw in spw_list.split(','):
     for loop_id in range(1, loop_count[calmode] + 1):
         base_model = model_for_masking(loop_id, spw)
         model_path = "{0}/{1}model{2}_spw{3}".format(image_output_path, calmode, loop_id, spw)
@@ -96,4 +95,4 @@ for spw in range(int(spw_range[0]), int(spw_range[-1]) + 1):  # to be modified
               mode='mfs', robust=robust, weighting='briggs', interactive=interactive, threshold=clean_threshold,
               niter=niter, cyclefactor=cyclefactor, spw=spw)
 
-split(vis=dataset, outputvis=outputvis, spw=spw_range, datacolumn='corrected')
+split(vis=dataset, outputvis=outputvis, spw=spw_list, datacolumn='corrected')
