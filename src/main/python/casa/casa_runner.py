@@ -110,16 +110,10 @@ class CasaRunner:
                                                              filters['datacolumn'], width, spw)
         self._run(script_path, script_parameters)
 
-    def base_image(self, image_config):
+    def base_image(self):
         logger.info(Color.HEADER + "Creating base image for {0}".format(self._dataset_path) + Color.ENDC)
         script_path = 'casa_scripts/base_image.py'
-        script_parameters = "{0} {1} {2} {3} {4} {5} {6} {7} {8}".format(self._dataset_path, self._output_path,
-                                                                         image_config['imsize'], image_config['cell'],
-                                                                         image_config['robust'],
-                                                                         image_config['clean_threshold'],
-                                                                         image_config['interactive'],
-                                                                         image_config['niter'],
-                                                                         image_config['cyclefactor'])
+        script_parameters = "{0} {1}".format(self._dataset_path, self._output_path)
 
         self._run(script_path, script_parameters)
 
@@ -130,31 +124,28 @@ class CasaRunner:
 
         script_path = 'casa_scripts/self_calibration.py'
         script_parameters = "{0} {1} {2} {3} {4} {5} {6} {7} {8} {9} {10} {11} {12} {13} " \
-                            "{14} {15} {16} {17} {18} {19} {20} {21} {22} {23} {24}".format(
-            self._dataset_path,
-            output_path,
-            output_ms_path,
-            cal_mode[calibration_mode]['solint'],
-            config.GLOBAL_CONFIG['refant'],
-            self_cal_config['minsnr'],
-            self._output_path,
-            self_cal_config['imsize'],
-            self_cal_config['cell'],
-            cal_mode[calibration_mode]['robust'],
-            cal_mode[calibration_mode]['applymode'],
-            self_cal_config['interactive'],
-            self_cal_config['niter'],
-            self_cal_config['clean_threshold'],
-            self_cal_config['masking']['threshold'],
-            self_cal_config['masking']['bmask']['bottom_left_corner']['x_coordinate'],
-            self_cal_config['masking']['bmask']['bottom_left_corner']['y_coordinate'],
-            self_cal_config['masking']['bmask']['top_right_corner']['x_coordinate'],
-            self_cal_config['masking']['bmask']['top_right_corner']['y_coordinate'],
-            mask_path,
-            cal_mode['ap']['loop_count'],
-            cal_mode['p']['loop_count'],
-            self_cal_config['cyclefactor'],
-            calibration_mode, spw)
+                            "{14} {15} {16} {17}".format(self._dataset_path,
+                                                         output_path,
+                                                         output_ms_path,
+                                                         cal_mode[calibration_mode]['solint'],
+                                                         config.GLOBAL_CONFIG['refant'],
+                                                         self_cal_config['minsnr'],
+                                                         self._output_path,
+                                                         cal_mode[calibration_mode]['applymode'],
+                                                         self_cal_config['masking']['threshold'],
+                                                         self_cal_config['masking']['bmask']['bottom_left_corner'][
+                                                             'x_coordinate'],
+                                                         self_cal_config['masking']['bmask']['bottom_left_corner'][
+                                                             'y_coordinate'],
+                                                         self_cal_config['masking']['bmask']['top_right_corner'][
+                                                             'x_coordinate'],
+                                                         self_cal_config['masking']['bmask']['top_right_corner'][
+                                                             'y_coordinate'],
+                                                         mask_path,
+                                                         cal_mode['ap']['loop_count'],
+                                                         cal_mode['p']['loop_count'],
+                                                         calibration_mode,
+                                                         spw)
 
         self._run(script_path, script_parameters)
 
@@ -185,21 +176,13 @@ class CasaRunner:
         flag_reasons = "{0},{1}".format(BAD_ANTENNA_TIME, BAD_BASELINE_TIME)
         self.flagdata(flag_reasons, config.OUTPUT_PATH + "/continuum_ref_{0}/".format(source_id))
 
-    def create_line_image(self, image_config, model="-"):
+    def create_line_image(self):
         logger.info(Color.HEADER + "Creating line image at {0}".format(self._output_path) + Color.ENDC)
         script_path = 'casa_scripts/create_line_image.py'
-        script_parameters = "{0} {1} {2} {3} {4} {5} {6} {7} {8} {9} {10}".format(
+        script_parameters = "{0} {1} {2}".format(
             config.GLOBAL_CONFIG['spw_range'],
-            image_config['fitspw_channels'],
             self._dataset_path,
-            self._output_path,
-            model,
-            image_config['threshold'],
-            image_config['imsize'],
-            image_config['interactive'],
-            image_config['robust'],
-            image_config['cell'],
-            image_config['niter'])
+            self._output_path)
         self._run(script_path, script_parameters)
 
     def _unlock_dataset(self):

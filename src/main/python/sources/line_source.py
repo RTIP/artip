@@ -16,4 +16,4 @@ class LineSource(TargetSource):
         self.measurement_set.casa_runner.extend_continuum_flags(self.source_id)
 
     def create_line_image(self):
-        self.measurement_set.casa_runner.create_line_image(self.config['image'])
+        self.measurement_set.casa_runner.create_line_image()

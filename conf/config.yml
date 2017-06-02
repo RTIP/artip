@@ -54,7 +54,6 @@ flux_calibrator:
 bandpass_calibrator:
   <<: *common
   fields: *bandpass_cal_fields
-  channels_to_avg: '80~120'
 
 phase_calibrator:
   <<: *common
@@ -81,16 +80,7 @@ target_source:
       channel_width: 41
     channel: 0
     width: 1
-    image: &base_image
-      imsize: 512
-      cell: '0.5arcsec'
-      robust: 0.5
-      clean_threshold: '3.0mJy'
-      interactive: F
-      niter: 100000
-      cyclefactor: 4
     self_calibration:
-      <<: *base_image
       minsnr: 2.0
       clean_threshold: '1.2mJy'
       masking:
@@ -123,11 +113,3 @@ target_source:
     fields: [0]
     calmode: *calmode
     continuum: *continuum
-    image:
-      threshold : '1000mJy'
-      imsize : 512
-      niter: 1
-      interactive : F
-      robust: 0.5
-      fitspw_channels: '20~150\;350~470' #add skip char if using semicolon(;)
-      cell: '0.5arcsec'

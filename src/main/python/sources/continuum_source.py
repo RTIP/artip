@@ -50,7 +50,7 @@ class ContinuumSource(TargetSource):
                                                            self_calibration_config['calmode'][cal_mode]['loop_count'])
 
     def _base_image(self):
-        self.measurement_set.casa_runner.base_image(self.config['image'])
+        self.measurement_set.casa_runner.base_image()
 
     def _source_name(self):
         continuum_source_id = 0  # Will be always 0

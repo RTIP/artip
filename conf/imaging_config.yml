@@ -1,0 +1,65 @@
+imaging:
+  default: &default
+    imagename: 'j1443conti'
+    imsize: 512
+    cell: '0.5arcsec'
+    stokes: 'I'
+    weighting: 'briggs'
+    robust: 0.5
+    restoringbeam: ''
+    uvtaper: ''
+    mask: ''
+    interactive: F
+    niter: 10000
+    deconvolver: 'hogbom'
+    specmode: 'mfs'
+    nterms: 1
+    reffreq: ''
+    nchan: -1
+    start: ''
+    width: ''
+    outframe: ''
+    veltype: ''
+    restfreq: ''
+    gridder: 'standard'
+    facets: 1
+    wprojplanes: 1
+    aterm: True
+    psterm: False
+    wbawp: False
+    conjbeams: True
+    pblimit: 0.2
+    normtype: 'flatnoise'
+    pbcor: False
+    gain: 0.1
+    threshold: '1.0mJy'
+    cycleniter: -1
+    cyclefactor: 1.0
+    savemodel: 'modelcolumn'
+    parallel: False
+
+base_image:
+  <<: *default
+  cyclefactor: 4
+
+cont_image:
+  <<: *default
+  imsize: 512
+  cell: '0.5arcsec'
+  robust: 0.5
+  clean_threshold: '3.0mJy'
+  interactive: F
+  niter: 100000
+  cyclefactor: 4
+
+line_image:
+  <<: *default
+  threshold : '1000mJy'
+  imsize : 512
+  interactive : F
+  robust: 0.5
+  fitspw_channels: '20~60;70~110'
+  cell: '0.5arcsec'
+  specmode: 'cube'
+  niter: 0
+  outframe: 'topo'

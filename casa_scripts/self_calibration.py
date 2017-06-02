@@ -1,29 +1,71 @@
 import sys
 import distutils.util
+import yaml
 
-dataset = sys.argv[-25]
-image_output_path = sys.argv[-24]
-outputvis = sys.argv[-23]
-solint = sys.argv[-22]
-refant = sys.argv[-21]
-minsnr = float(sys.argv[-20])
-output_path = sys.argv[-19]
-imsize = int(sys.argv[-18])
-cell = sys.argv[-17]
-robust = float(sys.argv[-16])
-applymode = sys.argv[-15]
-interactive = bool(distutils.util.strtobool(sys.argv[-14]))
-niter = int(sys.argv[-13])
-clean_threshold = sys.argv[-12]
-mask_threshold = sys.argv[-11]
-bmask_bottom_left_corner = [int(sys.argv[-10]), int(sys.argv[-9])]
-bmask_top_right_corner = [int(sys.argv[-8]), int(sys.argv[-7])]
-mask_path = sys.argv[-6]
-loop_count = {'p': int(sys.argv[-4]), 'ap': int(sys.argv[-5])}
-cyclefactor = float(sys.argv[-3])
+
+def load(config_file_name):
+    config_file = open(config_file_name)
+    configs = yaml.load(config_file)
+    config_file.close()
+    return configs
+
+
+dataset = sys.argv[-18]
+image_output_path = sys.argv[-17]
+outputvis = sys.argv[-16]
+solint = sys.argv[-15]
+refant = sys.argv[-14]
+minsnr = float(sys.argv[-13])
+output_path = sys.argv[-12]
+applymode = sys.argv[-11]
+mask_threshold = sys.argv[-10]
+bmask_bottom_left_corner = [int(sys.argv[-9]), int(sys.argv[-8])]
+bmask_top_right_corner = [int(sys.argv[-7]), int(sys.argv[-6])]
+mask_path = sys.argv[-5]
+loop_count = {'p': int(sys.argv[-4]), 'ap': int(sys.argv[-3])}
 calmode = sys.argv[-2]
 spw = sys.argv[-1]
+
 image_path = "{0}/self_cal_image".format(image_output_path)
+
+IMAGE_CONFIGS = load("conf/imaging_config.yml")["cont_image"]
+
+imsize = IMAGE_CONFIGS['imsize']
+cell = IMAGE_CONFIGS['cell']
+stokes = IMAGE_CONFIGS['stokes']
+weighting = IMAGE_CONFIGS['weighting']
+robust = IMAGE_CONFIGS['robust']
+restoringbeam = IMAGE_CONFIGS['restoringbeam']
+uvtaper = IMAGE_CONFIGS['uvtaper']
+mask = IMAGE_CONFIGS['mask']
+interactive = bool(distutils.util.strtobool(IMAGE_CONFIGS['interactive']))
+niter = IMAGE_CONFIGS['niter']
+deconvolver = IMAGE_CONFIGS['deconvolver']
+specmode = IMAGE_CONFIGS['specmode']
+nterms = IMAGE_CONFIGS['nterms']
+reffreq = IMAGE_CONFIGS['reffreq']
+nchan = IMAGE_CONFIGS['nchan']
+start = IMAGE_CONFIGS['start']
+width = IMAGE_CONFIGS['width']
+outframe = IMAGE_CONFIGS['outframe']
+veltype = IMAGE_CONFIGS['veltype']
+restfreq = IMAGE_CONFIGS['restfreq']
+gridder = IMAGE_CONFIGS['gridder']
+facets = IMAGE_CONFIGS['facets']
+wprojplanes = IMAGE_CONFIGS['wprojplanes']
+aterm = IMAGE_CONFIGS['aterm']
+psterm = IMAGE_CONFIGS['psterm']
+wbawp = IMAGE_CONFIGS['wbawp']
+conjbeams = IMAGE_CONFIGS['conjbeams']
+pblimit = IMAGE_CONFIGS['pblimit']
+normtype = IMAGE_CONFIGS['normtype']
+pbcor = IMAGE_CONFIGS['pbcor']
+gain = IMAGE_CONFIGS['gain']
+clean_threshold = IMAGE_CONFIGS['threshold']
+cycleniter = IMAGE_CONFIGS['cycleniter']
+cyclefactor = IMAGE_CONFIGS['cyclefactor']
+savemodel = IMAGE_CONFIGS['savemodel']
+parallel = IMAGE_CONFIGS['parallel']
 
 
 def model_for_masking(index):
@@ -87,8 +129,12 @@ for loop_id in range(1, loop_count[calmode] + 1):
                                                                                                     calmode))
     applycal(vis=dataset, gaintable=[cal_table], applymode=applymode, spw=spw)
 
-    clean(vis=dataset, imagename=image_name, imagermode='csclean', imsize=imsize, cell=[cell],
-          mode='mfs', robust=robust, weighting='briggs', interactive=interactive, threshold=clean_threshold,
-          niter=niter, cyclefactor=cyclefactor, spw=spw)
+    tclean(vis=dataset, imagename=image_name, imsize=imsize, cell=[cell], stokes=stokes, weighting=weighting,
+           robust=robust, restoringbeam=restoringbeam, uvtaper=uvtaper, mask=mask, interactive=interactive, niter=niter,
+           deconvolver=deconvolver, specmode=specmode, nterms=nterms, reffreq=reffreq, nchan=nchan, start=start,
+           width=width, outframe=outframe, veltype=veltype, restfreq=restfreq, gridder=gridder, facets=facets,
+           wprojplanes=wprojplanes, aterm=aterm, psterm=psterm, wbawp=wbawp, conjbeams=conjbeams, pblimit=pblimit,
+           normtype=normtype, pbcor=pbcor, gain=gain, threshold=clean_threshold, cycleniter=cycleniter,
+           cyclefactor=cyclefactor, savemodel=savemodel, parallel=parallel, spw=spw)
 
 split(vis=dataset, outputvis=outputvis, spw=spw, datacolumn='corrected')
