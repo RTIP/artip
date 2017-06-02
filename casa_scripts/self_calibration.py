@@ -22,7 +22,7 @@ mask_threshold = sys.argv[-10]
 bmask_bottom_left_corner = [int(sys.argv[-9]), int(sys.argv[-8])]
 bmask_top_right_corner = [int(sys.argv[-7]), int(sys.argv[-6])]
 mask_path = sys.argv[-5]
-loop_count = {'p': int(sys.argv[-4]), 'ap': int(sys.argv[-3])}
+loop_count = {'ap': int(sys.argv[-4]), 'p': int(sys.argv[-3])}
 calmode = sys.argv[-2]
 spw = sys.argv[-1]
 
