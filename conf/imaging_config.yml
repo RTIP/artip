@@ -63,3 +63,4 @@ line_image:
   specmode: 'cube'
   niter: 0
   outframe: 'topo'
+  savemodel: 'none'
