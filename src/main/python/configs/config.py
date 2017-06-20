@@ -1,15 +1,13 @@
 from config_loader import ConfigLoader
-import platform
 
 ALL_CONFIGS = None
 GLOBAL_CONFIG = None
 OUTPUT_PATH = None
-CASAPY_CONFIG = None
+CASA_CONFIG = None
 
 def load(config_path):
-    global ALL_CONFIGS, GLOBAL_CONFIG, CASAPY_CONFIG, OUTPUT_PATH
-
-    ALL_CONFIGS = ConfigLoader().load(config_path)
+    global ALL_CONFIGS, GLOBAL_CONFIG, OUTPUT_PATH, CASA_CONFIG
+    ALL_CONFIGS = ConfigLoader().load(config_path + "config.yml")
     GLOBAL_CONFIG = ALL_CONFIGS['global']
     OUTPUT_PATH = GLOBAL_CONFIG['output_path']
-    CASAPY_CONFIG = ALL_CONFIGS['casapy'][platform.system()]
+    CASA_CONFIG = ConfigLoader().load(config_path + "casa.yml")

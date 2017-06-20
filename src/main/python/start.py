@@ -1,6 +1,7 @@
 from os import path, listdir, makedirs, remove
 from re import search
-from shutil import copyfile, rmtree
+from distutils.dir_util import copy_tree
+from shutil import rmtree
 from configs import config
 from os.path import expanduser
 
@@ -39,4 +40,4 @@ def create_flag_file():
 
 
 def snapshot_config(config_path):
-    copyfile(config_path, config.OUTPUT_PATH + "/config.yml")
+    copy_tree(config_path, config.OUTPUT_PATH+"/conf/")

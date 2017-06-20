@@ -1,0 +1,16 @@
+casa:
+  Darwin:
+    path: '/Applications/CASA.app/Contents/MacOS/casapy'
+    model_path: '/Applications/CASA.app/Contents/data/nrao/VLA/CalModels'
+  Linux:
+    path: '/usr/local/bin/CASA/casa-stable-4.7.134/bin/casa'
+    model_path: '/usr/local/bin/CASA/casa-stable-4.7.134/data/nrao/VLA/CalModels'
+
+is_parallel: False
+
+mpicasa:
+  n: 5
+  hostfile: ''
+  mca:
+    btl_tcp_if_include: lo
+    oob_tcp_if_include: lo

@@ -119,11 +119,3 @@ target_source:
       robust: 0.5
       fitspw_channels: '20~150\;350~470' #add skip char if using semicolon(;)
       cell: '0.5arcsec'
-
-casapy:
-    Darwin:
-      path: '/Applications/CASA.app/Contents/MacOS/casapy'
-      model_path: '/Applications/CASA.app/Contents/data/nrao/VLA/CalModels'
-    Linux:
-      path: '/usr/local/bin/CASA/casa-stable-4.7.134/bin/casa'
-      model_path: '/usr/local/bin/CASA/casa-stable-4.7.134/data/nrao/VLA/CalModels'

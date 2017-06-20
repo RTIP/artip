@@ -1,6 +1,7 @@
 from configs import config
 from casa.flag_reasons import BAD_ANTENNA_TIME, BAD_BASELINE_TIME
 import os
+import platform
 import subprocess
 import casac
 from logger import logger
@@ -89,7 +90,8 @@ class CasaRunner:
         logger.info(Color.HEADER + 'Running setjy' + Color.ENDC)
         script_path = 'casa_scripts/setjy.py'
         freq_band = "L"
-        model_path = "{0}/{1}_{2}.im".format(config.CASAPY_CONFIG['model_path'], source_name.split("_")[0], freq_band)
+        model_path = "{0}/{1}_{2}.im".format(config.CASA_CONFIG['casa'][platform.system()]['model_path'],
+                                             source_name.split("_")[0], freq_band)
         script_parameters = "{0} {1} {2} {3}".format(config.GLOBAL_CONFIG['spw_range'], self._dataset_path, source_id,
                                                      model_path)
         self._run(script_path, script_parameters)
@@ -202,13 +204,36 @@ class CasaRunner:
         table.open(self._dataset_path)
         table.unlock()
 
+    def _form_casa_command(self, script, script_parameters):
+        casa_path = config.CASA_CONFIG['casa'][platform.system()]['path']
+        logfile = config.OUTPUT_PATH + "/casa.log"
+        script_full_path = os.path.realpath(script)
+        casa_command = "{0} --nologger --nogui  --logfile {1} -c {2} {3}" \
+            .format(casa_path, logfile, script_full_path, script_parameters)
+        return casa_command
+
+    def _form_mpi_command(self, script, script_parameters):
+        mpi_config = config.CASA_CONFIG['mpicasa']
+        mpi_command = "mpicasa -n {0}".format(mpi_config['n'])
+        if mpi_config['hostfile']:
+            mpi_command += " --hostfile {0} ".format(mpi_config['hostfile'])
+
+        mpi_command += " --mca btl_tcp_if_include {0} --mca oob_tcp_if_include {1}  " \
+            .format(mpi_config['mca']['btl_tcp_if_include'],
+                    mpi_config['mca']['oob_tcp_if_include'])
+
+        casa_command = self._form_casa_command(script, script_parameters)
+        return mpi_command + casa_command
+
     def _run(self, script, script_parameters=None):
-        casapy_path = config.CASAPY_CONFIG['path']
+        casa_output_file = config.OUTPUT_PATH + "/casa_output.txt"
         if not script_parameters: script_parameters = self._dataset_path
         self._unlock_dataset()
-        logfile = config.OUTPUT_PATH + "/casa.log"
-        casa_output_file = config.OUTPUT_PATH + "/casa_output.txt"
-        script_full_path = os.path.realpath(script)
-        command = "{0} --nologger --nogui  --logfile {1} -c {2} {3}".format(casapy_path, logfile, script_full_path,
-                                                                            script_parameters)
+
+        if config.CASA_CONFIG['is_parallel']:
+            command = self._form_mpi_command(script, script_parameters)
+        else:
+            command = self._form_casa_command(script, script_parameters)
+
+        logger.debug("Executing command -> " + command)
         subprocess.Popen(command, stdin=subprocess.PIPE, stdout=file(casa_output_file, 'a+'), shell=True).wait()
