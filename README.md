@@ -20,8 +20,8 @@ Then execute
 >> pyb
 
 And to run the application, execute
->> pyb run -P dataset="<ms_dataset_path>"
-    e.g. pyb run -P dataset="~/Downloads/may14.ms"
+>> pyb run -P dataset="<ms_dataset_path>" conf="<conf_dir_path>"
+    e.g. pyb run -P dataset="~/Downloads/may14.ms" -P conf="conf/"
     #Do not forget to put the quotes on the property value
 
 To build the Distributable package
