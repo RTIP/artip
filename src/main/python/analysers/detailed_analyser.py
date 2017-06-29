@@ -1,7 +1,6 @@
 from logger import logger
 from amplitude_matrix import AmplitudeMatrix
 from window import Window
-from configs import pipeline_config
 from casa.flag_reasons import BAD_ANTENNA_TIME, BAD_BASELINE_TIME
 from terminal_color import Color
 
@@ -10,11 +9,10 @@ class DetailedAnalyser:
         self.measurement_set = measurement_set
         self._source_config = source_config
 
-    def analyse_antennas(self, spw_polarization_and_scan_product, debugger):
+    def analyse_antennas(self, spw_polarization_and_scan_product):
         logger.info(Color.HEADER + "Started detailed flagging on all unflagged antennas" + Color.ENDC)
         bad_window_present = False
         for spw, polarization, scan_id in spw_polarization_and_scan_product:
-            if pipeline_config.PIPELINE_CONFIGS['manual_flag']: debugger.flag_antennas(polarization, [scan_id])
             scan_times = self.measurement_set.timesforscan(scan_id)
             amp_matrix = AmplitudeMatrix(self.measurement_set, polarization, scan_id, spw, self._source_config)
             global_median = amp_matrix.median()
@@ -38,7 +36,7 @@ class DetailedAnalyser:
 
         return bad_window_present
 
-    def analyse_baselines(self, spw_polarization_and_scan_product, debugger):
+    def analyse_baselines(self, spw_polarization_and_scan_product):
         bad_window_present = False
         logger.info(Color.HEADER + "Started detailed flagging on all baselines" + Color.ENDC)
         for spw, polarization, scan_id in spw_polarization_and_scan_product:

@@ -23,7 +23,7 @@ class AngularDispersion(Analyser):
             if config.GLOBAL_CONFIG['refant']:
                 base_antenna = self.measurement_set.get_antenna_by_id(config.GLOBAL_CONFIG['refant'])
             else:
-                base_antenna = self.measurement_set.get_antennas(polarization, scan_id)[0]
+                base_antenna = self.measurement_set.antennas(polarization, scan_id)[0]
             r_matrix = RMatrix(spw, polarization, scan_id)
             history = set()
             self._mark_antennas_status(spw, polarization, scan_id, self.source_config, base_antenna, r_matrix, history)

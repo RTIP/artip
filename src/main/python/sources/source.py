@@ -5,7 +5,6 @@ from analysers.closure_analyser import ClosureAnalyser
 from analysers.detailed_analyser import DetailedAnalyser
 from casa.flag_reasons import BAD_ANTENNA_TIME, BAD_BASELINE_TIME
 from configs import config, pipeline_config
-from helpers import Debugger
 from terminal_color import Color
 from casa.flag_reasons import BAD_ANTENNA
 from report import Report
@@ -25,7 +24,7 @@ class Source(object):
         raise NotImplementedError("Not implemented")
 
     def reduce_data(self):
-        if not pipeline_config.PIPELINE_CONFIGS['manual_flag']: self.flag_antennas()
+        self.flag_antennas()
         self.calibrate()
         self.flag_and_calibrate_in_detail()
 
@@ -34,7 +33,7 @@ class Source(object):
         self.analyse_antennas_on_closure_phases()
 
         scan_ids = self.measurement_set.scan_ids_for(self.source_ids)
-        Report(self.measurement_set.get_antennas()).generate_report(scan_ids)
+        Report(self.measurement_set.antennas()).generate_report(scan_ids)
 
         self.measurement_set.flag_bad_antennas(self.source_ids)
         self.extend_flags()
@@ -47,13 +46,12 @@ class Source(object):
         self._flag_bad_time(BAD_BASELINE_TIME, detailed_analyser.analyse_baselines)
 
     def _flag_bad_time(self, reason, analyser):
-        debugger = Debugger(self.measurement_set)
         polarizations = config.GLOBAL_CONFIG['polarizations']
         spw = config.GLOBAL_CONFIG['default_spw']
         scan_ids = self.measurement_set.scan_ids_for(self.source_ids)
         spw_polarization_scan_product = list(itertools.product(spw, polarizations, scan_ids))
         while True:
-            bad_time_present = analyser(spw_polarization_scan_product, debugger)
+            bad_time_present = analyser(spw_polarization_scan_product)
             if bad_time_present:
                 logger.info(Color.HEADER + 'Flagging {0} in CASA'.format(reason) + Color.ENDC)
                 self.measurement_set.casa_runner.flagdata(reason)

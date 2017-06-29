@@ -40,7 +40,7 @@ class PhaseCalibrator(Source):
                 next_scan_id = self._get_next_scan_id(bad_scan_id, source_ids)
                 if next_scan_id in bad_scan_ids:
                     scan_ids_to_flag = range(bad_scan_id, next_scan_id + 1)
-                    self.measurement_set.flag_antennas(polarization, scan_ids_to_flag, [antenna_id])
+                    self.measurement_set.flag_antennas([polarization], scan_ids_to_flag, [antenna_id])
 
     def _get_next_scan_id(self, scan_id, source_ids):
         scan_ids = self.measurement_set.scan_ids_for(source_ids)

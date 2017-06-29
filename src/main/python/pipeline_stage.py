@@ -2,6 +2,7 @@ import datetime
 from logger import logger
 from terminal_color import Color
 from configs import config
+from casa.flag_reasons import BAD_ANTENNA
 from sources.flux_calibrator import FluxCalibrator
 from sources.bandpass_calibrator import BandpassCalibrator
 from sources.phase_calibrator import PhaseCalibrator
@@ -27,8 +28,16 @@ class PipelineStage(object):
                     end_time = datetime.datetime.now()
                     logger.info(Color.LightCyan + Color.UNDERLINE + 'Time spent in ' + stage_func.__name__ + '= ' + str(
                         abs((end_time - start_time).seconds)) + " seconds" + Color.ENDC)
+
             return stage_func_wrapper
+
         return toggle_decorator
+
+    @_run(STAGE_TOGGLES['flag_known_bad_antennas'])
+    def flag_known_bad_antennas(self):
+        self._measurement_set.quack()
+        if pipeline_config.PIPELINE_CONFIGS['known_bad_antennas']:
+            self._measurement_set.casa_runner.flagdata(BAD_ANTENNA)
 
     @_run(STAGE_TOGGLES['flux_calibration'])
     def flux_calibration(self):

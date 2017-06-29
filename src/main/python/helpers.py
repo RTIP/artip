@@ -33,10 +33,3 @@ def create_dir(directory):
 def format_spw_with_channels(spw_list, channel):
     return ",".join(["{0}:{1}".format(s, channel) for s in spw_list.split(",")])
 
-
-class Debugger:
-    def __init__(self, measurement_set):
-        self._measurement_set = measurement_set
-
-    def flag_antennas(self, polarization, scan_ids):
-        self._measurement_set.flag_antennas(polarization, scan_ids, pipeline_config.FLAGGED_ELEMENTS['antennas'])

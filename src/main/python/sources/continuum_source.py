@@ -1,7 +1,6 @@
 from configs import config
 from sources.target_source import TargetSource
 from measurement_set import MeasurementSet
-from helpers import Debugger
 from terminal_color import Color
 import itertools
 from logger import logger
@@ -20,14 +19,13 @@ class ContinuumSource(TargetSource):
         self.flag_and_calibrate_in_detail()
 
     def _flag_bad_time(self, reason, analyser):
-        debugger = Debugger(self.measurement_set)
         polarizations = config.GLOBAL_CONFIG['polarizations']
         scan_ids = self.measurement_set.scan_ids_for(self.source_ids)
         spw_polarization_scan_product = list(itertools.product(self.spw, polarizations, scan_ids))
-        self._flag_only_once(reason, analyser, spw_polarization_scan_product, debugger)
+        self._flag_only_once(reason, analyser, spw_polarization_scan_product)
 
-    def _flag_only_once(self, reason, analyser, spw_polarization_scan_product, debugger):
-        bad_time_present = analyser(spw_polarization_scan_product, debugger)
+    def _flag_only_once(self, reason, analyser, spw_polarization_scan_product):
+        bad_time_present = analyser(spw_polarization_scan_product)
         if bad_time_present:
             logger.info(Color.HEADER + 'Flagging {0} in CASA'.format(reason) + Color.ENDC)
             self.measurement_set.casa_runner.flagdata(reason)

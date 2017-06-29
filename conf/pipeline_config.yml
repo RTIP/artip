@@ -1,6 +1,5 @@
-# These configs are used only in development/debugging
-
 stages:
+  flag_known_bad_antennas: true
   flux_calibration: true
   bandpass_calibration: true
   phase_calibration: true
@@ -9,14 +8,14 @@ stages:
       create_continuum: true
     all_spw:
       run_auto_flagging: true
-      create_continuum: false
+      create_continuum: true
       create_line_image: true
 
-manual_flag: false
-flagged:
-  antennas: [1,18]
+known_bad_antennas:
+  - polarizations: ['RR', 'LL']
+    scan_ids: [1,2,3,4,5,6,7]
+    antennas: [1,18]
 
 code_profiling: false
 log_level: 20
 #debug: 10, info: 20, warning: 30, error: 40, critical: 50
-

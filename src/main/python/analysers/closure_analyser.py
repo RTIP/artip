@@ -36,7 +36,7 @@ class ClosureAnalyser(Analyser):
         spw = config.GLOBAL_CONFIG['default_spw']
         spw_polarization_scan_id_combination = itertools.product(spw, polarizations, scan_ids)
         for spw, polarization, scan_id in spw_polarization_scan_id_combination:
-            antennas = self.measurement_set.get_antennas(polarization, scan_id)
+            antennas = self.measurement_set.antennas(polarization, scan_id)
 
             logger.debug(
                 Color.BACKGROUD_WHITE + "Polarization =" + polarization + " Scan Id=" + str(scan_id) + Color.ENDC)

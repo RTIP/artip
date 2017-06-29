@@ -10,9 +10,9 @@ from pipeline_stage import PipelineStage
 def main(dataset_path):
     start_time = datetime.datetime.now()
     measurement_set = MeasurementSet(dataset_path, config.OUTPUT_PATH)
-    measurement_set.quack()
 
     pipeline_stages = PipelineStage(measurement_set)
+    pipeline_stages.flag_known_bad_antennas()
     pipeline_stages.flux_calibration()
     pipeline_stages.bandpass_calibration()
     pipeline_stages.phase_calibration()
