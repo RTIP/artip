@@ -13,9 +13,7 @@ config_path = sys.argv[-1]
 source_type = sys.argv[-2]
 ms_dataset = sys.argv[-3]
 
-print "~~~~~",config_path, source_type, ms_dataset
-
-AUTO_FLAGGING_CONFIGS = load(config_path + "/auto_flagging_config.yml")
+AUTO_FLAGGING_CONFIGS = load(config_path + "auto_flagging_config.yml")
 SOURCE_AUTOFLAGGING_CONFIGS = AUTO_FLAGGING_CONFIGS[source_type]['auto_flagging_algo']
 config = load(config_path + "config.yml")
 GLOBAL_CONFIG = config["global"]

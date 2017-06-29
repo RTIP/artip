@@ -54,7 +54,7 @@ def run_integration_tests():
 
 @task
 def run(project):
-    config_path = project.get_property("conf")
+    config_path = project.get_property("conf") + "/"
     config.load(config_path)
     pipeline_config.load(config_path + "pipeline_config.yml")
     with conditional(pipeline_config.PIPELINE_CONFIGS['code_profiling'], Profiler()):

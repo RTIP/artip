@@ -13,7 +13,7 @@ source_type = sys.argv[-2]
 ms_dataset = sys.argv[-3]
 AUTO_FLAGGING_CONFIGS = load(config_path +"auto_flagging_config.yml")
 SOURCE_AUTOFLAGGING_CONFIGS = AUTO_FLAGGING_CONFIGS[source_type]['auto_flagging_algo']
-config = load(config_path + "/config.yml")
+config = load(config_path + "config.yml")
 GLOBAL_CONFIG = config["global"]
 if source_type == "bandpass_calibrator":
     SOURCE_CONFIG = config[source_type]
