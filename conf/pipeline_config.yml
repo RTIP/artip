@@ -9,8 +9,8 @@ stages:
       create_continuum: true
     all_spw:
       run_auto_flagging: true
+      create_continuum: false
       create_line_image: true
-      create_continuum: true
 
 manual_flag: false
 flagged:

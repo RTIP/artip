@@ -4,7 +4,6 @@ from pybuilder.core import use_plugin, init, task
 path.append("src/main/python")
 from configs import config, pipeline_config, logging_config
 import start
-from main import main
 from profiler import Profiler
 from conditional import conditional
 
@@ -58,7 +57,6 @@ def run(project):
     config_path = project.get_property("conf")
     config.load(config_path)
     pipeline_config.load(config_path + "pipeline_config.yml")
-
     with conditional(pipeline_config.PIPELINE_CONFIGS['code_profiling'], Profiler()):
         dataset_path = project.get_property("dataset")
         logging_config.load()
@@ -66,5 +64,6 @@ def run(project):
         start.create_output_dir(dataset_path)
         start.snapshot_config(config_path)
         start.create_flag_file()
+        from main import main
         main(dataset_path)
         start.clean()
