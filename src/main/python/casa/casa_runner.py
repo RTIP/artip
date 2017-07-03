@@ -170,11 +170,14 @@ class CasaRunner:
     def apply_line_calibration(self, calmode_config, source_id, mode):
         logger.info(Color.HEADER + "Applying calibration on Line.." + Color.ENDC)
         script_path = 'casa_scripts/apply_line_calibration.py'
+        p_loop_count = calmode_config["p"]["loop_count"]
+        ap_loop_count = calmode_config["ap"]["loop_count"]
         p_table = '{0}/self_caled_p_{1}_{2}/p_selfcaltable_{3}.gcal'.format(config.OUTPUT_PATH, mode, source_id,
-                                                                            calmode_config["p"]["loop_count"])
+                                                                            p_loop_count)
         ap_table = '{0}/self_caled_ap_{1}_{2}/ap_selfcaltable_{3}.gcal'.format(config.OUTPUT_PATH, mode, source_id,
-                                                                               calmode_config["ap"]["loop_count"])
-        script_parameters = "{0} {1} {2}".format(ap_table, p_table, self._dataset_path)
+                                                                               ap_loop_count)
+        script_parameters = "{0} {1} {2} {3} {4}".format(p_loop_count, ap_loop_count, ap_table, p_table,
+                                                         self._dataset_path)
         self._run(script_path, script_parameters)
 
     def extend_continuum_flags(self, source_id):
