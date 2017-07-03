@@ -1,6 +1,8 @@
 from configs import config
 from sources.target_source import TargetSource
 from measurement_set import MeasurementSet
+from casa.flag_reasons import BAD_ANTENNA, BAD_ANTENNA_TIME, BAD_BASELINE_TIME, BAD_TIME
+from analysers.detailed_analyser import DetailedAnalyser
 from terminal_color import Color
 import itertools
 from logger import logger
@@ -18,11 +20,16 @@ class ContinuumSource(TargetSource):
     def reduce_data(self):
         self.flag_and_calibrate_in_detail()
 
-    def _flag_bad_time(self, reason, analyser):
-        polarizations = config.GLOBAL_CONFIG['polarizations']
-        scan_ids = self.measurement_set.scan_ids_for(self.source_ids)
-        spw_polarization_scan_product = list(itertools.product(self.spw, polarizations, scan_ids))
-        self.analyse_and_flag_once(reason, analyser, spw_polarization_scan_product)
+    def calibrate(self):
+        pass
+
+    def flag_and_calibrate_in_detail(self):
+        logger.info(Color.HEADER + "Started Detail Flagging..." + Color.ENDC)
+        detailed_analyser = DetailedAnalyser(self.measurement_set, self.config)
+        self._flag_bad_time(BAD_TIME, detailed_analyser.analyse_time, True)
+        self._flag_bad_time(BAD_ANTENNA_TIME, detailed_analyser.analyse_antennas, True)
+        self._flag_bad_time(BAD_BASELINE_TIME, detailed_analyser.analyse_baselines, True)
+
 
     def self_calibrate(self, mode):
         config = self.config['self_calibration']

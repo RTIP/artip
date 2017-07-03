@@ -51,12 +51,9 @@ class Source(object):
         scan_ids = self.measurement_set.scan_ids_for(self.source_ids)
         spw_polarization_scan_product = list(itertools.product(spw, polarizations, scan_ids))
 
-        if run_only_once:
-            self.analyse_and_flag_once(reason, analyser, spw_polarization_scan_product)
-        else:
-            self.analyse_and_flag_until_bad(reason, analyser, spw_polarization_scan_product)
+        self.analyse_and_flag(reason, analyser, spw_polarization_scan_product, run_only_once)
 
-    def analyse_and_flag_until_bad(self, reason, analyser, spw_polarization_scan_product):
+    def analyse_and_flag(self, reason, analyser, spw_polarization_scan_product, run_only_once):
         while True:
             bad_time_present = analyser(spw_polarization_scan_product)
             if bad_time_present:
@@ -67,14 +64,7 @@ class Source(object):
                 logger.info(Color.OKGREEN + 'No {0} Found'.format(reason) + Color.ENDC)
                 break
 
-    def analyse_and_flag_once(self, reason, analyser, spw_polarization_scan_product):
-        bad_time_present = analyser(spw_polarization_scan_product)
-        if bad_time_present:
-            logger.info(Color.HEADER + 'Flagging {0} in CASA'.format(reason) + Color.ENDC)
-            self.measurement_set.casa_runner.flagdata(reason)
-            self.calibrate()
-        else:
-            logger.info(Color.OKGREEN + 'No {0} Found'.format(reason) + Color.ENDC)
+            if run_only_once: break
 
     def analyse_antennas_on_closure_phases(self):
         logger.info(Color.HEADER + "Identifying bad Antennas based on closure phases..." + Color.ENDC)

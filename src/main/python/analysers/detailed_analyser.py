@@ -11,7 +11,7 @@ class DetailedAnalyser:
         self._source_config = source_config
 
     def analyse_time(self, spw_polarization_and_scan_product):
-        logger.info(Color.HEADER + "Started detailed flagging on all unflagged antennas" + Color.ENDC)
+        logger.info(Color.HEADER + "Started detailed flagging on time" + Color.ENDC)
         for spw, polarization, scan_id in spw_polarization_and_scan_product:
             scan_times = self.measurement_set.timesforscan(scan_id)
             amp_matrix = AmplitudeMatrix(self.measurement_set, polarization, scan_id, spw, self._source_config)
