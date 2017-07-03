@@ -3,9 +3,9 @@ from amplitude_matrix import AmplitudeMatrix
 class Window:
     def __init__(self, collection, config):
         self._collection = collection
-        self._bucket_size = config['detail_flagging']['sliding_window']['bucket_size']
-        self._overlap_count = config['detail_flagging']['sliding_window']['overlap']
-        self._window_start_index = 3
+        self._bucket_size = config['bucket_size']
+        self._overlap_count = config['overlap']
+        self._window_start_index = config['start_index']
         self._window_data = None
         self._config = config
 

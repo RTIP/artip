@@ -91,13 +91,13 @@ class AmplitudeMatrix:
     def is_empty(self):
         return len(numpy.array(self.amplitude_data_matrix.values()).flatten()) == 0
 
-    def is_bad(self, global_median, global_sigma):
+    def is_bad(self, global_median, deviation_threshold):
         matrix_median = self.median()
         matrix_sigma = self.mad_sigma()
         if numpy.isnan(matrix_median) or numpy.isnan(matrix_sigma): return False
 
-        deviated_median = self._deviated_median(global_median, global_sigma, matrix_median)
-        scattered_amplitude = self._scattered_amplitude(global_sigma, matrix_sigma)
+        deviated_median = self._deviated_median(global_median, deviation_threshold, matrix_median)
+        scattered_amplitude = self._scattered_amplitude(deviation_threshold, matrix_sigma)
         if deviated_median or scattered_amplitude:
             logger.debug(Color.UNDERLINE + "matrix=" + str(self.amplitude_data_matrix) + Color.ENDC)
             logger.debug(Color.UNDERLINE + " median=" + str(matrix_median) + ", median sigma=" + str(matrix_sigma)
@@ -106,11 +106,11 @@ class AmplitudeMatrix:
                 scattered_amplitude) + Color.ENDC)
         return deviated_median or scattered_amplitude
 
-    def _deviated_median(self, global_median, global_sigma, actual_median):
-        return abs(actual_median - global_median) > (self._config['detail_flagging']['mad_scale_factor'] * global_sigma)
+    def _deviated_median(self, global_median, deviation_threshold, actual_median):
+        return abs(actual_median - global_median) > deviation_threshold
 
-    def _scattered_amplitude(self, global_sigma, actual_sigma):
-        return actual_sigma > (self._config['detail_flagging']['mad_scale_factor'] * global_sigma)
+    def _scattered_amplitude(self, deviation_threshold, actual_sigma):
+        return actual_sigma > deviation_threshold
 
     def __repr__(self):
         return "AmpMatrix=" + str(self.amplitude_data_matrix) + " med=" + \

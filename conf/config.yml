@@ -25,10 +25,18 @@ common: &common
     percentage_of_good_triplets: 70
     percentile_threshold: 70
   detail_flagging: &detail_flagging
-    sliding_window:
-      bucket_size: 10
-      overlap: 5
-    mad_scale_factor: 3
+    antenna:
+      sliding_window:
+        start_index: 3
+        bucket_size: 10
+        overlap: 5
+        mad_scale_factor: 3
+    baseline:
+      sliding_window:
+        start_index: 3
+        bucket_size: 10
+        overlap: 5
+        mad_scale_factor: 3
     amplitude_data_column: 'corrected_amplitude'
 
 
@@ -101,11 +109,9 @@ target_source:
           robust: 0.5
           applymode: 'calflag'
     detail_flagging:
-      sliding_window:
-        bucket_size: 10
-        overlap: 5
-      mad_scale_factor: 3
+      <<: *detail_flagging
       amplitude_data_column: 'amplitude'
+
 
   line:
     fields: [0]
