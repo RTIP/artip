@@ -22,15 +22,7 @@ class ContinuumSource(TargetSource):
         polarizations = config.GLOBAL_CONFIG['polarizations']
         scan_ids = self.measurement_set.scan_ids_for(self.source_ids)
         spw_polarization_scan_product = list(itertools.product(self.spw, polarizations, scan_ids))
-        self._flag_only_once(reason, analyser, spw_polarization_scan_product)
-
-    def _flag_only_once(self, reason, analyser, spw_polarization_scan_product):
-        bad_time_present = analyser(spw_polarization_scan_product)
-        if bad_time_present:
-            logger.info(Color.HEADER + 'Flagging {0} in CASA'.format(reason) + Color.ENDC)
-            self.measurement_set.casa_runner.flagdata(reason)
-        else:
-            logger.info(Color.OKGREEN + 'No {0} Found'.format(reason) + Color.ENDC)
+        self.analyse_and_flag_once(reason, analyser, spw_polarization_scan_product)
 
     def self_calibrate(self, mode):
         config = self.config['self_calibration']

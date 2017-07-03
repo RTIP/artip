@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 from itertools import product
 
 from casa.casa_runner import CasaRunner
-from casa.flag_reasons import BAD_ANTENNA, BAD_ANTENNA_TIME, BAD_BASELINE_TIME
+from casa.flag_reasons import BAD_ANTENNA, BAD_ANTENNA_TIME, BAD_BASELINE_TIME, BAD_TIME
 from casa.flag_recorder import FlagRecorder
 from configs import config
 from configs import pipeline_config
@@ -150,6 +150,12 @@ class MeasurementSet:
         start_with_delta = datetime.strftime(start - time_delta, datetime_format)
         end_with_delta = datetime.strftime(end + time_delta, datetime_format)
         return start_with_delta, end_with_delta
+
+    def flag_bad_time(self, polarization, scan_id, timerange):
+        timerange_for_flagging = self._get_timerange_for_flagging(timerange)
+        self.flag_recorder.mark_entry(
+            {'mode': 'manual', 'reason': BAD_TIME, 'correlation': polarization,
+             'scan': scan_id, 'timerange': '~'.join(timerange_for_flagging)})
 
     def flag_bad_antenna_time(self, polarization, scan_id, antenna_id, timerange):
         timerange_for_flagging = self._get_timerange_for_flagging(timerange)
