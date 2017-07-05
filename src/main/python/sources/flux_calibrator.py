@@ -23,7 +23,7 @@ class FluxCalibrator(Source):
     def _extend_bad_antennas_across_all_sources(self):
         polarizations = config.GLOBAL_CONFIG['polarizations']
         for polarization in polarizations:
-            scan_ids = self.measurement_set.scan_ids_for(self.source_ids)
+            scan_ids = self.measurement_set.scan_ids(self.source_ids, polarization)
             antennas_with_scans = self.measurement_set.get_bad_antennas_with_scans_for(polarization, self.source_ids)
             bad_antennas = filter(lambda antenna: len(antennas_with_scans[antenna]) == len(scan_ids),
                                   antennas_with_scans.keys())

@@ -31,9 +31,8 @@ class Source(object):
         self.analyse_antennas_on_angular_dispersion()
         self.analyse_antennas_on_closure_phases()
 
-        scan_ids = self.measurement_set.scan_ids_for(self.source_ids)
+        scan_ids = self.measurement_set.scan_ids(self.source_ids)
         Report(self.measurement_set.antennas()).generate_report(scan_ids)
-
         self.measurement_set.flag_bad_antennas(self.source_ids)
         self.extend_flags()
         self.measurement_set.casa_runner.flagdata(BAD_ANTENNA)
@@ -46,12 +45,14 @@ class Source(object):
         self._flag_bad_time(BAD_BASELINE_TIME, detailed_analyser.analyse_baselines, False)
 
     def _flag_bad_time(self, reason, analyser, run_only_once):
-        polarizations = config.GLOBAL_CONFIG['polarizations']
+        spw_polarization_scan_id_combination = []
         spw = config.GLOBAL_CONFIG['default_spw']
-        scan_ids = self.measurement_set.scan_ids_for(self.source_ids)
-        spw_polarization_scan_product = list(itertools.product(spw, polarizations, scan_ids))
 
-        self.analyse_and_flag(reason, analyser, spw_polarization_scan_product, run_only_once)
+        for polarization in config.GLOBAL_CONFIG['polarizations']:
+            scan_ids = self.measurement_set.scan_ids(self.source_ids, polarization)
+            spw_polarization_scan_id_combination += list(itertools.product(spw, [polarization], scan_ids))
+
+        self.analyse_and_flag(reason, analyser, spw_polarization_scan_id_combination, run_only_once)
 
     def analyse_and_flag(self, reason, analyser, spw_polarization_scan_product, run_only_once):
         while True:

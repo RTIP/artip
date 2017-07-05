@@ -14,10 +14,14 @@ class AngularDispersion(Analyser):
         super(AngularDispersion, self).__init__(measurement_set, source)
 
     def identify_antennas_status(self):
-        polarizations = config.GLOBAL_CONFIG['polarizations']
-        spws = config.GLOBAL_CONFIG['default_spw']
-        scan_ids = self.measurement_set.scan_ids_for(self.source_config['fields'])
-        for spw, polarization, scan_id in product(spws, polarizations, scan_ids):
+        spw_polarization_scan_id_combination = []
+        spw = config.GLOBAL_CONFIG['default_spw']
+
+        for polarization in config.GLOBAL_CONFIG['polarizations']:
+            scan_ids = self.measurement_set.scan_ids(self.source_config['fields'], polarization)
+            spw_polarization_scan_id_combination += list(product(spw, [polarization], scan_ids))
+
+        for spw, polarization, scan_id in spw_polarization_scan_id_combination:
             logger.debug(
                 Color.BACKGROUD_WHITE + "Polarization =" + polarization + " Scan Id=" + str(scan_id) + Color.ENDC)
             if config.GLOBAL_CONFIG['refant']:

@@ -2,8 +2,8 @@ import numpy
 import math
 import os
 
-from configs import pipeline_config
-
+def flatten(elements):
+    return list(numpy.array(elements).flatten())
 
 def minus(list1, list2):
     return filter(lambda elm: elm not in list2, list1)

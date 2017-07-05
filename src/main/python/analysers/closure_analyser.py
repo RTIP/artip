@@ -30,11 +30,13 @@ class ClosureAnalyser(Analyser):
         return percentileofscore > self.source_config['closure']['percentage_of_closures']
 
     def identify_antennas_status(self):
-        scan_ids = self.measurement_set.scan_ids_for(self.source_config['fields'])
-
-        polarizations = config.GLOBAL_CONFIG['polarizations']
+        spw_polarization_scan_id_combination = []
         spw = config.GLOBAL_CONFIG['default_spw']
-        spw_polarization_scan_id_combination = itertools.product(spw, polarizations, scan_ids)
+
+        for polarization in config.GLOBAL_CONFIG['polarizations']:
+            scan_ids = self.measurement_set.scan_ids(self.source_config['fields'], polarization)
+            spw_polarization_scan_id_combination += list(itertools.product(spw, [polarization], scan_ids))
+
         for spw, polarization, scan_id in spw_polarization_scan_id_combination:
             antennas = self.measurement_set.antennas(polarization, scan_id)
 
@@ -64,8 +66,8 @@ class ClosureAnalyser(Analyser):
         percentage = (float(good_triplets_count) / float(len(antenna_combinations))) * 100
 
         logger.debug("Antenna={0}, total={1}, good_triplets_count={2}, Percentage={3}".format(antenna,
-                                                                                               len(
-                                                                                                   antenna_combinations),
-                                                                                               good_triplets_count,
-                                                                                               percentage))
+                                                                                              len(
+                                                                                                  antenna_combinations),
+                                                                                              good_triplets_count,
+                                                                                              percentage))
         return percentage > self.source_config['closure']['percentage_of_good_triplets']

@@ -7,8 +7,8 @@ p_table = sys.argv[-2]
 ms_dataset = sys.argv[-1]
 
 gaintable = []
-gaintable.append(p_table) if p_loop_count > 0
-gaintable.append(ap_table) if ap_loop_count > 0
+if p_loop_count > 0: gaintable.append(p_table)
+if ap_loop_count > 0: gaintable.append(ap_table)
 
 gainfield = ['0'] * len(gaintable)
 
