@@ -102,10 +102,10 @@ class MeasurementSet:
         return self._ms.metadata().fieldsforspw(int(config.GLOBAL_CONFIG['default_spw']))
 
     def _all_scan_ids(self, source_id=None):
-        if source_id:
-            scan_ids = self._ms.metadata().scansforfield(source_id)
-        else:
+        if source_id is None:
             scan_ids = list(self._ms.metadata().scannumbers())
+        else:
+            scan_ids = self._ms.metadata().scansforfield(source_id)
 
         return map(lambda scan_id: int(scan_id), scan_ids)
 
