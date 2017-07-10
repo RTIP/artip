@@ -46,14 +46,15 @@ class PipelineStage(object):
         flux_calibrator.run_setjy()
         flux_calibrator.reduce_data()
 
-    @_run(STAGE_TOGGLES['bandpass_calibration'])
+    @_run(STAGE_TOGGLES['bandpass_calibration']['run_bandpass'])
     def bandpass_calibration(self):
         logger.info(Color.SOURCE_HEADING + "Bandpass Calibration" + Color.ENDC)
         bandpass_calibrator = BandpassCalibrator(self._measurement_set)
         bandpass_calibrator.calibrate()
-        bandpass_calibrator.run_tfcrop()
-        bandpass_calibrator.run_rflag()
-        bandpass_calibrator.calibrate()
+        if pipeline_config.STAGES_TOGGLE_CONFIG['bandpass_calibration']['run_auto_flagging']:
+            bandpass_calibrator.run_tfcrop()
+            bandpass_calibrator.run_rflag()
+            bandpass_calibrator.calibrate()
 
     @_run(STAGE_TOGGLES['phase_calibration'])
     def phase_calibration(self):

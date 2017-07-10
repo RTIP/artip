@@ -8,9 +8,7 @@ class BandpassCalibrator(Source):
         self.config = config.ALL_CONFIGS[self.source_type]
         self.source_id = config.GLOBAL_CONFIG['bandpass_cal_fields']
         super(BandpassCalibrator, self).__init__(measurement_set)
-        self.run_count = 1
 
     def calibrate(self):
         self.measurement_set.casa_runner.apply_bandpass_calibration(self.config)
-        self.run_count += 1
-        self.measurement_set.casa_runner.apply_flux_calibration(self.config, self.run_count)
+        self.measurement_set.casa_runner.apply_flux_calibration(self.config, 2)

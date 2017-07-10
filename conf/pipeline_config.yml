@@ -1,7 +1,9 @@
 stages:
   flag_known_bad_antennas: true
   flux_calibration: true
-  bandpass_calibration: true
+  bandpass_calibration:
+    run_auto_flagging: false
+    run_bandpass: true
   phase_calibration: true
   target_source:
     reference_spw:
@@ -15,6 +17,8 @@ known_bad_antennas:
   - polarizations: ['RR', 'LL']
     scan_ids: [1,2,3,4,5,6,7]
     antennas: [1,18]
+
+   #if empty array specified in polarizations, scans, or antennas, 'all' will be considered
 
 code_profiling: false
 log_level: 20
