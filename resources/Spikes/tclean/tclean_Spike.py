@@ -2,6 +2,7 @@ import os
 import sys
 import yaml
 import subprocess
+import time
 
 
 def load_config(config_file_name):
@@ -43,6 +44,7 @@ def split(min_chan, max_chan):
     output_dataset = output_path + "/{0}_{1}.ms".format(min_chan, max_chan)
     script_parameters = "{0} {1} {2} {3}".format(spw_with_chan, dataset, output_dataset, "data")
     p = run(script_path, script_parameters)
+    time.sleep(0.50)
     processes.append(p)
     split(max_chan + 1, max_chan + nchan)
 
@@ -55,7 +57,7 @@ def tclean():
         if not filename.startswith('.'):
             script_path = 'tclean.py'
             output_dataset = output_path + "/{0}".format(filename)
-            image_name = output_path + "/{0}".format(filename)
+            image_name = image_path + "/{0}".format(filename)
             script_parameters = "{0} {1} {2}".format(output_dataset, parallel, image_name)
             run(script_path, script_parameters)
 
