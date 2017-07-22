@@ -28,9 +28,13 @@ processes = []
 
 
 def run(script_path, script_parameters):
-    command = "{0} --nologger --logfile {1} -c {2} {3}".format(casapy_path, "casa.log", script_path,
-                                                               script_parameters)
-    # command = "mpicasa --hostfile {0} --mca btl_tcp_if_include em1 --mca oob_tcp_if_include em1 -n {1} {2} --nologger --nogui  --logfile {3} -c {4}".format(hostfile, nCores, casapy_path, logfile, command)
+    if parallel:
+        command = "mpicasa --hostfile {0} --mca btl_tcp_if_include em1 --mca oob_tcp_if_include em1 -n {1} {2} --nologger --nogui  --logfile {3} -c {4} {5}".format(
+            hostfile, nCores, casapy_path, "mpicasa.log", script_path, script_parameters)
+    else:
+        command = "{0} --nologger --logfile {1} -c {2} {3}".format(casapy_path, "casa.log", script_path,
+                                                                   script_parameters)
+
     print "Executing command -> ", command
     return subprocess.Popen(command, stdin=subprocess.PIPE, stdout=file("outputfile", 'a+'), shell=True)
 
@@ -47,9 +51,6 @@ def split(min_chan, max_chan):
     time.sleep(0.50)
     processes.append(p)
     split(max_chan + 1, max_chan + nchan)
-
-
-""" Run tClean in Sequential / Parallel """
 
 
 def tclean():
