@@ -1,0 +1,10 @@
+dataset: "/Users/sarangk/Downloads/MS_DATASET/may14.ms"
+nChunks: 4
+parallel: False
+nCores: 1
+hostfile: "./host_file"
+casapy_path: "/Applications/CASA.app/Contents/MacOS/casapy"
+output_path: "/Users/sarangk/Project/IUCAA/artip/resources/Spikes/tclean/ms_chunks"
+image_path: "/Users/sarangk/Project/IUCAA/artip/resources/Spikes/tclean/image_path"
+total_channels: 512
+spw: 0

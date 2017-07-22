@@ -1,0 +1,3167 @@
+__init__.py
+config.yml
+host_file
+outputfile
+tclean_Spike.py
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script exit()
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170721-180530.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+leaving casa...
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script exit()
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170721-180554.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+leaving casa...
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170721-180011.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+
+[0;34mCASA <[1;34m2[0;34m>: [0m
+Do you really want to exit ([y]/n)? 
+leaving casa...
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script exit()
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170721-180707.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+leaving casa...
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script tclean(vis=/Users/sarangk/Downloads/MS_DATASET/may14.ms, selectdata=True, field=, spw=, timerange=, uvrange=, antenna=, scan=, observation=, intent=, datacolumn=corrected, imagename=meerkatsim_13gb, imsize=4096, cell=[0.5arcsec], phasecenter=, stokes=I, projection=SIN, startmodel=, specmode=mfs, reffreq=, nchan=-1, start=, width=, outframe=, veltype=, restfreq=, interpolation=linear, gridder=standard, facets=1, chanchunks=1, wprojplanes=1, vptable=, aterm=True, psterm=False, wbawp=False, conjbeams=True, cfcache=, computepastep=360.0, rotatepastep=360.0, pblimit=0.2, normtype=flatnoise, deconvolver=hogbom, scales=[], nterms=1, smallscalebias=0.6, restoration=True, restoringbeam=, pbcor=False, outlierfile=, weighting=briggs, robust=0.5, npixels=0, uvtaper=, niter=0, gain=0.1, threshold=10.0mJy, cycleniter=-1, cyclefactor=1.0, minpsffraction=0.05, maxpsffraction=0.8, interactive=True, usemask=user, mask=, pbmask=0.0, maskthreshold=, maskresolution=, nmask=0, autoadjust=False, sidelobethreshold=3.0, noisethreshold=3.0, lownoisethreshold=3.0, smoothfactor=1.0, minbeamfrac=-1.0, cutthreshold=0.01, restart=True, savemodel=modelcolumn, calcres=True, calcpsf=True, parallel=False)
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170721-180808.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+leaving casa...
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script tclean.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170721-181316.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+leaving casa...
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script tclean.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170721-181451.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+leaving casa...
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script tclean.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170721-181542.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+leaving casa...
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script /Users/sarangk/Project/IUCAA/artip/casa_scripts/setjy.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170721-182657.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+leaving casa...
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script /Users/sarangk/Project/IUCAA/artip/resources/Spikes/tclean/tclean.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170721-182844.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+leaving casa...
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script /Users/sarangk/Project/IUCAA/artip/resources/Spikes/tclean/tclean.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170721-183028.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+leaving casa...
+
+
+=========================================
+=========================================
+The start-up time of CASA may vary
+The start-up time of CASA may vary
+depending on whether the shared libraries
+depending on whether the shared libraries
+are cached or not.
+are cached or not.
+=========================================
+
+=========================================
+
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script casa_scripts/split_dataset.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-065717.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+leaving casa...
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script casa_scripts/split_dataset.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-065717.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+leaving casa...
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+
+=========================================
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script split_dataset.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-065752.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+leaving casa...
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script split_dataset.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-065753.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+leaving casa...
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script split_dataset.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-065915.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+leaving casa...
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script split_dataset.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-065915.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+leaving casa...
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script split_dataset.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-070257.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+leaving casa...
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script split_dataset.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-070257.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+leaving casa...
+
+
+=========================================
+=========================================
+The start-up time of CASA may vary
+The start-up time of CASA may vary
+depending on whether the shared libraries
+depending on whether the shared libraries
+are cached or not.
+are cached or not.
+=========================================
+=========================================
+
+
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script split_dataset.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-070557.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script split_dataset.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-070557.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+leaving casa...
+leaving casa...
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script split_dataset.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-070649.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+leaving casa...
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script split_dataset.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-070649.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+leaving casa...
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script split_dataset.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-070947.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+leaving casa...
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script split_dataset.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-070947.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+leaving casa...
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script split_dataset.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-070947.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+leaving casa...
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script split_dataset.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-070947.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+leaving casa...
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script split_dataset.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-071811.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script split_dataset.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-071811.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script split_dataset.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-071811.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script split_dataset.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-071811.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+leaving casa...
+leaving casa...
+leaving casa...
+leaving casa...
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script split_dataset.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-071931.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script split_dataset.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-071931.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script split_dataset.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-071931.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script split_dataset.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-071931.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+leaving casa...
+leaving casa...
+leaving casa...
+leaving casa...
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script split_dataset.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-072016.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script split_dataset.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-072016.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script split_dataset.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-072016.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script split_dataset.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-072016.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+leaving casa...
+leaving casa...
+leaving casa...
+leaving casa...
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script split_dataset.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-072033.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+leaving casa...
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script split_dataset.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-072033.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+leaving casa...
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script split_dataset.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-072033.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+leaving casa...
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script split_dataset.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-072033.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+leaving casa...
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script split_dataset.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-072131.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script split_dataset.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-072131.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script split_dataset.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-072131.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+leaving casa...
+leaving casa...
+leaving casa...
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script split_dataset.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-072132.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+leaving casa...
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script split_dataset.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-072153.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+leaving casa...
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script split_dataset.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-072153.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+leaving casa...
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script split_dataset.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-072153.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+leaving casa...
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script split_dataset.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-072153.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+leaving casa...
+
+
+=========================================
+=========================================
+The start-up time of CASA may vary
+The start-up time of CASA may vary
+depending on whether the shared libraries
+depending on whether the shared libraries
+are cached or not.
+are cached or not.
+=========================================
+
+=========================================
+
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script split_dataset.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-072852.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script split_dataset.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-072852.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script split_dataset.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-072852.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+leaving casa...
+leaving casa...
+leaving casa...
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script split_dataset.py
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+Press enter to exit:
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+
+=========================================
+The start-up time of CASA may vary
+
+depending on whether the shared libraries
+are cached or not.
+=========================================
+=========================================
+
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script split_dataset.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-073243.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script split_dataset.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-073243.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script split_dataset.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-073243.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script split_dataset.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-073243.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+leaving casa...
+leaving casa...
+leaving casa...
+leaving casa...
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+
+are cached or not.
+=========================================
+=========================================
+
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script split_dataset.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-073315.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+leaving casa...
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script split_dataset.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-073315.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+leaving casa...
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script split_dataset.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-073315.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+leaving casa...
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script split_dataset.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-073315.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+leaving casa...
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script tclean.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-073324.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script tclean.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-073324.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script tclean.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-073325.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+leaving casa...
+leaving casa...
+leaving casa...
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script tclean.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-073324.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+leaving casa...
+
+=========================================
+
+=========================================
+The start-up time of CASA may vary
+The start-up time of CASA may vary
+depending on whether the shared libraries
+depending on whether the shared libraries
+are cached or not.
+are cached or not.
+=========================================
+
+=========================================
+
+
+=========================================
+
+The start-up time of CASA may vary
+depending on whether the shared libraries
+=========================================
+are cached or not.
+The start-up time of CASA may vary
+=========================================
+
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script split_dataset.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-074010.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script split_dataset.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-074010.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script split_dataset.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-074010.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+leaving casa...
+leaving casa...
+leaving casa...
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script split_dataset.py
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+Press enter to exit:
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script split_dataset.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-074057.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+leaving casa...
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script split_dataset.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-074057.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+leaving casa...
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script split_dataset.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-074057.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+leaving casa...
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script split_dataset.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-074057.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+leaving casa...
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script tclean.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-074107.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script tclean.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-074107.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script tclean.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-074107.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script tclean.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-074107.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+leaving casa...
+leaving casa...
+leaving casa...
+leaving casa...
+
+
+=========================================
+=========================================
+The start-up time of CASA may vary
+The start-up time of CASA may vary
+depending on whether the shared libraries
+depending on whether the shared libraries
+are cached or not.
+are cached or not.
+=========================================
+=========================================
+
+
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script split_dataset.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-074258.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script split_dataset.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-074258.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script split_dataset.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-074258.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script split_dataset.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-074258.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+leaving casa...
+leaving casa...
+leaving casa...
+leaving casa...
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+
+=========================================
+
+The start-up time of CASA may vary
+=========================================
+depending on whether the shared libraries
+The start-up time of CASA may vary
+are cached or not.
+=========================================
+depending on whether the shared libraries
+
+are cached or not.
+=========================================
+
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script tclean.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-074303.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script tclean.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-074303.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script tclean.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-074303.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+leaving casa...
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script tclean.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-074303.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+leaving casa...
+leaving casa...
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script tclean.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-074303.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+leaving casa...
+leaving casa...
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script tclean.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-074343.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script tclean.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-074343.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script tclean.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-074343.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script tclean.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-074343.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+leaving casa...
+leaving casa...
+leaving casa...
+leaving casa...
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script tclean.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-074344.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+leaving casa...
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script tclean.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-074549.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+leaving casa...
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script split_dataset.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-075015.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+leaving casa...
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script split_dataset.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-075015.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+leaving casa...
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script split_dataset.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-075015.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+leaving casa...
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script split_dataset.py
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+Press enter to exit:
+=========================================
+
+The start-up time of CASA may vary
+=========================================
+depending on whether the shared libraries
+The start-up time of CASA may vary
+are cached or not.
+=========================================
+depending on whether the shared libraries
+
+are cached or not.
+=========================================
+
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script split_dataset.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-075110.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+leaving casa...
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script split_dataset.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-075110.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+leaving casa...
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script split_dataset.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-075110.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+leaving casa...
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script split_dataset.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-075110.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+leaving casa...
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script tclean.py
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+Press enter to exit:CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script tclean.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-075120.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script tclean.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-075120.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script tclean.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-075120.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+leaving casa...
+leaving casa...
+leaving casa...
+
+
+=========================================
+=========================================
+The start-up time of CASA may vary
+The start-up time of CASA may vary
+depending on whether the shared libraries
+depending on whether the shared libraries
+are cached or not.
+are cached or not.
+=========================================
+=========================================
+
+
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script split_dataset.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-075439.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+leaving casa...
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script split_dataset.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-075439.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+leaving casa...
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script split_dataset.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-075439.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+leaving casa...
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script split_dataset.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-075439.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+leaving casa...
+
+
+=========================================
+=========================================
+The start-up time of CASA may vary
+The start-up time of CASA may vary
+depending on whether the shared libraries
+depending on whether the shared libraries
+are cached or not.
+are cached or not.
+=========================================
+=========================================
+
+
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+
+=========================================
+The start-up time of CASA may vary
+depending on whether the shared libraries
+are cached or not.
+=========================================
+
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script tclean.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-075451.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script tclean.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-075451.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script tclean.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-075451.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+CASA Version 4.7.1-REL (r39339)
+  Compiled on: Fri 2017/01/20 09:55:21 UTC
+[?1034h___________________________________________________________________
+    For help use the following commands:
+    tasklist               - Task list organized by category
+    taskhelp               - One line summary of available tasks
+    help taskname          - Full help for task
+    toolhelp               - One line summary of available tools
+    help par.parametername - Full help for parameter name
+___________________________________________________________________
+will execute script tclean.py
+Activating auto-logging. Current session state plus future input saved.
+Filename       : ipython-20170722-075451.log
+Mode           : backup
+Output logging : False
+Raw input log  : False
+Timestamping   : False
+State          : active
+*** Loading ATNF ASAP Package...
+*** ... ASAP (rev#URL:) import complete ***
+leaving casa...
+leaving casa...
+leaving casa...
+leaving casa...
