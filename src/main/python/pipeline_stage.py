@@ -33,10 +33,10 @@ class PipelineStage(object):
 
         return toggle_decorator
 
-    @_run(STAGE_TOGGLES['flag_known_bad_antennas'])
+    @_run(STAGE_TOGGLES['flag_known_bad_data'])
     def flag_known_bad_antennas(self):
         self._measurement_set.quack()
-        if pipeline_config.PIPELINE_CONFIGS['known_bad_antennas']:
+        if pipeline_config.PIPELINE_CONFIGS['known_bad_data']:
             self._measurement_set.casa_runner.flagdata(BAD_ANTENNA)
 
     @_run(STAGE_TOGGLES['flux_calibration'])

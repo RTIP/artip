@@ -219,9 +219,9 @@ class MeasurementSet:
         return known_bad_data
 
     def _register_known_bad_antennas(self):
-        known_bad_antennas = pipeline_config.PIPELINE_CONFIGS['known_bad_antennas']
-        for known_bad_data in known_bad_antennas:
-            sanitized_known_bad_data = self._sanitize(known_bad_data)
+        known_bad_data = pipeline_config.PIPELINE_CONFIGS['known_bad_data']
+        for known_bad_datum in known_bad_data:
+            sanitized_known_bad_data = self._sanitize(known_bad_datum)
             bad_scan_ids = list(set(self.scan_ids()).intersection(sanitized_known_bad_data['scan_ids']))
 
             self.flag_antennas(sanitized_known_bad_data['polarizations'], bad_scan_ids,
