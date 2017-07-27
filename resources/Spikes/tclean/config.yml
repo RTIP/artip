@@ -4,7 +4,6 @@ parallel: False
 nCores: 1
 hostfile: "./host_file"
 casapy_path: "/Applications/CASA.app/Contents/MacOS/casapy"
-output_path: "/Users/sarangk/Project/IUCAA/artip/resources/Spikes/tclean/ms_chunks"
-image_path: "/Users/sarangk/Project/IUCAA/artip/resources/Spikes/tclean/images"
+output_path: "/Users/sarangk/Project/IUCAA/artip/resources/Spikes/tclean"
 total_channels: 512
 spw: 0

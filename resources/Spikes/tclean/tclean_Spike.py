@@ -20,7 +20,8 @@ nCores = config['nCores']
 hostfile = config['hostfile']
 casapy_path = config['casapy_path']
 output_path = config['output_path']
-image_path = config['image_path']
+ms_chunks_path = "{0}/ms_chunks".format(output_path)
+image_path = "{0}/images".format(output_path)
 total_channels = config['total_channels']
 spw = config['spw']
 nchan = total_channels / nChunks
@@ -45,7 +46,7 @@ def split(min_chan, max_chan):
     spw_with_chan = "{0}:{1}~{2}".format(spw, min_chan, max_chan)
     print spw_with_chan
     script_path = 'split_dataset.py'
-    output_dataset = output_path + "/{0}_{1}.ms".format(min_chan, max_chan)
+    output_dataset = ms_chunks_path + "/{0}_{1}.ms".format(min_chan, max_chan)
     script_parameters = "{0} {1} {2} {3}".format(spw_with_chan, dataset, output_dataset, "data")
     p = run(script_path, script_parameters)
     time.sleep(0.50)
@@ -54,10 +55,10 @@ def split(min_chan, max_chan):
 
 
 def tclean():
-    for filename in os.listdir(output_path):
-        if not filename.startswith('.'):
+    for filename in os.listdir(ms_chunks_path):
+        if filename.endswith('.ms'):
             script_path = 'tclean.py'
-            output_dataset = output_path + "/{0}".format(filename)
+            output_dataset = ms_chunks_path + "/{0}".format(filename)
             image_name = image_path + "/{0}".format(filename)
             script_parameters = "{0} {1} {2}".format(output_dataset, parallel, image_name)
             run(script_path, script_parameters)
