@@ -30,10 +30,8 @@ def set_dependencies(project):
 @init
 def initialize(project):
     project.version = "1.0.0"
-    project.get_property("copy_resources_glob").append("conf/*.yml")
     project.get_property("copy_resources_glob").append("casa_scripts/*.py")
     project.get_property("copy_resources_glob").append("build.py")
-    project.install_file("conf/*.yml", "conf/*.yml")
     project.install_file("casa_scripts/*.py", "casa_scripts/*.py")
     project.install_file("build.py", 'build.py')
 

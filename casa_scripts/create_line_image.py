@@ -2,9 +2,10 @@ import sys
 import distutils.util
 import yaml
 
-spw_list = sys.argv[-3]
-ms_input = sys.argv[-2]
-image_path = sys.argv[-1]
+spw_list = sys.argv[-4]
+ms_input = sys.argv[-3]
+image_path = sys.argv[-2]
+config_path = sys.argv[-1]
 field = '0'
 
 image_name = "{0}/line_spectral_image".format(image_path)
@@ -18,7 +19,7 @@ def load(config_file_name):
     return configs
 
 
-IMAGE_CONFIGS = load("conf/imaging_config.yml")["line_image"]
+IMAGE_CONFIGS = load(config_path + "imaging_config.yml")["line_image"]
 imsize = IMAGE_CONFIGS['imsize']
 fitspw_channels = IMAGE_CONFIGS['fitspw_channels']
 fitspw = ",".join(["{0}:{1}".format(s, fitspw_channels) for s in spw_list.split(",")])

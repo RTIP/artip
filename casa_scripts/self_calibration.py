@@ -10,6 +10,7 @@ def load(config_file_name):
     return configs
 
 
+config_path = sys.argv[-19]
 dataset = sys.argv[-18]
 image_output_path = sys.argv[-17]
 outputvis = sys.argv[-16]
@@ -28,7 +29,7 @@ spw = sys.argv[-1]
 
 image_path = "{0}/self_cal_image".format(image_output_path)
 
-IMAGE_CONFIGS = load("conf/imaging_config.yml")["cont_image"]
+IMAGE_CONFIGS = load(config_path+"imaging_config.yml")["cont_image"]
 
 imsize = IMAGE_CONFIGS['imsize']
 cell = IMAGE_CONFIGS['cell']

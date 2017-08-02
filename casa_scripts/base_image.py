@@ -10,11 +10,13 @@ def load(config_file_name):
     return configs
 
 
-BASE_IMAGE_CONFIGS = load("conf/imaging_config.yml")["base_image"]
 
-dataset = sys.argv[-2]
-output_path = sys.argv[-1]
+dataset = sys.argv[-3]
+output_path = sys.argv[-2]
+config_path = sys.argv[-1]
 cont_base_image = '{0}/cont_base_image'.format(output_path)
+
+BASE_IMAGE_CONFIGS = load(config_path + "imaging_config.yml")["base_image"]
 
 imsize = BASE_IMAGE_CONFIGS['imsize']
 cell = BASE_IMAGE_CONFIGS['cell']

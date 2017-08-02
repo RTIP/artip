@@ -1,14 +1,14 @@
 global:
   polarizations: ['RR', 'LL']
-  flux_cal_fields: &flux_cal_fields [0]
-  bandpass_cal_fields: &bandpass_cal_fields [0]
-  phase_cal_fields: &phase_cal_fields [1]
-  target_src_field: &target_src_field [2]
+  flux_cal_fields: &flux_cal_fields []
+  bandpass_cal_fields: &bandpass_cal_fields []
+  phase_cal_fields: &phase_cal_fields []
+  target_src_field: &target_src_field [0]
   output_path: 'output'
   default_spw: "0"
   spw_range: "0"   #Example: "0,1,2,4"
   refant: 2
-  target_phase_src_map: {2:[1]}
+#  target_phase_src_map: {2:[1]}
 
 common: &common
   channel: 100
@@ -73,26 +73,25 @@ target_source:
   fields: *target_src_field
   continuum: &continuum
     ref:
-      channels_to_avg: '80~120'
-      channel_width: 41
+      channels_to_avg: '100~1900'
+      channel_width: 1801
     spw:
-      channels_to_avg: '80~120'
-      channel_width: 41
+      channels_to_avg: '100~1900'
+      channel_width: 1801
     channel: 0
     width: 1
     self_calibration:
       minsnr: 2.0
-      clean_threshold: '1.2mJy'
       masking:
         threshold: '0.0'
         mask_path: ''
         bmask:
           bottom_left_corner:
-            x_coordinate: 240
-            y_coordinate: 240
+            x_coordinate: 1
+            y_coordinate: 1
           top_right_corner:
-            x_coordinate: 270
-            y_coordinate: 270
+            x_coordinate: 4095
+            y_coordinate: 4095
       calmode: &calmode
         p:
           loop_count : 5

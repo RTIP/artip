@@ -113,7 +113,7 @@ class CasaRunner:
     def base_image(self):
         logger.info(Color.HEADER + "Creating base image for {0}".format(self._dataset_path) + Color.ENDC)
         script_path = 'casa_scripts/base_image.py'
-        script_parameters = "{0} {1}".format(self._dataset_path, self._output_path)
+        script_parameters = "{0} {1} {2}".format(self._dataset_path, self._output_path, config.CONFIG_PATH)
 
         self._run(script_path, script_parameters)
 
@@ -124,7 +124,8 @@ class CasaRunner:
 
         script_path = 'casa_scripts/self_calibration.py'
         script_parameters = "{0} {1} {2} {3} {4} {5} {6} {7} {8} {9} {10} {11} {12} {13} " \
-                            "{14} {15} {16} {17}".format(self._dataset_path,
+                            "{14} {15} {16} {17} {18}".format(config.CONFIG_PATH,
+                                                         self._dataset_path,
                                                          output_path,
                                                          output_ms_path,
                                                          cal_mode[calibration_mode]['solint'],
@@ -179,10 +180,11 @@ class CasaRunner:
     def create_line_image(self):
         logger.info(Color.HEADER + "Creating line image at {0}".format(self._output_path) + Color.ENDC)
         script_path = 'casa_scripts/create_line_image.py'
-        script_parameters = "{0} {1} {2}".format(
+        script_parameters = "{0} {1} {2} {3}".format(
             config.GLOBAL_CONFIG['spw_range'],
             self._dataset_path,
-            self._output_path)
+            self._output_path,
+            config.CONFIG_PATH)
         self._run(script_path, script_parameters)
 
     def _unlock_dataset(self):
