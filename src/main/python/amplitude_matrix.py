@@ -1,7 +1,8 @@
 from logger import logger
-from models.baseline import Baseline
 import numpy
 from terminal_color import Color
+from helpers import minus
+from collections import namedtuple
 
 
 class AmplitudeMatrix:
@@ -15,48 +16,36 @@ class AmplitudeMatrix:
 
     def _generate_matrix(self):
         all_times = self._measurement_set.timesforscan(self._scan_id, False)
-        antennaids = self._measurement_set.antenna_ids(self._polarization, self._scan_id)
-        amplitude_data_column = self._config['detail_flagging']['amplitude_data_column']
+        baselines = self._measurement_set.baselines(self._polarization, self._scan_id)
         amplitude_data_matrix = {}
+        data = self._matrix_data()
+
+        for baseline in baselines:
+            amplitude_data = numpy.array([])
+            baseline_amp_times = numpy.array([])
+            baseline_indices = numpy.logical_and(data.antenna1_list == baseline.antenna1,
+                                                 data.antenna2_list == baseline.antenna2).nonzero()[0]
+            for index in baseline_indices:
+                baseline_amp_times = numpy.append(baseline_amp_times, data.times[index])
+                if data.flags[index]:
+                    amplitude_data = numpy.append(amplitude_data, numpy.nan)
+                else:
+                    amplitude_data = numpy.append(amplitude_data, data.amplitudes[index])
+
+            amplitude_data_matrix[baseline] = self._sanitize_baseline_data(amplitude_data, baseline_amp_times,
+                                                                           all_times)
+        return amplitude_data_matrix
+
+    def _matrix_data(self):
+        MatrixData = namedtuple('Data', 'amplitudes antenna1_list antenna2_list flags times')
+        amplitude_data_column = self._config['detail_flagging']['amplitude_data_column']
         data = self._measurement_set.get_data(self._spw,
                                               {'start': self._config['channel'], 'width': self._config['width']},
                                               self._polarization,
                                               {'scan_number': self._scan_id},
                                               ["antenna1", "antenna2", amplitude_data_column, 'flag', 'time'])
-
-        amplitudes = data[amplitude_data_column][0][0]
-        antenna2_list = data['antenna2']
-        antenna1_list = data['antenna1']
-        flags = data['flag'][0][0]
-        times = data['time']
-
-        # TODO remove duplicate baselines
-        for antenna1 in antennaids:
-            for antenna2 in antennaids:
-                if antenna1 < antenna2:
-                    primary_antenna = antenna1
-                    secondary_antenna = antenna2
-                else:
-                    primary_antenna = antenna2
-                    secondary_antenna = antenna1
-
-                if primary_antenna == secondary_antenna: continue
-
-                baseline_indices = numpy.logical_and(antenna1_list == primary_antenna,
-                                                     antenna2_list == secondary_antenna).nonzero()[0]
-                amplitude_data = numpy.array([])
-                baseline_amp_times = numpy.array([])
-                for index in baseline_indices:
-                    baseline_amp_times = numpy.append(baseline_amp_times, times[index])
-                    if flags[index]:
-                        amplitude_data = numpy.append(amplitude_data, numpy.nan)
-                    else:
-                        amplitude_data = numpy.append(amplitude_data, amplitudes[index])
-
-                baseline = Baseline(primary_antenna, secondary_antenna)
-                amplitude_data_matrix[baseline] = self._sanitize_baseline_data(amplitude_data, baseline_amp_times,
-                                                                               all_times)
-        return amplitude_data_matrix
+        return MatrixData(data[amplitude_data_column][0][0], data['antenna1'], data['antenna2'], data['flag'][0][0],
+                          data['time'])
 
     def filter_by_antenna(self, antenna_id):
         antenna_matrix = dict((baseline, amp_data) for baseline, amp_data in self.amplitude_data_matrix.iteritems() if

@@ -12,6 +12,7 @@ from configs import pipeline_config
 from models.antenna import Antenna
 from models.antenna_state import AntennaState
 from models.phase_set import PhaseSet
+from models.baseline import Baseline
 
 
 class MeasurementSet:
@@ -78,6 +79,15 @@ class MeasurementSet:
 
     def antenna_ids(self, polarization=None, scan_id=None):
         return map(lambda antenna: antenna.id, self.antennas(polarization, scan_id))
+
+    def baselines(self, polarization=None, scan_id=None):
+        antennaids = self.antenna_ids(polarization, scan_id)
+
+        baselines = [Baseline(antenna1, antenna2)
+                     for antenna1, antenna2 in itertools.product(antennaids, antennaids)
+                     if antenna1 < antenna2]
+
+        return baselines
 
     def get_antenna_by_id(self, id):
         return filter(lambda antenna: antenna.id == id, self.antennas())[0]
