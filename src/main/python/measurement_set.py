@@ -141,9 +141,11 @@ class MeasurementSet:
     def antenna_count(self):
         return len(self._antennas)
 
-    def timesforscan(self, scan_id):
+    def timesforscan(self, scan_id, formatted=True):
+        times = self._ms.metadata().timesforscan(scan_id)
+        if not formatted: return times
         quanta = casac.casac.quanta()
-        times_with_second = map(lambda time: str(time) + 's', self._ms.metadata().timesforscan(scan_id))
+        times_with_second = map(lambda time: str(time) + 's', times)
         return numpy.array(
             map(lambda time: quanta.time(quanta.quantity(time), form='ymd'), times_with_second)).flatten()
 

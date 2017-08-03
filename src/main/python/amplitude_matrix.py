@@ -14,6 +14,7 @@ class AmplitudeMatrix:
         self.amplitude_data_matrix = self._generate_matrix() if measurement_set else matrix
 
     def _generate_matrix(self):
+        all_times = self._measurement_set.timesforscan(self._scan_id, False)
         antennaids = self._measurement_set.antenna_ids(self._polarization, self._scan_id)
         amplitude_data_column = self._config['detail_flagging']['amplitude_data_column']
         amplitude_data_matrix = {}
@@ -21,11 +22,13 @@ class AmplitudeMatrix:
                                               {'start': self._config['channel'], 'width': self._config['width']},
                                               self._polarization,
                                               {'scan_number': self._scan_id},
-                                              ["antenna1", "antenna2", amplitude_data_column, 'flag'])
+                                              ["antenna1", "antenna2", amplitude_data_column, 'flag', 'time'])
+
         amplitudes = data[amplitude_data_column][0][0]
         antenna2_list = data['antenna2']
         antenna1_list = data['antenna1']
         flags = data['flag'][0][0]
+        times = data['time']
 
         # TODO remove duplicate baselines
         for antenna1 in antennaids:
@@ -39,17 +42,20 @@ class AmplitudeMatrix:
 
                 if primary_antenna == secondary_antenna: continue
 
-                baseline_indexes = numpy.logical_and(antenna1_list == primary_antenna,
+                baseline_indices = numpy.logical_and(antenna1_list == primary_antenna,
                                                      antenna2_list == secondary_antenna).nonzero()[0]
                 amplitude_data = numpy.array([])
-                for index in baseline_indexes:
+                baseline_amp_times = numpy.array([])
+                for index in baseline_indices:
+                    baseline_amp_times = numpy.append(baseline_amp_times, times[index])
                     if flags[index]:
                         amplitude_data = numpy.append(amplitude_data, numpy.nan)
                     else:
                         amplitude_data = numpy.append(amplitude_data, amplitudes[index])
 
                 baseline = Baseline(primary_antenna, secondary_antenna)
-                amplitude_data_matrix[baseline] = amplitude_data
+                amplitude_data_matrix[baseline] = self._sanitize_baseline_data(amplitude_data, baseline_amp_times,
+                                                                               all_times)
         return amplitude_data_matrix
 
     def filter_by_antenna(self, antenna_id):
@@ -111,6 +117,17 @@ class AmplitudeMatrix:
 
     def _scattered_amplitude(self, deviation_threshold, actual_sigma):
         return actual_sigma > deviation_threshold
+
+    def _sanitize_baseline_data(self, baseline_amp, baseline_amp_times, all_times):
+        if len(baseline_amp) < len(all_times):
+            missing_indices = self._missing_time_indices(baseline_amp_times, all_times)
+            for index in missing_indices:
+                baseline_amp = numpy.insert(baseline_amp, index, numpy.nan)
+        return baseline_amp
+
+    def _missing_time_indices(self, baseline_amp_times, all_times):
+        missing_times = minus(all_times, baseline_amp_times)
+        return map(lambda missing_time: numpy.where(all_times == missing_time)[0][0], missing_times)
 
     def __repr__(self):
         return "AmpMatrix=" + str(self.amplitude_data_matrix) + " med=" + \
