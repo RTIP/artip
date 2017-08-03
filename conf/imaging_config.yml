@@ -1,6 +1,6 @@
 imaging:
   default: &default
-    imsize: 4096
+    imsize: 512
     cell: '0.5arcsec'
     stokes: 'I'
     weighting: 'briggs'
@@ -27,7 +27,7 @@ imaging:
     psterm: False
     wbawp: False
     conjbeams: True
-    pblimit: 0.1
+    pblimit: 0.01
     normtype: 'flatnoise'
     pbcor: False
     gain: 0.1
@@ -40,15 +40,13 @@ imaging:
 base_image:
   <<: *default
   cyclefactor: 4
-  threshold: '3.27mJy'
-  cell: '3arcsec'
 
 cont_image:
   <<: *default
-  imsize: 4096
-  cell: '3arcsec'
+  imsize: 512
+  cell: '0.5arcsec'
   robust: 0.5
-  clean_threshold: '0.81mJy'
+  clean_threshold: '3.0mJy'
   interactive: F
   niter: 100000
   cyclefactor: 4
@@ -56,7 +54,7 @@ cont_image:
 line_image:
   <<: *default
   threshold : '1000mJy'
-  imsize : 2048
+  imsize : 512
   interactive : F
   robust: 0.5
   fitspw_channels: '20~60;70~110'
