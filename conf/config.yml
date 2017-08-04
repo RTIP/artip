@@ -82,7 +82,6 @@ target_source:
     width: 1
     self_calibration:
       minsnr: 2.0
-      clean_threshold: '1.2mJy'
       masking:
         threshold: '0.0'
         mask_path: ''

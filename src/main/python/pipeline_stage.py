@@ -93,19 +93,24 @@ class PipelineStage(object):
 
     @_run(TARGET_SOURCE_TOGGLES['all_spw']['create_continuum'])
     def _create_all_spw_continuum_image(self, line_source, source_id):
-        cont_mode = 'spw'
-        spw_range = config.GLOBAL_CONFIG['spw_range']
-        continuum_source = ContinuumSource(
+        if not self._is_single_spw_present():
+            cont_mode = 'spw'
+            spw_range = config.GLOBAL_CONFIG['spw_range']
+            continuum_source = ContinuumSource(
             line_source.continuum(spw_range, cont_mode),
             source_id, cont_mode, spw_range)
-        continuum_source.self_calibrate(cont_mode)
-        return cont_mode
+            continuum_source.self_calibrate(cont_mode)
+        else:
+            logger.info(Color.HEADER + 'Spw continuum image is already created [spw range contains only one spw]' + Color.ENDC)
 
     @_run(TARGET_SOURCE_TOGGLES['all_spw']['create_line_image'])
     def _create_line_image(self, line_source):
-        cont_mode = 'spw'
+        cont_mode = 'ref' if self._is_single_spw_present() else 'spw'
         line_source.apply_calibration(cont_mode)
         line_source.create_line_image()
+
+    def _is_single_spw_present(self):
+        return config.GLOBAL_CONFIG['spw_range'].find(",") == -1
 
     def _target_source_toggle(self):
         return self.TARGET_SOURCE_TOGGLES['all_spw']['create_line_image'] or self.TARGET_SOURCE_TOGGLES['all_spw'][
