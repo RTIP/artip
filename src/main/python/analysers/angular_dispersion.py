@@ -30,61 +30,66 @@ class AngularDispersion(Analyser):
                 base_antenna = self.measurement_set.antennas(polarization, scan_id)[0]
             r_matrix = RMatrix(spw, polarization, scan_id)
             history = set()
-            self._mark_antennas_status(spw, polarization, scan_id, self.source_config, base_antenna, r_matrix, history)
+            antenna_count = self.measurement_set.antenna_count(polarization, scan_id)
+            self._mark_antennas_status(spw, polarization, scan_id, self.source_config, base_antenna, r_matrix, history,
+                                       antenna_count)
 
-    def _mark_antennas_status(self, spw, polarization, scan_id, source_config, base_antenna, r_matrix, history):
+            logger.debug("Percentage of antennas analysed={0}".format(len(history) * 100 / antenna_count))
+
+    def _mark_antennas_status(self, spw, polarization, scan_id, source_config, base_antenna, r_matrix, history,
+                              antenna_count):
         channel = source_config['channel']
         width = source_config['width']
         r_threshold = source_config['angular_dispersion']['r_threshold']
-        number_of_antenna_pairs = self.measurement_set.antenna_count() - 1
+        if base_antenna in history: return
 
-        min_doubtful_antennas = int((source_config['angular_dispersion']['percentage_of_min_doubtful_antennas']
-                                     * number_of_antenna_pairs) / 100)
-        good_antennas_threshold = int((source_config['angular_dispersion']['percentage_of_good_antennas']
-                                       * number_of_antenna_pairs) / 100)
-
-        if base_antenna in history: return set()
-        baselines = self.measurement_set.baselines_for(base_antenna, polarization, scan_id)
         data = self.measurement_set.get_data(spw, {'start': channel, 'width': width}, polarization,
                                              {'scan_number': scan_id},
                                              ["antenna1", "antenna2", 'phase'])
         antenna1_list = data['antenna1']
         antenna2_list = data['antenna2']
         phase_list = data['phase'][0][0]
+        baselines = self.measurement_set.baselines_for(base_antenna, polarization, scan_id)
+        baselines_count = len(baselines)
+
+        good_baselines_threshold = int((source_config['angular_dispersion']['percentage_of_good_antennas']
+                                        * baselines_count) / 100)
+        min_doubtful_antennas = int((source_config['angular_dispersion']['percentage_of_min_doubtful_antennas']
+                                     * baselines_count) / 100)
 
         for (antenna1, antenna2) in baselines:
             # TODO: dont calculate again if present in r-matrix
-            baseline_indexes = numpy.logical_and(antenna1_list == antenna1.id,
+            baseline_indices = numpy.logical_and(antenna1_list == antenna1.id,
                                                  antenna2_list == antenna2.id).nonzero()[0]
             phase_data = numpy.array([])
-            for index in baseline_indexes:
+            for index in baseline_indices:
                 phase_data = numpy.append(phase_data, phase_list[index])
 
             phase_set = PhaseSet(phase_data)
             r_value = phase_set.calculate_angular_dispersion()
 
             another_antenna = antenna2 if base_antenna == antenna1 else antenna1
-
             r_matrix.add(base_antenna, another_antenna, r_value)
 
         doubtful_antennas = r_matrix.get_doubtful_antennas(base_antenna, r_threshold, min_doubtful_antennas)
-        logger.debug("Antenna={0}, History={1}, Doubtfuls={2}".format(base_antenna, history, doubtful_antennas))
         # print "~~~~~~",base_antenna.id
         # if base_antenna.id ==9: print r_matrix
 
-        number_of_good__antenna_pairs = number_of_antenna_pairs - len(doubtful_antennas)
-        if number_of_good__antenna_pairs >= good_antennas_threshold:
+        good_baselines_count = baselines_count - len(doubtful_antennas)
+        if good_baselines_count >= good_baselines_threshold:
             for doubtful_antenna in doubtful_antennas:
                 doubtful_antenna.update_state(polarization, scan_id, AntennaStatus.DOUBTFUL)
             base_antenna.update_state(polarization, scan_id, AntennaStatus.GOOD)
-
         else:
             doubtful_antennas = set()
             base_antenna.update_state(polarization, scan_id, AntennaStatus.BAD)
-            logger.debug("Antenna={0}, Doubtfuls={1} Marked bad".format(base_antenna, doubtful_antennas))
 
         history.add(base_antenna)
 
+        logger.debug("Antenna={0}, total_baselines={1}, good_baselines_count={2}, Percentage={3}".format(
+            base_antenna, baselines_count, good_baselines_count,
+            good_baselines_count * 100 / baselines_count))
+
         for doubtful_antenna in doubtful_antennas:
             self._mark_antennas_status(spw, polarization, scan_id, source_config,
-                                       doubtful_antenna, r_matrix, history)
+                                       doubtful_antenna, r_matrix, history, antenna_count)

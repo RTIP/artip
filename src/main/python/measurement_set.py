@@ -148,8 +148,8 @@ class MeasurementSet:
 
         return map(sort_antennas, baselines)
 
-    def antenna_count(self):
-        return len(self._antennas)
+    def antenna_count(self, polarization, scan_id):
+        return len(self.antennas(polarization, scan_id))
 
     def timesforscan(self, scan_id, formatted=True):
         times = self._ms.metadata().timesforscan(scan_id)
