@@ -30,13 +30,22 @@ class ContinuumSource(TargetSource):
         self._flag_bad_time(BAD_ANTENNA_TIME, detailed_analyser.analyse_antennas, True)
         self._flag_bad_time(BAD_BASELINE_TIME, detailed_analyser.analyse_baselines, True)
 
-
     def self_calibrate(self, mode):
         config = self.config['self_calibration']
         self._base_image()
-        self_caled_p = self.apply_self_calibration(config, 'p', mode)
-        self_caled_p.attach_model(config, 'p')
-        self_caled_p.apply_self_calibration(config, 'ap', mode)
+        cal_mode = config['calmode']
+        p_loop_count = cal_mode['p']['loop_count']
+        ap_loop_count = cal_mode['ap']['loop_count']
+
+        if p_loop_count is not 0:
+            self_caled_p = self.apply_self_calibration(config, 'p', mode)
+
+        if p_loop_count is 0 and ap_loop_count is not 0:
+            self.apply_self_calibration(config, 'ap', mode)
+
+        if p_loop_count is not 0 and ap_loop_count is not 0:
+            self_caled_p.attach_model(config, 'p')
+            self_caled_p.apply_self_calibration(config, 'ap', mode)
 
     def apply_self_calibration(self, config, cal_mode, mode):
         ms_path, output_path = self.prepare_output_dir("self_caled_{0}_{1}_{2}".format(cal_mode, mode, self.source_id))

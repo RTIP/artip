@@ -1,7 +1,7 @@
 import sys
 
-p_loop_count = sys.argv[-5]
-ap_loop_count = sys.argv[-4]
+p_loop_count = int(sys.argv[-5])
+ap_loop_count = int(sys.argv[-4])
 ap_table = sys.argv[-3]
 p_table = sys.argv[-2]
 ms_dataset = sys.argv[-1]
