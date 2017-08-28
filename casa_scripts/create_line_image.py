@@ -2,9 +2,10 @@ import sys
 import distutils.util
 import yaml
 
-spw_list = sys.argv[-4]
-ms_input = sys.argv[-3]
-image_path = sys.argv[-2]
+spw_list = sys.argv[-5]
+ms_input = sys.argv[-4]
+image_path = sys.argv[-3]
+cont_model_to_subtract = sys.argv[-2]
 config_path = sys.argv[-1]
 field = '0'
 
@@ -59,12 +60,18 @@ cyclefactor = IMAGE_CONFIGS['cyclefactor']
 savemodel = IMAGE_CONFIGS['savemodel']
 parallel = IMAGE_CONFIGS['parallel']
 
-split(vis=ms_input, outputvis=corrected_line_ms, spw=spw_list, datacolumn='corrected')
+# This will fill the model column with visibilities of off-axis sources.
+# TODO: confirm image name from Neeraj
+tclean(vis=ms_input, imagename="{0}/tst-cj1243conti".format(image_path), startmodel=cont_model_to_subtract,
+       imsize=imsize, cell=[cell], stokes=stokes, weighting='briggs', robust=0.5, interactive=interactive, niter=niter,
+       deconvolver=deconvolver, specmode='mfs', nterms=nterms, reffreq='', spw='', nchan=nchan, gridder=gridder,
+       facets=facets, wprojplanes=wprojplanes, aterm=aterm, psterm=psterm, wbawp=wbawp, conjbeams=conjbeams,
+       pblimit=pblimit, normtype=normtype, pbcor=pbcor, gain=gain, threshold=threshold, cycleniter=cycleniter,
+       cyclefactor=cyclefactor, savemodel='modelcolumn', parallel=parallel)
 
-uvcontsub(vis=corrected_line_ms, field=field, spw=spw_list, fitspw=fitspw, solint='int', fitorder=0)
+uvsub(vis=ms_input, reverse=False)
 
-tclean(vis="{0}.contsub".format(corrected_line_ms), imagename=image_name, imsize=imsize, cell=[cell], stokes=stokes,
-       weighting=weighting,
+tclean(vis=ms_input, imagename=image_name, imsize=imsize, cell=[cell], stokes=stokes, weighting=weighting,
        robust=robust, restoringbeam=restoringbeam, uvtaper=uvtaper, mask=mask, interactive=interactive, niter=niter,
        deconvolver=deconvolver, specmode=specmode, nterms=nterms, reffreq=reffreq, nchan=nchan, start=start,
        width=width, outframe=outframe, veltype=veltype, restfreq=restfreq, gridder=gridder, facets=facets,

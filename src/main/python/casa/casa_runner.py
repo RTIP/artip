@@ -177,15 +177,30 @@ class CasaRunner:
         if os.path.exists(flag_file):
             self.flagdata(flag_file, flag_reasons)
 
-    def create_line_image(self):
+    def create_line_image(self, calmode_config, source_id):
         logger.info(Color.HEADER + "Creating line image at {0}".format(self._output_path) + Color.ENDC)
         script_path = 'casa_scripts/create_line_image.py'
-        script_parameters = "{0} {1} {2} {3}".format(
+        cont_mode = 'ref'
+        continuum_image_model = self._last_continuum_image_model(calmode_config, source_id, cont_mode)
+        script_parameters = "{0} {1} {2} {3} {4}".format(
             config.GLOBAL_CONFIG['spw_range'],
             self._dataset_path,
             self._output_path,
+            continuum_image_model,
             config.CONFIG_PATH)
         self._run(script_path, script_parameters)
+
+    def _last_continuum_image_model(self, calmode_config, source_id, cont_mode_to_subtract):
+        p_loop_count = calmode_config["p"]["loop_count"]
+        ap_loop_count = calmode_config["ap"]["loop_count"]
+        if ap_loop_count == 0:
+            return '{0}/self_caled_p_{1}_{2}/self_cal_image_p_{3}.model'.format(config.OUTPUT_PATH,
+                                                                                cont_mode_to_subtract, source_id,
+                                                                                p_loop_count)
+        else:
+            return '{0}/self_caled_ap_{1}_{2}/self_cal_image_ap_{3}.model'.format(config.OUTPUT_PATH,
+                                                                                  cont_mode_to_subtract, source_id,
+                                                                                  ap_loop_count)
 
     def _unlock_dataset(self):
         table = casac.casac.table()
