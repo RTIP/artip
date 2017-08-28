@@ -6,6 +6,7 @@ stages:
     run_bandpass: true
   phase_calibration: true
   target_source:
+    calibrate: true
     reference_spw:
       create_continuum: true
     all_spw:

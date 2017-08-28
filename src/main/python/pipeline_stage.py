@@ -69,7 +69,8 @@ class PipelineStage(object):
             for source_id in config.GLOBAL_CONFIG['target_src_field']:
                 logger.info(Color.SOURCE_HEADING + "Target Source Calibration" + Color.ENDC)
                 target_source = TargetSource(self._measurement_set, source_id)
-                target_source.calibrate()
+                if self.TARGET_SOURCE_TOGGLES['calibrate']:
+                    target_source.calibrate()
                 line_source = LineSource(target_source.line(), source_id)
 
                 self._create_ref_continuum_image(line_source, source_id)
@@ -98,11 +99,12 @@ class PipelineStage(object):
             cont_mode = 'spw'
             spw_range = config.GLOBAL_CONFIG['spw_range']
             continuum_source = ContinuumSource(
-            line_source.continuum(spw_range, cont_mode),
-            source_id, cont_mode, spw_range)
+                line_source.continuum(spw_range, cont_mode),
+                source_id, cont_mode, spw_range)
             continuum_source.self_calibrate(cont_mode)
         else:
-            logger.info(Color.HEADER + 'Spw continuum image is already created [spw range contains only one spw]' + Color.ENDC)
+            logger.info(
+                Color.HEADER + 'Spw continuum image is already created [spw range contains only one spw]' + Color.ENDC)
 
     @_run(TARGET_SOURCE_TOGGLES['all_spw']['create_line_image'])
     def _create_line_image(self, line_source):
