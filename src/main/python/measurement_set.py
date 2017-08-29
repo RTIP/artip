@@ -235,6 +235,5 @@ class MeasurementSet:
         for known_bad_datum in known_bad_data:
             sanitized_known_bad_data = self._sanitize(known_bad_datum)
             bad_scan_ids = list(set(self.scan_ids()).intersection(sanitized_known_bad_data['scan_ids']))
-
             self.flag_antennas(flag_file, sanitized_known_bad_data['polarizations'], bad_scan_ids,
                                sanitized_known_bad_data['antennas'])
