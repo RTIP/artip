@@ -21,6 +21,11 @@ class ClosureAnalyser(Analyser):
         phase_data = data[self.source_config['phase_data_column']]
         closure_threshold = self.source_config['closure']['threshold'] * numpy.pi / 180
         antenna_tuple_ids = (antenna_triplet[0].id, antenna_triplet[1].id, antenna_triplet[2].id)
+
+        if not self._phase_data_present_for_triplet(antenna_triplet, data):
+            logger.debug("No data present for triplet={0}\n\n".format(antenna_triplet))
+            return False
+
         closure_phase_array = self.__closure_util.closurePhTriads(antenna_tuple_ids, phase_data, data['antenna1'],
                                                                   data['antenna2'])
         percentileofscore = stats.percentileofscore(abs(closure_phase_array[0][0]), closure_threshold)
@@ -71,3 +76,17 @@ class ClosureAnalyser(Analyser):
                                                                                               good_triplets_count,
                                                                                               percentage))
         return percentage > self.source_config['closure']['percentage_of_good_triplets']
+
+    def _phase_data_present_for_triplet(self, triplet, data):
+        baseline_combinations = [(triplet[0].id, triplet[1].id),
+                                 (triplet[1].id, triplet[2].id),
+                                 (triplet[0].id, triplet[2].id)]
+
+        return len(filter(lambda baseline: not self._phase_data_present_for_baseline(baseline, data),
+                          baseline_combinations)) == 0
+
+    def _phase_data_present_for_baseline(self, baseline, data):
+        baseline = tuple(sorted(baseline))
+        baseline_index_in_phase_data = \
+            numpy.logical_and(data['antenna1'] == baseline[0], data['antenna2'] == baseline[1]).nonzero()[0]
+        return bool(baseline_index_in_phase_data.shape[0])
