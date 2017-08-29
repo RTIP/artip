@@ -17,7 +17,7 @@ class ClosureAnalyser(Analyser):
         super(ClosureAnalyser, self).__init__(measurement_set, source)
         self.__closure_util = ClosurePhaseUtil()
 
-    def _is_triplet_good(self, antenna_triplet, data, scan, polarization):
+    def _is_triplet_good(self, antenna_triplet, data):
         phase_data = data[self.source_config['phase_data_column']]
         closure_threshold = self.source_config['closure']['threshold'] * numpy.pi / 180
         antenna_tuple_ids = (antenna_triplet[0].id, antenna_triplet[1].id, antenna_triplet[2].id)
@@ -55,18 +55,18 @@ class ClosureAnalyser(Analyser):
                                                  True)
 
             for antenna in antennas:
-                if self._is_antenna_good(antenna, antennas, data, polarization, scan_id):
+                if self._is_antenna_good(antenna, antennas, data):
                     antenna.get_state_for(polarization, scan_id).update_closure_phase_status(AntennaStatus.GOOD)
                 else:
                     antenna.get_state_for(polarization, scan_id).update_closure_phase_status(AntennaStatus.BAD)
 
-    def _is_antenna_good(self, antenna, antennas, data, polarization, scan_id):
+    def _is_antenna_good(self, antenna, antennas, data):
         good_triplets_count = 0
         remaining_antennas = minus(antennas, [antenna])
         antenna_combinations = list(itertools.combinations(remaining_antennas, 2))
         for antenna_combination in antenna_combinations:
             triplet_good = self._is_triplet_good(
-                (antenna, antenna_combination[0], antenna_combination[1]), data, scan_id, polarization)
+                (antenna, antenna_combination[0], antenna_combination[1]), data)
             if triplet_good: good_triplets_count += 1
         percentage = (float(good_triplets_count) / float(len(antenna_combinations))) * 100
 
