@@ -25,5 +25,6 @@ known_bad_data: []
 #Note: if empty array specified in polarizations, scans, or antennas, 'all' will be considered
 
 code_profiling: false
+flagging_percentage: true
 log_level: 20
 #debug: 10, info: 20, warning: 30, error: 40, critical: 50

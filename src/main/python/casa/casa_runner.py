@@ -1,4 +1,4 @@
-from configs import config
+from configs import config, pipeline_config
 from casa.flag_reasons import BAD_ANTENNA_TIME, BAD_BASELINE_TIME
 import os
 import platform
@@ -17,17 +17,22 @@ class CasaRunner:
     def flagdata(self, flag_file, reasons):
         logger.info(Color.HEADER + "Flagging " + reasons + Color.ENDC)
         script_path = 'casa_scripts/flag.py'
-        script_parameters = "{0} {1} {2}".format(self._dataset_path, flag_file, reasons)
+        show_percentage = pipeline_config.PIPELINE_CONFIGS['flagging_percentage']
+        script_parameters = "{0} {1} {2} {3}".format(self._dataset_path, flag_file, reasons, show_percentage)
         proc = self._run(script_path, script_parameters, subprocess.PIPE)
-        logger.info(Color.BOLD + Color.UNDERLINE + filter(lambda x: x.startswith(">>>"), proc.stdout.readlines())[
-            0] + Color.ENDC)
+        if show_percentage:
+            logger.info(Color.BOLD + Color.UNDERLINE + filter(lambda x: x.startswith(">>>"), proc.stdout.readlines())[
+                0] + Color.ENDC)
 
     def quack(self):
         logger.info(Color.HEADER + "Running quack..." + Color.ENDC)
         script_path = 'casa_scripts/quack.py'
-        proc = self._run(script_path, stdout=subprocess.PIPE)
-        logger.info(Color.BOLD + Color.UNDERLINE + filter(lambda x: x.startswith(">>>"), proc.stdout.readlines())[
-            0] + Color.ENDC)
+        show_percentage = pipeline_config.PIPELINE_CONFIGS['flagging_percentage']
+        script_parameters = "{0} {1}".format(self._dataset_path, show_percentage)
+        proc = self._run(script_path, script_parameters, stdout=subprocess.PIPE)
+        if show_percentage:
+            logger.info(Color.BOLD + Color.UNDERLINE + filter(lambda x: x.startswith(">>>"), proc.stdout.readlines())[
+                0] + Color.ENDC)
 
     def apply_flux_calibration(self, source_config, run_count):
         logger_message = "Applying Flux Calibration"
