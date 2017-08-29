@@ -34,10 +34,5 @@ def clean():
                     remove(f)
 
 
-def create_flag_file():
-    flag_record_file = open(config.OUTPUT_PATH + "/flags.txt", 'w+')
-    flag_record_file.close()
-
-
 def snapshot_config(config_path):
     copy_tree(config_path, config.OUTPUT_PATH+"/conf/")

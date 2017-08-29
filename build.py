@@ -62,7 +62,6 @@ def run(project):
         start.add_configs_module_in_casa()
         start.create_output_dir(dataset_path)
         start.snapshot_config(config_path)
-        start.create_flag_file()
         from main import main
         main(dataset_path)
         start.clean()

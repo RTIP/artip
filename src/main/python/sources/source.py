@@ -12,6 +12,7 @@ from report import Report
 class Source(object):
     def __init__(self, measurement_set):
         self.measurement_set = measurement_set
+        self.flag_file = config.OUTPUT_PATH+"/" + "flags_{0}.txt".format(self.source_type)
 
     def run_rflag(self):
         self.measurement_set.casa_runner.r_flag(self.source_type)
@@ -33,13 +34,13 @@ class Source(object):
 
         scan_ids = self.measurement_set.scan_ids(self.source_ids)
         Report(self.measurement_set.antennas()).generate_report(scan_ids)
-        self.measurement_set.flag_bad_antennas(self.source_ids)
+        self.measurement_set.flag_bad_antennas(self.flag_file, self.source_ids)
         self.extend_flags()
-        self.measurement_set.casa_runner.flagdata(BAD_ANTENNA)
+        self.measurement_set.casa_runner.flagdata(self.flag_file, BAD_ANTENNA)
 
     def flag_and_calibrate_in_detail(self):
         logger.info(Color.HEADER + "Started Detail Flagging..." + Color.ENDC)
-        detailed_analyser = DetailedAnalyser(self.measurement_set, self.config)
+        detailed_analyser = DetailedAnalyser(self.measurement_set, self.config, self.flag_file)
         self._flag_bad_time(BAD_TIME, detailed_analyser.analyse_time, True)
         self._flag_bad_time(BAD_ANTENNA_TIME, detailed_analyser.analyse_antennas, False)
         self._flag_bad_time(BAD_BASELINE_TIME, detailed_analyser.analyse_baselines, False)
@@ -59,7 +60,7 @@ class Source(object):
             bad_time_present = analyser(spw_polarization_scan_product)
             if bad_time_present:
                 logger.info(Color.HEADER + 'Flagging {0} in CASA'.format(reason) + Color.ENDC)
-                self.measurement_set.casa_runner.flagdata(reason)
+                self.measurement_set.casa_runner.flagdata(self.flag_file,reason)
                 self.calibrate()
             else:
                 logger.info(Color.OKGREEN + 'No {0} Found'.format(reason) + Color.ENDC)

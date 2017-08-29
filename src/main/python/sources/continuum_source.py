@@ -4,7 +4,6 @@ from measurement_set import MeasurementSet
 from casa.flag_reasons import BAD_ANTENNA, BAD_ANTENNA_TIME, BAD_BASELINE_TIME, BAD_TIME
 from analysers.detailed_analyser import DetailedAnalyser
 from terminal_color import Color
-import itertools
 from logger import logger
 
 
@@ -12,6 +11,7 @@ class ContinuumSource(TargetSource):
     def __init__(self, measurement_set, source_id, cont_mode, spw='0'):
         super(ContinuumSource, self).__init__(measurement_set, source_id)
         self.source_type = 'continuum'
+        self.flag_file = "{0}/flags_{1}.txt".format(measurement_set.output_path, self.source_type)
         self.spw = spw
         self.source_ids = [0]  # source_id will always be 0
         self.config = config.ALL_CONFIGS["target_source"][self.source_type]
@@ -25,7 +25,7 @@ class ContinuumSource(TargetSource):
 
     def flag_and_calibrate_in_detail(self):
         logger.info(Color.HEADER + "Started Detail Flagging..." + Color.ENDC)
-        detailed_analyser = DetailedAnalyser(self.measurement_set, self.config)
+        detailed_analyser = DetailedAnalyser(self.measurement_set, self.config, self.flag_file)
         self._flag_bad_time(BAD_TIME, detailed_analyser.analyse_time, True)
         self._flag_bad_time(BAD_ANTENNA_TIME, detailed_analyser.analyse_antennas, True)
         self._flag_bad_time(BAD_BASELINE_TIME, detailed_analyser.analyse_baselines, True)

@@ -14,11 +14,9 @@ class CasaRunner:
         self._output_path = output_path
         self._dataset_path = dataset_path
 
-    def flagdata(self, reasons, output_path=None):
-        if not output_path: output_path = self._output_path
+    def flagdata(self, flag_file, reasons):
         logger.info(Color.HEADER + "Flagging " + reasons + Color.ENDC)
         script_path = 'casa_scripts/flag.py'
-        flag_file = output_path + "/flags.txt"
         script_parameters = "{0} {1} {2}".format(self._dataset_path, flag_file, reasons)
         self._run(script_path, script_parameters)
 
@@ -175,7 +173,9 @@ class CasaRunner:
     def extend_continuum_flags(self, source_id):
         logger.info(Color.HEADER + "Extending continuum flags on line..." + Color.ENDC)
         flag_reasons = "{0},{1}".format(BAD_ANTENNA_TIME, BAD_BASELINE_TIME)
-        self.flagdata(flag_reasons, config.OUTPUT_PATH + "/continuum_ref_{0}/".format(source_id))
+        flag_file = "{0}/continuum_ref_{1}/flags_continuum.txt".format(config.OUTPUT_PATH, source_id)
+        if os.path.exists(flag_file):
+            self.flagdata(flag_file, flag_reasons)
 
     def create_line_image(self):
         logger.info(Color.HEADER + "Creating line image at {0}".format(self._output_path) + Color.ENDC)
