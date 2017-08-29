@@ -18,12 +18,16 @@ class CasaRunner:
         logger.info(Color.HEADER + "Flagging " + reasons + Color.ENDC)
         script_path = 'casa_scripts/flag.py'
         script_parameters = "{0} {1} {2}".format(self._dataset_path, flag_file, reasons)
-        self._run(script_path, script_parameters)
+        proc = self._run(script_path, script_parameters, subprocess.PIPE)
+        logger.info(Color.BOLD + Color.UNDERLINE + filter(lambda x: x.startswith(">>>"), proc.stdout.readlines())[
+            0] + Color.ENDC)
 
     def quack(self):
         logger.info(Color.HEADER + "Running quack..." + Color.ENDC)
         script_path = 'casa_scripts/quack.py'
-        self._run(script_path)
+        proc = self._run(script_path, stdout=subprocess.PIPE)
+        logger.info(Color.BOLD + Color.UNDERLINE + filter(lambda x: x.startswith(">>>"), proc.stdout.readlines())[
+            0] + Color.ENDC)
 
     def apply_flux_calibration(self, source_config, run_count):
         logger_message = "Applying Flux Calibration"
@@ -123,28 +127,28 @@ class CasaRunner:
         script_path = 'casa_scripts/self_calibration.py'
         script_parameters = "{0} {1} {2} {3} {4} {5} {6} {7} {8} {9} {10} {11} {12} {13} " \
                             "{14} {15} {16} {17} {18}".format(config.CONFIG_PATH,
-                                                         self._dataset_path,
-                                                         output_path,
-                                                         output_ms_path,
-                                                         cal_mode[calibration_mode]['solint'],
-                                                         config.GLOBAL_CONFIG['refant'],
-                                                         self_cal_config['minsnr'],
-                                                         self._output_path,
-                                                         cal_mode[calibration_mode]['applymode'],
-                                                         self_cal_config['masking']['threshold'],
-                                                         self_cal_config['masking']['bmask']['bottom_left_corner'][
-                                                             'x_coordinate'],
-                                                         self_cal_config['masking']['bmask']['bottom_left_corner'][
-                                                             'y_coordinate'],
-                                                         self_cal_config['masking']['bmask']['top_right_corner'][
-                                                             'x_coordinate'],
-                                                         self_cal_config['masking']['bmask']['top_right_corner'][
-                                                             'y_coordinate'],
-                                                         mask_path,
-                                                         cal_mode['ap']['loop_count'],
-                                                         cal_mode['p']['loop_count'],
-                                                         calibration_mode,
-                                                         spw)
+                                                              self._dataset_path,
+                                                              output_path,
+                                                              output_ms_path,
+                                                              cal_mode[calibration_mode]['solint'],
+                                                              config.GLOBAL_CONFIG['refant'],
+                                                              self_cal_config['minsnr'],
+                                                              self._output_path,
+                                                              cal_mode[calibration_mode]['applymode'],
+                                                              self_cal_config['masking']['threshold'],
+                                                              self_cal_config['masking']['bmask']['bottom_left_corner'][
+                                                                  'x_coordinate'],
+                                                              self_cal_config['masking']['bmask']['bottom_left_corner'][
+                                                                  'y_coordinate'],
+                                                              self_cal_config['masking']['bmask']['top_right_corner'][
+                                                                  'x_coordinate'],
+                                                              self_cal_config['masking']['bmask']['top_right_corner'][
+                                                                  'y_coordinate'],
+                                                              mask_path,
+                                                              cal_mode['ap']['loop_count'],
+                                                              cal_mode['p']['loop_count'],
+                                                              calibration_mode,
+                                                              spw)
 
         self._run(script_path, script_parameters)
 
@@ -228,8 +232,10 @@ class CasaRunner:
         casa_command = self._form_casa_command(script, script_parameters)
         return mpi_command + casa_command
 
-    def _run(self, script, script_parameters=None):
+    def _run(self, script, script_parameters=None, stdout=None):
         casa_output_file = config.OUTPUT_PATH + "/casa_output.txt"
+
+        if not stdout: stdout = file(casa_output_file, 'a+')
         if not script_parameters: script_parameters = self._dataset_path
         self._unlock_dataset()
 
@@ -239,4 +245,8 @@ class CasaRunner:
             command = self._form_casa_command(script, script_parameters)
 
         logger.debug("Executing command -> " + command)
-        subprocess.Popen(command, stdin=subprocess.PIPE, stdout=file(casa_output_file, 'a+'), shell=True).wait()
+        proc = subprocess.Popen(command, stdin=subprocess.PIPE, stdout=stdout,
+                                stderr=subprocess.PIPE,
+                                shell=True)
+        proc.wait()
+        return proc
