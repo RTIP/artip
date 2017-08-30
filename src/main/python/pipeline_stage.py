@@ -37,7 +37,7 @@ class PipelineStage(object):
     def flag_known_bad_antennas(self):
         self._measurement_set.quack()
         if pipeline_config.PIPELINE_CONFIGS['known_bad_data']:
-            flag_file = config.OUTPUT_PATH + "known_flags.txt"
+            flag_file = "{0}/known_flags.txt".format(self._measurement_set.output_path)
             self._measurement_set.casa_runner.flagdata(flag_file, BAD_ANTENNA)
 
     @_run(STAGE_TOGGLES['flux_calibration'])
