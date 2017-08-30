@@ -3,6 +3,7 @@ import numpy
 from terminal_color import Color
 from helpers import minus
 from collections import namedtuple
+from itertools import imap
 
 
 class AmplitudeMatrix:
@@ -15,25 +16,17 @@ class AmplitudeMatrix:
         self.amplitude_data_matrix = self._generate_matrix() if measurement_set else matrix
 
     def _generate_matrix(self):
-        all_times = self._measurement_set.timesforscan(self._scan_id, False)
         baselines = self._measurement_set.baselines(self._polarization, self._scan_id)
         amplitude_data_matrix = {}
         data = self._matrix_data()
 
         for baseline in baselines:
-            amplitude_data = numpy.array([])
-            baseline_amp_times = numpy.array([])
             baseline_indices = numpy.logical_and(data.antenna1_list == baseline.antenna1,
                                                  data.antenna2_list == baseline.antenna2).nonzero()[0]
             for index in baseline_indices:
-                baseline_amp_times = numpy.append(baseline_amp_times, data.times[index])
-                if data.flags[index]:
-                    amplitude_data = numpy.append(amplitude_data, numpy.nan)
-                else:
-                    amplitude_data = numpy.append(amplitude_data, data.amplitudes[index])
+                amplitude_data_matrix[baseline] = self._mask_flagged_data(data.amplitudes[index],
+                                                                          data.flags[index])
 
-            amplitude_data_matrix[baseline] = self._sanitize_baseline_data(amplitude_data, baseline_amp_times,
-                                                                           all_times)
         return amplitude_data_matrix
 
     def _matrix_data(self):
@@ -43,7 +36,7 @@ class AmplitudeMatrix:
                                               {'start': self._config['channel'], 'width': self._config['width']},
                                               self._polarization,
                                               {'scan_number': self._scan_id},
-                                              ["antenna1", "antenna2", amplitude_data_column, 'flag', 'time'])
+                                              ["antenna1", "antenna2", amplitude_data_column, 'flag', 'time'], True)
         return MatrixData(data[amplitude_data_column][0][0], data['antenna1'], data['antenna2'], data['flag'][0][0],
                           data['time'])
 
@@ -107,12 +100,8 @@ class AmplitudeMatrix:
     def _scattered_amplitude(self, deviation_threshold, actual_sigma):
         return actual_sigma > deviation_threshold
 
-    def _sanitize_baseline_data(self, baseline_amp, baseline_amp_times, all_times):
-        if len(baseline_amp) < len(all_times):
-            missing_indices = self._missing_time_indices(baseline_amp_times, all_times)
-            for index in missing_indices:
-                baseline_amp = numpy.insert(baseline_amp, index, numpy.nan)
-        return baseline_amp
+    def _mask_flagged_data(self, baseline_amplitudes, flags):
+        return list(imap(lambda amplitude, flag: numpy.nan if flag else amplitude, baseline_amplitudes, flags))
 
     def _missing_time_indices(self, baseline_amp_times, all_times):
         missing_times = minus(all_times, baseline_amp_times)
