@@ -81,6 +81,7 @@ def model_for_masking(index):
 
 
 for loop_id in range(1, loop_count[calmode] + 1):
+    casalog.post(">>>> Calmode={0} Loop_id={1}".format(calmode, loop_id))
     base_model = model_for_masking(loop_id)
     model_path = "{0}/{1}model{2}".format(image_output_path, calmode, loop_id)
     masked_model_path = "{0}/{1}maskmodel{2}".format(image_output_path, calmode, loop_id)

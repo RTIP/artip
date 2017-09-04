@@ -7,6 +7,8 @@ import casac
 from logger import logger
 from terminal_color import Color
 from helpers import format_spw_with_channels
+from watchdog.observers import Observer
+from log_event_handler import LogEventHandler
 
 
 class CasaRunner:
@@ -118,11 +120,17 @@ class CasaRunner:
         self._run(script_path, script_parameters)
 
     def base_image(self):
+        self._register_tclean_log_listener()
         logger.info(Color.HEADER + "Creating base image for {0}".format(self._dataset_path) + Color.ENDC)
         script_path = 'casa_scripts/base_image.py'
         script_parameters = "{0} {1} {2}".format(self._dataset_path, self._output_path, config.CONFIG_PATH)
-
         self._run(script_path, script_parameters)
+
+    def _register_tclean_log_listener(self):
+        event_handler = LogEventHandler(log_file=config.OUTPUT_PATH+"/casa.log", pattern="(Reached global stopping criterion)|(>>>>)", regexes=[r".*\.log"])
+        observer = Observer()
+        observer.schedule(event_handler, path=config.OUTPUT_PATH, recursive=False)
+        observer.start()
 
     def apply_self_calibration(self, self_cal_config, calibration_mode, output_ms_path, output_path, spw):
         logger.info(Color.HEADER + "Applying self calibration for {0}".format(self._dataset_path) + Color.ENDC)
