@@ -103,10 +103,6 @@ class AmplitudeMatrix:
     def _mask_flagged_data(self, baseline_amplitudes, flags):
         return list(imap(lambda amplitude, flag: numpy.nan if flag else amplitude, baseline_amplitudes, flags))
 
-    def _missing_time_indices(self, baseline_amp_times, all_times):
-        missing_times = minus(all_times, baseline_amp_times)
-        return map(lambda missing_time: numpy.where(all_times == missing_time)[0][0], missing_times)
-
     def __repr__(self):
         return "AmpMatrix=" + str(self.amplitude_data_matrix) + " med=" + \
                str(self.median()) + " mad sigma=" + str(self.mad_sigma())
