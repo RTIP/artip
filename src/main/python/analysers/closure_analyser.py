@@ -22,10 +22,6 @@ class ClosureAnalyser(Analyser):
         closure_threshold = self.source_config['closure']['threshold'] * numpy.pi / 180
         antenna_tuple_ids = (antenna_triplet[0].id, antenna_triplet[1].id, antenna_triplet[2].id)
 
-        if not self._phase_data_present_for_triplet(antenna_triplet, data):
-            logger.debug("No data present for triplet={0}\n\n".format(antenna_triplet))
-            return False
-
         closure_phase_array = self.__closure_util.closurePhTriads(antenna_tuple_ids, phase_data, data['antenna1'],
                                                                   data['antenna2'])
         percentileofscore = stats.percentileofscore(abs(closure_phase_array[0][0]), closure_threshold)
@@ -62,17 +58,23 @@ class ClosureAnalyser(Analyser):
 
     def _is_antenna_good(self, antenna, antennas, data):
         good_triplets_count = 0
+        triplets_with_missing_data_count = 0
         remaining_antennas = minus(antennas, [antenna])
         antenna_combinations = list(itertools.combinations(remaining_antennas, 2))
+
         for antenna_combination in antenna_combinations:
-            triplet_good = self._is_triplet_good(
-                (antenna, antenna_combination[0], antenna_combination[1]), data)
-            if triplet_good: good_triplets_count += 1
-        percentage = (float(good_triplets_count) / float(len(antenna_combinations))) * 100
+            antenna_triplet = (antenna, antenna_combination[0], antenna_combination[1])
+            if self._phase_data_present_for_triplet(antenna_triplet, data):
+                triplet_good = self._is_triplet_good(antenna_triplet, data)
+                if triplet_good: good_triplets_count += 1
+            else:
+                triplets_with_missing_data_count += 1
+        total_triplets_count = len(antenna_combinations) - triplets_with_missing_data_count
+
+        percentage = calculate_percentage(good_triplets_count, total_triplets_count)
 
         logger.debug("Antenna={0}, total={1}, good_triplets_count={2}, Percentage={3}".format(antenna,
-                                                                                              len(
-                                                                                                  antenna_combinations),
+                                                                                              total_triplets_count,
                                                                                               good_triplets_count,
                                                                                               percentage))
         return percentage > self.source_config['closure']['percentage_of_good_triplets']

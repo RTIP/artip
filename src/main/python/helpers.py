@@ -30,6 +30,13 @@ def create_dir(directory):
         os.makedirs(directory)
 
 
+def calculate_percentage(favourable, total):
+    try:
+        percentage = (float(favourable) / float(total)) * 100
+    except ZeroDivisionError:
+        percentage = 0
+    return percentage
+
+
 def format_spw_with_channels(spw_list, channel):
     return ",".join(["{0}:{1}".format(s, channel) for s in spw_list.split(",")])
-
