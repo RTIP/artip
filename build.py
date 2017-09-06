@@ -22,6 +22,8 @@ default_task = ["clean", "install_dependencies", "publish"]
 def set_dependencies(project):
     # Build dependencies
     project.build_depends_on('mock')
+    project.build_depends_on('watchdog')
+    project.build_depends_on('sh')
     project.build_depends_on('coloredlogs')
     project.build_depends_on('lsprofcalltree')
     project.build_depends_on('conditional')
