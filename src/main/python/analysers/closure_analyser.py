@@ -75,10 +75,13 @@ class ClosureAnalyser(Analyser):
 
         percentage = calculate_percentage(good_triplets_count, total_triplets_count)
 
-        logger.debug("Antenna={0}, total={1}, good_triplets_count={2}, Percentage={3}".format(antenna,
-                                                                                              total_triplets_count,
-                                                                                              good_triplets_count,
-                                                                                              percentage))
+        if total_triplets_count == 0:
+            logger.debug("Antenna={0} was flagged".format(antenna))
+        else:
+            logger.debug("Antenna={0}, total={1}, good_triplets_count={2}, Percentage={3}".format(antenna,
+                                                                                                  total_triplets_count,
+                                                                                                  good_triplets_count,
+                                                                                                  percentage))
         return percentage > self.source_config['closure']['percentage_of_good_triplets']
 
     def _phase_data_present_for_triplet(self, triplet, data):
@@ -93,4 +96,12 @@ class ClosureAnalyser(Analyser):
         baseline = tuple(sorted(baseline))
         baseline_index_in_phase_data = \
             numpy.logical_and(data['antenna1'] == baseline[0], data['antenna2'] == baseline[1]).nonzero()[0]
-        return bool(baseline_index_in_phase_data.shape[0])
+
+        if baseline_index_in_phase_data.size and self._is_baseline_flagged(baseline_index_in_phase_data, data):
+            return False
+
+        return baseline_index_in_phase_data.size
+
+    def _is_baseline_flagged(self, baseline_index, data):
+        phase_data_flags_status = data['flag'][0][0][baseline_index][0]
+        return all(phase_data_flags_status)
