@@ -1,0 +1,58 @@
+
+---------------------------------------------
+Documentation for Spike-1 - tclean on cluster with MS divided into N chunks 
+---------------------------------------------
+
+Shell scripts used to test this spike successfully can be found below 
+
+- On IUCAA Cluster 
+    - inside /scratch/carti/data/spike-1/tclean-MPI
+        - make_n_copies.sh
+        - tclean.py
+        - tcleanOnCluster.sh
+- In BitBucket repo for ARTIP 
+    - inside artip/resources/Spikes/tclean/spike-1-tclean-on-cluster-with-chunks
+        - make_n_copies.sh
+        - tcleanOnCluster.sh
+        - tclean.py
+
+---------------------------------------------
+Step by step process to run the Spike-1 :
+---------------------------------------------
+Simulated MS was broken in chunks with 0-2047 frequencies with single / double polarizations
+
+- one such chunk used for spike-1 can be found at 
+    - /scratch/carti/data/spike-1/tclean-MPI/mkt30min_entire_cluster/mkt_30min_0_2047_chunk.ms
+
+- use make_n_copies.sh to make whatever number of copies of this chunk required
+
+- run tcleanOnCluster.sh giving it the fully qualified path of the chunk and number of copies to run
+        ./tcleanOnCluster.sh /scratch/carti/data/spike-1/tclean-MPI/mkt30min_entire_cluster/mkt_30min_0_2047_chunk 16
+
+- currently the tcleanOnCluster.sh script has list of hosts / nodes in it hard-coded. 
+
+- It internally calls tclean.py on each cluster node, using ssh
+
+- result of the execution can be found at
+	/scratch/carti/data/spike-1/tclean-MPI/mkt30min_entire_cluster/tclean-64-chunks-13-nodes-20170815-170524 
+            - images 
+            - logs
+            - output
+            - hpc<082-094> (working directories used by each of the nodes in cluster e.g. hpc082 or hpc083)
+
+---------------------------------------------
+Note on MPI
+
+    - Initially the spike was implemented using MPI (script  tclean-with-mpi-on-cluster.sh)
+    - this MPI script fails because when we run it using “mpirun” some MPI environment variables are set due to which, when CASA is launched from within our scripts, it detects those variables, and tries to invoke another “mpirun” child command, which fails to set up its own new MPI environment because it is already being invoked from inside outer MPI environment.
+
+MPI scripts can be found inside
+
+- /scratch/carti/data/spike-1/tclean-MPI/tclean-mpi-scripts
+    - tclean-with-mpi-on-cluster.sh
+    - unsetMpi.py
+
+--------------------------------------------
+
+
+
