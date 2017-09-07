@@ -24,6 +24,7 @@ class RMatrix:
 
     def get_doubtful_antennas(self, base_antenna, r_threshold, min_doubtful_antennas):
         doubtful_antennas = set()
+        if base_antenna not in self._r_matrix: return doubtful_antennas
         for antenna, r_value in self._r_matrix[base_antenna].iteritems():
             if r_value < r_threshold:
                 doubtful_antennas.add(antenna)

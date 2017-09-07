@@ -3,18 +3,20 @@ import math
 
 
 class PhaseSet:
+    INVALID_ANGULAR_DISPERSION = -1
     def __init__(self, phases):
-        self.__phases = phases
+        self._phases = phases
 
     def _avg_sine(self):
-        sines = map(lambda phase: math.sin(phase), self.__phases)
-        return numpy.mean(sines)
+        sines = numpy.sin(self._phases)
+        return numpy.nanmean(sines)
 
     def _avg_cosine(self):
-        cosines = map(lambda phase: math.cos(phase), self.__phases)
-        return numpy.mean(cosines)
+        cosines = numpy.cos(self._phases)
+        return numpy.nanmean(cosines)
 
     def calculate_angular_dispersion(self):
+        if all(numpy.isnan(self._phases)): return PhaseSet.INVALID_ANGULAR_DISPERSION
         r = math.sqrt(math.pow(self._avg_sine(), 2) + math.pow(self._avg_cosine(), 2))
         return r
 
