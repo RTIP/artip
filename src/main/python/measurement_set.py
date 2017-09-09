@@ -13,6 +13,7 @@ from models.antenna import Antenna
 from models.antenna_state import AntennaState
 from models.phase_set import PhaseSet
 from models.baseline import Baseline
+from visibility_data import VisibilityData
 
 
 class MeasurementSet:
@@ -97,10 +98,11 @@ class MeasurementSet:
             return self._antennas
         return filter(lambda antenna: antenna.id not in self.flagged_antennas[polarization][scan_id], self._antennas)
 
-    def get_data(self, spw, channel, polarization, filters, selection_params, ifraxis=False):
+    def get_data(self, spw, channel, polarization, filters, selection_params):
+        ifraxis = True  # This will always inserts a default value for the missing rows
         self._filter(spw, channel, polarization, filters)
         data_items = self._ms.getdata(selection_params, ifraxis=ifraxis)
-        return data_items
+        return VisibilityData(data_items)
 
     def get_phase_data(self, channel, polarization, filters={}):  # To be removed
         return PhaseSet(self.get_data("0", channel, polarization, filters, ['phase'])['phase'][0][0])

@@ -3,23 +3,20 @@ from itertools import imap
 
 
 class ClosurePhaseUtil:
-    def closurePhTriads(self, triad, phase_data, antenna1_list, antenna2_list, flags):
-        signed_phase_triplet = self._triadRows(antenna1_list, antenna2_list, triad)
-        closure_phase = self._rewrap(self._calculate_clousure_phase(phase_data, signed_phase_triplet, flags))
+    def closurePhTriads(self, triad, data):
+        signed_phase_triplet = self._triadRows(data.antenna1, data.antenna2, triad)
+        closure_phase = self._rewrap(self._calculate_clousure_phase(signed_phase_triplet, data))
         # NOTE: filtering out flagged closure_phases
         # By doing this we will get correct statistics from percentileofscore in closure analyser
         return numpy.array(filter(lambda phase: not numpy.isnan(phase), closure_phase))
 
-    def _calculate_clousure_phase(self, phase_data, signed_phase_triplet, flags):
+    def _calculate_clousure_phase(self, signed_phase_triplet, data):
         (phase1_index, phase2_index, phase3_index), (sign1, sign2, sign3) = signed_phase_triplet
-        baseline1_data = numpy.array(self._mask_flagged_data(phase_data[phase1_index], flags[phase1_index]))
-        baseline2_data = numpy.array(self._mask_flagged_data(phase_data[phase2_index], flags[phase2_index]))
-        baseline3_data = numpy.array(self._mask_flagged_data(phase_data[phase3_index], flags[phase3_index]))
+        baseline1_data = numpy.array(data.mask_baseline_data(phase1_index))
+        baseline2_data = numpy.array(data.mask_baseline_data(phase2_index))
+        baseline3_data = numpy.array(data.mask_baseline_data(phase3_index))
 
         return baseline1_data * sign1 + baseline2_data * sign2 + baseline3_data * sign3
-
-    def _mask_flagged_data(self, baseline_phases, flags):
-        return list(imap(lambda phase, flag: numpy.nan if flag else phase, baseline_phases, flags))
 
     def _rewrap(self, phase):
         return numpy.arctan2(numpy.sin(phase), numpy.cos(phase))

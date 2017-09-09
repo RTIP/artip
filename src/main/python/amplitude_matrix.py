@@ -3,7 +3,6 @@ import numpy
 from terminal_color import Color
 from helpers import minus
 from collections import namedtuple
-from itertools import imap
 
 
 class AmplitudeMatrix:
@@ -18,27 +17,22 @@ class AmplitudeMatrix:
     def _generate_matrix(self):
         baselines = self._measurement_set.baselines(self._polarization, self._scan_id)
         amplitude_data_matrix = {}
-        data = self._matrix_data()
+        matrix_data = self._matrix_data()
 
         for baseline in baselines:
-            baseline_indices = numpy.logical_and(data.antenna1_list == baseline.antenna1,
-                                                 data.antenna2_list == baseline.antenna2).nonzero()[0]
-            for index in baseline_indices:
-                amplitude_data_matrix[baseline] = self._mask_flagged_data(data.amplitudes[index],
-                                                                          data.flags[index])
-
+            baseline_index = matrix_data.baseline_index((baseline.antenna1, baseline.antenna2))
+            if not numpy.isnan(baseline_index):
+                amplitude_data_matrix[baseline] = matrix_data.mask_baseline_data(baseline_index)
         return amplitude_data_matrix
 
     def _matrix_data(self):
-        MatrixData = namedtuple('Data', 'amplitudes antenna1_list antenna2_list flags times')
         amplitude_data_column = self._config['detail_flagging']['amplitude_data_column']
-        data = self._measurement_set.get_data(self._spw,
-                                              {'start': self._config['channel'], 'width': self._config['width']},
-                                              self._polarization,
-                                              {'scan_number': self._scan_id},
-                                              ["antenna1", "antenna2", amplitude_data_column, 'flag', 'time'], True)
-        return MatrixData(data[amplitude_data_column][0][0], data['antenna1'], data['antenna2'], data['flag'][0][0],
-                          data['time'])
+        visibility_data = self._measurement_set.get_data(self._spw, {'start': self._config['channel'],
+                                                                     'width': self._config['width']},
+                                                         self._polarization, {'scan_number': self._scan_id},
+                                                         ["antenna1", "antenna2", amplitude_data_column, 'flag',
+                                                          'time'])
+        return visibility_data
 
     def filter_by_antenna(self, antenna_id):
         antenna_matrix = dict((baseline, amp_data) for baseline, amp_data in self.amplitude_data_matrix.iteritems() if
@@ -99,9 +93,6 @@ class AmplitudeMatrix:
 
     def _scattered_amplitude(self, deviation_threshold, actual_sigma):
         return actual_sigma > deviation_threshold
-
-    def _mask_flagged_data(self, baseline_amplitudes, flags):
-        return list(imap(lambda amplitude, flag: numpy.nan if flag else amplitude, baseline_amplitudes, flags))
 
     def __repr__(self):
         return "AmpMatrix=" + str(self.amplitude_data_matrix) + " med=" + \

@@ -43,13 +43,10 @@ class AngularDispersion(Analyser):
         r_threshold = source_config['angular_dispersion']['r_threshold']
         if base_antenna in history: return
 
-        data = self.measurement_set.get_data(spw, {'start': channel, 'width': width}, polarization,
-                                             {'scan_number': scan_id},
-                                             ["antenna1", "antenna2", 'phase', 'flag'], True)
-        antenna1_list = data['antenna1']
-        antenna2_list = data['antenna2']
-        phase_list = data['phase'][0][0]
-        flags = data['flag'][0][0]
+        visibility_data = self.measurement_set.get_data(spw, {'start': channel, 'width': width}, polarization,
+                                                        {'scan_number': scan_id},
+                                                        ["antenna1", "antenna2", 'phase', 'flag'])
+
         baselines = self.measurement_set.baselines_for(base_antenna, polarization, scan_id)
 
         baselines_count = len(baselines)
@@ -59,14 +56,11 @@ class AngularDispersion(Analyser):
                                      * baselines_count) / 100)
 
         for (antenna1, antenna2) in baselines:
-            if not self._phase_data_present_for_baseline((antenna1.id, antenna2.id), data):
+            if not visibility_data.phase_data_present_for_baseline((antenna1.id, antenna2.id)):
                 baselines_count -= 1
                 continue
 
-            baseline_index = numpy.logical_and(antenna1_list == antenna1.id,
-                                                 antenna2_list == antenna2.id).nonzero()[0][0]
-
-            phase_data = self._mask_flagged_data(phase_list[baseline_index], flags[baseline_index])
+            phase_data = visibility_data.mask_baseline_data(visibility_data.baseline_index((antenna1.id, antenna2.id)))
 
             phase_set = PhaseSet(phase_data)
             r_value = phase_set.calculate_angular_dispersion()
@@ -99,12 +93,3 @@ class AngularDispersion(Analyser):
         for doubtful_antenna in doubtful_antennas:
             self._mark_antennas_status(spw, polarization, scan_id, source_config,
                                        doubtful_antenna, r_matrix, history, antenna_count)
-
-    def _phase_data_present_for_baseline(self, baseline, data):
-        baseline = tuple(sorted(baseline))
-        baseline_index_in_phase_data = \
-            numpy.logical_and(data['antenna1'] == baseline[0], data['antenna2'] == baseline[1]).nonzero()[0]
-        return bool(baseline_index_in_phase_data.shape[0])
-
-    def _mask_flagged_data(self, baseline_phases, flags):
-        return list(imap(lambda phase, flag: numpy.nan if flag else phase, baseline_phases, flags))

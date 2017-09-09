@@ -18,13 +18,10 @@ class ClosureAnalyser(Analyser):
         self.__closure_util = ClosurePhaseUtil()
 
     def _is_triplet_good(self, antenna_triplet, data):
-        phase_data = data[self.source_config['phase_data_column']][0][0]
-        flags = data['flag'][0][0]
         closure_threshold = self.source_config['closure']['threshold'] * numpy.pi / 180
         antenna_tuple_ids = (antenna_triplet[0].id, antenna_triplet[1].id, antenna_triplet[2].id)
 
-        closure_phase_array = self.__closure_util.closurePhTriads(antenna_tuple_ids, phase_data, data['antenna1'],
-                                                                  data['antenna2'], flags)
+        closure_phase_array = self.__closure_util.closurePhTriads(antenna_tuple_ids, data)
 
         percentileofscore = stats.percentileofscore(abs(closure_phase_array), closure_threshold)
 
@@ -45,15 +42,15 @@ class ClosureAnalyser(Analyser):
 
             logger.debug(
                 Color.BACKGROUD_WHITE + "Polarization =" + polarization + " Scan Id=" + str(scan_id) + Color.ENDC)
-            data = self.measurement_set.get_data(spw,
-                                                 {'start': self.source_config['channel'],
-                                                  'width': self.source_config['width']}, polarization,
-                                                 {'scan_number': scan_id},
-                                                 ["antenna1", "antenna2", self.source_config['phase_data_column'],'flag'],
-                                                 True)
+            visibility_data = self.measurement_set.get_data(spw,
+                                                            {'start': self.source_config['channel'],
+                                                             'width': self.source_config['width']}, polarization,
+                                                            {'scan_number': scan_id},
+                                                            ["antenna1", "antenna2",
+                                                             self.source_config['phase_data_column'], 'flag'])
 
             for antenna in antennas:
-                if self._is_antenna_good(antenna, antennas, data):
+                if self._is_antenna_good(antenna, antennas, visibility_data):
                     antenna.get_state_for(polarization, scan_id).update_closure_phase_status(AntennaStatus.GOOD)
                 else:
                     antenna.get_state_for(polarization, scan_id).update_closure_phase_status(AntennaStatus.BAD)
@@ -66,7 +63,7 @@ class ClosureAnalyser(Analyser):
 
         for antenna_combination in antenna_combinations:
             antenna_triplet = (antenna, antenna_combination[0], antenna_combination[1])
-            if self._phase_data_present_for_triplet(antenna_triplet, data):
+            if data.phase_data_present_for_triplet(antenna_triplet):
                 triplet_good = self._is_triplet_good(antenna_triplet, data)
                 if triplet_good: good_triplets_count += 1
             else:
@@ -83,25 +80,3 @@ class ClosureAnalyser(Analyser):
                                                                                                   good_triplets_count,
                                                                                                   percentage))
         return percentage > self.source_config['closure']['percentage_of_good_triplets']
-
-    def _phase_data_present_for_triplet(self, triplet, data):
-        baseline_combinations = [(triplet[0].id, triplet[1].id),
-                                 (triplet[1].id, triplet[2].id),
-                                 (triplet[0].id, triplet[2].id)]
-
-        return len(filter(lambda baseline: not self._phase_data_present_for_baseline(baseline, data),
-                          baseline_combinations)) == 0
-
-    def _phase_data_present_for_baseline(self, baseline, data):
-        baseline = tuple(sorted(baseline))
-        baseline_index_in_phase_data = \
-            numpy.logical_and(data['antenna1'] == baseline[0], data['antenna2'] == baseline[1]).nonzero()[0]
-
-        if baseline_index_in_phase_data.size and self._is_baseline_flagged(baseline_index_in_phase_data, data):
-            return False
-
-        return baseline_index_in_phase_data.size
-
-    def _is_baseline_flagged(self, baseline_index, data):
-        phase_data_flags_status = data['flag'][0][0][baseline_index][0]
-        return all(phase_data_flags_status)
