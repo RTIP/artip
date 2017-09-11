@@ -1,0 +1,46 @@
+div[id^='chart'] {
+  margin: 40px;
+}
+
+
+.c3-title {
+    font: 18px sans-serif;
+    fill: #333;
+    text-decoration: underline
+}
+
+div[id^='ctitle']{
+    font: 18px sans-serif;
+    fill: #333;
+    text-align: center
+}
+
+/* Add a black background color to the top navigation */
+.topnav {
+    background-color: darkcyan;
+    overflow: hidden;
+    font: 18px sans-serif
+}
+
+/* Style the links inside the navigation bar */
+.topnav a {
+    float: left;
+    display: block;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 12.6%;
+    text-decoration: none;
+    font-size: 17px;
+}
+
+/* Change the color of links on hover */
+.topnav a:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+/* Add a color to the active/current link */
+.topnav a.active {
+    background-color: #4CAF50;
+    color: white;
+}
