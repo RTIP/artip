@@ -1,6 +1,5 @@
 import datetime
 from logger import logger
-from configs import pipeline_config
 from configs import config
 from measurement_set import MeasurementSet
 from terminal_color import Color

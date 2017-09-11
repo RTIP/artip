@@ -8,7 +8,6 @@ from casa.casa_runner import CasaRunner
 from casa.flag_reasons import BAD_ANTENNA, BAD_ANTENNA_TIME, BAD_BASELINE_TIME, BAD_TIME
 from casa.flag_recorder import FlagRecorder
 from configs import config
-from configs import pipeline_config
 from models.antenna import Antenna
 from models.antenna_state import AntennaState
 from models.phase_set import PhaseSet
@@ -233,7 +232,7 @@ class MeasurementSet:
         return known_bad_data
 
     def _register_known_bad_antennas(self, flag_file):
-        known_bad_data = pipeline_config.PIPELINE_CONFIGS['known_bad_data']
+        known_bad_data = config.PIPELINE_CONFIGS['known_bad_data']
         for known_bad_datum in known_bad_data:
             sanitized_known_bad_data = self._sanitize(known_bad_datum)
             bad_scan_ids = list(set(self.scan_ids()).intersection(sanitized_known_bad_data['scan_ids']))

@@ -1,5 +1,5 @@
 import unittest
-from configs import config, pipeline_config, logging_config
+from configs import config, logging_config
 import start
 from main import main
 from shutil import rmtree
@@ -10,7 +10,6 @@ class PipelineTest(unittest.TestCase):
     def setup(self, dataset_name):
         self.seed_data_path = "src/integrationtest/seed_data/"
         self.dataset_name = dataset_name
-        pipeline_config.load("src/integrationtest/conf/pipeline_config.yml")
         logging_config.load()
 
         config.load(self.seed_data_path + self.dataset_name + "/config.yml")

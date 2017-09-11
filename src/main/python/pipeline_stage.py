@@ -9,11 +9,10 @@ from sources.phase_calibrator import PhaseCalibrator
 from sources.target_source import TargetSource
 from sources.continuum_source import ContinuumSource
 from sources.line_source import LineSource
-from configs import pipeline_config
 
 
 class PipelineStage(object):
-    STAGE_TOGGLES = pipeline_config.STAGES_TOGGLE_CONFIG
+    STAGE_TOGGLES = config.STAGE_CONFIGS
     TARGET_SOURCE_STAGES = config.TARGET_SOURCE_CONFIGS['target_source_stages']
     CALIBRATION_STAGES = config.ALL_CONFIGS['calibration_stages']
 
@@ -36,7 +35,7 @@ class PipelineStage(object):
     @_run(STAGE_TOGGLES['flag_known_bad_data'])
     def flag_known_bad_antennas(self):
         self._measurement_set.quack()
-        if pipeline_config.PIPELINE_CONFIGS['known_bad_data']:
+        if config.PIPELINE_CONFIGS['known_bad_data']:
             flag_file = "{0}/known_flags.txt".format(self._measurement_set.output_path)
             self._measurement_set.casa_runner.flagdata(flag_file, BAD_ANTENNA)
 
