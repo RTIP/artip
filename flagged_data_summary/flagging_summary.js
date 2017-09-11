@@ -8,36 +8,35 @@ function antenna_list(data){
     return antennas
 }
 
-function generate_label(source_type,scan){
-    return `Scan : ${scan}`
+function generate_label(source_type,scan, pol){
+    return `Scan : ${scan}, ${pol}`
 }
 
-function generate_graph(graph_data, bind, scan){
-    var antennas = graph_data["antennas"]
-    var source_type = graph_data["source_type"]
+function generate_graph(pol_data, source_type, bind, scan, pol){
+    var antennas = pol_data[pol]["antennas"]
     var chart = c3.generate({
         bindto: bind,
         data: {
             json: antennas,
             keys: {
-                    value: ['quack', 'rang_closure', 'detailed_flagging']
+                    value: ['known_flags', 'rang_closure', 'detailed_flagging']
                 },
             names: {
                  detailed_flagging: 'Detail Flagging',
                 rang_closure: 'Closure & Rang',
-                quack: 'Quack',
+                known_flags: 'Known Flags',
                 antenna: 'Antenna',
                 flux_calibrator: 'Flux calibrator'
             },
 
             type: 'bar',
             groups: [
-                ['detailed_flagging', 'rang_closure', 'quack']
+                ['detailed_flagging', 'rang_closure', 'known_flags']
             ],
             order: null
         },
         title: {
-            text: generate_label(source_type,scan),
+            text: generate_label(source_type,scan, pol),
             y: 100,
             padding: {top:10, bottom:16, left: 70},
             position: 'bottom'
@@ -90,10 +89,13 @@ function loadJson(sel_source_type) {
       for (var scan in graph_data) {
         source_type = graph_data[scan]["source_type"]
         if(source_type === sel_source_type){
-           var aDiv = document.createElement('div');
-           aDiv.id = "chart"+ scan;
-           document.getElementById("container").appendChild(aDiv);
-           generate_graph(graph_data[scan], '#'+aDiv.id, scan)
+            var polarizations = graph_data[scan]["polarizations"]
+            for(var pol in polarizations){
+               var aDiv = document.createElement('div');
+               aDiv.id = "chart_"+pol+ scan;
+               document.getElementById("container").appendChild(aDiv);
+               generate_graph(polarizations, source_type, '#'+aDiv.id, scan, pol)
+            }
        }
 }
 

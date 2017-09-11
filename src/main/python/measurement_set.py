@@ -46,7 +46,6 @@ class MeasurementSet:
 
     def quack(self):
         self.casa_runner.quack()
-        self.casa_runner.generate_flag_summary("quack", self.scan_ids())
 
     def _filter(self, spw, channel, polarization, filters={}):
         self._ms.selectinit(reset=True)

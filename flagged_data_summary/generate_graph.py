@@ -31,33 +31,48 @@ def calculate_percentage(favourable, total):
 def build_json(input_file):
     with open(input_file) as data_file:
         data = json.load(data_file)
-        key = data.keys()[0]
-        for scan, val in data[key].iteritems():
+        stage = data.keys()[0]
+        for scan, scan_val in data[stage].iteritems():
             if scan not in graph_data:
                 graph_data[scan] = {}
-                graph_data[scan]["antennas"] = []
-            for antenna, ajson in data[key][scan]["antenna"].iteritems():
-                antenna_row = get_antenna_row(graph_data[scan]["antennas"], antenna)
-                if antenna_row:
-                    antenna_row[key] = calculate_percentage((ajson['flagged'] - antenna_row['prev_flagged']),
-                                                            ajson['total'])
-                    antenna_row["prev_flagged"] = ajson["flagged"]
-                    graph_data[scan]["source_type"] = data[key][scan]["source_type"]
-                else:
-                    antenna_row["antenna"] = antenna
-                    antenna_row["prev_flagged"] = 0
-                    antenna_row[key] = calculate_percentage((ajson['flagged'] - antenna_row['prev_flagged']),
-                                                            ajson['total'])
-                    antenna_row["prev_flagged"] = ajson["flagged"]
-                    graph_data[scan]["antennas"].append(antenna_row)
-                    graph_data[scan]["source_type"] = data[key][scan]["source_type"]
+                graph_data[scan]["polarizations"] = {}
+            for pol, pol_val in scan_val["polarizations"].iteritems():
+                if pol not in graph_data[scan]["polarizations"]:
+                    graph_data[scan]["polarizations"][pol] = {}
+                    graph_data[scan]["polarizations"][pol]["antennas"] = []
+                for antenna, antenna_val in pol_val["antenna"].iteritems():
+                    antenna_row = get_antenna_row(graph_data[scan]["polarizations"][pol]["antennas"], antenna)
+                    if antenna_row:
+                        set_percentage_value_to_stage(antenna_val, antenna_row, stage)
+                        set_source_type(scan_val, scan)
+                    else:
+                        initialize_antenna_row(antenna, antenna_row)
+                        set_percentage_value_to_stage(antenna_val, antenna_row, stage)
+                        graph_data[scan]["polarizations"][pol]["antennas"].append(antenna_row)
+                        set_source_type(scan_val, scan)
     return graph_data
+
+
+def initialize_antenna_row(antenna, antenna_row):
+    antenna_row["antenna"] = antenna
+    antenna_row["prev_flagged"] = 0
+
+
+def set_percentage_value_to_stage(antenna_val, antenna_row, key):
+    antenna_row[key] = calculate_percentage((antenna_val['flagged'] - antenna_row['prev_flagged']),
+                                            antenna_val['total'])
+    antenna_row["prev_flagged"] = antenna_val["flagged"]
+
+
+def set_source_type(scan_val, scan):
+    if scan_val["source_type"] != "All":
+        graph_data[scan]["source_type"] = scan_val["source_type"]
 
 
 def iterate_over_json_store():
     json_store_path = sys.argv[1]
     print "Parsing flag summaries"
-    build_json("{0}/quack_None.json".format(json_store_path))
+    build_json("{0}/known_flags_All.json".format(json_store_path))
     build_json("{0}/rang_closure_flux_calibrator.json".format(json_store_path))
     build_json("{0}/detailed_flagging_flux_calibrator.json".format(json_store_path))
     build_json("{0}/rang_closure_phase_calibrator.json".format(json_store_path))
