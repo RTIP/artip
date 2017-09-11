@@ -1,0 +1,20 @@
+<html>
+
+<head>
+    <title>Flag Summary</title>
+    <link href="./resources/c3.css" rel="stylesheet"/>
+    <link href="./resources/style.css" rel="stylesheet">
+</head>
+<body>
+<div class="topnav">
+    <a href="#/1" onclick="selectStage('flux_calibrator');">Flux Calibrator</a>
+    <a href="#/2" onclick="selectStage('phase_calibrator');">Phase Calibrator</a>
+    <a href="#/3" onclick="selectStage('target_source');">Target Source</a>
+</div>
+<div id="containerHeader"></div>
+<div id="container"></div>
+<script src="./resources/d3.min.js" charset="utf-8"></script>
+<script src="./resources/c3.min.js"></script>
+<script src="./flagging_summary.js"></script>
+</body>
+</html>
