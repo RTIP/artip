@@ -1,18 +1,9 @@
 stages:
   flag_known_bad_data: true
   flux_calibration: true
-  bandpass_calibration:
-    run_auto_flagging: false
-    run_bandpass: true
+  bandpass_calibration: true
   phase_calibration: true
-  target_source:
-    calibrate: true
-    reference_spw:
-      create_continuum: true
-    all_spw:
-      run_auto_flagging: true
-      create_continuum: true
-      create_line_image: true
+  target_source: true
 
 known_bad_data: []
 

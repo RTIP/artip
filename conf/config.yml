@@ -1,3 +1,11 @@
+calibration_stages:
+  flux_calibration:
+    flagging: true
+  bandpass_calibration:
+    run_auto_flagging: false
+  phase_calibration:
+    flagging: true
+
 global:
   polarizations: ['RR', 'LL']
   flux_cal_fields: &flux_cal_fields [0]
