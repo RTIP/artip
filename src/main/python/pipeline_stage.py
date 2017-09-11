@@ -81,7 +81,6 @@ class PipelineStage(object):
             self._create_all_spw_continuum_image(line_source, source_id)
             self._create_line_image(line_source)
 
-
     @_run(config.TARGET_SOURCE_TOGGLES['reference_spw']['create_continuum'])
     def _create_ref_continuum_image(self, line_source, source_id):
         cont_mode = 'ref'

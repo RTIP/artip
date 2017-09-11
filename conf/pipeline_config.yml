@@ -1,0 +1,21 @@
+stages:
+  flag_known_bad_data: true
+  flux_calibration: true
+  bandpass_calibration: true
+  phase_calibration: true
+  target_source: true
+
+known_bad_data: []
+
+# Example
+#known_bad_data:
+#  - polarizations: ['RR', 'LL']
+#    scan_ids: [1,2,3,4,5,6,7]
+#    antennas: [1,18]
+#
+#Note: if empty array specified in polarizations, scans, or antennas, 'all' will be considered
+
+code_profiling: false
+flagging_percentage: true
+log_level: 20
+#debug: 10, info: 20, warning: 30, error: 40, critical: 50
