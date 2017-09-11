@@ -34,6 +34,7 @@ class PipelineStage(object):
         if config.MAIN_STAGES['flag_known_bad_data']:
             flag_file = "{0}/user_defined_flags.txt".format(config.CONFIG_PATH)
             self._measurement_set.casa_runner.flagdata(flag_file)
+        self._measurement_set.casa_runner.generate_flag_summary("known_flags", self._measurement_set.scan_ids())
 
     @_run(config.MAIN_STAGES['flux_calibration'])
     def flux_calibration(self):

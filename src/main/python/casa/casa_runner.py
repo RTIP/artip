@@ -34,13 +34,15 @@ class CasaRunner:
         script_parameters = "{0} {1}".format(self._dataset_path, show_percentage)
         proc = self._run(script_path, script_parameters, stdout=subprocess.PIPE)
 
-    def generate_flag_summary(self, key, scan_list, source_type=None):
+    def generate_flag_summary(self, key, scan_list, source_type="All"):
         script_path = 'casa_scripts/flag_summary.py'
         scans = ','.join(str(e) for e in scan_list)
         path = "{0}/json_store".format(self._output_path)
         create_dir(path)
-        script_parameters = "{0} {1} {2} {3} {4}".format(self._dataset_path, path,
-                                                         key, scans, source_type)
+        polarizations = ",".join(config.GLOBAL_CONFIG['polarizations'])
+        script_parameters = "{0} {1} {2} {3} {4} {5}".format(polarizations, self._dataset_path,
+                                                             path,
+                                                             key, scans, source_type)
         self._run(script_path, script_parameters)
 
     def apply_flux_calibration(self, source_config, run_count):
