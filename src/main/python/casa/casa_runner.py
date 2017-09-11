@@ -6,7 +6,7 @@ import subprocess
 import casac
 from logger import logger
 from terminal_color import Color
-from helpers import format_spw_with_channels
+from helpers import format_spw_with_channels, create_dir
 from watchdog.observers import Observer
 from log_event_handler import LogEventHandler
 from named_tuples import CalibParams
@@ -33,9 +33,15 @@ class CasaRunner:
         show_percentage = config.PIPELINE_CONFIGS['flagging_percentage']
         script_parameters = "{0} {1}".format(self._dataset_path, show_percentage)
         proc = self._run(script_path, script_parameters, stdout=subprocess.PIPE)
-        if show_percentage:
-            logger.info(Color.BOLD + Color.UNDERLINE + filter(lambda x: x.startswith(">>>"), proc.stdout.readlines())[
-                0] + Color.ENDC)
+
+    def generate_flag_summary(self, key, scan_list, source_type=None):
+        script_path = 'casa_scripts/flag_summary.py'
+        scans = ','.join(str(e) for e in scan_list)
+        path = "{0}/json_store".format(self._output_path)
+        create_dir(path)
+        script_parameters = "{0} {1} {2} {3} {4}".format(self._dataset_path, path,
+                                                         key, scans, source_type)
+        self._run(script_path, script_parameters)
 
     def apply_flux_calibration(self, source_config, run_count):
         logger_message = "Applying Flux Calibration"
