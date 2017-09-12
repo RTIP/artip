@@ -6,7 +6,7 @@ from terminal_color import Color
 class FluxCalibrator(Source):
     def __init__(self, measurement_set):
         self.source_type = 'flux_calibrator'
-        self.config = config.ALL_CONFIGS[self.source_type]
+        self.config = config.CALIBRATION_CONFIGS[self.source_type]
         self.source_ids = config.GLOBAL_CONFIGS['flux_cal_fields']
         super(FluxCalibrator, self).__init__(measurement_set)
 

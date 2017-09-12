@@ -8,7 +8,7 @@ from measurement_set import MeasurementSet
 class TargetSource(Source):
     def __init__(self, measurement_set, source_id):
         self.source_type = 'target_source'
-        self.config = config.ALL_CONFIGS[self.source_type]
+        self.config = config.TARGET_SOURCE_CONFIGS
         self.source_id = source_id
         super(TargetSource, self).__init__(measurement_set)
 

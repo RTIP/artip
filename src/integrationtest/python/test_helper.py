@@ -32,7 +32,6 @@ def expected_stats(_for, seed_data_path, dataset_name):
 
 
 def _load_image():
-    ap_loop_count = config.ALL_CONFIGS['target_source']['continuum']['self_calibration']['calmode']['p']['loop_count']
     ap_loop_count = 1
 
     image = casac.casac.image()

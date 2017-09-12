@@ -8,3 +8,63 @@ target_source_stages:
       create_continuum: true
       self_calibration: true
       create_line_image: true
+
+target_source:
+  minsnr: 2.0
+  continuum: &continuum
+    ref:
+      channels_to_avg: '80~120'
+      channel_width: 41
+    spw:
+      channels_to_avg: '80~120'
+      channel_width: 41
+    channel: 0
+    width: 1
+    self_calibration:
+      minsnr: 2.0
+      masking:
+        threshold: '0.0'
+        mask_path: ''
+        bmask:
+          bottom_left_corner:
+            x_coordinate: 240
+            y_coordinate: 240
+          top_right_corner:
+            x_coordinate: 270
+            y_coordinate: 270
+      calmode: &calmode
+        p:
+          loop_count : 5
+          solint: '2min'
+          robust: 0.5
+          applymode: 'calonly'
+        ap:
+          loop_count : 4
+          solint: '10min'
+          robust: 0.5
+          applymode: 'calflag'
+    detail_flagging:
+      time:
+        sliding_window:
+          start_index: 3
+          bucket_size: 1
+          overlap: 0
+          mad_scale_factor: 3
+      antenna:
+        sliding_window:
+          start_index: 3
+          bucket_size: 10
+          overlap: 5
+          mad_scale_factor: 3
+      baseline:
+        sliding_window:
+          start_index: 3
+          bucket_size: 10
+          overlap: 5
+          mad_scale_factor: 3
+      amplitude_data_column: 'corrected_amplitude'
+
+  line:
+    fields: [0]
+    calmode: *calmode
+    continuum: *continuum

@@ -13,8 +13,8 @@ class ContinuumSource(TargetSource):
         self.source_type = 'continuum'
         self.flag_file = "{0}/flags_{1}.txt".format(measurement_set.output_path, self.source_type)
         self.spw = spw
-        self.source_ids = [0]  # source_id will always be 0
-        self.config = config.ALL_CONFIGS["target_source"][self.source_type]
+        self.source_ids = [0]
+        self.config = config.TARGET_SOURCE_CONFIGS[self.source_type]
         self.cont_mode = cont_mode
 
     def reduce_data(self):

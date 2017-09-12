@@ -16,9 +16,9 @@ AUTO_FLAGGING_CONFIGS = load(config_path +"auto_flagging_config.yml")
 SOURCE_AUTOFLAGGING_CONFIGS = AUTO_FLAGGING_CONFIGS[source_type]['auto_flagging_algo']
 config = load(config_path + "config.yml")
 if source_type == "bandpass_calibrator":
-    SOURCE_CONFIG = config[source_type]
+    SOURCE_CONFIG = config['global']['bandpass_cal_fields']
 else:
-    SOURCE_CONFIG = config['target_source'][source_type]
+    SOURCE_CONFIG = config['global']['target_src_field']
 
 for spw in spw_range.split(','):
     spw_config = "spw{0}".format(spw)
