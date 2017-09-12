@@ -6,18 +6,6 @@ calibration_stages:
   phase_calibration:
     flagging: true
 
-global:
-  polarizations: ['RR', 'LL']
-  flux_cal_fields: &flux_cal_fields [0]
-  bandpass_cal_fields: &bandpass_cal_fields [0]
-  phase_cal_fields: &phase_cal_fields [1]
-  target_src_field: &target_src_field [2]
-  output_path: 'output'
-  default_spw: "0"
-  spw_range: "0"   #Example: "0,1,2,4"
-  refant: 2
-  target_phase_src_map: {2:[1]}
-
 common: &common
   channel: 100
   width: 1
@@ -56,16 +44,13 @@ common: &common
 
 flux_calibrator:
   <<: *common
-  fields: *flux_cal_fields
   phase_data_column: "phase"
 
 bandpass_calibrator:
   <<: *common
-  fields: *bandpass_cal_fields
 
 phase_calibrator:
   <<: *common
-  fields: *phase_cal_fields
   angular_dispersion:
     <<: *angular_dispersion
     percentage_of_min_doubtful_antennas: 10
@@ -78,7 +63,6 @@ phase_calibrator:
 
 target_source:
   <<: *common
-  fields: *target_src_field
   continuum: &continuum
     ref:
       channels_to_avg: '80~120'

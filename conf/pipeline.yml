@@ -5,6 +5,18 @@ stages:
   phase_calibration: true
   target_source: true
 
+global:
+  polarizations: ['RR', 'LL']
+  flux_cal_fields: [0]
+  bandpass_cal_fields: [0]
+  phase_cal_fields: [1]
+  target_src_field: [2]
+  output_path: 'output'
+  default_spw: "0"
+  spw_range: "0"   #Example: "0,1,2,4"
+  refant: 2
+  target_phase_src_map: {2:[1]}
+
 known_bad_data: []
 
 # Example
