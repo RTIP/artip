@@ -8,22 +8,20 @@ def load(config_file_name):
     config_file.close()
     return configs
 
-
-config_path = sys.argv[-1]
-source_type = sys.argv[-2]
-ms_dataset = sys.argv[-3]
+spw_range = sys.argv[-1]
+config_path = sys.argv[-2]
+source_type = sys.argv[-3]
+ms_dataset = sys.argv[-4]
 
 AUTO_FLAGGING_CONFIGS = load(config_path + "auto_flagging_config.yml")
 SOURCE_AUTOFLAGGING_CONFIGS = AUTO_FLAGGING_CONFIGS[source_type]['auto_flagging_algo']
 config = load(config_path + "config.yml")
-GLOBAL_CONFIG = config["global"]
 if source_type == "bandpass_calibrator":
     SOURCE_CONFIG = config[source_type]
 else:
     SOURCE_CONFIG = config['target_source'][source_type]
 
-spw_list = GLOBAL_CONFIG['spw_range']
-for spw in spw_list.split(','):
+for spw in spw_range.split(','):
     spw_config = "spw{0}".format(spw)
     datacolumn = SOURCE_AUTOFLAGGING_CONFIGS[spw_config]['datacolumn']
     growtime = SOURCE_AUTOFLAGGING_CONFIGS[spw_config]['growtime']

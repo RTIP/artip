@@ -42,10 +42,10 @@ class CasaRunner:
 
         logger.info(Color.HEADER + logger_message + Color.ENDC)
         script_path = 'casa_scripts/flux_calibration.py'
-        fields = ",".join(map(str, source_config['fields']))
-        refant = config.GLOBAL_CONFIG['refant']
+        fields = ",".join(map(str, config.GLOBAL_CONFIGS['flux_cal_fields']))
+        refant = config.GLOBAL_CONFIGS['refant']
         minsnr = source_config['minsnr']
-        spw = format_spw_with_channels(config.GLOBAL_CONFIG['spw_range'], source_config['channel'])
+        spw = format_spw_with_channels(config.GLOBAL_CONFIGS['spw_range'], source_config['channel'])
         script_parameters = "{0} {1} {2} {3} {4} {5} {6}".format(run_count, self._dataset_path,
                                                                  self._output_path,
                                                                  fields, refant, spw, minsnr)
@@ -54,8 +54,8 @@ class CasaRunner:
     def apply_bandpass_calibration(self, source_config):
         logger.info(Color.HEADER + "Running Bandpass Calibration..." + Color.ENDC)
         script_path = 'casa_scripts/bandpass_calibration.py'
-        fields = ",".join(map(str, source_config['fields']))
-        refant = config.GLOBAL_CONFIG['refant']
+        fields = ",".join(map(str, config.GLOBAL_CONFIGS['flux_cal_fields']))
+        refant = config.GLOBAL_CONFIGS['refant']
         minsnr = source_config['minsnr']
         script_parameters = "{0} {1} {2} {3} {4}".format(self._dataset_path, self._output_path, fields, refant, minsnr)
 
@@ -64,10 +64,10 @@ class CasaRunner:
     def apply_phase_calibration(self, flux_cal_field, source_config):
         logger.info(Color.HEADER + "Applying Phase Calibration..." + Color.ENDC)
         script_path = 'casa_scripts/phase_calibration.py'
-        phase_cal_fields = ",".join(map(str, source_config['fields']))
-        refant = config.GLOBAL_CONFIG['refant']
+        phase_cal_fields = ",".join(map(str, config.GLOBAL_CONFIGS['phase_cal_fields']))
+        refant = config.GLOBAL_CONFIGS['refant']
         minsnr = source_config['minsnr']
-        spw = format_spw_with_channels(config.GLOBAL_CONFIG['spw_range'], source_config['channels_to_avg'])
+        spw = format_spw_with_channels(config.GLOBAL_CONFIGS['spw_range'], source_config['channels_to_avg'])
         script_parameters = "{0} {1} {2} {3} {4} {5} {6}".format(self._dataset_path, self._output_path,
                                                                  flux_cal_field, phase_cal_fields,
                                                                  spw, refant, minsnr)
@@ -75,8 +75,8 @@ class CasaRunner:
 
     def apply_target_source_calibration(self, source_config, source_id):
         logger.info(Color.HEADER + "Applying Calibration to Target Source..." + Color.ENDC)
-        flux_cal_fields = ",".join(map(str, config.GLOBAL_CONFIG['flux_cal_fields']))
-        phase_cal_fields = ",".join(map(str, config.GLOBAL_CONFIG['target_phase_src_map'][source_id]))
+        flux_cal_fields = ",".join(map(str, config.GLOBAL_CONFIGS['flux_cal_fields']))
+        phase_cal_fields = ",".join(map(str, config.GLOBAL_CONFIGS['target_phase_src_map'][source_id]))
         script_path = 'casa_scripts/target_source_calibration.py'
         script_parameters = "{0} {1} {2} {3} {4}".format(self._dataset_path, self._output_path,
                                                          flux_cal_fields, phase_cal_fields,
@@ -85,13 +85,15 @@ class CasaRunner:
 
     def r_flag(self, source_type):
         script_path = 'casa_scripts/r_flag.py'
-        script_parameters = "{0} {1} {2}".format(self._dataset_path, source_type, config.CONFIG_PATH)
+        script_parameters = "{0} {1} {2} {3}".format(self._dataset_path, source_type, config.CONFIG_PATH,
+                                                     config.GLOBAL_CONFIGS['spw_range'])
         logger.info(Color.HEADER + "Running Rflag auto-flagging algorithm" + Color.ENDC)
         self._run(script_path, script_parameters)
 
     def tfcrop(self, source_type):
         script_path = 'casa_scripts/tfcrop.py'
-        script_parameters = "{0} {1} {2}".format(self._dataset_path, source_type, config.CONFIG_PATH)
+        script_parameters = "{0} {1} {2} {3}".format(self._dataset_path, source_type, config.CONFIG_PATH,
+                                                     config.GLOBAL_CONFIGS['spw_range'])
         logger.info(Color.HEADER + "Running Tfcrop auto-flagging algorithm" + Color.ENDC)
         self._run(script_path, script_parameters)
 
@@ -99,9 +101,9 @@ class CasaRunner:
         logger.info(Color.HEADER + 'Running setjy' + Color.ENDC)
         script_path = 'casa_scripts/setjy.py'
         freq_band = "L"
-        model_path = "{0}/{1}_{2}.im".format(config.CASA_CONFIG['casa'][platform.system()]['model_path'],
+        model_path = "{0}/{1}_{2}.im".format(config.CASA_CONFIGS['casa'][platform.system()]['model_path'],
                                              source_name.split("_")[0], freq_band)
-        script_parameters = "{0} {1} {2} {3}".format(config.GLOBAL_CONFIG['spw_range'], self._dataset_path, source_id,
+        script_parameters = "{0} {1} {2} {3}".format(config.GLOBAL_CONFIGS['spw_range'], self._dataset_path, source_id,
                                                      model_path)
         self._run(script_path, script_parameters)
 
@@ -127,7 +129,8 @@ class CasaRunner:
         self._run(script_path, script_parameters)
 
     def _register_tclean_log_listener(self):
-        event_handler = LogEventHandler(log_file=config.OUTPUT_PATH+"/casa.log", pattern="(Reached global stopping criterion)|(>>>>)", regexes=[r".*\.log"])
+        event_handler = LogEventHandler(log_file=config.OUTPUT_PATH + "/casa.log",
+                                        pattern="(Reached global stopping criterion)|(>>>>)", regexes=[r".*\.log"])
         observer = Observer()
         observer.schedule(event_handler, path=config.OUTPUT_PATH, recursive=False)
         observer.start()
@@ -144,7 +147,7 @@ class CasaRunner:
                                                               output_path,
                                                               output_ms_path,
                                                               cal_mode[calibration_mode]['solint'],
-                                                              config.GLOBAL_CONFIG['refant'],
+                                                              config.GLOBAL_CONFIGS['refant'],
                                                               self_cal_config['minsnr'],
                                                               self._output_path,
                                                               cal_mode[calibration_mode]['applymode'],
@@ -200,7 +203,7 @@ class CasaRunner:
         cont_mode = 'ref'
         continuum_image_model = self._last_continuum_image_model(calmode_config, source_id, cont_mode)
         script_parameters = "{0} {1} {2} {3} {4}".format(
-            config.GLOBAL_CONFIG['spw_range'],
+            config.GLOBAL_CONFIGS['spw_range'],
             self._dataset_path,
             self._output_path,
             continuum_image_model,
@@ -225,7 +228,7 @@ class CasaRunner:
         table.unlock()
 
     def _form_casa_command(self, script, script_parameters):
-        casa_path = config.CASA_CONFIG['casa'][platform.system()]['path']
+        casa_path = config.CASA_CONFIGS['casa'][platform.system()]['path']
         logfile = config.OUTPUT_PATH + "/casa.log"
         script_full_path = os.path.realpath(script)
         casa_command = "{0} --nologger --nogui  --logfile {1} -c {2} {3}" \
@@ -233,7 +236,7 @@ class CasaRunner:
         return casa_command
 
     def _form_mpi_command(self, script, script_parameters):
-        mpi_config = config.CASA_CONFIG['mpicasa']
+        mpi_config = config.CASA_CONFIGS['mpicasa']
         mpi_command = "mpicasa -n {0}".format(mpi_config['n'])
         if mpi_config['hostfile']:
             mpi_command += " --hostfile {0} ".format(mpi_config['hostfile'])
@@ -252,7 +255,7 @@ class CasaRunner:
         if not script_parameters: script_parameters = self._dataset_path
         self._unlock_dataset()
 
-        if config.CASA_CONFIG['is_parallel']:
+        if config.CASA_CONFIGS['is_parallel']:
             command = self._form_mpi_command(script, script_parameters)
         else:
             command = self._form_casa_command(script, script_parameters)

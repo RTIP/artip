@@ -47,9 +47,9 @@ class Source(object):
 
     def _flag_bad_time(self, reason, analyser, run_only_once):
         spw_polarization_scan_id_combination = []
-        spw = config.GLOBAL_CONFIG['default_spw']
+        spw = config.GLOBAL_CONFIGS['default_spw']
 
-        for polarization in config.GLOBAL_CONFIG['polarizations']:
+        for polarization in config.GLOBAL_CONFIGS['polarizations']:
             scan_ids = self.measurement_set.scan_ids(self.source_ids, polarization)
             spw_polarization_scan_id_combination += list(itertools.product(spw, [polarization], scan_ids))
 
@@ -70,11 +70,12 @@ class Source(object):
 
     def analyse_antennas_on_closure_phases(self):
         logger.info(Color.HEADER + "Identifying bad Antennas based on closure phases..." + Color.ENDC)
-        closure_analyser = ClosureAnalyser(self.measurement_set, self.source_type)
+        closure_analyser = ClosureAnalyser(self.measurement_set, self)
         closure_analyser.identify_antennas_status()
 
     def analyse_antennas_on_angular_dispersion(self):
         logger.info(
             Color.HEADER + "Identifying bad Antennas based on angular dispersion in phases..." + Color.ENDC)
-        r_analyser = AngularDispersion(self.measurement_set, self.source_type)
+        import pdb;pdb.set_trace()
+        r_analyser = AngularDispersion(self.measurement_set, self)
         r_analyser.identify_antennas_status()

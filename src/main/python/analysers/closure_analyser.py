@@ -31,10 +31,10 @@ class ClosureAnalyser(Analyser):
 
     def identify_antennas_status(self):
         spw_polarization_scan_id_combination = []
-        spw = config.GLOBAL_CONFIG['default_spw']
+        spw = config.GLOBAL_CONFIGS['default_spw']
 
-        for polarization in config.GLOBAL_CONFIG['polarizations']:
-            scan_ids = self.measurement_set.scan_ids(self.source_config['fields'], polarization)
+        for polarization in config.GLOBAL_CONFIGS['polarizations']:
+            scan_ids = self.measurement_set.scan_ids(self.source_ids, polarization)
             spw_polarization_scan_id_combination += list(itertools.product(spw, [polarization], scan_ids))
 
         for spw, polarization, scan_id in spw_polarization_scan_id_combination:

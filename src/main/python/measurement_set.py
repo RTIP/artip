@@ -40,7 +40,7 @@ class MeasurementSet:
         flag_data = {
             polarization: {scan_id: set() for scan_id in self.scan_ids()} for
             polarization in
-            config.GLOBAL_CONFIG['polarizations']}
+            config.GLOBAL_CONFIGS['polarizations']}
         return flag_data
 
     def quack(self):
@@ -63,7 +63,7 @@ class MeasurementSet:
         antennas = map(lambda id: Antenna(id), antenna_ids)
         product_pol_scan_ant = []
 
-        for polarization in config.GLOBAL_CONFIG['polarizations']:
+        for polarization in config.GLOBAL_CONFIGS['polarizations']:
             scan_ids = self.scan_ids(polarization=polarization)
             product_pol_scan_ant += list(itertools.product([polarization], scan_ids, antennas))
 
@@ -110,7 +110,7 @@ class MeasurementSet:
         return self._ms.metadata().fieldnames()[field_id]
 
     def source_ids(self):
-        return self._ms.metadata().fieldsforspw(int(config.GLOBAL_CONFIG['default_spw']))
+        return self._ms.metadata().fieldsforspw(int(config.GLOBAL_CONFIGS['default_spw']))
 
     def _all_scan_ids(self, source_id=None):
         if source_id is None:
@@ -224,7 +224,7 @@ class MeasurementSet:
 
     def _sanitize(self, known_bad_data):
         if not known_bad_data['polarizations']:
-            known_bad_data['polarizations'] = config.GLOBAL_CONFIG['polarizations']
+            known_bad_data['polarizations'] = config.GLOBAL_CONFIGS['polarizations']
         if not known_bad_data['scan_ids']:
             known_bad_data['scan_ids'] = self.scan_ids()
         if not known_bad_data['antennas']:

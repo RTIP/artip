@@ -10,9 +10,9 @@ from analysers.angular_dispersion import AngularDispersion
 class AngularDispersionTest(TestCase):
     def update_polarizations(self, polarizations):
         config.load('conf/config.yml')
-        config.GLOBAL_CONFIG.update({'polarizations': polarizations})
+        config.GLOBAL_CONFIGS.update({'polarizations': polarizations})
 
-    @mock.patch('config.GLOBAL_CONFIG', update_polarizations(None, ['RR']))
+    @mock.patch('config.GLOBAL_CONFIGS', update_polarizations(None, ['RR']))
     def setUp(self):
         self.mocked_ms = Mock(name="ms")
         self.dispersed_phase_set = Mock(name='dispersed_phase_set', spec=PhaseSet)

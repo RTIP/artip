@@ -15,17 +15,17 @@ class AngularDispersion(Analyser):
 
     def identify_antennas_status(self):
         spw_polarization_scan_id_combination = []
-        spw = config.GLOBAL_CONFIG['default_spw']
+        spw = config.GLOBAL_CONFIGS['default_spw']
 
-        for polarization in config.GLOBAL_CONFIG['polarizations']:
-            scan_ids = self.measurement_set.scan_ids(self.source_config['fields'], polarization)
+        for polarization in config.GLOBAL_CONFIGS['polarizations']:
+            scan_ids = self.measurement_set.scan_ids(self.source_ids, polarization)
             spw_polarization_scan_id_combination += list(product(spw, [polarization], scan_ids))
 
         for spw, polarization, scan_id in spw_polarization_scan_id_combination:
             logger.debug(
                 Color.BACKGROUD_WHITE + "Polarization =" + polarization + " Scan Id=" + str(scan_id) + Color.ENDC)
-            if config.GLOBAL_CONFIG['refant']:
-                base_antenna = self.measurement_set.get_antenna_by_id(config.GLOBAL_CONFIG['refant'])
+            if config.GLOBAL_CONFIGS['refant']:
+                base_antenna = self.measurement_set.get_antenna_by_id(config.GLOBAL_CONFIGS['refant'])
             else:
                 base_antenna = self.measurement_set.antennas(polarization, scan_id)[0]
             r_matrix = RMatrix(spw, polarization, scan_id)

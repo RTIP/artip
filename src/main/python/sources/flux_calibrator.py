@@ -7,7 +7,7 @@ class FluxCalibrator(Source):
     def __init__(self, measurement_set):
         self.source_type = 'flux_calibrator'
         self.config = config.ALL_CONFIGS[self.source_type]
-        self.source_ids = config.GLOBAL_CONFIG['flux_cal_fields']
+        self.source_ids = config.GLOBAL_CONFIGS['flux_cal_fields']
         super(FluxCalibrator, self).__init__(measurement_set)
 
     def run_setjy(self):
@@ -21,7 +21,7 @@ class FluxCalibrator(Source):
         self._extend_bad_antennas_across_all_sources()
 
     def _extend_bad_antennas_across_all_sources(self):
-        polarizations = config.GLOBAL_CONFIG['polarizations']
+        polarizations = config.GLOBAL_CONFIGS['polarizations']
         for polarization in polarizations:
             scan_ids = self.measurement_set.scan_ids(self.source_ids, polarization)
             antennas_with_scans = self.measurement_set.get_bad_antennas_with_scans_for(polarization, self.source_ids)
