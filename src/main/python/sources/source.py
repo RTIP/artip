@@ -76,6 +76,5 @@ class Source(object):
     def analyse_antennas_on_angular_dispersion(self):
         logger.info(
             Color.HEADER + "Identifying bad Antennas based on angular dispersion in phases..." + Color.ENDC)
-        import pdb;pdb.set_trace()
         r_analyser = AngularDispersion(self.measurement_set, self)
         r_analyser.identify_antennas_status()
