@@ -7,17 +7,57 @@ calibration_stages:
     flagging: true
 
 calibration:
-  common: &common
+  flux_calibrator:
     channel: 100
     width: 1
     minsnr: 2.0
-    phase_data_column: "corrected_phase"
-    angular_dispersion: &angular_dispersion
+    phase_data_column: "phase"
+    angular_dispersion:
       r_threshold: 0.3
       percentage_of_min_doubtful_antennas: 20
       percentage_of_good_antennas: 70
-    closure: &closure
+    closure:
       threshold: 17
+      percentage_of_closures: 70
+      percentage_of_good_triplets: 70
+      percentile_threshold: 70
+    detail_flagging:
+      time:
+        sliding_window:
+          start_index: 3
+          bucket_size: 1
+          overlap: 0
+          mad_scale_factor: 3
+      antenna:
+        sliding_window:
+          start_index: 3
+          bucket_size: 10
+          overlap: 5
+          mad_scale_factor: 3
+      baseline:
+        sliding_window:
+          start_index: 3
+          bucket_size: 10
+          overlap: 5
+          mad_scale_factor: 3
+      amplitude_data_column: 'corrected_amplitude'
+
+  bandpass_calibrator:
+    channel: 100
+    minsnr: 2.0
+
+  phase_calibrator:
+    channel: 80
+    width: 41
+    channels_to_avg: '80~120'
+    minsnr: 2.0
+    phase_data_column: "corrected_phase"
+    angular_dispersion:
+      r_threshold: 0.3
+      percentage_of_min_doubtful_antennas: 10
+      percentage_of_good_antennas: 70
+    closure:
+      threshold: 35
       percentage_of_closures: 70
       percentage_of_good_triplets: 70
       percentile_threshold: 70
@@ -41,23 +81,3 @@ calibration:
           overlap: 5
           mad_scale_factor: 3
       amplitude_data_column: 'corrected_amplitude'
-
-
-  flux_calibrator:
-    <<: *common
-    phase_data_column: "phase"
-
-  bandpass_calibrator:
-    <<: *common
-
-  phase_calibrator:
-    <<: *common
-    angular_dispersion:
-      <<: *angular_dispersion
-      percentage_of_min_doubtful_antennas: 10
-
-    closure:
-      <<: *closure
-      threshold: 35
-    width: 41
-    channels_to_avg: '80~120'
