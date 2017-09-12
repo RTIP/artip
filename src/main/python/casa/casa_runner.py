@@ -16,7 +16,7 @@ class CasaRunner:
         self._output_path = output_path
         self._dataset_path = dataset_path
 
-    def flagdata(self, flag_file, reasons):
+    def flagdata(self, flag_file, reasons="any"):
         logger.info(Color.HEADER + "Flagging " + reasons + Color.ENDC)
         script_path = 'casa_scripts/flag.py'
         show_percentage = config.PIPELINE_CONFIGS['flagging_percentage']

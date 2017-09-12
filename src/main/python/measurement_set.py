@@ -25,7 +25,6 @@ class MeasurementSet:
         self._ms.open(dataset_path)
         self.flagged_antennas = self._initialize_flag_data()
         self._antennas = self.create_antennas()
-        self._register_known_bad_antennas(output_path + "/known_flags.txt")
 
     def __del__(self):
         self._ms.close()
@@ -58,7 +57,7 @@ class MeasurementSet:
         self._ms.open(self._dataset_path)
 
     def create_antennas(self):
-        first_scan_id = self._ms.metadata().scannumbers()[0]  # since antenna ids will be constant for all the scans
+        first_scan_id = self._ms.metadata().scannumbers()[0]
         antenna_ids = self._ms.metadata().antennasforscan(first_scan_id).tolist()
         antennas = map(lambda id: Antenna(id), antenna_ids)
         product_pol_scan_ant = []
@@ -221,21 +220,3 @@ class MeasurementSet:
 
     def split(self, output_ms, filters):
         self.casa_runner.split(output_ms, filters)
-
-    def _sanitize(self, known_bad_data):
-        if not known_bad_data['polarizations']:
-            known_bad_data['polarizations'] = config.GLOBAL_CONFIGS['polarizations']
-        if not known_bad_data['scan_ids']:
-            known_bad_data['scan_ids'] = self.scan_ids()
-        if not known_bad_data['antennas']:
-            known_bad_data['antennas'] = self.antenna_ids()
-        return known_bad_data
-
-    def _register_known_bad_antennas(self, flag_file):
-        known_bad_data = config.PIPELINE_CONFIGS['known_bad_data']
-        for known_bad_datum in known_bad_data:
-            sanitized_known_bad_data = self._sanitize(known_bad_datum)
-            bad_scan_ids = list(set(self.scan_ids()).intersection(sanitized_known_bad_data['scan_ids']))
-
-            self.flag_antennas(flag_file, sanitized_known_bad_data['polarizations'], bad_scan_ids,
-                               sanitized_known_bad_data['antennas'])
