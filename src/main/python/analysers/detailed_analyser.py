@@ -1,6 +1,6 @@
 from logger import logger
 from amplitude_matrix import AmplitudeMatrix
-from window import Window
+from window import Window, WindowConfig
 from casa.flag_reasons import BAD_ANTENNA_TIME, BAD_BASELINE_TIME, BAD_TIME
 from terminal_color import Color
 
@@ -21,7 +21,7 @@ class DetailedAnalyser:
             global_sigma = amp_matrix.mad_sigma()
             self._print_polarization_details(global_sigma, global_median, polarization, scan_id)
 
-            window_config = self._source_config['detail_flagging']['time']['sliding_window']
+            window_config = WindowConfig(*self._source_config['detail_flagging']['time_sliding_window'])
             # Sliding Window for Time
             bad_window_present = self._flag_bad_time_window(BAD_TIME, None, amp_matrix.amplitude_data_matrix,
                                        global_sigma, global_median,
@@ -41,11 +41,11 @@ class DetailedAnalyser:
 
             antennaids = self.measurement_set.antenna_ids(polarization, scan_id)
 
-            window_config = self._source_config['detail_flagging']['antenna']['sliding_window']
+            window_config = WindowConfig(*self._source_config['detail_flagging']['antenna_sliding_window'])
             # Sliding Window for Bad Antennas
             for antenna in antennaids:
                 filtered_matrix = amp_matrix.filter_by_antenna(antenna)
-                if filtered_matrix.is_bad(global_median, window_config['mad_scale_factor'] * global_sigma):
+                if filtered_matrix.is_bad(global_median, window_config.mad_scale_factor * global_sigma):
                     logger.info(
                         Color.FAIL + 'Antenna ' + str(
                             antenna) + ' is Bad running sliding Window on it' + Color.ENDC)
@@ -68,7 +68,7 @@ class DetailedAnalyser:
             scan_times = self.measurement_set.timesforscan(scan_id)
             self._print_polarization_details(global_sigma, global_median, polarization, scan_id)
 
-            window_config = self._source_config['detail_flagging']['baseline']['sliding_window']
+            window_config = WindowConfig(*self._source_config['detail_flagging']['baseline_sliding_window'])
             # Sliding Window for Baselines
             for (baseline, amplitudes) in amp_matrix.amplitude_data_matrix.items():
                 flagged_bad_window = self._flag_bad_time_window(BAD_BASELINE_TIME, baseline, {baseline: amplitudes},
@@ -84,7 +84,7 @@ class DetailedAnalyser:
         sliding_window = Window(data_set, window_config)
         while True:
             window_matrix = sliding_window.slide()
-            if window_matrix.is_bad(global_median, window_config['mad_scale_factor'] * global_sigma):
+            if window_matrix.is_bad(global_median, window_config.mad_scale_factor * global_sigma):
                 bad_window_found = True
                 start, end = sliding_window.current_position()
                 bad_timerange = scan_times[start], scan_times[end]
