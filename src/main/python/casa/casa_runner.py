@@ -138,10 +138,10 @@ class CasaRunner:
         observer.schedule(event_handler, path=config.OUTPUT_PATH, recursive=False)
         observer.start()
 
-    def apply_self_calibration(self, self_cal_config, calibration_mode, output_ms_path, output_path, spw):
+    def apply_self_calibration(self, selfcal_config, calibration_mode, output_ms_path, output_path, spw):
         logger.info(Color.HEADER + "Applying self calibration for {0}".format(self._dataset_path) + Color.ENDC)
-        cal_mode = self_cal_config['calmode']
-        mask_path = self_cal_config['masking']['mask_path'] if self_cal_config['masking']['mask_path'] else 'None'
+        cal_mode = selfcal_config['calmode']
+        mask_path = selfcal_config['masking']['mask_path'] if selfcal_config['masking']['mask_path'] else 'None'
 
         script_path = 'casa_scripts/self_calibration.py'
         script_parameters = "{0} {1} {2} {3} {4} {5} {6} {7} {8} {9} {10} {11} {12} {13} " \
@@ -151,17 +151,17 @@ class CasaRunner:
                                                               output_ms_path,
                                                               cal_mode[calibration_mode]['solint'],
                                                               config.GLOBAL_CONFIGS['refant'],
-                                                              self_cal_config['minsnr'],
+                                                              selfcal_config['minsnr'],
                                                               self._output_path,
                                                               cal_mode[calibration_mode]['applymode'],
-                                                              self_cal_config['masking']['threshold'],
-                                                              self_cal_config['masking']['bmask']['bottom_left_corner'][
+                                                              selfcal_config['masking']['threshold'],
+                                                              selfcal_config['masking']['bmask']['bottom_left_corner'][
                                                                   'x_coordinate'],
-                                                              self_cal_config['masking']['bmask']['bottom_left_corner'][
+                                                              selfcal_config['masking']['bmask']['bottom_left_corner'][
                                                                   'y_coordinate'],
-                                                              self_cal_config['masking']['bmask']['top_right_corner'][
+                                                              selfcal_config['masking']['bmask']['top_right_corner'][
                                                                   'x_coordinate'],
-                                                              self_cal_config['masking']['bmask']['top_right_corner'][
+                                                              selfcal_config['masking']['bmask']['top_right_corner'][
                                                                   'y_coordinate'],
                                                               mask_path,
                                                               cal_mode['ap']['loop_count'],
