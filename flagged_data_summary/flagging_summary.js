@@ -13,25 +13,27 @@ function generate_label(source_type,scan, pol){
 }
 
 function generate_graph(pol_data, source_type, bind, scan, pol){
-    var antennas = pol_data[pol]["antennas"]
+    var antennas = pol_data[pol]["antenna"]
     var chart = c3.generate({
         bindto: bind,
         data: {
             json: antennas,
             keys: {
-                    value: ['known_flags', 'rang_closure', 'detailed_flagging']
+                    value: ['known_flags', 'rang_closure', 'detailed_flagging', 'rflag', 'tfcrop']
                 },
             names: {
                  detailed_flagging: 'Detail Flagging',
                 rang_closure: 'Closure & Rang',
                 known_flags: 'Known Flags',
                 antenna: 'Antenna',
-                flux_calibrator: 'Flux calibrator'
+                flux_calibrator: 'Flux calibrator',
+                rflag: 'R-Flag',
+                tfcrop: 'TF-crop'
             },
 
             type: 'bar',
             groups: [
-                ['detailed_flagging', 'rang_closure', 'known_flags']
+                ['detailed_flagging', 'rang_closure', 'known_flags', 'rflag', 'tfcrop']
             ],
             order: null
         },
@@ -85,19 +87,21 @@ function loadJson(sel_source_type) {
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
-      graph_data = JSON.parse(this.responseText);
-      for (var scan in graph_data) {
-        source_type = graph_data[scan]["source_type"]
-        if(source_type === sel_source_type){
-            var polarizations = graph_data[scan]["polarizations"]
-            for(var pol in polarizations){
-               var aDiv = document.createElement('div');
-               aDiv.id = "chart_"+pol+ scan;
-               document.getElementById("container").appendChild(aDiv);
-               generate_graph(polarizations, source_type, '#'+aDiv.id, scan, pol)
+      datasets = JSON.parse(this.responseText);
+      for(var graph_data of datasets){
+          for (var scan in graph_data) {
+            source_type = graph_data[scan]["source_type"]
+            if(sel_source_type.includes(source_type)){
+                var polarizations = graph_data[scan]["polarization"]
+                for(var pol in polarizations){
+                   var aDiv = document.createElement('div');
+                   aDiv.id = "chart_"+pol+ scan;
+                   document.getElementById("container").appendChild(aDiv);
+                   generate_graph(polarizations, source_type, '#'+aDiv.id, scan, pol)
+                }
             }
-       }
-}
+          }
+      }
 
     }
   };
@@ -105,7 +109,7 @@ function loadJson(sel_source_type) {
   xhttp.send();
 }
 
-loadJson("flux_calibrator");
+loadJson(["flux_calibrator", "bandpass_calibrator"]);
 
 function selectStage(sel_source_type) {
     document.getElementById("container").innerHTML = '';

@@ -24,11 +24,17 @@ class ContinuumSource(TargetSource):
         pass
 
     def flag_and_calibrate_in_detail(self):
+        scan_ids = self.measurement_set.scan_ids(self.source_ids)
+        self.measurement_set.casa_runner.generate_flag_summary("known_flags",
+                                                               scan_ids, self.source_type)
         logger.info(Color.HEADER + "Started Detail Flagging..." + Color.ENDC)
         detailed_analyser = DetailedAnalyser(self.measurement_set, self.config, self.flag_file)
         self._flag_bad_time(BAD_TIME, detailed_analyser.analyse_time, True)
         self._flag_bad_time(BAD_ANTENNA_TIME, detailed_analyser.analyse_antennas, True)
         self._flag_bad_time(BAD_BASELINE_TIME, detailed_analyser.analyse_baselines, True)
+        scan_ids = self.measurement_set.scan_ids(self.source_ids)
+        self.measurement_set.casa_runner.generate_flag_summary("detailed_flagging",
+                                                               scan_ids, self.source_type)
 
     def self_calibrate(self, mode):
         config = self.config['self_calibration']

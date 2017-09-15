@@ -9,7 +9,7 @@ import SimpleHTTPServer
 import SocketServer
 import sys
 
-graph_data = {}
+FLAGGING_SEQUENCE = ["known_flags", "rang_closure", "detailed_flagging", "tfcrop", "rflag"]
 
 
 def get_antenna_row(scan_data, antenna):
@@ -28,29 +28,44 @@ def calculate_percentage(favourable, total):
     return percentage
 
 
-def build_json(input_file):
+def build_json():
+    dashboard = []
+
+    input_file = "{0}/flag_summary.json".format(sys.argv[1])
     with open(input_file) as data_file:
-        data = json.load(data_file)
-        stage = data.keys()[0]
-        for scan, scan_val in data[stage].iteritems():
-            if scan not in graph_data:
-                graph_data[scan] = {}
-                graph_data[scan]["polarizations"] = {}
-            for pol, pol_val in scan_val["polarizations"].iteritems():
-                if pol not in graph_data[scan]["polarizations"]:
-                    graph_data[scan]["polarizations"][pol] = {}
-                    graph_data[scan]["polarizations"][pol]["antennas"] = []
-                for antenna, antenna_val in pol_val["antenna"].iteritems():
-                    antenna_row = get_antenna_row(graph_data[scan]["polarizations"][pol]["antennas"], antenna)
-                    if antenna_row:
-                        set_percentage_value_to_stage(antenna_val, antenna_row, stage)
-                        set_source_type(scan_val, scan)
-                    else:
-                        initialize_antenna_row(antenna, antenna_row)
-                        set_percentage_value_to_stage(antenna_val, antenna_row, stage)
-                        graph_data[scan]["polarizations"][pol]["antennas"].append(antenna_row)
-                        set_source_type(scan_val, scan)
-    return graph_data
+        datasets = json.load(data_file)
+        for dataset_name, dataset in datasets.iteritems():
+            graph = {}
+            graph["dataset"] = dataset_name
+            for scan, scan_val in dataset.iteritems():
+                if scan not in graph:
+                    graph[scan] = {}
+                    graph[scan]["source_type"] = scan_val["source_type"]
+                    if "polarization" not in graph[scan]:
+                        graph[scan]["polarization"] = {}
+                for pol, pol_value in scan_val["polarization"].iteritems():
+                    if pol not in graph[scan]["polarization"]:
+                        graph[scan]["polarization"][pol] = {}
+
+                    for flag_type in FLAGGING_SEQUENCE:
+                        if flag_type in scan_val["polarization"][pol]:
+                            flag_summary = scan_val["polarization"][pol][flag_type]
+                        else:
+                            continue
+                        if "antenna" not in graph[scan]["polarization"][pol]:
+                            graph[scan]["polarization"][pol]["antenna"] = []
+                        for antenna, antenna_val in flag_summary["antenna"].iteritems():
+                            antenna_row = get_antenna_row(graph[scan]["polarization"][pol]["antenna"], antenna)
+                            if antenna_row:
+                                set_percentage_value_to_stage(antenna_val, antenna_row, flag_type)
+                                set_source_type(scan_val, scan, graph)
+                            else:
+                                initialize_antenna_row(antenna, antenna_row)
+                                set_percentage_value_to_stage(antenna_val, antenna_row, flag_type)
+                                graph[scan]["polarization"][pol]["antenna"].append(antenna_row)
+                                set_source_type(scan_val, scan, graph)
+            dashboard.append(graph)
+    return dashboard
 
 
 def initialize_antenna_row(antenna, antenna_row):
@@ -64,19 +79,9 @@ def set_percentage_value_to_stage(antenna_val, antenna_row, key):
     antenna_row["prev_flagged"] = antenna_val["flagged"]
 
 
-def set_source_type(scan_val, scan):
+def set_source_type(scan_val, scan, graph):
     if scan_val["source_type"] != "All":
-        graph_data[scan]["source_type"] = scan_val["source_type"]
-
-
-def iterate_over_json_store():
-    json_store_path = sys.argv[1]
-    print "Parsing flag summaries"
-    build_json("{0}/known_flags_All.json".format(json_store_path))
-    build_json("{0}/rang_closure_flux_calibrator.json".format(json_store_path))
-    build_json("{0}/detailed_flagging_flux_calibrator.json".format(json_store_path))
-    build_json("{0}/rang_closure_phase_calibrator.json".format(json_store_path))
-    build_json("{0}/detailed_flagging_phase_calibrator.json".format(json_store_path))
+        graph[scan]["source_type"] = scan_val["source_type"]
 
 
 def run_server():
@@ -88,7 +93,7 @@ def run_server():
 
 
 if __name__ == "__main__":
-    iterate_over_json_store()
+    dashboard = build_json()
     with open('graph.json', 'w') as outfile:
-        json.dump(graph_data, outfile)
+        json.dump(dashboard, outfile)
     run_server()
