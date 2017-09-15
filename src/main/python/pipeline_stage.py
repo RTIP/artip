@@ -74,12 +74,15 @@ class PipelineStage(object):
             if config.TARGET_SOURCE_STAGES['calibrate']:
                 target_source.calibrate()
             line_source = LineSource(target_source.line(), source_id)
+            line_source.measurement_set.casa_runner.generate_flag_summary("known_flags",
+                                  line_source.measurement_set.scan_ids())
             self._create_ref_continuum_image(line_source, source_id)
             self._run_autoflagging_on_line(line_source)
             self._create_all_spw_continuum_image(line_source, source_id)
             self._create_line_image(line_source)
 
-    @_run(config.TARGET_SOURCE_STAGES['reference_spw']['create_continuum'])
+
+    @_run(config.TARGET_SOURCE_TOGGLES['reference_spw']['create_continuum'])
     def _create_ref_continuum_image(self, line_source, source_id):
         cont_mode = 'ref'
         continuum_source_ref = ContinuumSource(

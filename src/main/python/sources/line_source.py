@@ -14,6 +14,8 @@ class LineSource(TargetSource):
 
     def extend_continuum_flags(self):
         self.measurement_set.casa_runner.extend_continuum_flags(self.source_id)
+        scan_ids = self.measurement_set.scan_ids(self.source_ids)
+        self.measurement_set.casa_runner.generate_flag_summary("detailed_flagging", scan_ids, self.source_type)
 
     def create_line_image(self):
         cont_config = config.IMAGING_CONFIGS['cont_image']['self_calibration']

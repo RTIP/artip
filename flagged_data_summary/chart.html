@@ -7,9 +7,10 @@
 </head>
 <body>
 <div class="topnav">
-    <a href="#/1" onclick="selectStage('flux_calibrator');">Flux Calibrator</a>
-    <a href="#/2" onclick="selectStage('phase_calibrator');">Phase Calibrator</a>
-    <a href="#/3" onclick="selectStage('target_source');">Target Source</a>
+    <a href="#/1" onclick="selectStage(['flux_calibrator', 'bandpass_calibrator']);">Flux Calibrator</a>
+    <a href="#/2" onclick="selectStage(['phase_calibrator']);">Phase Calibrator</a>
+    <a href="#/3" onclick="selectStage(['continuum']);">Continuum</a>
+    <a href="#/3" onclick="selectStage(['line']);">Line</a>
 </div>
 <div id="containerHeader"></div>
 <div id="container"></div>
