@@ -13,7 +13,7 @@ class TargetSource(Source):
         super(TargetSource, self).__init__(measurement_set)
 
     def calibrate(self):
-        self.measurement_set.casa_runner.apply_target_source_calibration(self.config, self.source_id)
+        self.measurement_set.casa_runner.apply_target_source_calibration(self.source_id)
 
     def line(self):
         line_ms_path, line_output_path = self.prepare_output_dir("line_{0}".format(self.source_id))

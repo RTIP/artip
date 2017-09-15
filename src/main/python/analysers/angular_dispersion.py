@@ -1,10 +1,10 @@
 from configs import config
 from logger import logger
-from itertools import product, imap
+from itertools import product
 from models.antenna_status import AntennaStatus
 from analysers.analyser import Analyser
 from analysers.r_matrix import RMatrix
-import numpy
+from named_tuples import CalibParams
 from models.phase_set import PhaseSet
 from terminal_color import Color
 
@@ -38,12 +38,11 @@ class AngularDispersion(Analyser):
 
     def _mark_antennas_status(self, spw, polarization, scan_id, source_config, base_antenna, r_matrix, history,
                               antenna_count):
-        channel = source_config['channel']
-        width = source_config['width']
+        calib_params = CalibParams(*source_config['calib_params'])
         r_threshold = source_config['angular_dispersion']['r_threshold']
         if base_antenna in history: return
 
-        visibility_data = self.measurement_set.get_data(spw, {'start': channel, 'width': width}, polarization,
+        visibility_data = self.measurement_set.get_data(spw, {'start': calib_params.channel, 'width': calib_params.width}, polarization,
                                                         {'scan_number': scan_id},
                                                         ["antenna1", "antenna2", 'phase', 'flag'])
 

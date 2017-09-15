@@ -10,6 +10,7 @@ from models.antenna_status import AntennaStatus
 from helpers import *
 import random
 from plotter import Plotter
+from named_tuples import CalibParams
 
 
 class ClosureAnalyser(Analyser):
@@ -39,12 +40,13 @@ class ClosureAnalyser(Analyser):
 
         for spw, polarization, scan_id in spw_polarization_scan_id_combination:
             antennas = self.measurement_set.antennas(polarization, scan_id)
+            calib_params = CalibParams(*self.source_config['calib_params'])
 
             logger.debug(
                 Color.BACKGROUD_WHITE + "Polarization =" + polarization + " Scan Id=" + str(scan_id) + Color.ENDC)
             visibility_data = self.measurement_set.get_data(spw,
-                                                            {'start': self.source_config['channel'],
-                                                             'width': self.source_config['width']}, polarization,
+                                                            {'start': calib_params.channel,
+                                                             'width': calib_params.width}, polarization,
                                                             {'scan_number': scan_id},
                                                             ["antenna1", "antenna2",
                                                              self.source_config['phase_data_column'], 'flag'])

@@ -10,16 +10,14 @@ target_source_stages:
       create_line_image: true
 
 target_source:
-  minsnr: 2.0
   continuum: &continuum
+    calib_params: [0, 1, -, -] #[channel, width, minsnr, solint] #dash implies Not applicable
     ref:
       channels_to_avg: '80~120'
       channel_width: 41
     spw:
       channels_to_avg: '80~120'
       channel_width: 41
-    channel: 0
-    width: 1
     self_calibration:
       minsnr: 2.0
       masking:
@@ -47,7 +45,7 @@ target_source:
       time_sliding_window: [1, 0, 3] #[bucket_size, overlap, mad_scale_factor]
       antenna_sliding_window: [10, 5, 3]
       baseline_sliding_window: [10, 5, 3]
-      amplitude_data_column: 'corrected_amplitude'
+      amplitude_data_column: 'amplitude'
   line:
     fields: [0]
     calmode: *calmode

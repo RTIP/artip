@@ -9,6 +9,7 @@ from terminal_color import Color
 from helpers import format_spw_with_channels
 from watchdog.observers import Observer
 from log_event_handler import LogEventHandler
+from named_tuples import CalibParams
 
 
 class CasaRunner:
@@ -39,41 +40,43 @@ class CasaRunner:
     def apply_flux_calibration(self, source_config, run_count):
         logger_message = "Applying Flux Calibration"
         if run_count > 1: logger_message += " with bandpass"
-
+        calib_params = CalibParams(*config.CALIBRATION_CONFIGS['flux_calibrator']['calib_params'])
         logger.info(Color.HEADER + logger_message + Color.ENDC)
         script_path = 'casa_scripts/flux_calibration.py'
         fields = ",".join(map(str, config.GLOBAL_CONFIGS['flux_cal_fields']))
         refant = config.GLOBAL_CONFIGS['refant']
-        minsnr = source_config['minsnr']
-        spw = format_spw_with_channels(config.GLOBAL_CONFIGS['spw_range'], source_config['channel'])
+        spw = format_spw_with_channels(config.GLOBAL_CONFIGS['spw_range'], calib_params.channel)
         script_parameters = "{0} {1} {2} {3} {4} {5} {6}".format(run_count, self._dataset_path,
                                                                  self._output_path,
-                                                                 fields, refant, spw, minsnr)
+                                                                 fields, refant, spw, calib_params.minsnr)
         self._run(script_path, script_parameters)
 
     def apply_bandpass_calibration(self, source_config):
+        phase_calib_params = CalibParams(None, None, source_config['phase_calib_params'][0],
+                                         source_config['phase_calib_params'][1])
         logger.info(Color.HEADER + "Running Bandpass Calibration..." + Color.ENDC)
         script_path = 'casa_scripts/bandpass_calibration.py'
         fields = ",".join(map(str, config.GLOBAL_CONFIGS['flux_cal_fields']))
         refant = config.GLOBAL_CONFIGS['refant']
-        minsnr = source_config['minsnr']
-        script_parameters = "{0} {1} {2} {3} {4}".format(self._dataset_path, self._output_path, fields, refant, minsnr)
+        script_parameters = "{0} {1} {2} {3} {4} {5} {6}".format(self._dataset_path, self._output_path, fields, refant,
+                                                                 source_config['bpcal_solint'],
+                                                                 phase_calib_params.minsnr, phase_calib_params.solint)
 
         self._run(script_path, script_parameters)
 
     def apply_phase_calibration(self, flux_cal_field, source_config):
+        calib_params = CalibParams(*source_config['calib_params'])
         logger.info(Color.HEADER + "Applying Phase Calibration..." + Color.ENDC)
         script_path = 'casa_scripts/phase_calibration.py'
         phase_cal_fields = ",".join(map(str, config.GLOBAL_CONFIGS['phase_cal_fields']))
         refant = config.GLOBAL_CONFIGS['refant']
-        minsnr = source_config['minsnr']
         spw = format_spw_with_channels(config.GLOBAL_CONFIGS['spw_range'], source_config['channels_to_avg'])
-        script_parameters = "{0} {1} {2} {3} {4} {5} {6}".format(self._dataset_path, self._output_path,
+        script_parameters = "{0} {1} {2} {3} {4} {5} {6} {7}".format(self._dataset_path, self._output_path,
                                                                  flux_cal_field, phase_cal_fields,
-                                                                 spw, refant, minsnr)
+                                                                 spw, refant, calib_params.minsnr, calib_params.solint)
         self._run(script_path, script_parameters)
 
-    def apply_target_source_calibration(self, source_config, source_id):
+    def apply_target_source_calibration(self, source_id):
         logger.info(Color.HEADER + "Applying Calibration to Target Source..." + Color.ENDC)
         flux_cal_fields = ",".join(map(str, config.GLOBAL_CONFIGS['flux_cal_fields']))
         phase_cal_fields = ",".join(map(str, config.GLOBAL_CONFIGS['target_phase_src_map'][source_id]))

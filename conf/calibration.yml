@@ -8,9 +8,7 @@ calibration_stages:
 
 calibration:
   flux_calibrator:
-    channel: 100
-    width: 1
-    minsnr: 2.0
+    calib_params: [100, 1, 2.0, 60] #[channel, width, minsnr, solint]
     phase_data_column: "phase"
     angular_dispersion:
       r_threshold: 0.3
@@ -28,14 +26,12 @@ calibration:
       amplitude_data_column: 'corrected_amplitude'
 
   bandpass_calibrator:
-    channel: 100
-    minsnr: 2.0
+    phase_calib_params: [2.0, 60] #[minsnr, solint]
+    bpcal_solint: 900
 
   phase_calibrator:
-    channel: 80
-    width: 41
+    calib_params: [80, 41, 2.0, 60] #[channel, width, minsnr, solint]
     channels_to_avg: '80~120'
-    minsnr: 2.0
     phase_data_column: "corrected_phase"
     angular_dispersion:
       r_threshold: 0.3
