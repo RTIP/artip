@@ -61,9 +61,8 @@ savemodel = IMAGE_CONFIGS['savemodel']
 parallel = IMAGE_CONFIGS['parallel']
 
 # This will fill the model column with visibilities of off-axis sources.
-# TODO: confirm image name from Neeraj
-tclean(vis=ms_input, imagename="{0}/tst-cj1243conti".format(image_path), startmodel=cont_model_to_subtract,
-       imsize=imsize, cell=[cell], stokes=stokes, weighting='briggs', robust=0.5, interactive=interactive, niter=niter,
+tclean(vis=ms_input, imagename="{0}/fill_model_image".format(image_path), startmodel=cont_model_to_subtract,
+       imsize=imsize, cell=[cell], stokes=stokes, weighting=weighting, robust=0.5, interactive=interactive, niter=niter,
        deconvolver=deconvolver, specmode='mfs', nterms=nterms, reffreq='', spw='', nchan=nchan, gridder=gridder,
        facets=facets, wprojplanes=wprojplanes, aterm=aterm, psterm=psterm, wbawp=wbawp, conjbeams=conjbeams,
        pblimit=pblimit, normtype=normtype, pbcor=pbcor, gain=gain, threshold=threshold, cycleniter=cycleniter,
