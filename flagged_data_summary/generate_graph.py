@@ -89,7 +89,11 @@ def run_server():
     Handler = SimpleHTTPServer.SimpleHTTPRequestHandler
     httpd = SocketServer.TCPServer(("", PORT), Handler)
     print "Access graphs at port ", PORT
-    httpd.serve_forever()
+    try:
+        httpd.serve_forever()
+    except KeyboardInterrupt:
+        print "Exiting server..."
+        httpd.server_close()
 
 
 if __name__ == "__main__":
