@@ -34,15 +34,22 @@ class VisibilityData:
         return True if self.baseline_index(baseline) else False
 
     def phase_data_present_for_triplet(self, triplet):
+        triplet_baselines_flag_status = {}
         baseline_combinations = [(triplet[0].id, triplet[1].id),
                                  (triplet[1].id, triplet[2].id),
                                  (triplet[0].id, triplet[2].id)]
 
-        return len(filter(lambda baseline: self._is_baseline_flagged(baseline), baseline_combinations)) == 0
+        for baseline in baseline_combinations:
+            triplet_baselines_flag_status[baseline] = self._flags_status_for(baseline)
 
-    def _is_baseline_flagged(self, baseline):
+        return self._is_triplet_flagged(triplet_baselines_flag_status)
+
+    def _is_triplet_flagged(self, triplet_baselines_flag_status):
+        return not all(sum(triplet_baselines_flag_status.values()))
+
+    def _flags_status_for(self, baseline):
         baseline = tuple(sorted(baseline))
         if not self.phase_data_present_for_baseline(baseline): return True
         baseline_index = self.baseline_index(baseline)
         phase_data_flags_status = self.flag[baseline_index]
-        return all(phase_data_flags_status)
+        return phase_data_flags_status
