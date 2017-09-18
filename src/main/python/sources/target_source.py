@@ -20,13 +20,13 @@ class TargetSource(Source):
         self.measurement_set.split(line_ms_path, {'datacolumn': 'corrected', 'field': self.source_id})
         return MeasurementSet(line_ms_path, line_output_path)
 
-    def continuum(self, spw, key):
+    def continuum(self, spw, cont_mode):
         continuum_ms_path, continuum_output_path = self.prepare_output_dir(
-            "continuum_{0}_{1}".format(key, self.source_id))
-        width = self.config['continuum'][key]['channel_width']
+            "continuum_{0}_{1}".format(cont_mode, self.source_id))
+        width = self.config[cont_mode+'_continuum']['channel_width']
         self.measurement_set.split(continuum_ms_path,
                                    {'datacolumn': 'data', 'spw': spw, 'width': width,
-                                    'channels_to_avg': self.config['continuum'][key]['channels_to_avg']})
+                                    'channels_to_avg': self.config[cont_mode+'_continuum']['channels_to_avg']})
         return MeasurementSet(continuum_ms_path, continuum_output_path)
 
     def prepare_output_dir(self, new_dir):
