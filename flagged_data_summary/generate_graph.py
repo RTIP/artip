@@ -8,15 +8,16 @@ import json
 import SimpleHTTPServer
 import SocketServer
 import sys
+from tinydb import TinyDB
 
 FLAGGING_SEQUENCE = ["known_flags", "rang_closure", "detailed_flagging", "tfcrop", "rflag"]
 
 
-def get_antenna_row(scan_data, antenna):
-    for row in scan_data:
-        if "antenna" in row:
-            if row["antenna"] == antenna:
-                return row
+def get_antenna_row(antennas, antenna_id):
+    if antennas:
+        filtered_antennas = filter(lambda ant: ant['antenna'] == antenna_id, antennas)
+        if len(filtered_antennas) > 0:
+            return filtered_antennas[0]
     return {}
 
 
@@ -28,60 +29,52 @@ def calculate_percentage(favourable, total):
     return percentage
 
 
-def build_json():
-    dashboard = []
-
-    input_file = "{0}/flag_summary.json".format(sys.argv[1])
-    with open(input_file) as data_file:
-        datasets = json.load(data_file)
-        for dataset_name, dataset in datasets.iteritems():
-            graph = {}
-            graph["dataset"] = dataset_name
-            for scan, scan_val in dataset.iteritems():
-                if scan not in graph:
-                    graph[scan] = {}
-                    graph[scan]["source_type"] = scan_val["source_type"]
-                    if "polarization" not in graph[scan]:
-                        graph[scan]["polarization"] = {}
-                for pol, pol_value in scan_val["polarization"].iteritems():
-                    if pol not in graph[scan]["polarization"]:
-                        graph[scan]["polarization"][pol] = {}
-
-                    for flag_type in FLAGGING_SEQUENCE:
-                        if flag_type in scan_val["polarization"][pol]:
-                            flag_summary = scan_val["polarization"][pol][flag_type]
-                        else:
-                            continue
-                        if "antenna" not in graph[scan]["polarization"][pol]:
-                            graph[scan]["polarization"][pol]["antenna"] = []
-                        for antenna, antenna_val in flag_summary["antenna"].iteritems():
-                            antenna_row = get_antenna_row(graph[scan]["polarization"][pol]["antenna"], antenna)
-                            if antenna_row:
-                                set_percentage_value_to_stage(antenna_val, antenna_row, flag_type)
-                                set_source_type(scan_val, scan, graph)
-                            else:
-                                initialize_antenna_row(antenna, antenna_row)
-                                set_percentage_value_to_stage(antenna_val, antenna_row, flag_type)
-                                graph[scan]["polarization"][pol]["antenna"].append(antenna_row)
-                                set_source_type(scan_val, scan, graph)
-            dashboard.append(graph)
-    return dashboard
-
-
-def initialize_antenna_row(antenna, antenna_row):
-    antenna_row["antenna"] = antenna
-    antenna_row["prev_flagged"] = 0
-
-
 def set_percentage_value_to_stage(antenna_val, antenna_row, key):
     antenna_row[key] = calculate_percentage((antenna_val['flagged'] - antenna_row['prev_flagged']),
                                             antenna_val['total'])
     antenna_row["prev_flagged"] = antenna_val["flagged"]
 
 
-def set_source_type(scan_val, scan, graph):
-    if scan_val["source_type"] != "All":
-        graph[scan]["source_type"] = scan_val["source_type"]
+def build_node(node_name, parent_node, default_value):
+    if not parent_node.get(node_name):
+        parent_node[node_name] = default_value
+    return parent_node[node_name]
+
+
+def add_to_list(list, element):
+    if element not in list:
+        list.append(element)
+
+
+def build_json():
+    db_file = '{0}/json_store/flag_summary.json'.format(sys.argv[1])
+    db = TinyDB(db_file)
+    graph = {}
+    flags = db.all()
+    for row in flags:
+        dataset = build_node(row['dataset'], graph, {})
+        scan_node = build_node(row['scan'], dataset, {})
+        source_type_node = build_node('source_type', scan_node, [])
+        add_to_list(source_type_node, row['source_type'])
+        pol_node = build_node('polarization', scan_node, {})
+        antennas_per_pol = build_node(row['pol'], pol_node, [])
+        for flagging_type in FLAGGING_SEQUENCE:
+            if not row.get(flagging_type):
+                continue
+            for antenna_id, antenna_val in row[flagging_type].iteritems():
+                ant_node = get_antenna_row(antennas_per_pol, antenna_id)
+                if ant_node:
+                    set_percentage_value_to_stage(antenna_val, ant_node, flagging_type)
+                else:
+                    initialize_antenna_row(antenna_id, ant_node)
+                    set_percentage_value_to_stage(antenna_val, ant_node, flagging_type)
+                    antennas_per_pol.append(ant_node)
+    return graph
+
+
+def initialize_antenna_row(antenna, antenna_row):
+    antenna_row["antenna"] = antenna
+    antenna_row["prev_flagged"] = 0
 
 
 def run_server():
