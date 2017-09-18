@@ -18,7 +18,7 @@ class CasaRunner:
         self._dataset_path = dataset_path
 
     def flagdata(self, flag_file, reasons="any"):
-        logger.info(Color.HEADER + "Flagging " + reasons + Color.ENDC)
+        logger.info(Color.HEADER + "Flagging " + reasons + " reasons" + Color.ENDC)
         script_path = 'casa_scripts/flag.py'
         show_percentage = config.PIPELINE_CONFIGS['flagging_percentage']
         script_parameters = "{0} {1} {2} {3}".format(self._dataset_path, flag_file, reasons, show_percentage)
@@ -39,7 +39,7 @@ class CasaRunner:
         scans = ','.join(str(e) for e in scan_list)
         path = "{0}/json_store".format(config.OUTPUT_PATH)
         create_dir(path)
-        polarizations = ",".join(config.GLOBAL_CONFIG['polarizations'])
+        polarizations = ",".join(config.GLOBAL_CONFIGS['polarizations'])
         script_parameters = "{0} {1} {2} {3} {4} {5}".format(polarizations, self._dataset_path,
                                                              path,
                                                              flagging_type, scans, source_type)

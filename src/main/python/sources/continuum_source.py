@@ -8,13 +8,15 @@ from logger import logger
 
 
 class ContinuumSource(TargetSource):
-    def __init__(self, measurement_set, source_id, cont_mode, spw='0'):
-        super(ContinuumSource, self).__init__(measurement_set, source_id)
+    CONTINUUM_SOURCE_ID = 0 # continuum source ID will be always 0
+
+    def __init__(self, measurement_set, cont_mode, spw='0'):
+        super(ContinuumSource, self).__init__(measurement_set, ContinuumSource.CONTINUUM_SOURCE_ID)
         self.source_type = 'continuum'
         self.flag_file = "{0}/flags_{1}.txt".format(measurement_set.output_path, self.source_type)
         self.spw = spw
-        self.source_ids = [0]
-        self.config = config.TARGET_SOURCE_CONFIGS[cont_mode+"_continuum"]
+        self.source_ids = [ContinuumSource.CONTINUUM_SOURCE_ID]
+        self.config = config.TARGET_SOURCE_CONFIGS[cont_mode + "_continuum"]
         self.cont_mode = cont_mode
 
     def reduce_data(self):
@@ -32,7 +34,6 @@ class ContinuumSource(TargetSource):
         self._flag_bad_time(BAD_TIME, detailed_analyser.analyse_time, True)
         self._flag_bad_time(BAD_ANTENNA_TIME, detailed_analyser.analyse_antennas, True)
         self._flag_bad_time(BAD_BASELINE_TIME, detailed_analyser.analyse_baselines, True)
-        scan_ids = self.measurement_set.scan_ids(self.source_ids)
         self.measurement_set.casa_runner.generate_flag_summary("detailed_flagging",
                                                                scan_ids, self.source_type)
 
@@ -57,7 +58,7 @@ class ContinuumSource(TargetSource):
         ms_path, output_path = self.prepare_output_dir("self_caled_{0}_{1}_{2}".format(cal_mode, mode, self.source_id))
         self.measurement_set.casa_runner.apply_self_calibration(config, cal_mode, ms_path, output_path,
                                                                 self.spw)
-        return ContinuumSource(MeasurementSet(ms_path, output_path), self.source_id, mode, self.spw)
+        return ContinuumSource(MeasurementSet(ms_path, output_path), mode, self.spw)
 
     def attach_model(self, self_calibration_config, cal_mode):
         self.measurement_set.casa_runner.fourier_transform(self._source_name(), cal_mode,

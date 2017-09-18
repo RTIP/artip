@@ -3,9 +3,12 @@ from configs import config
 
 
 class LineSource(TargetSource):
-    def __init__(self, measurement_set, source_id):
-        super(LineSource, self).__init__(measurement_set, source_id)
+    LINE_SOURCE_ID = 0 # line source ID will be always 0
+
+    def __init__(self, measurement_set):
+        super(LineSource, self).__init__(measurement_set, LineSource.LINE_SOURCE_ID)
         self.source_type = 'line'
+        self.source_ids = [LineSource.LINE_SOURCE_ID]
 
     def apply_calibration(self, mode):
         selfcal_config = config.IMAGING_CONFIGS['cont_image']['self_calibration']
@@ -18,4 +21,4 @@ class LineSource(TargetSource):
 
     def create_line_image(self):
         cont_config = config.IMAGING_CONFIGS['cont_image']['self_calibration']
-        self.measurement_set.casa_runner.create_line_image(cont_config["calmode"],self.source_id)
+        self.measurement_set.casa_runner.create_line_image(cont_config["calmode"], self.source_id)
