@@ -1,13 +1,17 @@
 target_source_stages:
     calibrate: true
     reference_spw:
-      create_continuum: true
-      self_calibration: true
+      image: true
+      flagging: true
+      selfcal: true
     all_spw:
+      extend_flags: true
       run_auto_flagging: false
-      create_continuum: true
-      self_calibration: true
-      create_line_image: true
+      continuum:
+        selfcal: true
+      line:
+        apply_selfcal: true
+        image: true
 
 target_source:
   ref_continuum:

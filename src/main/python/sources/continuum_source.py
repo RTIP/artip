@@ -39,7 +39,6 @@ class ContinuumSource(TargetSource):
 
     def self_calibrate(self, mode):
         selfcal_config = config.IMAGING_CONFIGS['cont_image']['self_calibration']
-        self._base_image()
         cal_mode = selfcal_config['calmode']
         p_loop_count = cal_mode['p']['loop_count']
         ap_loop_count = cal_mode['ap']['loop_count']
@@ -65,7 +64,7 @@ class ContinuumSource(TargetSource):
                                                            self.spw,
                                                            self_calibration_config['calmode'][cal_mode]['loop_count'])
 
-    def _base_image(self):
+    def base_image(self):
         self.measurement_set.casa_runner.base_image()
 
     def _source_name(self):

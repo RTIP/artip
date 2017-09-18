@@ -82,15 +82,19 @@ class PipelineStage(object):
             self._create_all_spw_continuum_image(line_source, ContinuumSource.CONTINUUM_SOURCE_ID)
             self._create_line_image(line_source)
 
-    @_run(config.TARGET_SOURCE_STAGES['reference_spw']['create_continuum'])
+    @_run(config.MAIN_STAGES['target_source']['reference_spw'])
     def _create_ref_continuum_image(self, line_source, source_id):
         cont_mode = 'ref'
         continuum_source_ref = ContinuumSource(
             line_source.continuum(config.GLOBAL_CONFIGS['default_spw'], cont_mode),
             cont_mode)
-        continuum_source_ref.reduce_data()
-        line_source.extend_continuum_flags()
-        if config.TARGET_SOURCE_STAGES['reference_spw']['self_calibration']:
+        if config.TARGET_SOURCE_STAGES['reference_spw']['flagging']:
+            continuum_source_ref.reduce_data()
+        if config.TARGET_SOURCE_STAGES['all_spw']['extend_flags']:
+            line_source.extend_continuum_flags()
+        if config.TARGET_SOURCE_STAGES['reference_spw']['image']:
+            continuum_source_ref.base_image()
+        if config.TARGET_SOURCE_STAGES['reference_spw']['selfcal']:
             continuum_source_ref.self_calibrate(cont_mode)
 
     @_run(config.TARGET_SOURCE_STAGES['all_spw']['run_auto_flagging'])
@@ -98,7 +102,7 @@ class PipelineStage(object):
         line_source.run_tfcrop()
         line_source.run_rflag()
 
-    @_run(config.TARGET_SOURCE_STAGES['all_spw']['create_continuum'])
+    @_run(config.MAIN_STAGES['target_source']['all_spw_continuum'])
     def _create_all_spw_continuum_image(self, line_source, source_id):
         if not self._is_single_spw_present():
             cont_mode = 'spw'
@@ -106,17 +110,19 @@ class PipelineStage(object):
             continuum_source = ContinuumSource(
                 line_source.continuum(spw_range, cont_mode),
                 cont_mode, spw_range)
-            if config.TARGET_SOURCE_STAGES['all_spw']['self_calibration']:
+            if config.TARGET_SOURCE_STAGES['all_spw']['continuum']['selfcal']:
                 continuum_source.self_calibrate(cont_mode)
         else:
             logger.info(
                 Color.HEADER + 'Spw continuum image is already created [spw range contains only one spw]' + Color.ENDC)
 
-    @_run(config.TARGET_SOURCE_STAGES['all_spw']['create_line_image'])
+    @_run(config.MAIN_STAGES['target_source']['all_spw_line'])
     def _create_line_image(self, line_source):
         cont_mode = 'ref' if self._is_single_spw_present() else 'spw'
-        line_source.apply_calibration(cont_mode)
-        line_source.create_line_image()
+        if config.TARGET_SOURCE_STAGES['all_spw']['line']['apply_selfcal']:
+            line_source.apply_calibration(cont_mode)
+        if config.TARGET_SOURCE_STAGES['all_spw']['line']['image']:
+            line_source.create_line_image()
 
     def _is_single_spw_present(self):
         return config.GLOBAL_CONFIGS['spw_range'].find(",") == -1
