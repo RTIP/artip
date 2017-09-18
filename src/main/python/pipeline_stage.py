@@ -67,34 +67,34 @@ class PipelineStage(object):
         else:
             phase_calibrator.calibrate()
 
-    @_run(config.MAIN_STAGES['target_source'])
     def target_source(self):
-        for source_id in config.GLOBAL_CONFIGS['target_src_field']:
-            logger.info(Color.SOURCE_HEADING + "Target Source Calibration" + Color.ENDC)
-            target_source = TargetSource(self._measurement_set, source_id)
-            if config.TARGET_SOURCE_STAGES['calibrate']:
-                target_source.calibrate()
-            line_source = LineSource(target_source.line())
-            line_source.measurement_set.casa_runner.generate_flag_summary("known_flags",
-                                                                          line_source.measurement_set.scan_ids())
-            self._create_ref_continuum_image(line_source, ContinuumSource.CONTINUUM_SOURCE_ID)
-            self._run_autoflagging_on_line(line_source)
-            self._create_all_spw_continuum_image(line_source, ContinuumSource.CONTINUUM_SOURCE_ID)
-            self._create_line_image(line_source)
+        if self._target_source_toggle():
+            for source_id in config.GLOBAL_CONFIGS['target_src_field']:
+                logger.info(Color.SOURCE_HEADING + "Target Source Calibration" + Color.ENDC)
+                target_source = TargetSource(self._measurement_set, source_id)
+                if config.TARGET_SOURCE_STAGES['calibrate']:
+                    target_source.calibrate()
+                line_source = LineSource(target_source.line())
+                line_source.measurement_set.casa_runner.generate_flag_summary("known_flags",
+                                                                              line_source.measurement_set.scan_ids())
+                self._create_ref_continuum_image(line_source, ContinuumSource.CONTINUUM_SOURCE_ID)
+                self._run_autoflagging_on_line(line_source)
+                self._create_all_spw_continuum_image(line_source, ContinuumSource.CONTINUUM_SOURCE_ID)
+                self._create_line_image(line_source)
 
-    @_run(config.MAIN_STAGES['target_source']['reference_spw'])
+    @_run(config.MAIN_STAGES['target_source']['ref_continuum'])
     def _create_ref_continuum_image(self, line_source, source_id):
         cont_mode = 'ref'
         continuum_source_ref = ContinuumSource(
             line_source.continuum(config.GLOBAL_CONFIGS['default_spw'], cont_mode),
             cont_mode)
-        if config.TARGET_SOURCE_STAGES['reference_spw']['flagging']:
+        if config.TARGET_SOURCE_STAGES['ref_continuum']['flagging']:
             continuum_source_ref.reduce_data()
         if config.TARGET_SOURCE_STAGES['all_spw']['extend_flags']:
             line_source.extend_continuum_flags()
-        if config.TARGET_SOURCE_STAGES['reference_spw']['image']:
+        if config.TARGET_SOURCE_STAGES['ref_continuum']['image']:
             continuum_source_ref.base_image()
-        if config.TARGET_SOURCE_STAGES['reference_spw']['selfcal']:
+        if config.TARGET_SOURCE_STAGES['ref_continuum']['selfcal']:
             continuum_source_ref.self_calibrate(cont_mode)
 
     @_run(config.TARGET_SOURCE_STAGES['all_spw']['run_auto_flagging'])
@@ -126,3 +126,8 @@ class PipelineStage(object):
 
     def _is_single_spw_present(self):
         return config.GLOBAL_CONFIGS['spw_range'].find(",") == -1
+
+    def _target_source_toggle(self):
+        return config.MAIN_STAGES['target_source']['ref_continuum'] or \
+               config.MAIN_STAGES['target_source']['all_spw_continuum'] or \
+               config.MAIN_STAGES['target_source']['all_spw_line']

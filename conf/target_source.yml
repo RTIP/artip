@@ -1,6 +1,6 @@
 target_source_stages:
     calibrate: true
-    reference_spw:
+    ref_continuum:
       image: true
       flagging: true
       selfcal: true
