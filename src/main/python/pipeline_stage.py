@@ -90,17 +90,17 @@ class PipelineStage(object):
             cont_mode)
         if config.TARGET_SOURCE_STAGES['ref_continuum']['flagging']:
             continuum_source_ref.reduce_data()
-        if config.TARGET_SOURCE_STAGES['all_spw']['extend_flags']:
+        if config.TARGET_SOURCE_STAGES['ref_continuum']['extend_flags']:
             line_source.extend_continuum_flags()
         if config.TARGET_SOURCE_STAGES['ref_continuum']['image']:
             continuum_source_ref.base_image()
         if config.TARGET_SOURCE_STAGES['ref_continuum']['selfcal']:
             continuum_source_ref.self_calibrate(cont_mode)
 
-    @_run(config.TARGET_SOURCE_STAGES['all_spw']['run_auto_flagging'])
     def _run_autoflagging_on_line(self, line_source):
-        line_source.run_tfcrop()
-        line_source.run_rflag()
+        if self._run_autoflagging_toggle():
+            line_source.run_tfcrop()
+            line_source.run_rflag()
 
     @_run(config.MAIN_STAGES['target_source']['all_spw_continuum'])
     def _create_all_spw_continuum_image(self, line_source, source_id):
@@ -131,3 +131,8 @@ class PipelineStage(object):
         return config.MAIN_STAGES['target_source']['ref_continuum'] or \
                config.MAIN_STAGES['target_source']['all_spw_continuum'] or \
                config.MAIN_STAGES['target_source']['all_spw_line']
+
+    def _run_autoflagging_toggle(self):
+        return (config.MAIN_STAGES['target_source']['all_spw_continuum'] or
+                config.MAIN_STAGES['target_source']['all_spw_line']) and \
+               config.TARGET_SOURCE_STAGES['all_spw']['run_auto_flagging']

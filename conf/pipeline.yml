@@ -1,11 +1,11 @@
 stages:
-  flag_known_bad_data: true
-  flux_calibration: true
-  bandpass_calibration: true
-  phase_calibration: true
+  flag_known_bad_data: false
+  flux_calibration: false
+  bandpass_calibration: false
+  phase_calibration: false
   target_source:
-    reference_spw: true
-    all_spw_continuum: true
+    ref_continuum: true
+    all_spw_continuum: false
     all_spw_line: true
 
 global:

@@ -2,10 +2,10 @@ target_source_stages:
     calibrate: true
     ref_continuum:
       image: true
-      flagging: true
+      flagging: false
       selfcal: true
-    all_spw:
       extend_flags: true
+    all_spw:
       run_auto_flagging: false
       continuum:
         selfcal: true
