@@ -2,7 +2,7 @@ calibration_stages:
   flux_calibration:
     flagging: true
   bandpass_calibration:
-    run_auto_flagging: true
+    run_auto_flagging: false
   phase_calibration:
     flagging: true
 

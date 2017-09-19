@@ -14,11 +14,11 @@ source_type = sys.argv[-3]
 ms_dataset = sys.argv[-4]
 AUTO_FLAGGING_CONFIGS = load(config_path +"auto_flagging_config.yml")
 SOURCE_AUTOFLAGGING_CONFIGS = AUTO_FLAGGING_CONFIGS[source_type]['auto_flagging_algo']
-config = load(config_path + "config.yml")
+config = load(config_path + "pipeline.yml")
 if source_type == "bandpass_calibrator":
-    SOURCE_CONFIG = config['global']['bandpass_cal_fields']
+    fields = config['global']['bandpass_cal_fields']
 else:
-    SOURCE_CONFIG = config['global']['target_src_field']
+    fields = config['global']['target_src_field']
 
 for spw in spw_range.split(','):
     spw_config = "spw{0}".format(spw)
@@ -30,17 +30,16 @@ for spw in spw_range.split(','):
     freqrange = SOURCE_AUTOFLAGGING_CONFIGS[spw_config]['freqrange']
 
     spw_with_freq = "{0}:{1}".format(spw, freqrange)
-    fields = ",".join(map(str, SOURCE_CONFIG["fields"]))
+    fields_str = ",".join(map(str, fields))
 
     r_flag_command = "mode='rflag' extendflags=False timedevscale={0} " \
                      "freqdevscale={1}  spw='{2}' datacolumn='{3}' field='{4}' ".format(timedevscale, freqdevscale,
                                                                                         spw_with_freq,
-                                                                                        datacolumn, fields)
+                                                                                        datacolumn, fields_str)
 
     extend_flag_command = "mode='extend' growaround=True flagnearfreq=True flagneartime=True" \
                           " extendpols=False growtime={0} growfreq={1}  spw='{2}' datacolumn='{3}' " \
-                          "field='{4}'".format(growtime, growfreq, spw, datacolumn, fields)
-
+                          "field='{4}'".format(growtime, growfreq, spw, datacolumn, fields_str)
     cmdlist = [r_flag_command, extend_flag_command]
 
     flagdata(vis=ms_dataset, mode='list', inpfile=cmdlist, action='apply')
