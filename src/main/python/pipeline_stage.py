@@ -73,7 +73,8 @@ class PipelineStage(object):
                 if self.TARGET_SOURCE_TOGGLES['calibrate']:
                     target_source.calibrate()
                 line_source = LineSource(target_source.line(), source_id)
-                line_source.measurement_set.casa_runner.generate_flag_summary("known_flags", line_source.measurement_set.scan_ids())
+                line_source.measurement_set.casa_runner.generate_flag_summary("known_flags",
+                                                                              line_source.measurement_set.scan_ids())
                 self._create_ref_continuum_image(line_source, source_id)
                 self._run_autoflagging_on_line(line_source)
                 self._create_all_spw_continuum_image(line_source, source_id)

@@ -1,7 +1,7 @@
 """
 Access this script with below command:
 python generate_graph.py <Path of json_store in output dir>
-Example: python generate_graph.py "/Users/sarangk/Project/IUCAA/artip/output/may14/json_store"
+Example: python generate_graph.py "/Users/sarangk/Project/IUCAA/artip/output/may14"
 """
 
 import json
