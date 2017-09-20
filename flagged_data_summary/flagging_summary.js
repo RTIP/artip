@@ -91,7 +91,7 @@ function generate_graph(pol_data, source_type, bind, scan, pol) {
 }
 
 function displayChart(sel_source_type, source_type) {
-    return sel_source_type.every(function(val) {
+    return sel_source_type.some(function(val) {
         return source_type.indexOf(val) >= 0;
     });
 }
