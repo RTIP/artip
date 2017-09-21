@@ -25,8 +25,20 @@ bandpass_calibrator:
         <<: *rflag
         freqdevscale: 6.6
       datacolumn: 'corrected'
+#    spw1:
+#      <<: *auto_flagging_algo
+#      tfcrop:
+#        <<: *tfcrop
+#        freqcutoff: 4.0
+#        timecutoff: 4.0
+#      rflag:
+#        <<: *rflag
+#        freqdevscale: 6.6
+#      datacolumn: 'corrected'
 
 line:
   auto_flagging_algo:
     spw0:
       <<: *auto_flagging_algo
+#    spw1:
+#      <<: *auto_flagging_algo
