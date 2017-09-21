@@ -5,6 +5,7 @@ import distutils.util
 ms_dataset = sys.argv[-4]
 flag_file = sys.argv[-3]
 reason = sys.argv[-2].split(",")
+if len(reason) == 1:  reason = reason[0]
 show_percent = bool(distutils.util.strtobool(sys.argv[-1]))
 flag_file_full_path = os.path.realpath(flag_file)
 flagdata(vis=ms_dataset, inpfile=flag_file_full_path, reason=reason, mode='list')

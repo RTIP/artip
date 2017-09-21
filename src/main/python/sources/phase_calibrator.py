@@ -7,8 +7,8 @@ from terminal_color import Color
 class PhaseCalibrator(Source):
     def __init__(self, measurement_set):
         self.source_type = 'phase_calibrator'
-        self.config = config.ALL_CONFIGS[self.source_type]
-        self.source_ids = config.GLOBAL_CONFIG['phase_cal_fields']
+        self.config = config.CALIBRATION_CONFIGS[self.source_type]
+        self.source_ids = config.GLOBAL_CONFIGS['phase_cal_fields']
         super(PhaseCalibrator, self).__init__(measurement_set)
 
     def extend_flags(self):
@@ -16,13 +16,13 @@ class PhaseCalibrator(Source):
         self._extend_bad_antennas_on_target_source()
 
     def calibrate(self):
-        flux_cal_fields = ",".join(map(str, config.GLOBAL_CONFIG['flux_cal_fields']))
+        flux_cal_fields = ",".join(map(str, config.GLOBAL_CONFIGS['flux_cal_fields']))
         self.measurement_set.casa_runner.apply_phase_calibration(flux_cal_fields, self.config)
 
     def _extend_bad_antennas_on_target_source(self):
-        polarizations = config.GLOBAL_CONFIG['polarizations']
+        polarizations = config.GLOBAL_CONFIGS['polarizations']
         for polarization in polarizations:
-            phase_cal_fields = config.GLOBAL_CONFIG['phase_cal_fields']
+            phase_cal_fields = config.GLOBAL_CONFIGS['phase_cal_fields']
             completely_bad_antennas = self.measurement_set.get_completely_flagged_antennas(polarization)
             antennas_with_scans = self.measurement_set.get_bad_antennas_with_scans_for(polarization, phase_cal_fields)
 

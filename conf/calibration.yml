@@ -1,0 +1,49 @@
+calibration_stages:
+  flux_calibration:
+    flagging: true
+  bandpass_calibration:
+    run_auto_flagging: false
+  phase_calibration:
+    flagging: true
+
+calibration:
+  flux_calibrator:
+    calib_params: [100, 1, 2.0, 60] #[channel, width, minsnr, solint]
+    phase_data_column: "phase"
+    angular_dispersion:
+      r_threshold: 0.3
+      percentage_of_min_doubtful_antennas: 20
+      percentage_of_good_antennas: 70
+    closure:
+      threshold: 17
+      percentage_of_closures: 70
+      percentage_of_good_triplets: 70
+      percentile_threshold: 70
+    detail_flagging:
+      time_sliding_window: [1, 0, 3] #[bucket_size, overlap, mad_scale_factor]
+      antenna_sliding_window: [10, 5, 3]
+      baseline_sliding_window: [10, 5, 3]
+      amplitude_data_column: 'corrected_amplitude'
+
+  bandpass_calibrator:
+    phase_calib_params: [2.0, 60] #[minsnr, solint]
+    bpcal_solint: 900
+
+  phase_calibrator:
+    calib_params: [80, 41, 2.0, 60] #[channel, width, minsnr, solint]
+    channels_to_avg: '80~120'
+    phase_data_column: "corrected_phase"
+    angular_dispersion:
+      r_threshold: 0.3
+      percentage_of_min_doubtful_antennas: 10
+      percentage_of_good_antennas: 70
+    closure:
+      threshold: 35
+      percentage_of_closures: 70
+      percentage_of_good_triplets: 70
+      percentile_threshold: 70
+    detail_flagging:
+      time_sliding_window: [1, 0, 3] #[bucket_size, overlap, mad_scale_factor]
+      antenna_sliding_window: [10, 5, 3]
+      baseline_sliding_window: [10, 5, 3]
+      amplitude_data_column: 'corrected_amplitude'

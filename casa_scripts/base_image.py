@@ -16,7 +16,7 @@ output_path = sys.argv[-2]
 config_path = sys.argv[-1]
 cont_base_image = '{0}/cont_base_image'.format(output_path)
 
-BASE_IMAGE_CONFIGS = load(config_path + "imaging_config.yml")["base_image"]
+BASE_IMAGE_CONFIGS = load(config_path + "imaging.yml")["base_image"]
 
 imsize = BASE_IMAGE_CONFIGS['imsize']
 cell = BASE_IMAGE_CONFIGS['cell']

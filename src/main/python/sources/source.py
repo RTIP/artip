@@ -1,10 +1,11 @@
 import itertools
 from logger import logger
+from helpers import create_dir
 from analysers.angular_dispersion import AngularDispersion
 from analysers.closure_analyser import ClosureAnalyser
 from analysers.detailed_analyser import DetailedAnalyser
 from casa.flag_reasons import BAD_ANTENNA, BAD_ANTENNA_TIME, BAD_BASELINE_TIME, BAD_TIME
-from configs import config, pipeline_config
+from configs import config
 from terminal_color import Color
 from report import Report
 
@@ -15,13 +16,13 @@ class Source(object):
         self.flag_file = config.OUTPUT_PATH + "/" + "flags_{0}.txt".format(self.source_type)
 
     def run_rflag(self):
-        self.measurement_set.casa_runner.r_flag(self.source_type)
-        scan_ids = self.measurement_set.scan_ids(self.source_ids)
+        self.measurement_set.casa_runner.r_flag(self.source_type, self.source_ids)
+        scan_ids = self.measurement_set.scan_ids(self.source_type, self.source_ids)
         self.measurement_set.casa_runner.generate_flag_summary("rflag",
                                                                scan_ids, self.source_type)
 
     def run_tfcrop(self):
-        self.measurement_set.casa_runner.tfcrop(self.source_type)
+        self.measurement_set.casa_runner.tfcrop(self.source_type, self.source_ids)
         scan_ids = self.measurement_set.scan_ids(self.source_ids)
         self.measurement_set.casa_runner.generate_flag_summary("tfcrop",
                                                                scan_ids, self.source_type)
@@ -58,9 +59,9 @@ class Source(object):
 
     def _flag_bad_time(self, reason, analyser, run_only_once):
         spw_polarization_scan_id_combination = []
-        spw = config.GLOBAL_CONFIG['default_spw']
+        spw = config.GLOBAL_CONFIGS['default_spw']
 
-        for polarization in config.GLOBAL_CONFIG['polarizations']:
+        for polarization in config.GLOBAL_CONFIGS['polarizations']:
             scan_ids = self.measurement_set.scan_ids(self.source_ids, polarization)
             spw_polarization_scan_id_combination += list(itertools.product(spw, [polarization], scan_ids))
 
@@ -81,11 +82,17 @@ class Source(object):
 
     def analyse_antennas_on_closure_phases(self):
         logger.info(Color.HEADER + "Identifying bad Antennas based on closure phases..." + Color.ENDC)
-        closure_analyser = ClosureAnalyser(self.measurement_set, self.source_type)
+        closure_analyser = ClosureAnalyser(self.measurement_set, self)
         closure_analyser.identify_antennas_status()
 
     def analyse_antennas_on_angular_dispersion(self):
         logger.info(
             Color.HEADER + "Identifying bad Antennas based on angular dispersion in phases..." + Color.ENDC)
-        r_analyser = AngularDispersion(self.measurement_set, self.source_type)
+        r_analyser = AngularDispersion(self.measurement_set, self)
         r_analyser.identify_antennas_status()
+
+    def _prepare_output_dir(self, new_dir):
+        output_path = config.OUTPUT_PATH + "/" + new_dir
+        create_dir(output_path)
+        ms_path = output_path + "/{0}.ms".format(new_dir)
+        return ms_path, output_path

@@ -1,0 +1,26 @@
+stages:
+  flag_known_bad_data: true
+  flux_calibration: true
+  bandpass_calibration: true
+  phase_calibration: true
+  target_source:
+    ref_continuum: true
+    all_spw_continuum: true
+    all_spw_line: true
+
+global:
+  polarizations: ['RR', 'LL']
+  flux_cal_fields: [0]
+  bandpass_cal_fields: [0]
+  phase_cal_fields: [1]
+  target_src_field: [2]
+  output_path: 'output'
+  default_spw: "0"
+  spw_range: "0"   #Example: "0,1,2,4"
+  refant: 2
+  target_phase_src_map: {2:[1]}
+
+code_profiling: false
+flagging_percentage: false
+log_level: 20
+#debug: 10, info: 20, warning: 30, error: 40, critical: 50

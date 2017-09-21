@@ -1,6 +1,6 @@
 import os
 import coloredlogs
-import pipeline_config
+import config
 
 
 def load():
@@ -8,4 +8,4 @@ def load():
     # %(asctime)s %(hostname)s %(name)s[%(process)d] %(levelname)s %(message)s
     formatter = "[%(funcName)s] %(levelname)s %(message)s"
     os.environ['COLOREDLOGS_LOG_FORMAT'] = formatter
-    coloredlogs.install(level=pipeline_config.PIPELINE_CONFIGS['log_level'])
+    coloredlogs.install(level=config.PIPELINE_CONFIGS['log_level'])

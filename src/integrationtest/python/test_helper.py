@@ -1,4 +1,4 @@
-from configs import config, pipeline_config
+from configs import config
 from configs.config_loader import ConfigLoader
 import casac
 import subprocess, time
@@ -32,7 +32,6 @@ def expected_stats(_for, seed_data_path, dataset_name):
 
 
 def _load_image():
-    ap_loop_count = config.ALL_CONFIGS['target_source']['continuum']['self_calibration']['calmode']['p']['loop_count']
     ap_loop_count = 1
 
     image = casac.casac.image()
@@ -66,17 +65,17 @@ def image_beam():
 
 
 def enable_flagging_and_calibration():
-    pipeline_config.STAGES_CONFIG.update({'flux_calibration': True, 'bandpass_calibration': True,
+    config.STAGE_CONFIGS.update({'flux_calibration': True, 'bandpass_calibration': True,
                                           'phase_calibration': True})
 
 
 def disable_flagging_and_calibration():
-    pipeline_config.STAGES_CONFIG.update({'flux_calibration': False, 'bandpass_calibration': False,
+    config.STAGE_CONFIGS.update({'flux_calibration': False, 'bandpass_calibration': False,
                                           'phase_calibration': False})
 
 
 def enable_imaging():
-    pipeline_config.STAGES_CONFIG.update({'target_source': {
+    config.STAGE_CONFIGS.update({'target_source': {
         'run_auto_flagging': True,
         'create_continuum': True,
         'create_line_image': True
@@ -84,7 +83,7 @@ def enable_imaging():
 
 
 def disable_imaging():
-    pipeline_config.STAGES_CONFIG.update({'target_source': {
+    config.STAGE_CONFIGS.update({'target_source': {
         'run_auto_flagging': False,
         'create_continuum': False,
         'create_line_image': False

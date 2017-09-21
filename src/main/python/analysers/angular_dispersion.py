@@ -1,10 +1,10 @@
 from configs import config
 from logger import logger
-from itertools import product, imap
+from itertools import product
 from models.antenna_status import AntennaStatus
 from analysers.analyser import Analyser
 from analysers.r_matrix import RMatrix
-import numpy
+from named_tuples import CalibParams
 from models.phase_set import PhaseSet
 from terminal_color import Color
 
@@ -15,17 +15,17 @@ class AngularDispersion(Analyser):
 
     def identify_antennas_status(self):
         spw_polarization_scan_id_combination = []
-        spw = config.GLOBAL_CONFIG['default_spw']
+        spw = config.GLOBAL_CONFIGS['default_spw']
 
-        for polarization in config.GLOBAL_CONFIG['polarizations']:
-            scan_ids = self.measurement_set.scan_ids(self.source_config['fields'], polarization)
+        for polarization in config.GLOBAL_CONFIGS['polarizations']:
+            scan_ids = self.measurement_set.scan_ids(self.source_ids, polarization)
             spw_polarization_scan_id_combination += list(product(spw, [polarization], scan_ids))
 
         for spw, polarization, scan_id in spw_polarization_scan_id_combination:
             logger.debug(
                 Color.BACKGROUD_WHITE + "Polarization =" + polarization + " Scan Id=" + str(scan_id) + Color.ENDC)
-            if config.GLOBAL_CONFIG['refant']:
-                base_antenna = self.measurement_set.get_antenna_by_id(config.GLOBAL_CONFIG['refant'])
+            if config.GLOBAL_CONFIGS['refant']:
+                base_antenna = self.measurement_set.get_antenna_by_id(config.GLOBAL_CONFIGS['refant'])
             else:
                 base_antenna = self.measurement_set.antennas(polarization, scan_id)[0]
             r_matrix = RMatrix(spw, polarization, scan_id)
@@ -38,12 +38,11 @@ class AngularDispersion(Analyser):
 
     def _mark_antennas_status(self, spw, polarization, scan_id, source_config, base_antenna, r_matrix, history,
                               antenna_count):
-        channel = source_config['channel']
-        width = source_config['width']
+        calib_params = CalibParams(*source_config['calib_params'])
         r_threshold = source_config['angular_dispersion']['r_threshold']
         if base_antenna in history: return
 
-        visibility_data = self.measurement_set.get_data(spw, {'start': channel, 'width': width}, polarization,
+        visibility_data = self.measurement_set.get_data(spw, {'start': calib_params.channel, 'width': calib_params.width}, polarization,
                                                         {'scan_number': scan_id},
                                                         ["antenna1", "antenna2", 'phase', 'flag'])
 

@@ -1,13 +1,14 @@
 import sys
 import os
 
-ms_dataset = sys.argv[-7]
-output_path = sys.argv[-6]
-flux_cal_field = sys.argv[-5]
-phase_cal_field = sys.argv[-4]
-spw = sys.argv[-3]
-refant = sys.argv[-2]
-minsnr = float(sys.argv[-1])
+ms_dataset = sys.argv[-8]
+output_path = sys.argv[-7]
+flux_cal_field = sys.argv[-6]
+phase_cal_field = sys.argv[-5]
+spw = sys.argv[-4]
+refant = sys.argv[-3]
+minsnr = float(sys.argv[-2])
+solint = float(sys.argv[-1])
 
 intphase2_gcal = output_path + "/" + 'intphase2.gcal'
 tmp_intphase2_gcal = output_path + "/" + 'intphase_tmp2.gcal'  # This is done to keep empty phase gains in intphase.gcal because "append=True" in gaincal throws an error[duplicate phase gains at same time] in subsequent phase calibration run.
@@ -25,7 +26,7 @@ os.system("cp -r {0} {1}".format(amp2_gcal, tmp_amp2_gcal))
 
 sys.stdout.write("\n##### Started calculating intphase gains on Phase calibrator#####\n")
 gaincal(vis=ms_dataset, caltable=tmp_intphase2_gcal, field=phase_cal_field, spw=spw, refant=refant, calmode='p',
-        solint='60s', minsnr=minsnr, gaintable=[bandpass_bcal], append=True)
+        solint=solint, minsnr=minsnr, gaintable=[bandpass_bcal], append=True)
 sys.stdout.write("\n##### Finished calculating intphase gains on Phase calibrator#####\n")
 
 sys.stdout.write("\n##### Started calculating amp gains on Phase calibrator#####\n")

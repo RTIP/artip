@@ -1,9 +1,7 @@
 from logger import logger
 import numpy
 from terminal_color import Color
-from helpers import minus
-from collections import namedtuple
-
+from named_tuples import CalibParams
 
 class AmplitudeMatrix:
     def __init__(self, measurement_set, polarization, scan_id, spw, config, matrix={}):
@@ -26,9 +24,10 @@ class AmplitudeMatrix:
         return amplitude_data_matrix
 
     def _matrix_data(self):
+        calib_params = CalibParams(*self._config['calib_params'])
         amplitude_data_column = self._config['detail_flagging']['amplitude_data_column']
-        visibility_data = self._measurement_set.get_data(self._spw, {'start': self._config['channel'],
-                                                                     'width': self._config['width']},
+        visibility_data = self._measurement_set.get_data(self._spw, {'start': calib_params.channel,
+                                                                     'width': calib_params.width},
                                                          self._polarization, {'scan_number': self._scan_id},
                                                          ["antenna1", "antenna2", amplitude_data_column, 'flag',
                                                           'time'])

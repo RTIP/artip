@@ -1,0 +1,28 @@
+target_source_stages:
+    calibrate: true
+    ref_continuum:
+      image: true
+      flagging: true
+      selfcal: true
+      extend_flags: true
+    all_spw:
+      run_auto_flagging: false
+      continuum:
+        selfcal: true
+      line:
+        apply_selfcal: true
+        image: true
+
+target_source:
+  ref_continuum:
+    calib_params: [0, 1, -, -] #[channel, width, minsnr, solint] #dash implies Not applicable
+    channels_to_avg: '80~120'
+    channel_width: 41
+    detail_flagging:
+      time_sliding_window: [1, 0, 3] #[bucket_size, overlap, mad_scale_factor]
+      antenna_sliding_window: [10, 5, 3]
+      baseline_sliding_window: [10, 5, 3]
+      amplitude_data_column: 'amplitude'
+  spw_continuum:
+    channels_to_avg: '80~120'
+    channel_width: 41

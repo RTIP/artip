@@ -1,5 +1,5 @@
 import unittest
-from configs import config, pipeline_config, logging_config
+from configs import config, logging_config
 import start
 from main import main
 from shutil import rmtree
@@ -10,7 +10,6 @@ class PipelineTest(unittest.TestCase):
     def setup(self, dataset_name):
         self.seed_data_path = "src/integrationtest/seed_data/"
         self.dataset_name = dataset_name
-        pipeline_config.load("src/integrationtest/conf/pipeline_config.yml")
         logging_config.load()
 
         config.load(self.seed_data_path + self.dataset_name + "/config.yml")
@@ -43,7 +42,7 @@ class PipelineTest(unittest.TestCase):
         self.assertEquals(actual_flags, expected_flags, msg="Dataset= " + self.ms_file)
 
     def assert_calibration(self):
-        actual_stats = get_stats(self.ms_file, config.GLOBAL_CONFIG['flux_cal_fields'])
+        actual_stats = get_stats(self.ms_file, config.GLOBAL_CONFIGS['flux_cal_fields'])
         calibration_stats = expected_stats('calibration', self.seed_data_path, self.dataset_name)
 
         self.assertTrue(is_subset(actual_stats, calibration_stats),
@@ -75,7 +74,7 @@ class PipelineTest(unittest.TestCase):
                                                                                  imaging_stats['beam']['minor']))
 
     def tearDown(self):
-        rmtree(config.GLOBAL_CONFIG['output_path'])
+        rmtree(config.GLOBAL_CONFIGS['output_path'])
 
 
 if __name__ == '__main__':
