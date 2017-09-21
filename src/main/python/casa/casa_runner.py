@@ -12,9 +12,23 @@ from log_event_handler import LogEventHandler
 
 
 class CasaRunner:
+    IMAGING_LOGS_EVENT_HANDLER = LogEventHandler(log_file=config.OUTPUT_PATH + "/casa.log",
+                                      pattern="(Reached global stopping criterion)|(>>>>)",
+                                      regexes=[r".*\.log"])
+
     def __init__(self, dataset_path, output_path):
         self._output_path = output_path
         self._dataset_path = dataset_path
+
+    def _observe_imaging_logs(func):
+        def wrapper(*args, **kwargs):
+            observer = Observer()
+            observer.schedule(CasaRunner.IMAGING_LOGS_EVENT_HANDLER,
+                              path=config.OUTPUT_PATH, recursive=False)
+            observer.start()
+            func(*args, **kwargs)
+            observer.stop()
+        return wrapper
 
     def flagdata(self, flag_file, reasons):
         logger.info(Color.HEADER + "Flagging " + reasons + Color.ENDC)
@@ -127,20 +141,14 @@ class CasaRunner:
                                                              filters['datacolumn'], width, spw)
         self._run(script_path, script_parameters)
 
+    @_observe_imaging_logs
     def base_image(self):
-        self._register_tclean_log_listener()
         logger.info(Color.HEADER + "Creating base image for {0}".format(self._dataset_path) + Color.ENDC)
         script_path = 'casa_scripts/base_image.py'
         script_parameters = "{0} {1} {2}".format(self._dataset_path, self._output_path, config.CONFIG_PATH)
         self._run(script_path, script_parameters)
 
-    def _register_tclean_log_listener(self):
-        event_handler = LogEventHandler(log_file=config.OUTPUT_PATH + "/casa.log",
-                                        pattern="(Reached global stopping criterion)|(>>>>)", regexes=[r".*\.log"])
-        observer = Observer()
-        observer.schedule(event_handler, path=config.OUTPUT_PATH, recursive=False)
-        observer.start()
-
+    @_observe_imaging_logs
     def apply_self_calibration(self, self_cal_config, calibration_mode, output_ms_path, output_path, spw):
         logger.info(Color.HEADER + "Applying self calibration for {0}".format(self._dataset_path) + Color.ENDC)
         cal_mode = self_cal_config['calmode']
