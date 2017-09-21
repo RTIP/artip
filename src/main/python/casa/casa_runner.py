@@ -94,16 +94,19 @@ class CasaRunner:
                                                          source_id)
         self._run(script_path, script_parameters)
 
-    def r_flag(self, source_type):
+    def r_flag(self, source_type, source_ids):
         script_path = 'casa_scripts/r_flag.py'
-        script_parameters = "{0} {1} {2} {3}".format(self._dataset_path, source_type, config.CONFIG_PATH,
+        source_ids = ','.join([str(source_id) for source_id in source_ids])
+        script_parameters = "{0} {1} {2} {3} {4}".format(self._dataset_path, source_type, source_ids, config.CONFIG_PATH,
                                                      config.GLOBAL_CONFIGS['spw_range'])
         logger.info(Color.HEADER + "Running Rflag auto-flagging algorithm" + Color.ENDC)
         self._run(script_path, script_parameters)
 
-    def tfcrop(self, source_type):
+    def tfcrop(self, source_type, source_ids):
         script_path = 'casa_scripts/tfcrop.py'
-        script_parameters = "{0} {1} {2} {3}".format(self._dataset_path, source_type, config.CONFIG_PATH,
+        source_ids = ','.join([str(source_id) for source_id in source_ids])
+
+        script_parameters = "{0} {1} {2} {3} {4}".format(self._dataset_path, source_type, source_ids, config.CONFIG_PATH,
                                                      config.GLOBAL_CONFIGS['spw_range'])
         logger.info(Color.HEADER + "Running Tfcrop auto-flagging algorithm" + Color.ENDC)
         self._run(script_path, script_parameters)

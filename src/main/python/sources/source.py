@@ -16,13 +16,13 @@ class Source(object):
         self.flag_file = config.OUTPUT_PATH + "/" + "flags_{0}.txt".format(self.source_type)
 
     def run_rflag(self):
-        self.measurement_set.casa_runner.r_flag(self.source_type)
-        scan_ids = self.measurement_set.scan_ids(self.source_ids)
+        self.measurement_set.casa_runner.r_flag(self.source_type, self.source_ids)
+        scan_ids = self.measurement_set.scan_ids(self.source_type, self.source_ids)
         self.measurement_set.casa_runner.generate_flag_summary("rflag",
                                                                scan_ids, self.source_type)
 
     def run_tfcrop(self):
-        self.measurement_set.casa_runner.tfcrop(self.source_type)
+        self.measurement_set.casa_runner.tfcrop(self.source_type, self.source_ids)
         scan_ids = self.measurement_set.scan_ids(self.source_ids)
         self.measurement_set.casa_runner.generate_flag_summary("tfcrop",
                                                                scan_ids, self.source_type)
