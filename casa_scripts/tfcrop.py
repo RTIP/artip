@@ -23,15 +23,16 @@ else:
 
 for spw in spw_range.split(','):
     spw_config = "spw{0}".format(spw)
-    datacolumn = SOURCE_AUTOFLAGGING_CONFIGS[spw_config]['datacolumn']
-    growtime = SOURCE_AUTOFLAGGING_CONFIGS[spw_config]['growtime']
-    growfreq = SOURCE_AUTOFLAGGING_CONFIGS[spw_config]['growfreq']
-    timecutoff = SOURCE_AUTOFLAGGING_CONFIGS[spw_config]['tfcrop']['timecutoff']
-    freqcutoff = SOURCE_AUTOFLAGGING_CONFIGS[spw_config]['tfcrop']['freqcutoff']
-    maxnpieces = SOURCE_AUTOFLAGGING_CONFIGS[spw_config]['tfcrop']['maxnpieces']
-    usewindowstats = SOURCE_AUTOFLAGGING_CONFIGS[spw_config]['tfcrop']['usewindowstats']
-    halfwin = SOURCE_AUTOFLAGGING_CONFIGS[spw_config]['tfcrop']['halfwin']
-    freqrange = SOURCE_AUTOFLAGGING_CONFIGS[spw_config]['freqrange']
+    tfcrop_config = SOURCE_AUTOFLAGGING_CONFIGS[spw_config]
+    datacolumn = tfcrop_config['datacolumn']
+    growtime = tfcrop_config['growtime']
+    growfreq = tfcrop_config['growfreq']
+    timecutoff = tfcrop_config['tfcrop']['timecutoff']
+    freqcutoff = tfcrop_config['tfcrop']['freqcutoff']
+    maxnpieces = tfcrop_config['tfcrop']['maxnpieces']
+    usewindowstats = tfcrop_config['tfcrop']['usewindowstats']
+    halfwin = tfcrop_config['tfcrop']['halfwin']
+    freqrange = tfcrop_config['freqrange']
 
     spw_with_freq = "{0}:{1}".format(spw, freqrange)
     fields_str = ",".join(map(str, fields))

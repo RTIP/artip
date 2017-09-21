@@ -22,12 +22,14 @@ else:
 
 for spw in spw_range.split(','):
     spw_config = "spw{0}".format(spw)
-    datacolumn = SOURCE_AUTOFLAGGING_CONFIGS[spw_config]['datacolumn']
-    growtime = SOURCE_AUTOFLAGGING_CONFIGS[spw_config]['growtime']
-    growfreq = SOURCE_AUTOFLAGGING_CONFIGS[spw_config]['growfreq']
-    timedevscale = SOURCE_AUTOFLAGGING_CONFIGS[spw_config]['rflag']['timedevscale']
-    freqdevscale = SOURCE_AUTOFLAGGING_CONFIGS[spw_config]['rflag']['freqdevscale']
-    freqrange = SOURCE_AUTOFLAGGING_CONFIGS[spw_config]['freqrange']
+    rflag_config = SOURCE_AUTOFLAGGING_CONFIGS[spw_config]
+
+    datacolumn = rflag_config['datacolumn']
+    growtime = rflag_config['growtime']
+    growfreq = rflag_config['growfreq']
+    timedevscale = rflag_config['rflag']['timedevscale']
+    freqdevscale = rflag_config['rflag']['freqdevscale']
+    freqrange = rflag_config['freqrange']
 
     spw_with_freq = "{0}:{1}".format(spw, freqrange)
     fields_str = ",".join(map(str, fields))
