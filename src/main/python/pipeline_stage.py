@@ -7,8 +7,6 @@ from sources.flux_calibrator import FluxCalibrator
 from sources.bandpass_calibrator import BandpassCalibrator
 from sources.phase_calibrator import PhaseCalibrator
 from sources.target_source import TargetSource
-from sources.continuum_source import ContinuumSource
-from sources.line_source import LineSource
 
 
 class PipelineStage(object):
@@ -74,20 +72,18 @@ class PipelineStage(object):
                 target_source = TargetSource(self._measurement_set, source_id)
                 if config.TARGET_SOURCE_STAGES['calibrate']:
                     target_source.calibrate()
-                line_source = LineSource(target_source.line())
-                line_source.measurement_set.casa_runner.generate_flag_summary("known_flags",
-                                                                              line_source.measurement_set.scan_ids())
-                self._create_ref_continuum_image(line_source, ContinuumSource.CONTINUUM_SOURCE_ID)
-                self._run_autoflagging_on_line(line_source)
-                self._create_all_spw_continuum_image(line_source, ContinuumSource.CONTINUUM_SOURCE_ID)
-                self._create_line_image(line_source)
+                line = target_source.line()
+                line.measurement_set.casa_runner.generate_flag_summary("known_flags",
+                                                                              line.measurement_set.scan_ids())
+                self._create_ref_continuum_image(line)
+                self._run_autoflagging_on_line(line)
+                self._create_all_spw_continuum_image(line)
+                self._create_line_image(line)
 
     @_run(config.MAIN_STAGES['target_source']['ref_continuum'])
-    def _create_ref_continuum_image(self, line_source, source_id):
+    def _create_ref_continuum_image(self, line_source):
         cont_mode = 'ref'
-        continuum_source_ref = ContinuumSource(
-            line_source.continuum(config.GLOBAL_CONFIGS['default_spw'], cont_mode),
-            cont_mode)
+        continuum_source_ref = line_source.continuum(config.GLOBAL_CONFIGS['default_spw'], cont_mode)
         if config.TARGET_SOURCE_STAGES['ref_continuum']['flagging']:
             continuum_source_ref.reduce_data()
         if config.TARGET_SOURCE_STAGES['ref_continuum']['extend_flags']:
@@ -103,13 +99,11 @@ class PipelineStage(object):
             line_source.run_rflag()
 
     @_run(config.MAIN_STAGES['target_source']['all_spw_continuum'])
-    def _create_all_spw_continuum_image(self, line_source, source_id):
+    def _create_all_spw_continuum_image(self, line_source):
         if not self._is_single_spw_present():
             cont_mode = 'spw'
             spw_range = config.GLOBAL_CONFIGS['spw_range']
-            continuum_source = ContinuumSource(
-                line_source.continuum(spw_range, cont_mode),
-                cont_mode, spw_range)
+            continuum_source = line_source.continuum(spw_range, cont_mode)
             if config.TARGET_SOURCE_STAGES['all_spw']['continuum']['selfcal']:
                 continuum_source.self_calibrate(cont_mode)
         else:

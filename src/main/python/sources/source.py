@@ -1,5 +1,6 @@
 import itertools
 from logger import logger
+from helpers import create_dir
 from analysers.angular_dispersion import AngularDispersion
 from analysers.closure_analyser import ClosureAnalyser
 from analysers.detailed_analyser import DetailedAnalyser
@@ -89,3 +90,9 @@ class Source(object):
             Color.HEADER + "Identifying bad Antennas based on angular dispersion in phases..." + Color.ENDC)
         r_analyser = AngularDispersion(self.measurement_set, self)
         r_analyser.identify_antennas_status()
+
+    def _prepare_output_dir(self, new_dir):
+        output_path = config.OUTPUT_PATH + "/" + new_dir
+        create_dir(output_path)
+        ms_path = output_path + "/{0}.ms".format(new_dir)
+        return ms_path, output_path
