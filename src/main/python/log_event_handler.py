@@ -1,7 +1,6 @@
 from sh import egrep, ErrorReturnCode_1
 from watchdog.events import RegexMatchingEventHandler
 import logging
-import functools
 
 
 class LogEventHandler(RegexMatchingEventHandler):
@@ -12,7 +11,6 @@ class LogEventHandler(RegexMatchingEventHandler):
         super(LogEventHandler, self).__init__(regexes=regexes)
 
     def disable_logging(func):
-        @functools.wraps(func)
         def wrapper(*args, **kwargs):
             logging.disable(logging.INFO)
             result = func(*args, **kwargs)
