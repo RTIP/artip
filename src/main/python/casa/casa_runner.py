@@ -13,10 +13,6 @@ from named_tuples import CalibParams
 
 
 class CasaRunner:
-    IMAGING_LOGS_EVENT_HANDLER = LogEventHandler(log_file=config.OUTPUT_PATH + "/casa.log",
-                                      pattern="(Reached global stopping criterion)|(>>>>)",
-                                      regexes=[r".*\.log"])
-
     def __init__(self, dataset_path, output_path):
         self._output_path = output_path
         self._dataset_path = dataset_path
@@ -24,7 +20,7 @@ class CasaRunner:
     def _observe_imaging_logs(func):
         def wrapper(*args, **kwargs):
             observer = Observer()
-            observer.schedule(CasaRunner.IMAGING_LOGS_EVENT_HANDLER,
+            observer.schedule(LogEventHandler.imaging_log_handler(),
                               path=config.OUTPUT_PATH, recursive=False)
             observer.start()
             func(*args, **kwargs)
