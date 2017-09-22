@@ -17,7 +17,7 @@ class Source(object):
 
     def run_rflag(self):
         self.measurement_set.casa_runner.r_flag(self.source_type, self.source_ids)
-        scan_ids = self.measurement_set.scan_ids(self.source_type, self.source_ids)
+        scan_ids = self.measurement_set.scan_ids(self.source_ids)
         self.measurement_set.casa_runner.generate_flag_summary("rflag",
                                                                scan_ids, self.source_type)
 
