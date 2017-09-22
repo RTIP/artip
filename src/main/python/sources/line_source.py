@@ -16,7 +16,7 @@ class LineSource(Source):
 
     def apply_calibration(self, mode):
         selfcal_config = config.IMAGING_CONFIGS['cont_image']['self_calibration']
-        self.measurement_set.casa_runner.apply_line_calibration(selfcal_config["calmode"], LineSource.ID, mode)
+        self.measurement_set.casa_runner.apply_line_calibration(selfcal_config["calmode"], self.parent_source_id, mode)
 
     def continuum(self, spw, cont_mode):
         continuum_config = config.TARGET_SOURCE_CONFIGS[cont_mode + '_continuum']
