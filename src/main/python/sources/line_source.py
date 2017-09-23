@@ -36,4 +36,4 @@ class LineSource(Source):
 
     def create_line_image(self):
         cont_config = config.IMAGING_CONFIGS['cont_image']['self_calibration']
-        self.measurement_set.casa_runner.create_line_image(cont_config["calmode"], LineSource.ID)
+        self.measurement_set.casa_runner.create_line_image(cont_config["calmode"], self.parent_source_id)

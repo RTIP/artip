@@ -195,14 +195,14 @@ class CasaRunner:
 
         self._run(script_path, script_parameters)
 
-    def apply_line_calibration(self, calmode_config, source_id, mode):
+    def apply_line_calibration(self, calmode_config, parent_source_id, mode):
         logger.info(Color.HEADER + "Applying calibration on Line.." + Color.ENDC)
         script_path = 'casa_scripts/apply_line_calibration.py'
         p_loop_count = calmode_config["p"]["loop_count"]
         ap_loop_count = calmode_config["ap"]["loop_count"]
-        p_table = '{0}/self_caled_p_{1}_{2}/p_selfcaltable_{3}.gcal'.format(config.OUTPUT_PATH, mode, source_id,
+        p_table = '{0}/self_caled_p_{1}_{2}/p_selfcaltable_{3}.gcal'.format(config.OUTPUT_PATH, mode, parent_source_id,
                                                                             p_loop_count)
-        ap_table = '{0}/self_caled_ap_{1}_{2}/ap_selfcaltable_{3}.gcal'.format(config.OUTPUT_PATH, mode, source_id,
+        ap_table = '{0}/self_caled_ap_{1}_{2}/ap_selfcaltable_{3}.gcal'.format(config.OUTPUT_PATH, mode, parent_source_id,
                                                                                ap_loop_count)
         script_parameters = "{0} {1} {2} {3} {4}".format(p_loop_count, ap_loop_count, ap_table, p_table,
                                                          self._dataset_path)
@@ -215,11 +215,11 @@ class CasaRunner:
         if os.path.exists(flag_file):
             self.flagdata(flag_file, flag_reasons)
 
-    def create_line_image(self, calmode_config, source_id):
+    def create_line_image(self, calmode_config, parent_source_id):
         logger.info(Color.HEADER + "Creating line image at {0}".format(self._output_path) + Color.ENDC)
         script_path = 'casa_scripts/create_line_image.py'
         cont_mode = 'ref'
-        continuum_image_model = self._last_continuum_image_model(calmode_config, source_id, cont_mode)
+        continuum_image_model = self._last_continuum_image_model(calmode_config, parent_source_id, cont_mode)
         script_parameters = "{0} {1} {2} {3} {4}".format(
             config.GLOBAL_CONFIGS['spw_range'],
             self._dataset_path,
@@ -228,16 +228,16 @@ class CasaRunner:
             config.CONFIG_PATH)
         self._run(script_path, script_parameters)
 
-    def _last_continuum_image_model(self, calmode_config, source_id, cont_mode_to_subtract):
+    def _last_continuum_image_model(self, calmode_config, parent_source_id, cont_mode_to_subtract):
         p_loop_count = calmode_config["p"]["loop_count"]
         ap_loop_count = calmode_config["ap"]["loop_count"]
         if ap_loop_count == 0:
             return '{0}/self_caled_p_{1}_{2}/self_cal_image_p_{3}.model'.format(config.OUTPUT_PATH,
-                                                                                cont_mode_to_subtract, source_id,
+                                                                                cont_mode_to_subtract, parent_source_id,
                                                                                 p_loop_count)
         else:
             return '{0}/self_caled_ap_{1}_{2}/self_cal_image_ap_{3}.model'.format(config.OUTPUT_PATH,
-                                                                                  cont_mode_to_subtract, source_id,
+                                                                                  cont_mode_to_subtract, parent_source_id,
                                                                                   ap_loop_count)
 
     def _unlock_dataset(self):
