@@ -1,6 +1,8 @@
 import sys
 import yaml
 
+script_parameters_start_index = sys.argv.index('-c') + 2
+parameters = sys.argv[script_parameters_start_index:]
 
 def load(config_file_name):
     config_file = open(config_file_name)
@@ -8,11 +10,11 @@ def load(config_file_name):
     config_file.close()
     return configs
 
-spw_range = sys.argv[-1]
-config_path = sys.argv[-2]
-fields = sys.argv[-3]
-source_type = sys.argv[-4]
-ms_dataset = sys.argv[-5]
+ms_dataset = parameters[0]
+source_type = parameters[1]
+fields = parameters[2]
+config_path = parameters[3]
+spw_range = parameters[4]
 
 AUTO_FLAGGING_CONFIGS = load(config_path +"auto_flagging_config.yml")
 SOURCE_AUTOFLAGGING_CONFIGS = AUTO_FLAGGING_CONFIGS[source_type]['auto_flagging_algo']

@@ -2,11 +2,15 @@ import sys
 import os
 import distutils.util
 
-ms_dataset = sys.argv[-4]
-flag_file = sys.argv[-3]
-reason = sys.argv[-2].split(",")
+script_parameters_start_index = sys.argv.index('-c') + 2
+parameters = sys.argv[script_parameters_start_index:]
+
+ms_dataset = parameters[0]
+flag_file = parameters[1]
+reason = parameters[2].split(",")
+show_percent = bool(distutils.util.strtobool(parameters[3]))
+
 if len(reason) == 1:  reason = reason[0]
-show_percent = bool(distutils.util.strtobool(sys.argv[-1]))
 flag_file_full_path = os.path.realpath(flag_file)
 flagdata(vis=ms_dataset, inpfile=flag_file_full_path, reason=reason, mode='list')
 

@@ -2,6 +2,8 @@ import sys
 import distutils.util
 import yaml
 
+script_parameters_start_index = sys.argv.index('-c') + 2
+parameters = sys.argv[script_parameters_start_index:]
 
 def load(config_file_name):
     config_file = open(config_file_name)
@@ -10,10 +12,10 @@ def load(config_file_name):
     return configs
 
 
+dataset = parameters[0]
+output_path = parameters[1]
+config_path = parameters[2]
 
-dataset = sys.argv[-3]
-output_path = sys.argv[-2]
-config_path = sys.argv[-1]
 cont_base_image = '{0}/cont_base_image'.format(output_path)
 
 BASE_IMAGE_CONFIGS = load(config_path + "imaging.yml")["base_image"]

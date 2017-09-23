@@ -2,11 +2,14 @@ import sys
 import distutils.util
 import yaml
 
-spw_list = sys.argv[-5]
-ms_input = sys.argv[-4]
-image_path = sys.argv[-3]
-cont_model_to_subtract = sys.argv[-2]
-config_path = sys.argv[-1]
+script_parameters_start_index = sys.argv.index('-c') + 2
+parameters = sys.argv[script_parameters_start_index:]
+
+spw_list = parameters[0]
+ms_input = parameters[1]
+image_path = parameters[2]
+cont_model_to_subtract = parameters[3]
+config_path = parameters[4]
 field = '0'
 
 image_name = "{0}/line_spectral_image".format(image_path)

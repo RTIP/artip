@@ -1,12 +1,15 @@
 import sys
 
-run_count = int(sys.argv[-7])
-ms_dataset = sys.argv[-6]
-output_path = sys.argv[-5]
-field = sys.argv[-4]
-refant = sys.argv[-3]
-spw = sys.argv[-2]
-minsnr = float(sys.argv[-1])
+script_parameters_start_index = sys.argv.index('-c') + 2
+parameters = sys.argv[script_parameters_start_index:]
+
+run_count = int(parameters[0])
+ms_dataset = parameters[1]
+output_path = parameters[2]
+field = parameters[3]
+refant = parameters[4]
+spw = parameters[5]
+minsnr = float(parameters[6])
 
 intphase_caltable = output_path + "/" + 'intphase.gcal'
 intphase2_caltable = output_path + "/" + 'intphase{0}.gcal'.format(run_count)

@@ -1,14 +1,17 @@
 import sys
 import os
 
-ms_dataset = sys.argv[-8]
-output_path = sys.argv[-7]
-flux_cal_field = sys.argv[-6]
-phase_cal_field = sys.argv[-5]
-spw = sys.argv[-4]
-refant = sys.argv[-3]
-minsnr = float(sys.argv[-2])
-solint = float(sys.argv[-1])
+script_parameters_start_index = sys.argv.index('-c') + 2
+parameters = sys.argv[script_parameters_start_index:]
+
+ms_dataset = parameters[0]
+output_path = parameters[1]
+flux_cal_field = parameters[2]
+phase_cal_field = parameters[3]
+spw = parameters[4]
+refant = parameters[5]
+minsnr = float(parameters[6])
+solint = float(parameters[7])
 
 intphase2_gcal = output_path + "/" + 'intphase2.gcal'
 tmp_intphase2_gcal = output_path + "/" + 'intphase_tmp2.gcal'  # This is done to keep empty phase gains in intphase.gcal because "append=True" in gaincal throws an error[duplicate phase gains at same time] in subsequent phase calibration run.

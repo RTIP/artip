@@ -1,10 +1,13 @@
 import sys
 
-ms_dataset = sys.argv[-5]
-output_path = sys.argv[-4]
-flux_cal_field = sys.argv[-3]
-phase_cal_field = sys.argv[-2]
-target_source_field = sys.argv[-1]
+script_parameters_start_index = sys.argv.index('-c') + 2
+parameters = sys.argv[script_parameters_start_index:]
+
+ms_dataset = parameters[0]
+output_path = parameters[1]
+flux_cal_field = parameters[2]
+phase_cal_field = parameters[3]
+target_source_field = parameters[4]
 
 bandpass_table = output_path + "/" + 'bandpass.bcal'
 scanphase_gcal = output_path + "/" + 'scanphase.gcal'

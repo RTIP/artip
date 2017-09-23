@@ -2,6 +2,8 @@ import sys
 import distutils.util
 import yaml
 
+script_parameters_start_index = sys.argv.index('-c') + 2
+parameters = sys.argv[script_parameters_start_index:]
 
 def load(config_file_name):
     config_file = open(config_file_name)
@@ -9,23 +11,22 @@ def load(config_file_name):
     config_file.close()
     return configs
 
-
-config_path = sys.argv[-19]
-dataset = sys.argv[-18]
-image_output_path = sys.argv[-17]
-outputvis = sys.argv[-16]
-solint = sys.argv[-15]
-refant = sys.argv[-14]
-minsnr = float(sys.argv[-13])
-output_path = sys.argv[-12]
-applymode = sys.argv[-11]
-mask_threshold = sys.argv[-10]
-bmask_bottom_left_corner = [int(sys.argv[-9]), int(sys.argv[-8])]
-bmask_top_right_corner = [int(sys.argv[-7]), int(sys.argv[-6])]
-mask_path = sys.argv[-5]
-loop_count = {'ap': int(sys.argv[-4]), 'p': int(sys.argv[-3])}
-calmode = sys.argv[-2]
-spw = sys.argv[-1]
+config_path = parameters[0]
+dataset = parameters[1]
+image_output_path = parameters[2]
+outputvis = parameters[3]
+solint = parameters[4]
+refant = parameters[5]
+minsnr = float(parameters[6])
+output_path = parameters[7]
+applymode = parameters[8]
+mask_threshold = parameters[9]
+bmask_bottom_left_corner = [int(parameters[10]), int(parameters[11])]
+bmask_top_right_corner = [int(parameters[12]), int(parameters[13])]
+mask_path = parameters[14]
+loop_count = {'ap': int(parameters[15]), 'p': int(parameters[16])}
+calmode = parameters[17]
+spw = parameters[18]
 
 image_path = "{0}/self_cal_image".format(image_output_path)
 

@@ -1,12 +1,15 @@
 import sys
 
-ms_dataset = sys.argv[-7]
-output_path = sys.argv[-6]
-field = sys.argv[-5]
-refant = sys.argv[-4]
-solint = float(sys.argv[-3])
-phase_calib_minsnr = float(sys.argv[-2])
-phase_calib_solint = float(sys.argv[-1])
+script_parameters_start_index = sys.argv.index('-c') + 2
+parameters = sys.argv[script_parameters_start_index:]
+
+ms_dataset = parameters[0]
+output_path = parameters[1]
+field = parameters[2]
+refant = parameters[3]
+solint = float(parameters[4])
+phase_calib_minsnr = float(parameters[5])
+phase_calib_solint = float(parameters[6])
 
 bpphase_gcal = output_path + "/" + 'bpphase.gcal'
 bandpass_table = output_path + "/" + 'bandpass.bcal'
