@@ -1,3 +1,6 @@
+# This script is build on top of setup_casapy_pip.py provided by radio-astro-tools
+# https://github.com/radio-astro-tools/casa-python/blob/master/setup_casapy_pip.py
+
 from __future__ import print_function
 
 import os
