@@ -44,7 +44,7 @@ def find_osx_executable(fpath='/Applications/CASA.app/Contents/MacOS/casapy'):
 
 
 def get_casapy_path():
-    casapy_path = find_executable('casapy') or find_osx_executable()
+    casapy_path = find_executable('casa') or find_osx_executable()
     if casapy_path is None:
         raise SystemError("Could not locate casapy command")
     casapy_path = os.path.realpath(casapy_path)
@@ -101,7 +101,7 @@ def install_package(pv="2.7", packagename='pip', url=PIP_URL, md5_checksum=PIP_M
 
     # Create temporary directory
 
-    tmpdir = tempfile.mkdtemp()
+    tmpdir = tempfile.mkdtemp(dir='/tmp')
     os.chdir(tmpdir)
 
     # Download module and expand
@@ -125,24 +125,28 @@ def install_package(pv="2.7", packagename='pip', url=PIP_URL, md5_checksum=PIP_M
 #!/bin/bash
 export PYTHONUSERBASE=$HOME/.casa
 export PATH=$HOME/.casa/bin:$PATH
-tar xvzf {pkg_filename}
+{extraction_command} {pkg_filename}
 cd {pkg_name}
 casa-python setup.py install --prefix=$HOME/.casa
     """
 
     pkg_filename = os.path.basename(url)
+    extraction_command = None
 
     if packagename == 'pip':
         pkg_name = pkg_filename.rsplit('.', 2)[0]
+        extraction_command = 'tar xvzf'
     if packagename == 'setuptools':
         pkg_name = pkg_filename.rsplit('.', 1)[0]
+        extraction_command = 'unzip'
     with open('install_pkg.sh', 'w') as f:
-        f.write(PKG_INSTALL.format(pkg_filename=pkg_filename, pkg_name=pkg_name))
+        f.write(PKG_INSTALL.format(pkg_filename=pkg_filename, pkg_name=pkg_name, extraction_command=extraction_command))
 
     make_executable('install_pkg.sh')
 
     # Need to use subprocess instead
     retcode = os.system('./install_pkg.sh')
+    os.system("rm -r {0}".format(tmpdir))
     if retcode != 0:
         raise SystemError("{0} installation failed!".format(packagename))
 
