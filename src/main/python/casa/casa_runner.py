@@ -41,15 +41,16 @@ class CasaRunner:
         self._run(script_path, script_parameters)
 
     def generate_flag_summary(self, flagging_type, scan_list, source_type="All"):
-        script_path = 'casa_scripts/flag_summary.py'
-        scans = ','.join(str(e) for e in scan_list)
-        path = "{0}/json_store".format(config.OUTPUT_PATH)
-        create_dir(path)
-        polarizations = ",".join(config.GLOBAL_CONFIGS['polarizations'])
-        script_parameters = "{0} {1} {2} {3} {4} {5}".format(polarizations, self._dataset_path,
-                                                             path,
-                                                             flagging_type, scans, source_type)
-        self._run(script_path, script_parameters)
+        if config.PIPELINE_CONFIGS['flag_summary']:
+            script_path = 'casa_scripts/flag_summary.py'
+            scans = ','.join(str(e) for e in scan_list)
+            path = "{0}/json_store".format(config.OUTPUT_PATH)
+            create_dir(path)
+            polarizations = ",".join(config.GLOBAL_CONFIGS['polarizations'])
+            script_parameters = "{0} {1} {2} {3} {4} {5}".format(polarizations, self._dataset_path,
+                                                                 path,
+                                                                 flagging_type, scans, source_type)
+            self._run(script_path, script_parameters)
 
     def apply_flux_calibration(self, source_config, run_count):
         logger_message = "Applying Flux Calibration"
