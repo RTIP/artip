@@ -32,13 +32,13 @@ class CasaRunner:
         logger.info(Color.HEADER + "Flagging " + reasons + " reasons" + Color.ENDC)
         script_path = 'casa_scripts/flag.py'
         script_parameters = "{0} {1} {2}".format(self._dataset_path, flag_file, reasons)
-        self._run(script_path, script_parameters, subprocess.PIPE)
+        self._run(script_path, script_parameters)
 
     def quack(self):
         logger.info(Color.HEADER + "Running quack..." + Color.ENDC)
         script_path = 'casa_scripts/quack.py'
         script_parameters = self._dataset_path
-        self._run(script_path, script_parameters, stdout=subprocess.PIPE)
+        self._run(script_path, script_parameters)
 
     def generate_flag_summary(self, flagging_type, scan_list, source_type="All"):
         script_path = 'casa_scripts/flag_summary.py'
@@ -104,8 +104,9 @@ class CasaRunner:
     def r_flag(self, source_type, source_ids):
         script_path = 'casa_scripts/r_flag.py'
         source_ids = ','.join([str(source_id) for source_id in source_ids])
-        script_parameters = "{0} {1} {2} {3} {4}".format(self._dataset_path, source_type, source_ids, config.CONFIG_PATH,
-                                                     config.GLOBAL_CONFIGS['spw_range'])
+        script_parameters = "{0} {1} {2} {3} {4}".format(self._dataset_path, source_type, source_ids,
+                                                         config.CONFIG_PATH,
+                                                         config.GLOBAL_CONFIGS['spw_range'])
         logger.info(Color.HEADER + "Running Rflag auto-flagging algorithm" + Color.ENDC)
         self._run(script_path, script_parameters)
 
@@ -113,8 +114,9 @@ class CasaRunner:
         script_path = 'casa_scripts/tfcrop.py'
         source_ids = ','.join([str(source_id) for source_id in source_ids])
 
-        script_parameters = "{0} {1} {2} {3} {4}".format(self._dataset_path, source_type, source_ids, config.CONFIG_PATH,
-                                                     config.GLOBAL_CONFIGS['spw_range'])
+        script_parameters = "{0} {1} {2} {3} {4}".format(self._dataset_path, source_type, source_ids,
+                                                         config.CONFIG_PATH,
+                                                         config.GLOBAL_CONFIGS['spw_range'])
         logger.info(Color.HEADER + "Running Tfcrop auto-flagging algorithm" + Color.ENDC)
         self._run(script_path, script_parameters)
 
@@ -199,7 +201,8 @@ class CasaRunner:
         ap_loop_count = calmode_config["ap"]["loop_count"]
         p_table = '{0}/self_caled_p_{1}_{2}/p_selfcaltable_{3}.gcal'.format(config.OUTPUT_PATH, mode, parent_source_id,
                                                                             p_loop_count)
-        ap_table = '{0}/self_caled_ap_{1}_{2}/ap_selfcaltable_{3}.gcal'.format(config.OUTPUT_PATH, mode, parent_source_id,
+        ap_table = '{0}/self_caled_ap_{1}_{2}/ap_selfcaltable_{3}.gcal'.format(config.OUTPUT_PATH, mode,
+                                                                               parent_source_id,
                                                                                ap_loop_count)
         script_parameters = "{0} {1} {2} {3} {4}".format(p_loop_count, ap_loop_count, ap_table, p_table,
                                                          self._dataset_path)
@@ -234,7 +237,8 @@ class CasaRunner:
                                                                                 p_loop_count)
         else:
             return '{0}/self_caled_ap_{1}_{2}/self_cal_image_ap_{3}.model'.format(config.OUTPUT_PATH,
-                                                                                  cont_mode_to_subtract, parent_source_id,
+                                                                                  cont_mode_to_subtract,
+                                                                                  parent_source_id,
                                                                                   ap_loop_count)
 
     def _unlock_dataset(self):
@@ -263,10 +267,9 @@ class CasaRunner:
         casa_command = self._form_casa_command(script, script_parameters)
         return mpi_command + casa_command
 
-    def _run(self, script, script_parameters=None, stdout=None):
+    def _run(self, script, script_parameters=None):
         casa_output_file = config.OUTPUT_PATH + "/casa_output.txt"
 
-        if not stdout: stdout = file(casa_output_file, 'a+')
         if not script_parameters: script_parameters = self._dataset_path
         self._unlock_dataset()
 
@@ -276,7 +279,7 @@ class CasaRunner:
             command = self._form_casa_command(script, script_parameters)
 
         logger.debug("Executing command -> " + command)
-        proc = subprocess.Popen(command, stdin=subprocess.PIPE, stdout=stdout,
+        proc = subprocess.Popen(command, stdin=subprocess.PIPE, stdout=file(casa_output_file, 'a+'),
                                 stderr=subprocess.PIPE,
                                 shell=True)
         proc.wait()

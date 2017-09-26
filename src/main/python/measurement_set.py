@@ -220,3 +220,6 @@ class MeasurementSet:
 
     def split(self, output_ms, filters):
         self.casa_runner.split(output_ms, filters)
+
+    def generate_flag_summary(self, reason):
+        self.casa_runner.generate_flag_summary(reason, self.scan_ids())

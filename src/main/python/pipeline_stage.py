@@ -33,7 +33,7 @@ class PipelineStage(object):
         if config.MAIN_STAGES['flag_known_bad_data']:
             flag_file = "{0}/user_defined_flags.txt".format(config.CONFIG_PATH)
             self._measurement_set.casa_runner.flagdata(flag_file)
-        self._measurement_set.casa_runner.generate_flag_summary("known_flags", self._measurement_set.scan_ids())
+        self._measurement_set.generate_flag_summary("known_flags")
 
     @_run(config.MAIN_STAGES['flux_calibration'])
     def flux_calibration(self):
@@ -73,8 +73,7 @@ class PipelineStage(object):
                 if config.TARGET_SOURCE_STAGES['calibrate']:
                     target_source.calibrate()
                 line = target_source.line()
-                line.measurement_set.casa_runner.generate_flag_summary("known_flags",
-                                                                              line.measurement_set.scan_ids())
+                line.measurement_set.generate_flag_summary("known_flags")
                 self._create_ref_continuum_image(line)
                 self._run_autoflagging_on_line(line)
                 self._create_all_spw_continuum_image(line)

@@ -22,4 +22,5 @@ global:
 
 code_profiling: false
 log_level: 20
+flag_summary: true
 #debug: 10, info: 20, warning: 30, error: 40, critical: 50
