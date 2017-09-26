@@ -37,8 +37,7 @@ class CasaRunner:
     def quack(self):
         logger.info(Color.HEADER + "Running quack..." + Color.ENDC)
         script_path = 'casa_scripts/quack.py'
-        show_percentage = config.PIPELINE_CONFIGS['flagging_percentage']
-        script_parameters = "{0} {1}".format(self._dataset_path, show_percentage)
+        script_parameters = self._dataset_path
         self._run(script_path, script_parameters, stdout=subprocess.PIPE)
 
     def generate_flag_summary(self, flagging_type, scan_list, source_type="All"):

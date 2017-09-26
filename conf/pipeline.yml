@@ -21,6 +21,5 @@ global:
   target_phase_src_map: {2:[1]}
 
 code_profiling: false
-flagging_percentage: false
 log_level: 20
 #debug: 10, info: 20, warning: 30, error: 40, critical: 50
