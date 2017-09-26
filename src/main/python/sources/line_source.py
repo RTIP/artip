@@ -30,7 +30,7 @@ class LineSource(Source):
                                cont_mode)
 
     def extend_continuum_flags(self):
-        self.measurement_set.casa_runner.extend_continuum_flags(self.parent_source_id)
+        self.measurement_set.casa_runner.extend_continuum_flags()
         scan_ids = self.measurement_set.scan_ids(self.source_ids)
         self.measurement_set.casa_runner.generate_flag_summary("detailed_flagging", scan_ids, self.source_type)
 

@@ -208,10 +208,10 @@ class CasaRunner:
                                                          self._dataset_path)
         self._run(script_path, script_parameters)
 
-    def extend_continuum_flags(self, source_id):
+    def extend_continuum_flags(self):
         logger.info(Color.HEADER + "Extending continuum flags on line..." + Color.ENDC)
         flag_reasons = "{0},{1}".format(BAD_ANTENNA_TIME, BAD_BASELINE_TIME)
-        flag_file = "{0}/continuum_ref_{1}/flags_continuum.txt".format(config.OUTPUT_PATH, source_id)
+        flag_file = "{0}/flags_continuum.txt".format(config.OUTPUT_PATH)
         if os.path.exists(flag_file):
             self.flagdata(flag_file, flag_reasons)
 
