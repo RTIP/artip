@@ -49,6 +49,10 @@ class AmplitudeMatrix:
     def is_nan(self):
         return all(numpy.isnan(amp) for amp in numpy.array(self.amplitude_data_matrix.values()).flatten())
 
+    def count_non_nan(self):
+        data = numpy.array(self.amplitude_data_matrix.values()).flatten()
+        return numpy.isfinite(data).sum()
+
     def median(self):
         if self.is_nan(): return numpy.nan
         return numpy.nanmedian(self.amplitude_data_matrix.values())
@@ -72,10 +76,13 @@ class AmplitudeMatrix:
     def is_empty(self):
         return len(numpy.array(self.amplitude_data_matrix.values()).flatten()) == 0
 
+    def has_sufficient_data(self, window_config):
+        threshold = window_config.bucket_size - window_config.overlap
+        return self.count_non_nan() > threshold
+
     def is_bad(self, global_median, deviation_threshold):
         matrix_median = self.median()
         matrix_sigma = self.mad_sigma()
-        if numpy.isnan(matrix_median) or numpy.isnan(matrix_sigma): return False
 
         deviated_median = self._deviated_median(global_median, deviation_threshold, matrix_median)
         scattered_amplitude = self._scattered_amplitude(deviation_threshold, matrix_sigma)

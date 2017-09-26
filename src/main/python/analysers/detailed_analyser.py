@@ -45,7 +45,7 @@ class DetailedAnalyser:
             # Sliding Window for Bad Antennas
             for antenna in antennaids:
                 filtered_matrix = amp_matrix.filter_by_antenna(antenna)
-                if filtered_matrix.is_bad(global_median, window_config.mad_scale_factor * global_sigma):
+                if filtered_matrix.has_sufficient_data(window_config) and filtered_matrix.is_bad(global_median, window_config.mad_scale_factor * global_sigma):
                     logger.info(
                         Color.FAIL + 'Antenna ' + str(
                             antenna) + ' is Bad running sliding Window on it' + Color.ENDC)
@@ -84,7 +84,7 @@ class DetailedAnalyser:
         sliding_window = Window(data_set, window_config)
         while True:
             window_matrix = sliding_window.slide()
-            if window_matrix.is_bad(global_median, window_config.mad_scale_factor * global_sigma):
+            if window_matrix.has_sufficient_data(window_config) and window_matrix.is_bad(global_median, window_config.mad_scale_factor * global_sigma):
                 bad_window_found = True
                 start, end = sliding_window.current_position()
                 bad_timerange = scan_times[start], scan_times[end]
