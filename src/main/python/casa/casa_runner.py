@@ -25,17 +25,14 @@ class CasaRunner:
             observer.start()
             func(*args, **kwargs)
             observer.stop()
+
         return wrapper
 
     def flagdata(self, flag_file, reasons="any"):
         logger.info(Color.HEADER + "Flagging " + reasons + " reasons" + Color.ENDC)
         script_path = 'casa_scripts/flag.py'
-        show_percentage = config.PIPELINE_CONFIGS['flagging_percentage']
-        script_parameters = "{0} {1} {2} {3}".format(self._dataset_path, flag_file, reasons, show_percentage)
-        proc = self._run(script_path, script_parameters, subprocess.PIPE)
-        if show_percentage:
-            logger.info(Color.BOLD + Color.UNDERLINE + filter(lambda x: x.startswith(">>>"), proc.stdout.readlines())[
-                0] + Color.ENDC)
+        script_parameters = "{0} {1} {2}".format(self._dataset_path, flag_file, reasons)
+        self._run(script_path, script_parameters, subprocess.PIPE)
 
     def quack(self):
         logger.info(Color.HEADER + "Running quack..." + Color.ENDC)
@@ -90,8 +87,9 @@ class CasaRunner:
         refant = config.GLOBAL_CONFIGS['refant']
         spw = format_spw_with_channels(config.GLOBAL_CONFIGS['spw_range'], source_config['channels_to_avg'])
         script_parameters = "{0} {1} {2} {3} {4} {5} {6} {7}".format(self._dataset_path, self._output_path,
-                                                                 flux_cal_field, phase_cal_fields,
-                                                                 spw, refant, calib_params.minsnr, calib_params.solint)
+                                                                     flux_cal_field, phase_cal_fields,
+                                                                     spw, refant, calib_params.minsnr,
+                                                                     calib_params.solint)
         self._run(script_path, script_parameters)
 
     def apply_target_source_calibration(self, source_id):
