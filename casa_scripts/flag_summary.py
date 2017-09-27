@@ -1,5 +1,5 @@
 import sys
-from tinydb import TinyDB, Query
+import json
 
 script_parameters_start_index = sys.argv.index('-c') + 2
 parameters = sys.argv[script_parameters_start_index:]
@@ -11,11 +11,15 @@ flagging_type = parameters[3]
 scans = parameters[4].split(",")
 source_type = parameters[5]
 
-db_file = '{0}/flag_summary.json'.format(output_path)
+json_file = '{0}/flag_summary.json'.format(output_path)
 dataset_name = ms_dataset.split("/")[-1]
 
-db = TinyDB(db_file)
-dataset = Query()
+datasets = []
+try:
+    with open(json_file) as data_file:
+        datasets = json.load(data_file)
+except IOError:
+    open(json_file, "w+")
 
 rows = []
 for scan in scans:
@@ -25,5 +29,6 @@ for scan in scans:
         rows.append(
             {'dataset': dataset_name, 'source_type': source_type, "scan": scan, "pol": pol, flagging_type: antenna})
 
-db.insert_multiple(rows)
-db.close()
+datasets.extend(rows)
+with open(json_file, 'w') as outfile:
+    json.dump(datasets, outfile)

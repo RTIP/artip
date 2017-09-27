@@ -8,7 +8,6 @@ import json
 import SimpleHTTPServer
 import SocketServer
 import sys
-from tinydb import TinyDB
 
 FLAGGING_SEQUENCE = ["known_flags", "rang_closure", "detailed_flagging", "tfcrop", "rflag"]
 
@@ -47,10 +46,10 @@ def add_to_list(list, element):
 
 
 def build_json():
-    db_file = '{0}/json_store/flag_summary.json'.format(sys.argv[1])
-    db = TinyDB(db_file)
+    json_file = '{0}/json_store/flag_summary.json'.format(sys.argv[1])
     graph = {}
-    flags = db.all()
+    with open(json_file) as data_file:
+        flags = json.load(data_file)
     for row in flags:
         dataset = build_node(row['dataset'], graph, {})
         scan_node = build_node(row['scan'], dataset, {})
