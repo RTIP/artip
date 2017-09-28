@@ -6,13 +6,15 @@ function reload_env_paths(){
 	if [ $SHELL == '/bin/zsh' ]; then
         source ~/.zshrc
     elif [ $SHELL == '/bin/bash' ]; then
-        source ~/.bash_profile
+        source ~/.bashrc
     else
         echo "Supported shell are 'zsh' and 'bash'. Please add '~/.casa/bin' to your PATH"
     fi
 }
 
 printf "####################### installing casa-pip ##########################\n"
+
+reload_env_paths
 
 # install casa-pip, this will add casa-pip to the PATH variable
 if [ ! -x "$(command -v casa-pip)" ]; then

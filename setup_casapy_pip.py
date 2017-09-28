@@ -272,7 +272,7 @@ def add_bin_to_path():
                 export_command = "export PATH={0}:$PATH\n".format(BIN_DIR)
                 rc_file.write(export_command)
         if shell_type == '/bin/bash':
-            with open(os.path.expanduser('~/.bash_profile'), 'a+') as rc_file:
+            with open(os.path.expanduser('~/.bashrc'), 'a+') as rc_file:
                 export_command = "export PATH={0}:$PATH\n".format(BIN_DIR)
                 rc_file.write(export_command)
 
