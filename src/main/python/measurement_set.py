@@ -21,10 +21,18 @@ class MeasurementSet:
         self.output_path = output_path
         self.casa_runner = CasaRunner(dataset_path, output_path)
         self.flag_recorder = FlagRecorder()
-        self._ms = casac.casac.ms()
+        self._casac = casac.casac
+        self._allow_logs_above_warning_level()
+        self._ms = self._casac.ms()
         self._ms.open(dataset_path)
         self.flagged_antennas = self._initialize_flag_data()
         self._antennas = self.create_antennas()
+
+    def _allow_logs_above_warning_level(self):
+        sink = self._casac.logsink()
+        sink.showconsole(True)
+        sink.setglobal(True)
+        sink.filter('WARN')
 
     def __del__(self):
         self._ms.close()
@@ -154,7 +162,7 @@ class MeasurementSet:
     def timesforscan(self, scan_id, formatted=True):
         times = self._ms.metadata().timesforscan(scan_id)
         if not formatted: return times
-        quanta = casac.casac.quanta()
+        quanta = self._casac.quanta()
         times_with_second = map(lambda time: str(time) + 's', times)
         return numpy.array(
             map(lambda time: quanta.time(quanta.quantity(time), form='ymd'), times_with_second)).flatten()
