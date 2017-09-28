@@ -160,7 +160,7 @@ class CasaRunner:
 
         script_path = 'casa_scripts/self_calibration.py'
         script_parameters = "{0} {1} {2} {3} {4} {5} {6} {7} {8} {9} {10} {11} {12} {13} " \
-                            "{14} {15} {16} {17} {18}".format(config.CONFIG_PATH,
+                            "{14} {15}".format(config.CONFIG_PATH,
                                                               self._dataset_path,
                                                               output_path,
                                                               output_ms_path,
@@ -170,14 +170,7 @@ class CasaRunner:
                                                               self._output_path,
                                                               cal_mode[calibration_mode]['applymode'],
                                                               selfcal_config['masking']['threshold'],
-                                                              selfcal_config['masking']['bmask']['bottom_left_corner'][
-                                                                  'x_coordinate'],
-                                                              selfcal_config['masking']['bmask']['bottom_left_corner'][
-                                                                  'y_coordinate'],
-                                                              selfcal_config['masking']['bmask']['top_right_corner'][
-                                                                  'x_coordinate'],
-                                                              selfcal_config['masking']['bmask']['top_right_corner'][
-                                                                  'y_coordinate'],
+                                                              selfcal_config['masking']['bmask'],
                                                               mask_path,
                                                               cal_mode['ap']['loop_count'],
                                                               cal_mode['p']['loop_count'],

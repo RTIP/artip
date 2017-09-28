@@ -95,14 +95,14 @@ for loop_id in range(1, loop_count[calmode] + 1):
             im.open(dataset)
             im.mask(mask=mask_path, image=base_model, threshold=mask_threshold)
             im.defineimage(nx=imsize, ny=imsize, cellx=cell, celly=cell)
-            im.boxmask(mask=box_mask_path, blc=bmask_bottom_left_corner, trc=bmask_top_right_corner)
+            im.boxmask(mask=box_mask_path, blc=[bmask[0], bmask[1]], trc=[bmask[2], bmask[3]])
             im.close()
     else:
         mask_path = "{0}/{1}mask{2}".format(image_output_path, calmode, loop_id)
         box_mask_path = "{0}/{1}bmask{2}".format(image_output_path, calmode, loop_id)
         im.open(dataset)
         im.defineimage(nx=imsize, ny=imsize, cellx=cell, celly=cell)
-        im.boxmask(mask=box_mask_path, blc=bmask_bottom_left_corner, trc=bmask_top_right_corner)
+        im.boxmask(mask=box_mask_path, blc=[bmask[0], bmask[1]], trc=[bmask[2], bmask[3]])
         im.mask(mask=mask_path, image=base_model, threshold=mask_threshold)
         im.close()
 

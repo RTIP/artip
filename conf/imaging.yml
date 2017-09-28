@@ -55,13 +55,7 @@ cont_image:
     masking:
       threshold: '0.0'
       mask_path: ''
-      bmask:
-        bottom_left_corner:
-          x_coordinate: 240
-          y_coordinate: 240
-        top_right_corner:
-          x_coordinate: 270
-          y_coordinate: 270
+      bmask: '240,240,270,270' # "blcx,blcy,trcx,trcy" #note: donot use spaces
     calmode:
       p:
         loop_count : 5
