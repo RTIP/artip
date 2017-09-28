@@ -120,7 +120,14 @@ for loop_id in range(1, loop_count[calmode] + 1):
     ia.setbrightnessunit('Jy/pixel')
     ia.close()
 
-    ft(vis=dataset, field='0', model=bmasked_model_path, spw=spw)
+    fill_model_image_name = "{0}_{1}_{2}_fill_masked_model_image".format(image_path, calmode, loop_id)
+
+    # This will fill the model column with masked model.
+    # imsize, cell, nterms, wprojplanes, robust, startmodel
+    tclean(vis=dataset, imagename=fill_model_image_name, startmodel=bmasked_model_path, imsize=imsize, cell=[cell],
+           robust=robust, niter=0, specmode='mfs', nterms=nterms, nchan=nchan, wprojplanes=wprojplanes,
+           savemodel='modelcolumn', parallel=parallel)
+
     cal_table = "{0}/{1}_selfcaltable_{2}.gcal".format(image_output_path, calmode, loop_id)
     image_name = "{0}_{1}_{2}".format(image_path, calmode, loop_id)
     sys.stdout.write(

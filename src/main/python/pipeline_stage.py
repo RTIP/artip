@@ -104,6 +104,7 @@ class PipelineStage(object):
             spw_range = config.GLOBAL_CONFIGS['spw_range']
             continuum_source = line_source.continuum(spw_range, cont_mode)
             if config.TARGET_SOURCE_STAGES['all_spw']['continuum']['selfcal']:
+                continuum_source.base_image()
                 continuum_source.self_calibrate(cont_mode)
         else:
             logger.info(
