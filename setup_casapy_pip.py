@@ -266,7 +266,16 @@ site.addsitedir("{site_packages_noversion}")
 
 def add_bin_to_path():
     if BIN_DIR not in os.environ["PATH"]:
-        os.environ["PATH"] += BIN_DIR + os.pathsep
+        shell_type = os.environ['SHELL']
+        if shell_type == '/bin/zsh':
+            with open(os.path.expanduser('~/.zshrc'), 'a+') as rc_file:
+                export_command = "export PATH={0}:$PATH\n".format(BIN_DIR)
+                rc_file.write(export_command)
+        if shell_type == '/bin/sh':
+            with open(os.path.expanduser('~/.bash_profile'), 'a+') as rc_file:
+                export_command = "export PATH={0}:$PATH\n".format(BIN_DIR)
+                rc_file.write(export_command)
+
         print("{0} added to your PATH please run 'source <rc file>'".format(BIN_DIR))
 
 
