@@ -5,7 +5,7 @@ CONDA_ENV_NAME='artip'
 function reload_env_paths(){
 	if [ $SHELL == '/bin/zsh' ]; then
         source ~/.zshrc
-    elif [ $SHELL == '/bin/sh' ]; then
+    elif [ $SHELL == '/bin/bash' ]; then
         source ~/.bash_profile
     else
         echo "Supported shell are 'zsh' and 'bash'. Please add '~/.casa/bin' to your PATH"
