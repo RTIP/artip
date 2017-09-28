@@ -8,8 +8,6 @@ from closure_phase_util import ClosurePhaseUtil
 from terminal_color import Color
 from models.antenna_status import AntennaStatus
 from helpers import *
-import random
-from plotter import Plotter
 from named_tuples import CalibParams
 
 
@@ -26,8 +24,6 @@ class ClosureAnalyser(Analyser):
 
         percentileofscore = stats.percentileofscore(abs(closure_phase_array), closure_threshold)
 
-        # Plotter.plot_pdf(closure_phase_array[0][0], antenna_tuple_ids, self.source_config['closure_threshold'],
-        #                  "{0}_{1}".format(scan, polarization))
         return percentileofscore > self.source_config['closure']['percentage_of_closures']
 
     def identify_antennas_status(self):
