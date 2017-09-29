@@ -74,7 +74,6 @@ line_image:
   imsize : 512
   interactive : F
   robust: 0.5
-  fitspw_channels: '20~60;70~110'
   cell: '0.5arcsec'
   specmode: 'cube'
   niter: 0

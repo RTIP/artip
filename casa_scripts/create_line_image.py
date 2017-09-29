@@ -25,8 +25,6 @@ def load(config_file_name):
 
 IMAGE_CONFIGS = load(config_path + "imaging.yml")["line_image"]
 imsize = IMAGE_CONFIGS['imsize']
-fitspw_channels = IMAGE_CONFIGS['fitspw_channels']
-fitspw = ",".join(["{0}:{1}".format(s, fitspw_channels) for s in spw_list.split(",")])
 cell = IMAGE_CONFIGS['cell']
 stokes = IMAGE_CONFIGS['stokes']
 weighting = IMAGE_CONFIGS['weighting']
