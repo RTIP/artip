@@ -18,7 +18,6 @@ calibration:
       threshold: 17
       percentage_of_closures: 70
       percentage_of_good_triplets: 70
-      percentile_threshold: 70
     detail_flagging:
       time_sliding_window: [1, 0, 3] #[bucket_size, overlap, mad_scale_factor]
       antenna_sliding_window: [10, 5, 3]
@@ -41,7 +40,6 @@ calibration:
       threshold: 35
       percentage_of_closures: 70
       percentage_of_good_triplets: 70
-      percentile_threshold: 70
     detail_flagging:
       time_sliding_window: [1, 0, 3] #[bucket_size, overlap, mad_scale_factor]
       antenna_sliding_window: [10, 5, 3]
