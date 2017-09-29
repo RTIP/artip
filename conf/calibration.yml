@@ -19,7 +19,7 @@ calibration:
       percentage_of_closures: 70
       percentage_of_good_triplets: 70
     detail_flagging:
-      time_sliding_window: [1, 0, 3] #[bucket_size, overlap, mad_scale_factor]
+      time_sliding_window: [1, 0, 3] #[window_size, overlap, mad_scale_factor]
       antenna_sliding_window: [10, 5, 3]
       baseline_sliding_window: [10, 5, 3]
       amplitude_data_column: 'corrected_amplitude'
@@ -41,7 +41,7 @@ calibration:
       percentage_of_closures: 70
       percentage_of_good_triplets: 70
     detail_flagging:
-      time_sliding_window: [1, 0, 3] #[bucket_size, overlap, mad_scale_factor]
+      time_sliding_window: [1, 0, 3] #[window_size, overlap, mad_scale_factor]
       antenna_sliding_window: [10, 5, 3]
       baseline_sliding_window: [10, 5, 3]
       amplitude_data_column: 'corrected_amplitude'

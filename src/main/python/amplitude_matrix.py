@@ -77,7 +77,7 @@ class AmplitudeMatrix:
         return len(numpy.array(self.amplitude_data_matrix.values()).flatten()) == 0
 
     def has_sufficient_data(self, window_config):
-        threshold = window_config.bucket_size - window_config.overlap
+        threshold = window_config.window_size - window_config.overlap
         return self.count_non_nan() > threshold
 
     def is_bad(self, global_median, deviation_threshold):

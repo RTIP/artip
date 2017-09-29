@@ -19,7 +19,7 @@ target_source:
     channels_to_avg: '80~120'
     channel_width: 41
     detail_flagging:
-      time_sliding_window: [1, 0, 3] #[bucket_size, overlap, mad_scale_factor]
+      time_sliding_window: [1, 0, 3] #[window_size, overlap, mad_scale_factor]
       antenna_sliding_window: [10, 5, 3]
       baseline_sliding_window: [10, 5, 3]
       amplitude_data_column: 'amplitude'

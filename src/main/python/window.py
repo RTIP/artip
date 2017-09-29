@@ -1,7 +1,7 @@
 from amplitude_matrix import AmplitudeMatrix
 from collections import namedtuple
 
-WindowConfig = namedtuple('WindowConfig', 'bucket_size, overlap, mad_scale_factor')
+WindowConfig = namedtuple('WindowConfig', 'window_size, overlap, mad_scale_factor')
 
 
 class Window:
@@ -13,17 +13,17 @@ class Window:
 
     def slide(self):
         self._window_data = dict(
-            (baseline, amp_data[self._window_start_index:self._window_start_index + self._config.bucket_size]) for
+            (baseline, amp_data[self._window_start_index:self._window_start_index + self._config.window_size]) for
             baseline, amp_data in self._collection.iteritems())
-        if self._window_item_count() == self._config.bucket_size:
+        if self._window_item_count() == self._config.window_size:
             self._window_start_index = self._next_window_start_index()
 
         return AmplitudeMatrix(None, None, None, None, self._config, self._window_data)
 
     def current_position(self):
-        start = (self._window_start_index - self._config.bucket_size) + self._config.overlap
-        end = (start + self._config.bucket_size) - 1
-        if self._window_item_count() < self._config.bucket_size:
+        start = (self._window_start_index - self._config.window_size) + self._config.overlap
+        end = (start + self._config.window_size) - 1
+        if self._window_item_count() < self._config.window_size:
             start = self._window_start_index
             end = self._collection_size() - 1
         return start, end
@@ -35,7 +35,7 @@ class Window:
         return len(self._collection.values()[0])
 
     def _next_window_start_index(self):
-        return (self._window_start_index + self._config.bucket_size) - self._config.overlap
+        return (self._window_start_index + self._config.window_size) - self._config.overlap
 
     def _window_item_count(self):
         return len(self._window_data.values()[0])
