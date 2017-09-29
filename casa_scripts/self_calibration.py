@@ -21,12 +21,11 @@ minsnr = float(parameters[6])
 output_path = parameters[7]
 applymode = parameters[8]
 mask_threshold = parameters[9]
-bmask_bottom_left_corner = [int(parameters[10]), int(parameters[11])]
-bmask_top_right_corner = [int(parameters[12]), int(parameters[13])]
-mask_path = parameters[14]
-loop_count = {'ap': int(parameters[15]), 'p': int(parameters[16])}
-calmode = parameters[17]
-spw = parameters[18]
+bmask = map(int, parameters[10].split(","))
+mask_path = parameters[11]
+loop_count = {'ap': int(parameters[12]), 'p': int(parameters[13])}
+calmode = parameters[14]
+spw = parameters[15]
 
 image_path = "{0}/self_cal_image".format(image_output_path)
 
