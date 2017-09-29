@@ -67,7 +67,7 @@ class PipelineStage(object):
 
     def target_source(self):
         if self._target_source_toggle():
-            for source_id in config.GLOBAL_CONFIGS['target_src_field']:
+            for source_id in config.GLOBAL_CONFIGS['target_src_fields']:
                 logger.info(Color.SOURCE_HEADING + "Target Source Calibration" + Color.ENDC)
                 target_source = TargetSource(self._measurement_set, source_id)
                 if config.TARGET_SOURCE_STAGES['calibrate']:
