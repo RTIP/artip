@@ -1,43 +1,41 @@
-Download Anaconda Python Distribution Python 2.7 version. Casa-python module works only with python 2.7
-Refer https://www.continuum.io/downloads
-After the download is complete, run the following command to install python packages required to import CASA in python.
+# Prerequisites
+##### Anaconda
+- Install "Anaconda Python 2.7" version from https://www.continuum.io/downloads
+- Add conda to your PATH
 
->> conda install -c pkgw qt4dbus
->> conda install -c pkgw casa-data casa-python
+##### CASA (Common Astronomy Software Applications)
+- Install "CASA Release 4.7.2" from https://casa.nrao.edu/download/distro
+- Add casa to your PATH
+- Update path and model_path in conf/casa.yml 
 
-Install pybuilder
->> pip install pybuilder
 
-After the successful installation of packages, run the following command from within the artip directory to build the application.
->> pyb
+##### Installation test
+Linux:
 
-If you get 'ImportError: No module named casac', check your pip/pyb installation, it should point to the new anaconda python installation.
-If not, uninstall the existing ones, and reinstall pip/pyb normally, and it should automatically pick the new anaconda python installation.
+    $ casa       
+    $ conda --version
 
-Now, to run tests and build,
-Copy datasets in the src/integrationtest/seed_data/ required for testing
-Then execute
->> pyb
+OSX:
 
-And to run the application, execute
->> pyb run -P dataset="<ms_dataset_path>" conf="<conf_dir_path>"
-    e.g. pyb run -P dataset="~/Downloads/may14.ms" -P conf="conf/"
-    #Do not forget to put the quotes on the property value
+    $ casapy       
+    $ conda --version
 
-To build the Distributable package
->> $ pyb
->> This will build a distributable package inside "target/dist/artip-version.dev0/dist" 
->> directory 
 
-----------------------------------------------------------------------------------------------
-For supporting RFlag/TFcrop configs we are loading Rflag and Tfcrop configs inside casa, this requires
-pyaml pip module to be installed in CASA.
+# Install pipeline dependencies
+    $ cd artip        
+	$ ./setup.sh
 
--------------------------------------
-Imstalling pip modules in CASA
--------------------------------------
-1. $ curl -O https://raw.githubusercontent.com/radio-tools/casa-python/master/setup_casapy_pip.py
-2. $ python setup_casapy_pip.py
-3. You should then add $HOME/.casa/bin/ to your path.
-4. $ casa-pip install pyaml
----------------------------------------------------------------------------------------------
+setup.sh will
+-  Setup casa-pip for installing python modules CASA from PyPI
+-  "artip" conda environment from artip/environment.yml  
+
+##### Installation test
+    $ source <rc file path>
+    $ casa-pip -h
+    $ source activate artip
+    $ pyb --version
+    
+# Run ARTIP
+   pyb run -P dataset="<ms_dataset_path>" conf="<conf_dir_path>"
+    
+    $ pyb run -P dataset="~/Downloads/may14.ms" -P conf="conf"
