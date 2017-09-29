@@ -25,8 +25,9 @@ OSX:
 	$ ./setup.sh
 
 setup.sh will
--  Setup casa-pip for installing python modules CASA from PyPI
--  "artip" conda environment from artip/environment.yml  
+
+- Setup casa-pip for installing python modules CASA from PyPI
+- Create "artip" conda environment from artip/environment.yml  
 
 ##### Installation test
     $ source <rc file path>
