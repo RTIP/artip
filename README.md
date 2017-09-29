@@ -6,8 +6,7 @@
 ##### CASA (Common Astronomy Software Applications)
 - Install "CASA Release 4.7.2" from https://casa.nrao.edu/download/distro
 - Add casa to your PATH
-- Update path and model_path in conf/casa.yml 
-
+- Update path and model_path in artip/conf/casa.yml 
 
 ##### Installation test
 Linux:
