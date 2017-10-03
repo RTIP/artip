@@ -15,13 +15,18 @@ name = "artip"
 default_task = ["clean"]
 
 
+@init
+def initialize(project):
+    project.version = "1.0"
+
+
 @task
 def package(project):
-    project.version = "1.0"
     filename = 'artip_{0}.zip'.format(project.version)
     root_directory = '.'
     packager = Packager(filename, root_directory)
     packager.package()
+
 
 @task
 def run(project):
