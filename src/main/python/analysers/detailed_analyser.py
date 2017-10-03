@@ -49,7 +49,7 @@ class DetailedAnalyser:
                     logger.info(
                         Color.FAIL + 'Antenna ' + str(
                             antenna) + ' is Bad running sliding Window on it' + Color.ENDC)
-                    flagged_bad_window = self._flag_bad_time_window(self.flag_file, BAD_ANTENNA_TIME, antenna,
+                    flagged_bad_window = self._flag_bad_time_window(BAD_ANTENNA_TIME, antenna,
                                                                     filtered_matrix.amplitude_data_matrix,
                                                                     global_sigma,
                                                                     global_median, scan_times, polarization, scan_id,
