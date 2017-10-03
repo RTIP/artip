@@ -1,5 +1,6 @@
 from sys import path
 from pybuilder.core import use_plugin, init, task
+from packager import Packager
 
 path.append("src/main/python")
 from configs import config, logging_config
@@ -8,50 +9,19 @@ from profiler import Profiler
 from conditional import conditional
 
 use_plugin("python.core")
-use_plugin("python.unittest")
-use_plugin("python.integrationtest")
 use_plugin("python.distutils")
-use_plugin("copy_resources")
-use_plugin("python.install_dependencies")
 
 name = "artip"
-default_task = ["clean", "install_dependencies", "publish"]
-
-
-@init
-def set_dependencies(project):
-    # Build dependencies
-    project.build_depends_on('mock')
-    project.build_depends_on('watchdog')
-    project.build_depends_on('sh')
-    project.build_depends_on('coloredlogs')
-    project.build_depends_on('lsprofcalltree')
-    project.build_depends_on('conditional')
-
-
-@init
-def initialize(project):
-    project.version = "1.0.0"
-    project.get_property("copy_resources_glob").append("casa_scripts/*.py")
-    project.get_property("copy_resources_glob").append("build.py")
-    project.install_file("casa_scripts/*.py", "casa_scripts/*.py")
-    project.install_file("build.py", 'build.py')
-
-
-@init
-def set_properties(project):
-    project.version = "1.0"
-    project.set_property("distutils_commands", ["sdist"])
-    project.set_property("copy_resources_target", "$dir_dist")
-    project.set_property('integrationtest_always_verbose', True)
-    project.set_property("integrationtest_inherit_environment", True)
-    # project.set_property('integrationtest_parallel', True)
+default_task = ["clean"]
 
 
 @task
-def run_integration_tests():
-    start.clean()
-
+def package(project):
+    project.version = "1.0"
+    filename = 'artip_{0}.zip'.format(project.version)
+    root_directory = '.'
+    packager = Packager(filename, root_directory)
+    packager.package()
 
 @task
 def run(project):
