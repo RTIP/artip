@@ -22,7 +22,7 @@ def initialize(project):
 
 @task
 def package(project):
-    filename = 'artip_{0}.zip'.format(project.version)
+    filename = 'target/artip_{0}.zip'.format(project.version)
     root_directory = '.'
     packager = Packager(filename, root_directory)
     packager.package()
