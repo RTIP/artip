@@ -36,6 +36,6 @@ setup.sh will
     $ pyb --version
     
 # Run ARTIP
-   pyb run -P dataset="<ms_dataset_path>" conf="<conf_dir_path>"
+   pyb run -P dataset="<ms_dataset_path>" -P conf="<conf_dir_path>"
     
     $ pyb run -P dataset="~/Downloads/may14.ms" -P conf="conf"
