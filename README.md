@@ -39,3 +39,14 @@ setup.sh will
    pyb run -P dataset="<ms_dataset_path>" -P conf="<conf_dir_path>"
     
     $ pyb run -P dataset="~/Downloads/may14.ms" -P conf="conf"
+    
+# Generate flagging charts 
+Flags are recorded only when pipeline is run with "flag_summary: true" in conf/pipeline.yml
+
+To generate charts :
+    
+    $ cd flagged_data_summary
+    $ python generate_graph.py "../output/<ms_dataset_name>"  
+    
+Charts can be accessed on http://localhost:8000/chart.html
+    
