@@ -7,8 +7,8 @@ from scipy import stats
 from closure_phase_util import ClosurePhaseUtil
 from utilities.terminal_color import Color
 from models.antenna_status import AntennaStatus
-from helpers import *
-from named_tuples import CalibParams
+from utilities.helpers import *
+from models.calib_params import CalibParams
 
 
 class ClosureAnalyser(Analyser):

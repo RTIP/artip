@@ -4,7 +4,7 @@ from itertools import product
 from models.antenna_status import AntennaStatus
 from analysers.analyser import Analyser
 from analysers.initial.r_matrix import RMatrix
-from named_tuples import CalibParams
+from models.calib_params import CalibParams
 from models.phase_set import PhaseSet
 from utilities.terminal_color import Color
 

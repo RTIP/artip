@@ -1,6 +1,6 @@
 import itertools
 from utilities.logger import logger
-from helpers import create_dir
+from utilities.helpers import create_dir
 from analysers.initial.angular_dispersion import AngularDispersion
 from analysers.initial.closure_analyser import ClosureAnalyser
 from analysers.detailed.detailed_analyser import DetailedAnalyser

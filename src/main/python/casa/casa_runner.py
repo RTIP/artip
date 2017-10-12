@@ -6,10 +6,10 @@ import subprocess
 import casac
 from utilities.logger import logger
 from utilities.terminal_color import Color
-from helpers import format_spw_with_channels, create_dir
+from utilities.helpers import format_spw_with_channels, create_dir
 from watchdog.observers import Observer
 from utilities.log_event_handler import LogEventHandler
-from named_tuples import CalibParams
+from models.calib_params import CalibParams
 
 
 class CasaRunner:

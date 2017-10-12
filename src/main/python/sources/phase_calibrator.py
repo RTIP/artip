@@ -1,7 +1,7 @@
 from utilities.logger import logger
 from configs import config
 from sources.source import Source
-from helpers import is_last_element
+from utilities.helpers import is_last_element
 from utilities.terminal_color import Color
 
 class PhaseCalibrator(Source):

@@ -1,8 +1,8 @@
 import datetime
 
 from configs import config
-from measurement_set import MeasurementSet
 from pipeline_stage import PipelineStage
+from models.measurement_set import MeasurementSet
 from utilities.logger import logger
 from utilities.terminal_color import Color
 

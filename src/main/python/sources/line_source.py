@@ -1,8 +1,8 @@
 from sources.source import Source
 from configs import config
 from continuum_source import ContinuumSource
-from helpers import create_dir
-from measurement_set import MeasurementSet
+from utilities.helpers import create_dir
+from models.measurement_set import MeasurementSet
 
 
 class LineSource(Source):

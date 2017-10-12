@@ -10,9 +10,9 @@ from casa.flag_recorder import FlagRecorder
 from configs import config
 from models.antenna import Antenna
 from models.antenna_state import AntennaState
-from models.phase_set import PhaseSet
 from models.baseline import Baseline
-from visibility_data import VisibilityData
+from models.phase_set import PhaseSet
+from models.visibility_data import VisibilityData
 
 
 class MeasurementSet:

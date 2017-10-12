@@ -1,8 +1,8 @@
 from configs import config
-from helpers import is_last_element, create_dir
+from utilities.helpers import is_last_element, create_dir
 from source import Source
 import numpy
-from measurement_set import MeasurementSet
+from models.measurement_set import MeasurementSet
 from line_source import LineSource
 
 

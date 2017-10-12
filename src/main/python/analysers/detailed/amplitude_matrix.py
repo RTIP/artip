@@ -1,6 +1,6 @@
 import numpy
 
-from named_tuples import CalibParams
+from models.calib_params import CalibParams
 from utilities.logger import logger
 from utilities.terminal_color import Color
 
