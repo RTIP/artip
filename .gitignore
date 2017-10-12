@@ -12,3 +12,4 @@ profile_result.out
 resources/flagged_data_chart/*.svg
 resources/flagged_data_chart/*.json
 *.zip
+TempLattice*
