@@ -1,12 +1,12 @@
 import itertools
-from logger import logger
+from utilities.logger import logger
 from helpers import create_dir
 from analysers.angular_dispersion import AngularDispersion
 from analysers.closure_analyser import ClosureAnalyser
 from analysers.detailed_analyser import DetailedAnalyser
 from casa.flag_reasons import BAD_ANTENNA, BAD_ANTENNA_TIME, BAD_BASELINE_TIME, BAD_TIME
 from configs import config
-from terminal_color import Color
+from utilities.terminal_color import Color
 from report import Report
 
 

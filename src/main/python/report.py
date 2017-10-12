@@ -1,5 +1,5 @@
-from logger import logger
 from models.antenna_status import AntennaStatus
+from utilities.logger import logger
 
 
 class Report:

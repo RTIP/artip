@@ -1,7 +1,9 @@
-from logger import logger
 import numpy
-from terminal_color import Color
+
 from named_tuples import CalibParams
+from utilities.logger import logger
+from utilities.terminal_color import Color
+
 
 class AmplitudeMatrix:
     def __init__(self, measurement_set, polarization, scan_id, spw, config, matrix={}):

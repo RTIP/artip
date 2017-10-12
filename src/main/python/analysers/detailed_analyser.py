@@ -1,8 +1,8 @@
-from logger import logger
+from utilities.logger import logger
 from amplitude_matrix import AmplitudeMatrix
 from window import Window, WindowConfig
 from casa.flag_reasons import BAD_ANTENNA_TIME, BAD_BASELINE_TIME, BAD_TIME
-from terminal_color import Color
+from utilities.terminal_color import Color
 
 
 class DetailedAnalyser:

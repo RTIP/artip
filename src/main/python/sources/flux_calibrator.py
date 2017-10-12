@@ -1,7 +1,7 @@
-from logger import logger
+from utilities.logger import logger
 from configs import config
 from sources.source import Source
-from terminal_color import Color
+from utilities.terminal_color import Color
 
 class FluxCalibrator(Source):
     def __init__(self, measurement_set):

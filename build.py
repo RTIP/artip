@@ -1,11 +1,11 @@
 from sys import path
 from pybuilder.core import use_plugin, init, task
-from packager import Packager
 
 path.append("src/main/python")
 from configs import config, logging_config
 import start
-from profiler import Profiler
+from utilities.profiler import Profiler
+from utilities.packager import Packager
 from conditional import conditional
 
 use_plugin("python.core")

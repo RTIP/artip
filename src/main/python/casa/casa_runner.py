@@ -4,11 +4,11 @@ import os
 import platform
 import subprocess
 import casac
-from logger import logger
-from terminal_color import Color
+from utilities.logger import logger
+from utilities.terminal_color import Color
 from helpers import format_spw_with_channels, create_dir
 from watchdog.observers import Observer
-from log_event_handler import LogEventHandler
+from utilities.log_event_handler import LogEventHandler
 from named_tuples import CalibParams
 
 

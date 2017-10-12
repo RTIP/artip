@@ -1,11 +1,11 @@
 import itertools
-from logger import logger
+from utilities.logger import logger
 import numpy
 from analysers.analyser import Analyser
 from configs import config
 from scipy import stats
 from closure_phase_util import ClosurePhaseUtil
-from terminal_color import Color
+from utilities.terminal_color import Color
 from models.antenna_status import AntennaStatus
 from helpers import *
 from named_tuples import CalibParams

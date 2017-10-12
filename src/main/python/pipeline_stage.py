@@ -1,12 +1,13 @@
 import datetime
-from logger import logger
-from terminal_color import Color
-from configs import config
+
 from casa.flag_reasons import BAD_ANTENNA
-from sources.flux_calibrator import FluxCalibrator
+from configs import config
 from sources.bandpass_calibrator import BandpassCalibrator
+from sources.flux_calibrator import FluxCalibrator
 from sources.phase_calibrator import PhaseCalibrator
 from sources.target_source import TargetSource
+from utilities.logger import logger
+from utilities.terminal_color import Color
 
 
 class PipelineStage(object):

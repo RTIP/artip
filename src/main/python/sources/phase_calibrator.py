@@ -1,8 +1,8 @@
-from logger import logger
+from utilities.logger import logger
 from configs import config
 from sources.source import Source
 from helpers import is_last_element
-from terminal_color import Color
+from utilities.terminal_color import Color
 
 class PhaseCalibrator(Source):
     def __init__(self, measurement_set):
