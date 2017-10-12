@@ -1,5 +1,6 @@
-from amplitude_matrix import AmplitudeMatrix
 from collections import namedtuple
+
+from analysers.detailed.amplitude_matrix import AmplitudeMatrix
 
 WindowConfig = namedtuple('WindowConfig', 'window_size, overlap, mad_scale_factor')
 

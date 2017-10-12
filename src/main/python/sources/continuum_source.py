@@ -1,7 +1,7 @@
 from configs import config
 from measurement_set import MeasurementSet
 from casa.flag_reasons import BAD_ANTENNA, BAD_ANTENNA_TIME, BAD_BASELINE_TIME, BAD_TIME
-from analysers.detailed_analyser import DetailedAnalyser
+from analysers.detailed.detailed_analyser import DetailedAnalyser
 from utilities.terminal_color import Color
 from utilities.logger import logger
 from source import Source
