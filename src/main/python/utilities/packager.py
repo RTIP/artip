@@ -4,7 +4,7 @@ import os
 
 class Packager:
     exclude_directories = ['.git', '.idea', 'output', 'resources', 'target']
-    exclude_files = ['./.gitignore', './build.pyc', './.DS_Store', './packager.pyc']
+    exclude_files = ['.gitignore', '.DS_Store', '.log', '.last', '.pyc']
 
     def __init__(self, filename, root_directory):
         self._root_directory = root_directory
@@ -30,7 +30,7 @@ class Packager:
                     self._addFolderToZip(zip_file, full_path)
 
     def _is_excluded_file(self, file_path):
-        file_excluded = any(exclude_file == file_path for exclude_file in Packager.exclude_files)
+        file_excluded = any(file_path.endswith(exclude_file) for exclude_file in Packager.exclude_files)
         return file_excluded
 
     def _is_excluded_directory(self, directory_path):
