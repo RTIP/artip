@@ -41,6 +41,7 @@ setup.sh will
       Flags follows format similar to CASA flagdata command with mode='list'. 
       
       Below are the examples for the same :
+      
         * Flag antennas
 
                 reason='BAD_ANTENNA' correlation='RR,LL' mode='manual' antenna='1,18' scan='1,7,2,4,6,3,5'
