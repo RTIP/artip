@@ -36,8 +36,26 @@ setup.sh will
     $ pyb --version
     
 # Run ARTIP
-   pyb run -P dataset="<ms_dataset_path>" -P conf="<conf_dir_path>"
+   1. Update config files present in "conf/" directory.
+   2. Specify flags from the observation logs in "conf/user_defined_flags.txt". 
+      Flags follows format similar to CASA flagdata command with mode='list'. 
+      
+      Below are the examples for the same :
+        * Flag antennas
+
+                reason='BAD_ANTENNA' correlation='RR,LL' mode='manual' antenna='1,18' scan='1,7,2,4,6,3,5'
+        * Flag Baselines
+              
+                reason='BAD_BASELINE' correlation='RR,LL' mode='manual' antenna='11&19' scan='1,7,2,4,6,3,5'   
+        * Flag Time
+                
+                reason='BAD_ANTENNA_TIME' correlation='LL' mode='manual' antenna='15' scan='1' timerange='2013/01/05/06:59:49~2013/01/05/07:00:00'
+                reason='BAD_BASELINE_TIME' correlation='LL' mode='manual' antenna='7&8' scan='4' timerange='2013/01/05/06:59:49~2013/01/05/07:00:00'
     
+   3. Run pipeline through command line
+    
+    pyb run -P dataset="<ms_dataset_path>" -P conf="<conf_dir_path>"
+    $ cd <artip_path>
     $ pyb run -P dataset="~/Downloads/may14.ms" -P conf="conf"
     
 # Generate flagging charts 
@@ -49,4 +67,3 @@ To generate charts :
     $ python generate_graph.py "../output/<ms_dataset_name>"  
     
 Charts can be accessed on http://localhost:8000/chart.html
-    
