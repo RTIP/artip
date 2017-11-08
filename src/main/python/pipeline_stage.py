@@ -54,7 +54,7 @@ class PipelineStage(object):
         if config.CALIBRATION_STAGES['bandpass_calibration']['run_auto_flagging']:
             bandpass_calibrator.run_tfcrop()
             bandpass_calibrator.run_rflag()
-        bandpass_calibrator.calibrate()
+            bandpass_calibrator.calibrate()
 
     @_run(config.MAIN_STAGES['phase_calibration'])
     def phase_calibration(self):
