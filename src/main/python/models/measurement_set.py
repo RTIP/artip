@@ -25,6 +25,7 @@ class MeasurementSet:
         self._allow_logs_above_warning_level()
         self._ms = self._casac.ms()
         self._ms.open(dataset_path)
+        self._all_antenna_ids = self._all_antenna_ids()
         self.flagged_antennas = self._initialize_flag_data()
         self._antennas = self.create_antennas()
 
@@ -128,10 +129,11 @@ class MeasurementSet:
         return map(lambda scan_id: int(scan_id), scan_ids)
 
     def _get_unflagged_scan_ids_for(self, source_id, polarization):
+        antenna_ids = set(self._all_antenna_ids)
+
         def _is_flagged(scan_id, polarization):
             if not polarization: return False
-            antenna_ids = self._all_antenna_ids()
-            return set(self.flagged_antennas[polarization][scan_id]) == set(antenna_ids)
+            return set(self.flagged_antennas[polarization][scan_id]) == antenna_ids
 
         return filter(lambda scan_id: not _is_flagged(scan_id, polarization),
                       self._all_scan_ids(source_id))
@@ -173,9 +175,9 @@ class MeasurementSet:
     def make_entry_in_flag_file(self, flag_file, polarizations, scan_ids, antenna_ids):
         if antenna_ids:
             self.flag_recorder.mark_entry(flag_file,
-                {'mode': 'manual', 'antenna': ','.join(map(str, antenna_ids)),
-                 'reason': BAD_ANTENNA, 'correlation': ','.join(map(str, polarizations)),
-                 'scan': ','.join(map(str, scan_ids))})
+                                          {'mode': 'manual', 'antenna': ','.join(map(str, antenna_ids)),
+                                           'reason': BAD_ANTENNA, 'correlation': ','.join(map(str, polarizations)),
+                                           'scan': ','.join(map(str, scan_ids))})
 
     def flag_antennas(self, flag_file, polarizations, scan_ids, antenna_ids):
         self.make_entry_in_flag_file(flag_file, polarizations, scan_ids, antenna_ids)
@@ -184,9 +186,11 @@ class MeasurementSet:
                 set(antenna_ids))
 
     def flag_bad_antennas(self, flag_file, sources):
+        source_scan_ids = self.scan_ids(sources)
+        all_scan_ids = self.scan_ids()
         for antenna in self._antennas:
-            for state in antenna.get_states(self.scan_ids(sources)):
-                if state.scan_id in self.scan_ids() and state.is_bad():
+            for state in antenna.get_states(source_scan_ids):
+                if state.scan_id in all_scan_ids and state.is_bad():
                     self.flag_antennas(flag_file, [state.polarization], [state.scan_id], [antenna.id])
 
     def _get_timerange_for_flagging(self, timerange):
@@ -201,20 +205,22 @@ class MeasurementSet:
     def flag_bad_time(self, flag_file, polarization, scan_id, timerange):
         timerange_for_flagging = self._get_timerange_for_flagging(timerange)
         self.flag_recorder.mark_entry(flag_file,
-            {'mode': 'manual', 'reason': BAD_TIME, 'correlation': polarization,
-             'scan': scan_id, 'timerange': '~'.join(timerange_for_flagging)})
+                                      {'mode': 'manual', 'reason': BAD_TIME, 'correlation': polarization,
+                                       'scan': scan_id, 'timerange': '~'.join(timerange_for_flagging)})
 
     def flag_bad_antenna_time(self, flag_file, polarization, scan_id, antenna_id, timerange):
         timerange_for_flagging = self._get_timerange_for_flagging(timerange)
         self.flag_recorder.mark_entry(flag_file,
-            {'mode': 'manual', 'antenna': antenna_id, 'reason': BAD_ANTENNA_TIME, 'correlation': polarization,
-             'scan': scan_id, 'timerange': '~'.join(timerange_for_flagging)})
+                                      {'mode': 'manual', 'antenna': antenna_id, 'reason': BAD_ANTENNA_TIME,
+                                       'correlation': polarization,
+                                       'scan': scan_id, 'timerange': '~'.join(timerange_for_flagging)})
 
     def flag_bad_baseline_time(self, flag_file, polarization, scan_id, baseline, timerange):
         timerange_for_flagging = self._get_timerange_for_flagging(timerange)
         self.flag_recorder.mark_entry(flag_file,
-            {'mode': 'manual', 'antenna': str(baseline), 'reason': BAD_BASELINE_TIME, 'correlation': polarization,
-             'scan': scan_id, 'timerange': '~'.join(timerange_for_flagging)})
+                                      {'mode': 'manual', 'antenna': str(baseline), 'reason': BAD_BASELINE_TIME,
+                                       'correlation': polarization,
+                                       'scan': scan_id, 'timerange': '~'.join(timerange_for_flagging)})
 
     def get_bad_antennas_with_scans_for(self, polarization, source_id):
         scan_ids = self.scan_ids(source_id, polarization)
