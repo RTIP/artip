@@ -89,7 +89,7 @@ class AmplitudeMatrix:
         deviated_median = self._deviated_median(global_median, deviation_threshold, matrix_median)
         scattered_amplitude = self._scattered_amplitude(deviation_threshold, matrix_sigma)
         if deviated_median or scattered_amplitude:
-            logger.debug(Color.UNDERLINE + "matrix=" + str(self.amplitude_data_matrix) + Color.ENDC)
+            # logger.debug(Color.UNDERLINE + "matrix=" + str(self.amplitude_data_matrix) + Color.ENDC)
             logger.debug(Color.UNDERLINE + " median=" + str(matrix_median) + ", median sigma=" + str(matrix_sigma)
                          + ", mean=" + str(self.mean()) + ", mean sigma=" + str(self.mean_sigma()) + Color.ENDC)
             logger.debug(Color.WARNING + "median deviated=" + str(deviated_median) + ", amplitude scattered=" + str(

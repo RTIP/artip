@@ -1,5 +1,5 @@
 stages:
-  flag_known_bad_data: true
+  flag_known_bad_data: false
   flux_calibration: true
   bandpass_calibration: true
   phase_calibration: true
@@ -21,6 +21,6 @@ global:
   target_phase_src_map: {2:[1]}
 
 code_profiling: false
-log_level: 20
 flag_summary: false
+log_level: 20
 #debug: 10, info: 20, warning: 30, error: 40, critical: 50
