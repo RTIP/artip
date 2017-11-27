@@ -10,7 +10,7 @@ Pipeline also provides ability to generate reports of processed data in graphica
 
 
 ### Obtaining ARTIP
-
+ARTIP releases are present at https://github.com/TWARTIP/artip/releases. Download and unzip the artip package to run the pipeline.
 
 ### Prerequisites
 1. Install Anaconda and CASA
@@ -51,7 +51,7 @@ Pipeline also provides ability to generate reports of processed data in graphica
         $ pyb --version
       ```
 ### Documentation
-
+https://github.com/TWARTIP/artipdoc/blob/master/artip_documentation.pdf
 
 ### Running Pipeline
 1. Default conf directory is present at <artip_path>/conf. You can either update it or create your own conf directory having same format.
