@@ -6,9 +6,9 @@ from configs import config
 from os.path import expanduser
 
 
-def create_output_dir(dataset_path):
+def create_output_dir(dataset_path, output_path):
     dataset_name = path.splitext(path.basename(dataset_path))[0]
-    config.OUTPUT_PATH = config.OUTPUT_PATH + "/" + dataset_name
+    config.OUTPUT_PATH = output_path + "/" + dataset_name
     if not path.exists(config.OUTPUT_PATH):
         makedirs(config.OUTPUT_PATH)
     return config.OUTPUT_PATH

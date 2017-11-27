@@ -16,7 +16,7 @@ CASA_CONFIGS = None
 def load(config_path):
     global CALIBRATION_STAGES, CALIBRATION_CONFIGS, TARGET_SOURCE_STAGES, \
         TARGET_SOURCE_CONFIGS, MAIN_STAGES, PIPELINE_CONFIGS, \
-        GLOBAL_CONFIGS, CONFIG_PATH, OUTPUT_PATH, CASA_CONFIGS, IMAGING_CONFIGS
+        GLOBAL_CONFIGS, CONFIG_PATH, CASA_CONFIGS, IMAGING_CONFIGS
 
     CALIBRATION_STAGES = ConfigLoader().load(config_path + "calibration.yml")['calibration_stages']
     CALIBRATION_CONFIGS = ConfigLoader().load(config_path + "calibration.yml")['calibration']
@@ -29,4 +29,3 @@ def load(config_path):
     GLOBAL_CONFIGS = PIPELINE_CONFIGS['global']
     MAIN_STAGES = PIPELINE_CONFIGS['stages']
     CONFIG_PATH = config_path
-    OUTPUT_PATH = GLOBAL_CONFIGS['output_path']
