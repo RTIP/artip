@@ -11,7 +11,7 @@ class LogEventHandler(RegexMatchingEventHandler):
         self.previous_logs = []
         self.log_file = log_file
         self.pattern = pattern
-
+        self._disable_third_party_loggers()
         super(LogEventHandler, self).__init__(regexes=regexes)
 
     @staticmethod
@@ -23,15 +23,13 @@ class LogEventHandler(RegexMatchingEventHandler):
 
         return LogEventHandler.IMAGING_LOGS_EVENT_HANDLER
 
-    def disable_logging(func):
-        def wrapper(*args, **kwargs):
-            logging.disable(logging.INFO)
-            result = func(*args, **kwargs)
-            logging.disable(logging.NOTSET)
-            return result
-        return wrapper
+    def _disable_third_party_loggers(self):
+        loggers = ['sh.command', 'sh.command.process', 'sh.command.process.streamreader', 'sh.stream_bufferer',
+                   'sh.streamreader', 'sh.stream_bufferer','watchdog.observers.inotify_buffer']
+        for logger in loggers:
+            logger = logging.getLogger(logger)
+            logger.disabled = 1
 
-    @disable_logging
     def on_modified(self, event):
         logs = self.get_matching_logs()
         for log in logs:
