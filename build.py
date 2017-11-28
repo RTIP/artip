@@ -35,7 +35,6 @@ def run(project):
     with conditional(config.PIPELINE_CONFIGS['code_profiling'], Profiler()):
         dataset_path = project.get_property("dataset")
         logging_config.load()
-        start.add_configs_module_in_casa()
         start.create_output_dir(dataset_path, project.get_property("output"))
         start.snapshot_config(config_path)
         from main import main
