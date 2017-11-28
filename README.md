@@ -11,7 +11,9 @@ Pipeline also provides ability to generate reports of processed data in graphica
 
 ### Obtaining ARTIP
 ARTIP releases are present at https://github.com/TWARTIP/artip/releases. Download and unzip the artip package to run the pipeline.
-
+ ```markdown
+ $ unzip artip.zip -d artip
+ ```
 ### Prerequisites
 1. Install Anaconda and CASA
 
