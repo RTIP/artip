@@ -24,7 +24,6 @@ ARTIP releases are present at https://github.com/TWARTIP/artip/releases. Downloa
     * CASA (Common Astronomy Software Applications)
         * Install "CASA Release 4.7.2" from https://casa.nrao.edu/download/distro
         * Add casa to your PATH
-        * Update path and model_path in <conf_dir_path>/casa.yml
 
      1.1. Installation test
     ```markdown
@@ -57,7 +56,8 @@ https://github.com/TWARTIP/artipdoc/blob/master/artip_documentation.pdf
 
 ### Running Pipeline
 1. Default conf directory is present at <artip_path>/conf. You can either update it or create your own conf directory having same format.
-2. Specify flags from the observation logs in "<conf_dir_path>/user_defined_flags.txt".
+2. Update the CASA path and model_path in <conf_dir_path>/casa.yml
+3. Specify flags from the observation logs in "<conf_dir_path>/user_defined_flags.txt".
     Flags follow format similar to [CASA flagdata](https://casa.nrao.edu/docs/taskref/flagdata-task.html) command with mode='list'.
    
    Below are the examples for the same :
@@ -70,7 +70,7 @@ https://github.com/TWARTIP/artipdoc/blob/master/artip_documentation.pdf
                 reason='BAD_ANTENNA_TIME' correlation='LL' mode='manual' antenna='15' scan='1' timerange='2013/01/05/06:59:49~2013/01/05/07:00:00'
                 reason='BAD_BASELINE_TIME' correlation='LL' mode='manual' antenna='7&8' scan='4' timerange='2013/01/05/06:59:49~2013/01/05/07:00:00'
     
-3. Run pipeline through command line but make sure casa_path is set properly in <conf_dir_path>/casa.yml    
+4. Run pipeline through command line but make sure casa_path is set properly in <conf_dir_path>/casa.yml    
 ```markdown    
     $ cd <artip_path>
     $ pyb run -P dataset="<ms_dataset_path>" -P conf="<conf_dir_path>" -P output="<output_dir>"
