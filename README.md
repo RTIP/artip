@@ -28,10 +28,10 @@ ARTIP releases are present at https://github.com/TWARTIP/artip/releases. Downloa
      1.1. Installation test
     ```markdown
         Linux:
-            $ casa       
+            $ casa --help
             $ conda --version
         OSX:
-            $ casapy       
+            $ casapy --help
             $ conda --version
     ```     
 2. Install pipeline dependencies
