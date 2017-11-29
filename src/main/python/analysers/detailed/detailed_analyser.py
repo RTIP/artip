@@ -23,9 +23,10 @@ class DetailedAnalyser:
 
             window_config = WindowConfig(*self._source_config['detail_flagging']['time_sliding_window'])
             # Sliding Window for Time
-            bad_window_present = self._flag_bad_time_window(BAD_TIME, None, amp_matrix.amplitude_data_matrix,
+            flagged_bad_window = self._flag_bad_time_window(BAD_TIME, None, amp_matrix.amplitude_data_matrix,
                                        global_sigma, global_median,
                                        scan_times, polarization, scan_id, window_config)
+            if flagged_bad_window: bad_window_present = True
 
         return bad_window_present
 
