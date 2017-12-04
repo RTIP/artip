@@ -6,7 +6,9 @@ ARTIP starts with raw data i.e. a Measurement Set and goes through multiple stag
 
 It is written using standard python libraries and the CASA package.  
 
-The latest version of the pipeline can deal with datasets with (i) multiple spectral windows and (ii) multiple target sources which may have arbitrary combinations of flux/bandpass/phase calibrators.  It has been tested against narrow-band (1 - 10 MHz) datasets (~ 6 to 30GB) produced by Giant Metrewave Radio Telescope, Pune (GMRT) and Very Large Array, NM (VLA).  
+The latest version of the pipeline can deal with datasets with (i) multiple spectral windows and (ii) multiple target sources which may have arbitrary combinations of flux/bandpass/phase calibrators.  It has been tested against narrow-band (1 - 10 MHz) datasets (~ 6 to 30GB) produced by Giant Metrewave Radio Telescope, Pune (GMRT) and Very Large Array, NM (VLA). 
+
+The future versions will have support for large wideband datasets.
 
 
 ### Obtaining ARTIP
