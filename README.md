@@ -1,12 +1,12 @@
 ## Introduction
 
-Automated Radio Telescope Image Processing Pipeline (ARTIP) is an end to end pipeline automating the entire process of flagging, calibration and imaging.
+Automated Radio Telescope Image Processing Pipeline (ARTIP) is an end to end pipeline automating the entire process of flagging, calibration and imaging for radio-interferometric data.
 
-ARTIP starts with raw data i.e. Measurement Set and goes through multiple stages like Flux Calibration, Bandpass Calibration, Phase Calibration and Imaging to generate continuum and spectral line images. Each stage can also be run independently. 
+ARTIP starts with raw data i.e. a Measurement Set and goes through multiple stages like Flux Calibration, Bandpass Calibration, Phase Calibration and Imaging to generate continuum and spectral line images. Each stage can also be run independently. The pipeline provides continuous feedback to the user through various messages, charts and logs.
 
-It is written using standard python libraries and the CASA package and tested against datasets (~ 6 to 30GB) produced by Giant Metrewave Radio Telescope, Pune (GMRT) , Very Large Array, NM (VLA) , Westerbork Synthesis Radio Telescope Netherlands (WSRT). Its currently being tested for the data from MeerKAT Absorption Line Survey (MALS)
+It is written using standard python libraries and the CASA package.  
 
-Pipeline also provides ability to generate reports of processed data in graphical format.
+The latest version of the pipeline can deal with datasets with (i) multiple spectral windows and (ii) multiple target sources which may have arbitrary combinations of flux/bandpass/phase calibrators.  It has been tested against narrow-band (1 - 10 MHz) datasets (~ 6 to 30GB) produced by Giant Metrewave Radio Telescope, Pune (GMRT) and Very Large Array, NM (VLA).  
 
 
 ### Obtaining ARTIP
