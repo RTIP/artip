@@ -46,7 +46,7 @@ cont_image:
   imsize: 512
   cell: '0.5arcsec'
   robust: 0.5
-  clean_threshold: '3.0mJy'
+  threshold: '3.0mJy'
   interactive: F
   niter: 100000
   cyclefactor: 4
