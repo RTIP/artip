@@ -75,6 +75,7 @@ https://github.com/TWARTIP/artipdoc/blob/master/artip_documentation.pdf
 4. Run pipeline through command line but make sure casa_path is set properly in <conf_dir_path>/casa.yml    
 ```markdown    
     $ cd <artip_path>
+    $ source activate artip
     $ pyb run -P dataset="<ms_dataset_path>" -P conf="<conf_dir_path>" -P output="<output_dir>"
 ```   
 
