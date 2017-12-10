@@ -14,7 +14,7 @@ The future versions will have support for large wideband datasets.
 ### Obtaining ARTIP
 ARTIP releases are present at https://github.com/TWARTIP/artip/releases. Download and unzip the artip package to run the pipeline.
  ```markdown
- $ unzip artip.zip -d artip
+ $ unzip artip<version>.zip -d artip
  ```
 ### Prerequisites
 1. Install Anaconda and CASA
