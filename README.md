@@ -91,3 +91,9 @@ Pipeline records antenna wise flags summary at different stages. After pipeline 
 **NOTE : Flags summary is recorded only when pipeline is run with "flag_summary: true" in <conf_dir_path>/pipeline.yml**
 
 Charts can be accessed at http://localhost:8000/chart.html
+
+## Publication acknowledgement
+Include the following in publications using ARTIP:
+
+"This paper makes use of ARTIP - the Automated Radio Telescope Imaging Pipeline developed by IUCAA (http://www.iucaa.in/) and ThoughtWorks (https://www.thoughtworks.com/)"
+
