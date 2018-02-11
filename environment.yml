@@ -18,3 +18,4 @@ channels:
   - mock
   - watchdog
   - sh
+  - click

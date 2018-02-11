@@ -11,12 +11,8 @@ The latest version of the pipeline can deal with datasets with (i) multiple spec
 The future versions will have support for large wideband datasets.
 
 
-### Obtaining ARTIP
-ARTIP releases are present at https://github.com/TWARTIP/artip/releases. Download and unzip the artip package to run the pipeline.
- ```markdown
- $ unzip artip<version>.zip -d artip
- ```
-### Prerequisites
+## Installing ARTIP
+#### Prerequisites
 1. Install Anaconda and CASA
 
     * Anaconda
@@ -36,28 +32,35 @@ ARTIP releases are present at https://github.com/TWARTIP/artip/releases. Downloa
             $ casapy --help
             $ conda --version
     ```     
-2. Install pipeline dependencies
+2. Create artip conda environment
    ```markdown
-    $ cd artip
-    $ ./setup.sh
+    $ conda create -n artip python=2.7
+    $ source activate artip
    ```
-    setup.sh will
+    ARTIP pipeline dependencies will in installed in conda 'artip' environment.    
     
-      * Setup casa-pip for installing python modules CASA from PyPI
-      * Create "artip" conda environment from artip/environment.yml  
-    
-    2.1. Installation test            
-      ```markdown
-        $ source <rc_file_path>
-        $ casa-pip -h
-        $ source activate artip
-        $ pyb --version
-      ```
+
+3. Install ARTIP
+
+    ```markdown
+    $ pip install artip
+    ```
+
+4. Install ARTIP pipeline dependencies
+    ```markdown
+    $ artip_setup conda_dependencies
+    $ artip_setup casa_dependencies
+    ```  
+     artip_setup conda_dependencies : Installs all the conda and pip modules in artip environment.
+     
+     artip_setup casa_dependencies : Installs external packages required for running CASA.
+
+
 ### Documentation
 https://github.com/TWARTIP/artipdoc/blob/master/artip_documentation.pdf
 
 ### Running Pipeline
-1. Default conf directory is present at <artip_path>/conf. You can either update it or create your own conf directory having same format.
+1. Default conf directory is present at <anaconda>/envs/artip/etc/configs. You can either update it or create your own conf directory having same format.
 2. Update the CASA path and model_path in <conf_dir_path>/casa.yml
 3. Specify flags from the observation logs in "<conf_dir_path>/user_defined_flags.txt".
     Flags follow format similar to [CASA flagdata](https://casa.nrao.edu/docs/taskref/flagdata-task.html) command with mode='list'.
@@ -73,24 +76,17 @@ https://github.com/TWARTIP/artipdoc/blob/master/artip_documentation.pdf
                 reason='BAD_BASELINE_TIME' correlation='LL' mode='manual' antenna='7&8' scan='4' timerange='2013/01/05/06:59:49~2013/01/05/07:00:00'
     
 4. Run pipeline through command line but make sure casa_path is set properly in <conf_dir_path>/casa.yml    
-```markdown    
-    $ cd <artip_path>
-    $ source activate artip
-    $ pyb run -P dataset="<ms_dataset_path>" -P conf="<conf_dir_path>" -P output="<output_dir>"
-```   
-
+    ```markdown
+       $ source activate artip
+       $ artip --ms "<ms_dataset_path>" --conf_path="<conf_dir_path>" --output_path="<output_dir>"
+    ```   
+        Options:
+        --ms TEXT           MeasurementSet location
+        --conf_path TEXT    Pipeline config path. Defaults to <anaconda>/envs/artip/etc/configs
+        --output_path TEXT  Pipeline output path. Defaults to ./output
+  
 ### Pipeline Output
 All the output artifacts like caltables, flag files, continuum and spectral line images are persisted in <output_path>/<ms_dataset_name> directory.
-
-### Plotting Flagging Graphs
-Pipeline records antenna wise flags summary at different stages. After pipeline completion, user can generate flag summary plots using below scripts :
-```markdown
-    $ cd <artip_path>/flagged_data_summary
-    $ python generate_graph.py "<output_path>/<ms_dataset_name>"  
-```
-**NOTE : Flags summary is recorded only when pipeline is run with "flag_summary: true" in <conf_dir_path>/pipeline.yml**
-
-Charts can be accessed at http://localhost:8000/chart.html
 
 ## Publication acknowledgement
 Include the following in publications using ARTIP:

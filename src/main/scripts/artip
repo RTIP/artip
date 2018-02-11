@@ -1,0 +1,61 @@
+#!/usr/bin/env python
+
+import sys
+import click
+from conditional import conditional
+from shutil import rmtree
+from re import search
+from os import path, listdir, makedirs, remove, getenv
+from distutils.dir_util import copy_tree
+
+MAIN_DIRECTORY = path.dirname(path.dirname(path.abspath(__file__)))
+sys.path.append("{0}/python".format(MAIN_DIRECTORY))
+from artip.configs import config, logging_config
+from artip.utilities.profiler import Profiler
+
+
+def _create_output_dir(dataset_path, output_path):
+    dataset_name = path.splitext(path.basename(dataset_path))[0]
+    config.OUTPUT_PATH = output_path + "/" + dataset_name
+    if not path.exists(config.OUTPUT_PATH):
+        makedirs(config.OUTPUT_PATH)
+    return config.OUTPUT_PATH
+
+
+def _snapshot_config(config_path):
+    copy_tree(config_path, config.OUTPUT_PATH + "/conf/")
+
+
+def _clean():
+    dir = "."
+    patterns = [".log", ".last"]
+    for f in listdir(dir):
+        for pattern in patterns:
+            if search(pattern, f):
+                f = path.join(dir, f)
+                if path.isdir(f):
+                    rmtree(f)
+                else:
+                    remove(f)
+
+
+@click.command()
+@click.option('--ms', prompt=True, help='MS location')
+@click.option('--conf_path', default='{0}/etc/configs'.format(path.dirname(path.dirname(__file__))), prompt=True,
+              help='pipeline config directory absolute Path')
+@click.option('--output_path', default='./output', prompt=True,
+              help='Directory where all science products will be stored')
+def run(ms, conf_path, output_path):
+    config_path = conf_path + "/"
+    config.load(config_path)
+    with conditional(config.PIPELINE_CONFIGS['code_profiling'], Profiler()):
+        logging_config.load()
+        _create_output_dir(ms, output_path)
+        _snapshot_config(config_path)
+        from artip.main import main
+        main(ms)
+        _clean()
+
+
+if __name__ == '__main__':
+    sys.exit(run())

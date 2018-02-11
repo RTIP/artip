@@ -1,0 +1,62 @@
+#!/usr/bin/env python
+from os import system, path, environ
+import subprocess
+import sys
+
+CONDA_ENV_NAME = "artip"
+DEPENDENCIES_CONFIG_DIR = "{0}/etc/.dependencies".format(path.dirname(path.dirname(__file__)))
+
+
+class CommandLine:
+    def __init__(self, input_args):
+        self._command_to_action_map = {"conda_dependencies": self._install_conda_dependencies,
+                                       "casa_dependencies": self._install_casa_dependencies}
+        self._command_received = None
+        self._validate_command(input_args)
+        self._conda_dependencies_file = "{0}/environment.yml".format(DEPENDENCIES_CONFIG_DIR)
+        self._casa_dependencies_file = "{0}/casa_dependencies.txt".format(DEPENDENCIES_CONFIG_DIR)
+        self._casa_pip_setup_script = "{0}/setup_casapy_pip.py".format(DEPENDENCIES_CONFIG_DIR)
+
+    def _validate_command(self, input_args):
+        valid_commands = self._command_to_action_map.keys()
+        try:
+            self._command_received = input_args[1]
+            if self._command_received not in valid_commands: raise ValueError("Invalid command")
+        except (IndexError, ValueError):
+            self._help_message()
+            sys.exit()
+
+    def _help_message(self):
+        valid_commands = self._command_to_action_map.keys()
+        example = ""
+        for command in valid_commands: example += "\nartip_setup {command}".format(command=command)
+        print(
+            "artip_setup: one of the arguments {commands} is required.\nExample:{example}".format(
+                example=example, commands=valid_commands))
+
+    def _install_conda_dependencies(self):
+        env_exists = "envs/{0}\n".format(CONDA_ENV_NAME) in subprocess.check_output(["conda", "env", "list"])
+        if env_exists:
+            system("conda env update -f {0}".format(self._conda_dependencies_file))
+        else:
+            system("conda env create -f {0}".format(self._conda_dependencies_file))
+        system("source activate {0}".format(CONDA_ENV_NAME))
+
+    def _install_casa_pip_modules(self):
+        python_user_base = environ["HOME"] + "/.casa"
+        system("export PYTHONUSERBASE={python_user_base} && ~/.casa/bin/pip install -r {casa_file} --user".format(
+            python_user_base=python_user_base, casa_file=self._casa_dependencies_file))
+
+    def _setup_casa_pip(self):
+        system("python {0}".format(self._casa_pip_setup_script))
+
+    def _install_casa_dependencies(self):
+        self._setup_casa_pip()
+        self._install_casa_pip_modules()
+
+    def process(self):
+        self._command_to_action_map[self._command_received]()
+
+
+if __name__ == '__main__':
+    sys.exit(CommandLine(sys.argv).process())
