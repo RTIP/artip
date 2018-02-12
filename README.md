@@ -32,12 +32,13 @@ The future versions will have support for large wideband datasets.
             $ casapy --help
             $ conda --version
     ```     
+#### ARTIP setup
 2. Create artip conda environment
    ```markdown
     $ conda create -n artip python=2.7
     $ source activate artip
    ```
-    ARTIP pipeline dependencies will in installed in conda 'artip' environment.    
+    ARTIP pipeline dependencies will be installed in conda 'artip' environment.    
     
 
 3. Install ARTIP
