@@ -10,7 +10,7 @@ The latest version of the pipeline can deal with datasets with (i) multiple spec
 
 The future versions will have support for large wideband datasets.
 
-
+**This version of ARTIP is developed for CASA 4.7.2, and not tested for later versions.**
 ### Obtaining ARTIP
 ARTIP releases are present at https://github.com/TWARTIP/artip/releases. Download and unzip the artip package to run the pipeline.
  ```markdown
